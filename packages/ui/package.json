@@ -1,0 +1,50 @@
+{
+  "name": "@plog/ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "tsc -b && vite build",
+    "build-storybook": "storybook build",
+    "lint": "eslint .",
+    "clean": "rm -rf dist"
+  },
+  "peerDependencies": {
+    "react": "^19",
+    "react-dom": "^19"
+  },
+  "dependencies": {
+    "tailwindcss": "^4"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^5",
+    "@eslint/js": "^9",
+    "@storybook/addon-onboarding": "^10",
+    "@storybook/react": "^10",
+    "@storybook/react-vite": "^10",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6",
+    "eslint": "^9",
+    "react": "^19",
+    "react-dom": "^19",
+    "storybook": "^10",
+    "typescript": "^5",
+    "typescript-eslint": "^8",
+    "vite": "^8",
+    "vite-plugin-dts": "^4"
+  }
+}
