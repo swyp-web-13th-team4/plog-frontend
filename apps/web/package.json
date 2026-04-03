@@ -23,8 +23,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@plog/config": "workspace:*",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-boundaries": "^4.2.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

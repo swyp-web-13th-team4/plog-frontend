@@ -2,5 +2,15 @@
   "name": "@plog/config",
   "version": "0.0.0",
   "private": true,
-  "description": "Shared ESLint and Prettier configurations for the monorepo"
+  "type": "module",
+  "description": "Shared ESLint and Prettier configurations for the monorepo",
+  "exports": {
+    "./eslint/base": "./eslint/base.js"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.8.1"
+  }
 }
