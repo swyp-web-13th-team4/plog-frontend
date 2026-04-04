@@ -2,7 +2,6 @@ import baseConfig from '@plog/config/eslint/base';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
-import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import boundaries from 'eslint-plugin-boundaries';
 
 const FSD_LAYERS = [
@@ -24,9 +23,11 @@ export default defineConfig([
     plugins: { boundaries },
     settings: {
       'boundaries/elements': FSD_LAYERS,
-      'boundaries/resolver': createTypeScriptImportResolver({
-        alwaysTryTypes: true,
-      }),
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+        },
+      },
     },
     rules: {
       'boundaries/element-types': [
