@@ -7,9 +7,8 @@ reviews:
   poem: false
   review_status: true
   path_filters:
-    - "!**/node_modules/**"
-
-    - "!**/*.ico"
-    - "!**/.next/**"
-    - "!**/dist/**"
-    - "!**/.turbo/**"
+    - '!**/node_modules/**'
+    - '!**/*.ico'
+    - '!**/.next/**'
+    - '!**/dist/**'
+    - '!**/.turbo/**'
