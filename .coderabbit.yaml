@@ -1,0 +1,15 @@
+language: ko-KR
+
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: false
+  poem: false
+  review_status: true
+  path_filters:
+    - "!**/node_modules/**"
+    - "!**/pnpm-lock.yaml"
+    - "!**/*.ico"
+    - "!**/.next/**"
+    - "!**/dist/**"
+    - "!**/.turbo/**"
