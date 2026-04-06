@@ -8,7 +8,6 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  ...baseConfig,
   globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
@@ -28,4 +27,5 @@ export default defineConfig([
       react: { version: 'detect' },
     },
   },
+  ...baseConfig,
 ]);
