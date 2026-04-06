@@ -14,9 +14,9 @@ const FSD_LAYERS = [
 ];
 
 export default defineConfig([
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
   ...nextVitals,
   ...nextTs,
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
   ...baseConfig,
   {
     files: ['src/**/*.{ts,tsx}'],
