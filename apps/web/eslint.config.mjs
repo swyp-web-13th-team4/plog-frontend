@@ -38,7 +38,7 @@ export default defineConfig([
             '"${file.type}" 레이어에서 "${dependency.type}" 레이어를 import할 수 없습니다. (FSD 의존성 규칙 위반)',
           rules: FSD_LAYERS.map(({ type }, index) => ({
             from: type,
-            allow: FSD_LAYERS.slice(index).map((l) => l.type),
+            allow: FSD_LAYERS.slice(type === 'shared' ? index : index + 1).map((l) => l.type),
           })),
         },
       ],
