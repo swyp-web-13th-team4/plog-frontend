@@ -1,6 +1,7 @@
 ---
-name: 'chore: '
+name: 'Chore Request'
 about: 환경 설정, 빌드, 패키지 관리 등 개발 인프라 관련 이슈 템플릿
+title: 'chore: '
 labels: '🔧 chore'
 assignees: ''
 ---
