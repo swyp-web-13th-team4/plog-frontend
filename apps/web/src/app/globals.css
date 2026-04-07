@@ -1,1 +1,4 @@
 @import 'tailwindcss';
+@import '@plog/ui/styles';
+
+@source "../../node_modules/@plog/ui/dist";
