@@ -12,14 +12,17 @@
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     },
-    "./styles": "./dist/styles/index.css",
+    "./styles": "./src/styles/index.css",
     "./tokens": {
       "import": "./dist/tokens/index.js",
       "require": "./dist/tokens/index.cjs",
       "types": "./dist/tokens/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist",
+    "src/styles"
+  ],
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "tsc -b && vite build",
@@ -41,6 +44,7 @@
     "@storybook/addon-onboarding": "^10",
     "@storybook/react": "^10",
     "@storybook/react-vite": "^10",
+    "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
