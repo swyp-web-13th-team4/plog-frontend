@@ -11,6 +11,12 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
+    },
+    "./styles": "./dist/styles/index.css",
+    "./tokens": {
+      "import": "./dist/tokens/index.js",
+      "require": "./dist/tokens/index.cjs",
+      "types": "./dist/tokens/index.d.ts"
     }
   },
   "files": ["dist"],
