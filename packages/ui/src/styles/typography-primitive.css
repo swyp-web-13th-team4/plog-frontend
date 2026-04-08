@@ -1,6 +1,7 @@
 @theme {
   /* typeface */
   --font-pretendard: 'Pretendard', sans-serif;
+  --default-font-family: var(--font-pretendard);
 
   /* font-size */
   --text-primitive-12: 0.75rem;
