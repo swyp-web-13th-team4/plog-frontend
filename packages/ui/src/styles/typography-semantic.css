@@ -1,0 +1,74 @@
+@theme inline {
+  /* hero */
+  --text-semantic-hero-lg: var(--text-primitive-40);
+  --font-weight-semantic-hero-lg: var(--font-weight-primitive-bold);
+  --leading-semantic-hero-lg: var(--leading-primitive-52);
+
+  --text-semantic-hero-md: var(--text-primitive-36);
+  --font-weight-semantic-hero-md: var(--font-weight-primitive-bold);
+  --leading-semantic-hero-md: var(--leading-primitive-48);
+
+  --text-semantic-hero-sm: var(--text-primitive-32);
+  --font-weight-semantic-hero-sm: var(--font-weight-primitive-bold);
+  --leading-semantic-hero-sm: var(--leading-primitive-44);
+
+  /* title */
+  --text-semantic-title-xl: var(--text-primitive-28);
+  --font-weight-semantic-title-xl: var(--font-weight-primitive-bold);
+  --leading-semantic-title-xl: var(--leading-primitive-38);
+
+  --text-semantic-title-lg: var(--text-primitive-24);
+  --font-weight-semantic-title-lg: var(--font-weight-primitive-bold);
+  --leading-semantic-title-lg: var(--leading-primitive-32);
+
+  --text-semantic-title-md: var(--text-primitive-22);
+  --font-weight-semantic-title-md: var(--font-weight-primitive-bold);
+  --leading-semantic-title-md: var(--leading-primitive-30);
+
+  --text-semantic-title-sm: var(--text-primitive-20);
+  --font-weight-semantic-title-sm: var(--font-weight-primitive-semibold);
+  --leading-semantic-title-sm: var(--leading-primitive-28);
+
+  --text-semantic-title-xs: var(--text-primitive-18);
+  --font-weight-semantic-title-xs: var(--font-weight-primitive-semibold);
+  --leading-semantic-title-xs: var(--leading-primitive-26);
+
+  /* body */
+  --text-semantic-body-xl: var(--text-primitive-18);
+  --font-weight-semantic-body-xl: var(--font-weight-primitive-medium);
+  --leading-semantic-body-xl: var(--leading-primitive-26);
+
+  --text-semantic-body-lg: var(--text-primitive-16);
+  --font-weight-semantic-body-lg: var(--font-weight-primitive-medium);
+  --leading-semantic-body-lg: var(--leading-primitive-24);
+
+  --text-semantic-body-md: var(--text-primitive-15);
+  --font-weight-semantic-body-md: var(--font-weight-primitive-regular);
+  --leading-semantic-body-md: var(--leading-primitive-22);
+
+  --text-semantic-body-sm: var(--text-primitive-14);
+  --font-weight-semantic-body-sm: var(--font-weight-primitive-regular);
+  --leading-semantic-body-sm: var(--leading-primitive-22);
+
+  /* label */
+  --text-semantic-label-xl: var(--text-primitive-18);
+  --font-weight-semantic-label-xl: var(--font-weight-primitive-semibold);
+  --leading-semantic-label-xl: var(--leading-primitive-24);
+
+  --text-semantic-label-lg: var(--text-primitive-16);
+  --font-weight-semantic-label-lg: var(--font-weight-primitive-semibold);
+  --leading-semantic-label-lg: var(--leading-primitive-22);
+
+  --text-semantic-label-md: var(--text-primitive-14);
+  --font-weight-semantic-label-md: var(--font-weight-primitive-medium);
+  --leading-semantic-label-md: var(--leading-primitive-20);
+
+  --text-semantic-label-sm: var(--text-primitive-13);
+  --font-weight-semantic-label-sm: var(--font-weight-primitive-medium);
+  --leading-semantic-label-sm: var(--leading-primitive-18);
+
+  /* caption */
+  --text-semantic-caption-md: var(--text-primitive-12);
+  --font-weight-semantic-caption-md: var(--font-weight-primitive-regular);
+  --leading-semantic-caption-md: var(--leading-primitive-16);
+}

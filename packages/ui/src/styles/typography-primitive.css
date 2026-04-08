@@ -1,0 +1,41 @@
+@theme {
+  /* typeface */
+  --font-pretendard: 'Pretendard', sans-serif;
+
+  /* font-size */
+  --text-primitive-12: 0.75rem;
+  --text-primitive-13: 0.8125rem;
+  --text-primitive-14: 0.875rem;
+  --text-primitive-15: 0.9375rem;
+  --text-primitive-16: 1rem;
+  --text-primitive-17: 1.0625rem;
+  --text-primitive-18: 1.125rem;
+  --text-primitive-20: 1.25rem;
+  --text-primitive-22: 1.375rem;
+  --text-primitive-24: 1.5rem;
+  --text-primitive-28: 1.75rem;
+  --text-primitive-32: 2rem;
+  --text-primitive-36: 2.25rem;
+  --text-primitive-40: 2.5rem;
+
+  /* font-weight */
+  --font-weight-primitive-bold: 700;
+  --font-weight-primitive-semibold: 600;
+  --font-weight-primitive-medium: 500;
+  --font-weight-primitive-regular: 400;
+
+  /* line-height */
+  --leading-primitive-16: 1rem;
+  --leading-primitive-18: 1.125rem;
+  --leading-primitive-20: 1.25rem;
+  --leading-primitive-22: 1.375rem;
+  --leading-primitive-24: 1.5rem;
+  --leading-primitive-26: 1.625rem;
+  --leading-primitive-28: 1.75rem;
+  --leading-primitive-30: 1.875rem;
+  --leading-primitive-32: 2rem;
+  --leading-primitive-38: 2.375rem;
+  --leading-primitive-44: 2.75rem;
+  --leading-primitive-48: 3rem;
+  --leading-primitive-52: 3.25rem;
+}

@@ -1,0 +1,42 @@
+const typographyPrimitive = {
+  typeface: 'Pretendard',
+  fontSize: {
+    12: 12,
+    13: 13,
+    14: 14,
+    15: 15,
+    16: 16,
+    17: 17,
+    18: 18,
+    20: 20,
+    22: 22,
+    24: 24,
+    28: 28,
+    32: 32,
+    36: 36,
+    40: 40,
+  },
+  fontWeight: {
+    bold: 700,
+    semibold: 600,
+    medium: 500,
+    regular: 400,
+  },
+  lineHeight: {
+    16: 16,
+    18: 18,
+    20: 20,
+    22: 22,
+    24: 24,
+    26: 26,
+    28: 28,
+    30: 30,
+    32: 32,
+    38: 38,
+    44: 44,
+    48: 48,
+    52: 52,
+  },
+} as const;
+
+export { typographyPrimitive };
