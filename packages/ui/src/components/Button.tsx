@@ -75,6 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
     disabled,
     fullWidth,
     className,
+    type = 'button',
     ...props
   },
   ref,
@@ -88,6 +89,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
         buttonVariants({ variant, size, fullWidth, loading }),
         className,
       )}
+      type={type}
       disabled={loading || disabled}
       focusableWhenDisabled={loading}
       aria-busy={loading}
