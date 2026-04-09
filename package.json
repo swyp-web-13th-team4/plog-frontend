@@ -9,6 +9,7 @@
     "clean": "turbo run clean"
   },
   "devDependencies": {
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "turbo": "2.8.21"
   },
   "packageManager": "pnpm@9.0.0",
