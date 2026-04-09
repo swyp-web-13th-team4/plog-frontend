@@ -1,7 +1,7 @@
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
-import React from 'react';
+import { forwardRef, type ComponentProps, type ReactNode } from 'react';
 
 import GraySpinner from '@/assets/gray-spinner.svg?react';
 import WhiteSpinner from '@/assets/white-spinner.svg?react';
@@ -57,14 +57,14 @@ const buttonVariants = cva(
   },
 );
 
-type ButtonProps = React.ComponentProps<typeof BaseButton> &
+type ButtonProps = ComponentProps<typeof BaseButton> &
   VariantProps<typeof buttonVariants> & {
-    iconLeft?: React.ReactNode;
-    iconRight?: React.ReactNode;
+    iconLeft?: ReactNode;
+    iconRight?: ReactNode;
     loading?: boolean;
   };
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     variant,
     size,
