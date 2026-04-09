@@ -28,6 +28,7 @@
     "dev": "storybook dev -p 6006",
     "build": "tsc -b && vite build",
     "build-storybook": "storybook build",
+    "chromatic": "chromatic --exit-zero-on-changes",
     "lint": "eslint .",
     "clean": "rm -rf dist"
   },
@@ -51,6 +52,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6",
+    "chromatic": "^16.1.0",
     "eslint": "^9",
     "eslint-plugin-react": "^7",
     "eslint-plugin-react-hooks": "^7.0.1",
