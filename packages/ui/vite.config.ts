@@ -1,15 +1,23 @@
+import { resolve } from 'node:path';
+
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+import svgr from 'vite-plugin-svgr';
 
 const isStorybook = process.env.STORYBOOK === 'true';
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
   plugins: [
     tailwindcss(),
     react(),
+    svgr(),
     !isStorybook &&
       dts({
         include: ['src'],
