@@ -112,6 +112,9 @@ importers:
 
   packages/ui:
     dependencies:
+      pretendard:
+        specifier: ^1.3.9
+        version: 1.3.9
       tailwindcss:
         specifier: ^4
         version: 4.2.2
