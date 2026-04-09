@@ -86,6 +86,7 @@ export default function Button({
       )}
       disabled={loading || disabled}
       focusableWhenDisabled={loading}
+      aria-busy={loading}
       {...props}
     >
       {loading && (
