@@ -42,6 +42,7 @@ const meta: Meta<typeof Button> = {
     },
     iconLeft: { table: { disable: true } },
     iconRight: { table: { disable: true } },
+    type: { table: { disable: true } },
     loading: {
       description:
         '로딩 상태입니다. `primary`는 흰색 스피너, 그 외에는 회색 스피너가 표시됩니다.',
