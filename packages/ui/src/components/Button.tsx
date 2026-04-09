@@ -64,22 +64,26 @@ type ButtonProps = React.ComponentProps<typeof BaseButton> &
     loading?: boolean;
   };
 
-export default function Button({
-  variant,
-  size,
-  children,
-  iconLeft,
-  iconRight,
-  loading,
-  disabled,
-  fullWidth,
-  className,
-  ...props
-}: ButtonProps) {
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    variant,
+    size,
+    children,
+    iconLeft,
+    iconRight,
+    loading,
+    disabled,
+    fullWidth,
+    className,
+    ...props
+  },
+  ref,
+) {
   const Spinner = variant === 'primary' ? WhiteSpinner : GraySpinner;
 
   return (
     <BaseButton
+      ref={ref}
       className={cn(
         buttonVariants({ variant, size, fullWidth, loading }),
         className,
@@ -99,4 +103,6 @@ export default function Button({
       {iconRight}
     </BaseButton>
   );
-}
+});
+
+export default Button;
