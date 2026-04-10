@@ -3,8 +3,7 @@ import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { forwardRef, type ComponentProps, type ReactNode } from 'react';
 
-import GraySpinner from '@/assets/gray-spinner.svg?react';
-import WhiteSpinner from '@/assets/white-spinner.svg?react';
+import Spinner from '@/components/Spinner';
 
 const buttonVariants = cva(
   'inline-flex cursor-pointer items-center justify-center transition-colors disabled:cursor-not-allowed focus-visible:outline-2',
@@ -83,7 +82,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   },
   ref,
 ) {
-  const Spinner = variant === 'primary' ? WhiteSpinner : GraySpinner;
+  const effectiveVariant = variant ?? 'primary';
+
+  const spinnerColorClass =
+    effectiveVariant === 'primary'
+      ? 'text-semantic-object-inverse'
+      : 'text-semantic-object-subtle';
 
   return (
     <BaseButton
@@ -99,9 +103,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       {...props}
     >
       {loading && (
-        <span className="size-4 shrink-0">
-          <Spinner className="size-full animate-spin" />
-        </span>
+        <Spinner className={cn('size-[18px] shrink-0', spinnerColorClass)} />
       )}
       {iconLeft}
       {children}
