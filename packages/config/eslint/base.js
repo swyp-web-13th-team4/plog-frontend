@@ -11,7 +11,7 @@ export default [
       'simple-import-sort/imports': [
         'error',
         {
-          groups: [['^react'], ['^@?\\w'], ['^@/'], ['^\\.']],
+          groups: [['^\\u0000'], ['^react'], ['^@?\\w'], ['^@/'], ['^\\.']],
         },
       ],
       'simple-import-sort/exports': 'error',
