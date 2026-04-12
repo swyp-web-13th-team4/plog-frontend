@@ -39,6 +39,7 @@ function Field({
           insideField: true,
           invalid: !!error,
           disabled: !!disabled,
+          required: !!required,
           onCharCountChange: setCharCount,
         }}
       >

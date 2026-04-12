@@ -27,6 +27,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       invalid: invalidProp,
       maxLength,
       disabled,
+      required,
       value,
       defaultValue,
       onChange,
@@ -41,11 +42,13 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       insideField,
       invalid: ctxInvalid,
       disabled: ctxDisabled,
+      required: ctxRequired,
       onCharCountChange,
     } = useFieldContext();
 
     const invalid = invalidProp ?? ctxInvalid;
     const effectiveDisabled = disabled ?? ctxDisabled;
+    const effectiveRequired = required ?? ctxRequired;
 
     const [isFocused, setIsFocused] = useState(false);
     const [internalValue, setInternalValue] = useState(defaultValue ?? '');
@@ -73,6 +76,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           value={currentValue}
           onChange={handleChange}
           disabled={effectiveDisabled}
+          required={effectiveRequired}
           maxLength={maxLength}
           onFocus={(e) => {
             setIsFocused(true);

@@ -30,6 +30,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     trailing,
     onClear,
     disabled,
+    required,
     value,
     defaultValue,
     onChange,
@@ -40,10 +41,15 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref,
 ) {
-  const { invalid: ctxInvalid, disabled: ctxDisabled } = useFieldContext();
+  const {
+    invalid: ctxInvalid,
+    disabled: ctxDisabled,
+    required: ctxRequired,
+  } = useFieldContext();
 
   const invalid = invalidProp ?? ctxInvalid;
   const effectiveDisabled = disabled ?? ctxDisabled;
+  const effectiveRequired = required ?? ctxRequired;
 
   const [isFocused, setIsFocused] = useState(false);
   const [internalValue, setInternalValue] = useState(defaultValue ?? '');
@@ -77,6 +83,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         value={currentValue}
         onChange={handleChange}
         disabled={effectiveDisabled}
+        required={effectiveRequired}
         onFocus={(e) => {
           setIsFocused(true);
           onFocus?.(e);
