@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import type { Meta, StoryObj } from '@storybook/react';
 
 import BlankIcon from '@/assets/blank.svg?react';
@@ -81,23 +79,6 @@ export const Disabled: Story = {
   args: { disabled: true },
 };
 
-function WithTrailingStory(args: React.ComponentProps<typeof Input>) {
-  const [value, setValue] = useState('');
-  return (
-    <Input
-      {...args}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onClear={() => setValue('')}
-      trailing={
-        <span>
-          <BlankIcon />
-        </span>
-      }
-    />
-  );
-}
-
 export const WithTrailing: Story = {
   parameters: {
     docs: {
@@ -105,20 +86,16 @@ export const WithTrailing: Story = {
         story:
           '`trailing`에 ReactNode를 전달합니다. 값을 입력하면 `trailing`이 초기화 버튼으로 전환됩니다.',
       },
-      source: {
-        code: `<Input
-  value={value}
-  onChange={(e) => setValue(e.target.value)}
-  onClear={() => setValue('')}
-  placeholder="내용을 입력하세요"
-  trailing={
-    <span>
-      <BlankIcon />
-    </span>
-  }
-/>`,
-      },
     },
   },
-  render: (args) => <WithTrailingStory {...args} />,
+  render: (args) => (
+    <Input
+      {...args}
+      trailing={
+        <span>
+          <BlankIcon />
+        </span>
+      }
+    />
+  ),
 };
