@@ -1,7 +1,8 @@
+import { type ComponentProps, forwardRef, type ReactNode } from 'react';
+
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { forwardRef, type ComponentProps, type ReactNode } from 'react';
 
 import Spinner from '@/components/Spinner';
 
