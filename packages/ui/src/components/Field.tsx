@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useState, useMemo } from 'react';
 
 import { Field as BaseField } from '@base-ui/react/field';
 import { cn } from '@plog/utils';
@@ -28,21 +28,24 @@ function Field({
 
   const hasFooter = !!error || !!description || charCount !== null;
 
+  const contextValue = useMemo(
+    () => ({
+      insideField: true,
+      invalid: !!error,
+      disabled: !!disabled,
+      required: !!required,
+      onCharCountChange: setCharCount,
+    }),
+    [error, disabled, required, setCharCount],
+  );
+
   return (
     <BaseField.Root
       invalid={!!error}
       disabled={disabled}
       className={cn('flex flex-col', className)}
     >
-      <FieldContext.Provider
-        value={{
-          insideField: true,
-          invalid: !!error,
-          disabled: !!disabled,
-          required: !!required,
-          onCharCountChange: setCharCount,
-        }}
-      >
+      <FieldContext.Provider value={contextValue}>
         {label && (
           <BaseField.Label className="label-lg mb-3 flex gap-1 text-semantic-object-boldest">
             {label}
