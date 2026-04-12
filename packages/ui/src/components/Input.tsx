@@ -80,6 +80,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     <div className={containerClass}>
       <BaseInput
         ref={ref}
+        aria-invalid={invalid}
         value={currentValue}
         onChange={handleChange}
         disabled={effectiveDisabled}
