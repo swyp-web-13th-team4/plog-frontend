@@ -49,6 +49,7 @@ const config = [
           'error',
           {
             groups: [
+              ['^\\u0000'],
               ['^react'],
               ['^@?\\w'],
               ...FSD_LAYERS.map(({ type }) => [`^@/${type}`]),
