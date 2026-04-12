@@ -82,7 +82,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             onBlur?.(e);
           }}
           className={cn(
-            'rounded-[12px] border px-4 py-3 transition-colors',
+            'body-md w-full resize-none rounded-[12px] border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
             effectiveDisabled
               ? 'cursor-not-allowed border-semantic-stroke-subtle bg-semantic-bg-deep'
               : invalid
@@ -90,13 +90,19 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 : isFocused
                   ? 'border-semantic-accent-normal ring-1 ring-semantic-accent-normal'
                   : 'border-semantic-stroke-assistive bg-semantic-bg-standard hover:border-semantic-stroke-alternative',
-            'body-md w-full resize-none bg-transparent text-semantic-object-boldest outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
           )}
           {...props}
         />
 
         {!insideField && maxLength !== undefined && (
-          <span className="caption-md mt-1.5 mr-2 ml-auto text-semantic-object-subtle">
+          <span
+            className={cn(
+              'caption-md mt-1.5 mr-2 ml-auto',
+              invalid
+                ? 'text-semantic-feedback-error-normal'
+                : 'text-semantic-object-subtle',
+            )}
+          >
             {charCount}/{maxLength}자
           </span>
         )}
