@@ -8,6 +8,7 @@ import {
 import { cn } from '@plog/utils';
 
 import { useFieldContext } from '@/hooks/useFieldContext';
+import { getFieldStateClass } from '@/utils/getFieldStateClass';
 
 type TextareaProps = Omit<
   ComponentPropsWithoutRef<'textarea'>,
@@ -83,13 +84,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           }}
           className={cn(
             'body-md w-full resize-none rounded-[12px] border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
-            effectiveDisabled
-              ? 'cursor-not-allowed border-semantic-stroke-subtle bg-semantic-bg-deep'
-              : invalid
-                ? 'border-semantic-feedback-error-normal bg-semantic-feedback-error-subtler'
-                : isFocused
-                  ? 'border-semantic-accent-normal ring-1 ring-semantic-accent-normal'
-                  : 'border-semantic-stroke-assistive bg-semantic-bg-standard hover:border-semantic-stroke-alternative',
+            getFieldStateClass(effectiveDisabled, invalid, isFocused),
           )}
           {...props}
         />

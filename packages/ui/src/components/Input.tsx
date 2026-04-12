@@ -10,6 +10,7 @@ import { cn } from '@plog/utils';
 
 import ClearIcon from '@/assets/clear.svg?react';
 import { useFieldContext } from '@/hooks/useFieldContext';
+import { getFieldStateClass } from '@/utils/getFieldStateClass';
 
 type InputProps = Omit<
   ComponentPropsWithoutRef<'input'>,
@@ -65,13 +66,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
   const containerClass = cn(
     'relative rounded-[12px] border transition-colors',
-    effectiveDisabled
-      ? 'cursor-not-allowed border-semantic-stroke-subtle bg-semantic-bg-deep'
-      : invalid
-        ? 'border-semantic-feedback-error-normal bg-semantic-feedback-error-subtler'
-        : isFocused
-          ? 'border-semantic-accent-normal ring-1 ring-semantic-accent-normal'
-          : 'border-semantic-stroke-assistive bg-semantic-bg-standard hover:border-semantic-stroke-alternative',
+    getFieldStateClass(effectiveDisabled, invalid, isFocused),
     className,
   );
 
