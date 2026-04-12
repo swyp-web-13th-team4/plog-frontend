@@ -1,4 +1,4 @@
-import {
+import React, {
   type ComponentPropsWithoutRef,
   forwardRef,
   useEffect,
@@ -16,10 +16,11 @@ type TextareaProps = Omit<
 > & {
   invalid?: boolean;
   maxLength?: number;
-  value?: string;
-  defaultValue?: string;
   className?: string;
-};
+} & (
+    | { value?: undefined; defaultValue?: string }
+    | { value: string; defaultValue?: never }
+  );
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(

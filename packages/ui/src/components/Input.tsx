@@ -1,4 +1,4 @@
-import {
+import React, {
   type ComponentPropsWithoutRef,
   forwardRef,
   type ReactNode,
@@ -18,11 +18,11 @@ type InputProps = Omit<
 > & {
   invalid?: boolean;
   trailing?: ReactNode;
-  onClear?: () => void;
-  value?: string;
-  defaultValue?: string;
   className?: string;
-};
+} & (
+    | { value?: undefined; defaultValue?: string; onClear?: () => void }
+    | { value: string; defaultValue?: never; onClear: () => void }
+  );
 
 const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
