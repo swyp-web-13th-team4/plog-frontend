@@ -109,6 +109,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
               onClick={handleClear}
               className="cursor-pointer"
               tabIndex={-1}
+              aria-label="입력값 초기화"
             >
               <ClearIcon
                 fill="currentColor"
