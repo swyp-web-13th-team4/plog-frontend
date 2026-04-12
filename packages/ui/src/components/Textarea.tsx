@@ -66,8 +66,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     useEffect(() => {
       if (!insideField || maxLength === undefined) return;
       onCharCountChange?.({ count: charCount, max: maxLength });
-      return () => onCharCountChange?.(null);
     }, [insideField, charCount, maxLength, onCharCountChange]);
+
+    useEffect(() => {
+      if (!insideField || maxLength === undefined) return;
+      return () => onCharCountChange?.(null);
+    }, [insideField, maxLength, onCharCountChange]);
 
     return (
       <div className={cn('flex flex-col', className)}>
