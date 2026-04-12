@@ -1,10 +1,13 @@
 import {
   type ComponentPropsWithoutRef,
   forwardRef,
+  useEffect,
   useState,
 } from 'react';
 
 import { cn } from '@plog/utils';
+
+import { useFieldContext } from '@/hooks/useFieldContext';
 
 type TextareaProps = Omit<
   ComponentPropsWithoutRef<'textarea'>,
@@ -20,7 +23,7 @@ type TextareaProps = Omit<
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(
     {
-      invalid,
+      invalid: invalidProp,
       maxLength,
       disabled,
       value,
@@ -33,6 +36,16 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref,
   ) {
+    const {
+      insideField,
+      invalid: ctxInvalid,
+      disabled: ctxDisabled,
+      onCharCountChange,
+    } = useFieldContext();
+
+    const invalid = invalidProp ?? ctxInvalid;
+    const effectiveDisabled = disabled ?? ctxDisabled;
+
     const [isFocused, setIsFocused] = useState(false);
     const [internalValue, setInternalValue] = useState(defaultValue ?? '');
 
@@ -45,6 +58,12 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       onChange?.(e);
     };
 
+    useEffect(() => {
+      if (!insideField || maxLength === undefined) return;
+      onCharCountChange?.({ count: charCount, max: maxLength });
+      return () => onCharCountChange?.(null);
+    }, [insideField, charCount, maxLength, onCharCountChange]);
+
     return (
       <div className={cn('flex flex-col', className)}>
         <textarea
@@ -52,7 +71,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-invalid={invalid}
           value={currentValue}
           onChange={handleChange}
-          disabled={disabled}
+          disabled={effectiveDisabled}
           maxLength={maxLength}
           onFocus={(e) => {
             setIsFocused(true);
@@ -64,7 +83,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           }}
           className={cn(
             'rounded-[12px] border px-4 py-3 transition-colors',
-            disabled
+            effectiveDisabled
               ? 'cursor-not-allowed border-semantic-stroke-subtle bg-semantic-bg-deep'
               : invalid
                 ? 'border-semantic-feedback-error-normal bg-semantic-feedback-error-subtler'
@@ -76,7 +95,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
 
-        {maxLength !== undefined && (
+        {!insideField && maxLength !== undefined && (
           <span className="caption-md mt-1.5 mr-2 ml-auto text-semantic-object-subtle">
             {charCount}/{maxLength}자
           </span>
