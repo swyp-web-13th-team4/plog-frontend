@@ -74,7 +74,7 @@ export const WithTextarea: Story = {
     docs: {
       description: {
         story:
-          '`Textarea`와 함께 사용하는 예제입니다. 글자 수 카운터는 `Textarea`가 표시합니다.',
+          '`Textarea`와 함께 사용하는 예제입니다. 글자 수 카운터는 `Field` 하단에서 표시됩니다.',
       },
     },
   },
