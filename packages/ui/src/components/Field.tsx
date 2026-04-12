@@ -50,7 +50,13 @@ function Field({
           <BaseField.Label className="label-lg mb-3 flex gap-1 text-semantic-object-boldest">
             {label}
             {required && (
-              <span className="mt-1 inline-block size-1 rounded-full bg-primitive-red-400" />
+              <>
+                <span
+                  aria-hidden="true"
+                  className="mt-1 inline-block size-1 rounded-full bg-primitive-red-400"
+                />
+                <span className="sr-only">필수</span>
+              </>
             )}
           </BaseField.Label>
         )}
@@ -66,13 +72,13 @@ function Field({
                 : 'text-semantic-object-subtle',
             )}
           >
-            <span>
+            <>
               {error ? (
                 <span role="alert">{error}</span>
               ) : description ? (
                 <BaseField.Description>{description}</BaseField.Description>
               ) : null}
-            </span>
+            </>
 
             {charCount !== null && (
               <span>
