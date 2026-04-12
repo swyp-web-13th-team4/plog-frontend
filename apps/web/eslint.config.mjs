@@ -13,48 +13,52 @@ const FSD_LAYERS = [
   { type: 'shared', pattern: 'src/shared/**', mode: 'full' },
 ];
 
-export default defineConfig([
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
-  ...nextVitals,
-  ...nextTs,
-  ...baseConfig,
-  {
-    files: ['src/**/*.{ts,tsx}'],
-    plugins: { boundaries },
-    settings: {
-      'boundaries/elements': FSD_LAYERS,
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
+const config = [
+  ...defineConfig([
+    globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+    ...nextVitals,
+    ...nextTs,
+    {
+      files: ['src/**/*.{ts,tsx}'],
+      plugins: { boundaries },
+      settings: {
+        'boundaries/elements': FSD_LAYERS,
+        'import/resolver': {
+          typescript: {
+            alwaysTryTypes: true,
+          },
         },
       },
+      rules: {
+        'boundaries/element-types': [
+          'error',
+          {
+            default: 'disallow',
+            message:
+              '"${file.type}" 레이어에서 "${dependency.type}" 레이어를 import할 수 없습니다. (FSD 의존성 규칙 위반)',
+            rules: FSD_LAYERS.map(({ type }, index) => ({
+              from: type,
+              allow: FSD_LAYERS.slice(
+                type === 'shared' || type === 'app' ? index : index + 1,
+              ).map((l) => l.type),
+            })),
+          },
+        ],
+        'simple-import-sort/imports': [
+          'error',
+          {
+            groups: [
+              ['^react'],
+              ['^@?\\w'],
+              ...FSD_LAYERS.map(({ type }) => [`^@/${type}`]),
+              ['^\\.'],
+            ],
+          },
+        ],
+      },
     },
-    rules: {
-      'boundaries/element-types': [
-        'error',
-        {
-          default: 'disallow',
-          message:
-            '"${file.type}" 레이어에서 "${dependency.type}" 레이어를 import할 수 없습니다. (FSD 의존성 규칙 위반)',
-          rules: FSD_LAYERS.map(({ type }, index) => ({
-            from: type,
-            allow: FSD_LAYERS.slice(
-              type === 'shared' || type === 'app' ? index : index + 1,
-            ).map((l) => l.type),
-          })),
-        },
-      ],
-      'simple-import-sort/imports': [
-        'error',
-        {
-          groups: [
-            ['^react'],
-            ['^@?\\w'],
-            ...FSD_LAYERS.map(({ type }) => [`^@/${type}`]),
-            ['^\\.'],
-          ],
-        },
-      ],
-    },
-  },
-]);
+  ]),
+  ...baseConfig,
+];
+
+export default config;
