@@ -90,9 +90,9 @@ function WithTrailingStory(args: React.ComponentProps<typeof Input>) {
       onChange={(e) => setValue(e.target.value)}
       onClear={() => setValue('')}
       trailing={
-        <button type="button" className="block cursor-pointer">
+        <span>
           <BlankIcon />
-        </button>
+        </span>
       }
     />
   );
@@ -112,9 +112,9 @@ export const WithTrailing: Story = {
   onClear={() => setValue('')}
   placeholder="내용을 입력하세요"
   trailing={
-    <button type="button" className="block cursor-pointer">
+    <span>
       <BlankIcon />
-    </button>
+    </span>
   }
 />`,
       },
