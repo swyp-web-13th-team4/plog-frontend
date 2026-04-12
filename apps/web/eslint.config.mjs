@@ -14,6 +14,7 @@ const FSD_LAYERS = [
 ];
 
 const config = [
+  ...baseConfig,
   ...defineConfig([
     globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
     ...nextVitals,
@@ -58,7 +59,6 @@ const config = [
       },
     },
   ]),
-  ...baseConfig,
 ];
 
 export default config;
