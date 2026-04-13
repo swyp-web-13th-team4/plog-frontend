@@ -94,7 +94,7 @@ const WITH_GRAPHIC_AND_BODY_CODE = `\
     </Dialog.Header>
     <Dialog.Body>
       <Field>
-        <Input placeholder="입력해 주세요" />
+        <Input placeholder="내용을 입력하세요" />
       </Field>
     </Dialog.Body>
     <Dialog.Actions layout="vertical">
