@@ -24,7 +24,15 @@ const meta: Meta<typeof Chip> = {
         defaultValue: { summary: 'false' },
       },
     },
-
+    size: {
+      description: 'Chip 크기입니다.',
+      control: 'select',
+      options: ['sm', 'lg'],
+      table: {
+        type: { summary: "'sm' | 'lg'" },
+        defaultValue: { summary: 'sm' },
+      },
+    },
     children: {
       description: 'Chip 라벨입니다.',
       control: 'text',
@@ -35,6 +43,7 @@ const meta: Meta<typeof Chip> = {
   },
   args: {
     children: 'Chip',
+    size: 'sm',
     selected: false,
     disabled: false,
     iconLeft: <BlankIcon />,
@@ -46,6 +55,19 @@ export default meta;
 type Story = StoryObj<typeof Chip>;
 
 export const Default: Story = {};
+
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Chip {...args} size="sm">
+        small
+      </Chip>
+      <Chip {...args} size="lg">
+        large
+      </Chip>
+    </div>
+  ),
+};
 
 export const States: Story = {
   render: (args) => (
@@ -64,7 +86,7 @@ export const States: Story = {
   ),
 };
 
-export const SingleSideIcons: Story = {
+export const WithIcons: Story = {
   render: (args) => (
     <div className="flex flex-wrap items-center gap-3">
       <Chip {...args} iconRight={undefined}>
