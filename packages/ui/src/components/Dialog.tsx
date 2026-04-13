@@ -127,6 +127,7 @@ const Dialog = Object.assign(DialogRoot, {
   Body,
   Actions,
   Close: BaseDialog.Close,
+  createHandle: BaseDialog.createHandle,
 });
 
 export default Dialog;
