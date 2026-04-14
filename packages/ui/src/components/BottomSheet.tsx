@@ -25,9 +25,29 @@ function BottomSheetRoot(
 
 function Handle() {
   return (
-    <div className="h-1.5 w-15 cursor-grab rounded-full bg-semantic-object-subtler" />
+    <div className="h-1.5 w-15 shrink-0 cursor-grab rounded-full bg-semantic-object-subtler" />
   );
 }
+
+const popupBaseStyles =
+  'relative flex max-h-[calc(100dvh-2rem)] min-h-0 w-full flex-col items-center gap-3 overflow-visible rounded-t-2xl bg-semantic-system-white px-5 pt-5';
+
+const popupBleedStyles =
+  'after:pointer-events-none after:absolute after:inset-x-0 after:top-[calc(100%-1px)] after:h-12 after:bg-semantic-system-white after:content-[""]';
+
+const popupPaddingStyles = [
+  '[padding-bottom:max(calc(20px+env(safe-area-inset-bottom,0px)),var(--drawer-snap-point-offset,_0px))]',
+  'data-[starting-style]:[padding-bottom:0] data-[ending-style]:[padding-bottom:0]',
+].join(' ');
+
+const popupAnimationStyles = [
+  '[transform:translateY(calc(var(--drawer-snap-point-offset,_0px)+var(--drawer-swipe-movement-y,_0px)))]',
+  'transition-transform duration-400 ease-out',
+  'data-[starting-style]:[transform:translateY(calc(100dvh+2px))]',
+  'data-[ending-style]:[transform:translateY(calc(100dvh+2px))]',
+  'data-[ending-style]:!duration-[calc(var(--drawer-swipe-strength,_1)*400ms)]',
+  'data-[swiping]:cursor-grabbing data-[swiping]:duration-0 data-[swiping]:select-none',
+].join(' ');
 
 function Content({
   children,
@@ -43,9 +63,10 @@ function Content({
           initialFocus={initialFocus}
           finalFocus={finalFocus}
           className={cn(
-            '-mb-[48px] flex max-h-[calc(80dvh+48px)] w-full flex-col items-center gap-3 rounded-t-2xl bg-semantic-system-white px-5 pt-5 pb-[calc(20px+env(safe-area-inset-bottom,0px)+48px)]',
-            '[transform:translateY(var(--drawer-swipe-movement-y,_0px))] transition-transform duration-300 ease-out data-[ending-style]:[transform:translateY(calc(100%-48px+2px))] data-[ending-style]:duration-[calc(var(--drawer-swipe-strength,_1)*200ms)] data-[starting-style]:[transform:translateY(calc(100%-48px+2px))]',
-            'data-[swiping]:cursor-grabbing data-[swiping]:duration-0 data-[swiping]:select-none',
+            popupBaseStyles,
+            popupBleedStyles,
+            popupPaddingStyles,
+            popupAnimationStyles,
             className,
           )}
         >
@@ -101,5 +122,7 @@ const BottomSheet = Object.assign(BottomSheetRoot, {
   Body,
   createHandle: BaseDrawer.createHandle,
 });
+
+export type BottomSheetSnapPoint = number | string;
 
 export default BottomSheet;

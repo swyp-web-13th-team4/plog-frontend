@@ -147,6 +147,31 @@ return (
   </div>
 );`;
 
+const SNAP_POINTS_CODE = `\
+const snapPoints = [0.5, 1];
+
+return (
+  <BottomSheet snapPoints={snapPoints}>
+    <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
+    <BottomSheet.Content>
+      <BottomSheet.Handle />
+      <BottomSheet.Header>
+        <BottomSheet.Title>스냅 포인트</BottomSheet.Title>
+      </BottomSheet.Header>
+      <BottomSheet.Body className="min-h-0 overflow-y-auto overscroll-contain">
+        {Array.from({ length: 30 }, (_, i) => (
+          <p
+            key={i}
+            className="body-md border-b border-semantic-object-subtler px-1 py-4 text-semantic-object-normal last:border-0"
+          >
+            항목 {i + 1}
+          </p>
+        ))}
+      </BottomSheet.Body>
+    </BottomSheet.Content>
+  </BottomSheet>
+);`;
+
 const detachedHandle = BottomSheet.createHandle();
 
 export const Default: Story = {
@@ -283,6 +308,44 @@ export const FocusControl: Story = {
     },
   },
   render: () => <FocusControlStory />,
+};
+
+function SnapPointsStory() {
+  const snapPoints = [0.5, 1];
+  return (
+    <BottomSheet snapPoints={snapPoints}>
+      <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
+      <BottomSheet.Content>
+        <BottomSheet.Handle />
+        <BottomSheet.Header>
+          <BottomSheet.Title>스냅 포인트</BottomSheet.Title>
+        </BottomSheet.Header>
+        <BottomSheet.Body className="min-h-0 overflow-y-auto overscroll-contain">
+          {Array.from({ length: 30 }, (_, i) => (
+            <p
+              key={i}
+              className="body-md border-b border-semantic-object-subtler px-1 py-4 text-semantic-object-normal last:border-0"
+            >
+              항목 {i + 1}
+            </p>
+          ))}
+        </BottomSheet.Body>
+      </BottomSheet.Content>
+    </BottomSheet>
+  );
+}
+
+export const SnapPoints: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`snapPoints`로 시트의 고정 높이를 지정합니다. 값은 뷰포트 높이 비율(`0`–`1`), 픽셀 단위 숫자(`1`보다 큰 숫자), 또는 `px` 및 `rem` 문자열로 설정할 수 있습니다. `snapPoint`와 `onSnapPointChange`로 현재 스냅 위치를 제어할 수 있습니다.',
+      },
+      source: { code: SNAP_POINTS_CODE },
+    },
+  },
+  render: () => <SnapPointsStory />,
 };
 
 export const DetachedTrigger: Story = {
