@@ -23,7 +23,7 @@ const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
       ref={ref}
       className={(state) =>
         cn(
-          'inline-flex size-5 shrink-0 items-center justify-center rounded-sm border transition-colors outline-none',
+          'inline-flex size-5 shrink-0 items-center justify-center rounded-sm border transition-colors',
           'focus-visible:outline-2 focus-visible:outline-offset-2',
           getCheckboxRootClass(state),
           className,
@@ -33,7 +33,6 @@ const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
       {...props}
     >
       <BasicCheckbox.Indicator
-        keepMounted
         className={(state) =>
           cn(
             'pointer-events-none flex size-3 items-center justify-center transition-all duration-150',
