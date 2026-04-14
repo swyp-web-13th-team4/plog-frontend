@@ -35,18 +35,25 @@ const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
       <BasicCheckbox.Indicator
         className={(state) =>
           cn(
-            'pointer-events-none flex size-3 items-center justify-center transition-all duration-150',
+            'pointer-events-none flex size-3 items-center justify-center transition-all duration-150 data-[unchecked]:hidden',
+            'data-[indeterminate]:[&_[data-slot=check-icon]]:hidden',
+            'data-[indeterminate]:[&_[data-slot=minus-icon]]:block',
             state.checked || state.indeterminate
               ? 'scale-100 opacity-100'
               : 'scale-75 opacity-0',
           )
         }
       >
-        {indeterminate ? (
-          <MinusIcon className="size-3" aria-hidden="true" />
-        ) : (
-          <CheckIcon className="size-3" aria-hidden="true" />
-        )}
+        <CheckIcon
+          data-slot="check-icon"
+          className="size-3"
+          aria-hidden="true"
+        />
+        <MinusIcon
+          data-slot="minus-icon"
+          className="hidden size-3"
+          aria-hidden="true"
+        />
       </BasicCheckbox.Indicator>
     </BasicCheckbox.Root>
   );
