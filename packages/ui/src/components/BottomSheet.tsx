@@ -92,7 +92,7 @@ function CloseButton() {
   return (
     <BaseDrawer.Close
       render={
-        <button type="button" className="cursor-pointer">
+        <button type="button" aria-label="닫기" className="cursor-pointer">
           <CloseIcon />
         </button>
       }
