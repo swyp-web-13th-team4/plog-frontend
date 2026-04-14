@@ -4,6 +4,6 @@ export type BottomSheetContextValue = {
   withHandle: boolean;
 };
 
-export const BottomSheetContext = createContext<BottomSheetContextValue>({
-  withHandle: true,
-});
+export const BottomSheetContext = createContext<
+  BottomSheetContextValue | undefined
+>(undefined);
