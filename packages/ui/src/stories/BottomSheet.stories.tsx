@@ -43,6 +43,7 @@ const DEFAULT_CODE = `\
 <BottomSheet>
   <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
   <BottomSheet.Content>
+    <BottomSheet.Handle />
     <BottomSheet.Header>
       <BottomSheet.Title>타이틀</BottomSheet.Title>
     </BottomSheet.Header>
@@ -56,7 +57,7 @@ const DEFAULT_CODE = `\
 </BottomSheet>`;
 
 const WITHOUT_HANDLE_CODE = `\
-<BottomSheet withHandle={false}>
+<BottomSheet>
   <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
   <BottomSheet.Content>
     <BottomSheet.Header>
@@ -80,6 +81,7 @@ return (
     <Button onClick={() => setOpen(true)}>하단 시트 열기</Button>
     <BottomSheet open={open} onOpenChange={setOpen}>
       <BottomSheet.Content>
+        <BottomSheet.Handle />
         <BottomSheet.Header>
           <BottomSheet.Title>열림 상태 제어</BottomSheet.Title>
         </BottomSheet.Header>
@@ -103,6 +105,7 @@ return (
 
     <BottomSheet handle={handle}>
       <BottomSheet.Content>
+        <BottomSheet.Handle />
         <BottomSheet.Header>
           <BottomSheet.Title>분리된 트리거</BottomSheet.Title>
         </BottomSheet.Header>
@@ -126,6 +129,7 @@ return (
     <BottomSheet>
       <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
       <BottomSheet.Content initialFocus={inputRef} finalFocus={returnButtonRef}>
+        <BottomSheet.Handle />
         <BottomSheet.Header>
           <BottomSheet.Title>포커스 제어</BottomSheet.Title>
         </BottomSheet.Header>
@@ -155,6 +159,7 @@ export const Default: Story = {
     <BottomSheet>
       <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
       <BottomSheet.Content>
+        <BottomSheet.Handle />
         <BottomSheet.Header>
           <BottomSheet.Title>타이틀</BottomSheet.Title>
         </BottomSheet.Header>
@@ -174,13 +179,13 @@ export const WithoutHandle: Story = {
     docs: {
       description: {
         story:
-          '`withHandle={false}`를 설정하면 핸들 바를 숨기고 스와이프로 닫기를 비활성화합니다.',
+          '`BottomSheet.Handle`을 포함하지 않으면 핸들 바가 표시되지 않습니다. 닫기 버튼을 함께 제공하는 것을 권장합니다.',
       },
       source: { code: WITHOUT_HANDLE_CODE },
     },
   },
   render: () => (
-    <BottomSheet withHandle={false}>
+    <BottomSheet>
       <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
       <BottomSheet.Content>
         <BottomSheet.Header>
@@ -205,6 +210,7 @@ function ControlledStory() {
       <Button onClick={() => setOpen(true)}>하단 시트 열기</Button>
       <BottomSheet open={open} onOpenChange={setOpen}>
         <BottomSheet.Content>
+          <BottomSheet.Handle />
           <BottomSheet.Header>
             <BottomSheet.Title>열림 상태 제어</BottomSheet.Title>
           </BottomSheet.Header>
@@ -244,6 +250,7 @@ function FocusControlStory() {
           initialFocus={inputRef}
           finalFocus={returnButtonRef}
         >
+          <BottomSheet.Handle />
           <BottomSheet.Header>
             <BottomSheet.Title>포커스 제어</BottomSheet.Title>
           </BottomSheet.Header>
@@ -296,6 +303,7 @@ export const DetachedTrigger: Story = {
       />
       <BottomSheet handle={detachedHandle}>
         <BottomSheet.Content>
+          <BottomSheet.Handle />
           <BottomSheet.Header>
             <BottomSheet.Title>분리된 트리거</BottomSheet.Title>
           </BottomSheet.Header>
