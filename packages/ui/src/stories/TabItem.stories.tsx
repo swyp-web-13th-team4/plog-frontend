@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useArgs } from 'storybook/internal/preview-api';
 
 import BlankIcon from '@/assets/blank.svg?react';
 import TabItem from '@/components/Tab/TabItem';
@@ -44,20 +45,30 @@ const meta: Meta<typeof TabItem> = {
     selected: false,
     showIcon: true,
   },
+
+  render: function Render(args) {
+    const [{ selected }, updateArgs] = useArgs();
+
+    return (
+      <TabItem
+        {...args}
+        selected={selected}
+        icon={<BlankIcon />}
+        onClick={() => updateArgs({ selected: !selected })}
+      />
+    );
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof TabItem>;
 
-export const Default: Story = {
-  render: (args) => <TabItem {...args} icon={<BlankIcon />} />,
-};
+export const Default: Story = {};
 
 export const Selected: Story = {
   args: {
     selected: true,
   },
-  render: (args) => <TabItem {...args} icon={<BlankIcon />} />,
 };
 
 export const WithoutIcon: Story = {
