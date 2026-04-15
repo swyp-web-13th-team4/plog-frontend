@@ -13,7 +13,7 @@ const Switch = forwardRef<HTMLElement, SwitchProps>(function Switch(
     <BaseSwitch.Root
       ref={ref}
       className={cn(
-        'inline-flex h-5 w-10 cursor-pointer items-center rounded-full bg-semantic-object-subtle p-0.75 transition-colors outline-none',
+        'inline-flex h-5 w-10 cursor-pointer items-center rounded-full bg-semantic-object-subtle p-0.75 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal',
         'data-checked:bg-semantic-accent-normal',
         'data-disabled:cursor-not-allowed data-disabled:bg-semantic-object-subtler',
         className,
