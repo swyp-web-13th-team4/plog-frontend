@@ -129,33 +129,16 @@ export const Pressed: Story = {
       },
     },
   },
-  args: {
-    pressed: true,
-  },
-  render: function Render(args) {
-    const [{ pressed }, updateArgs] = useArgs();
-    const toggle = (next: boolean) => updateArgs({ pressed: next });
-    return (
-      <div className="flex items-center gap-3">
-        <Chip
-          {...args}
-          variant="solid"
-          pressed={pressed}
-          onPressedChange={toggle}
-        >
-          solid
-        </Chip>
-        <Chip
-          {...args}
-          variant="soft"
-          pressed={pressed}
-          onPressedChange={toggle}
-        >
-          soft
-        </Chip>
-      </div>
-    );
-  },
+  render: (args) => (
+    <div className="flex items-center gap-3">
+      <Chip {...args} variant="solid" pressed>
+        solid
+      </Chip>
+      <Chip {...args} variant="soft" pressed>
+        soft
+      </Chip>
+    </div>
+  ),
 };
 
 export const Disabled: Story = {
