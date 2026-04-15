@@ -9,7 +9,7 @@ import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const chipVariants = cva(
-  'inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1',
+  'inline-flex cursor-pointer items-center min-w-13 justify-center whitespace-nowrap rounded-full transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1',
   {
     variants: {
       selected: {
