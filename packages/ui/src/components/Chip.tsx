@@ -4,7 +4,7 @@ import {
   type ReactNode,
 } from 'react';
 
-import { Button as BaseButton } from '@base-ui/react/button';
+import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 
@@ -12,7 +12,7 @@ const chipVariants = cva(
   'inline-flex cursor-pointer items-center min-w-13 justify-center whitespace-nowrap rounded-full transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1',
   {
     variants: {
-      selected: {
+      pressed: {
         false:
           'bg-semantic-object-subtler text-semantic-object-bold enabled:hover:bg-semantic-object-subtle enabled:active:bg-semantic-object-subtle disabled:bg-semantic-object-subtler disabled:text-semantic-object-subtle focus-visible:outline-semantic-stroke-subtle',
         true: 'bg-semantic-accent-normal text-semantic-object-inverse enabled:hover:bg-semantic-accent-bold enabled:active:bg-semantic-accent-bolder disabled:bg-semantic-object-subtler disabled:text-semantic-object-subtle focus-visible:outline-semantic-accent-subtle',
@@ -23,45 +23,40 @@ const chipVariants = cva(
       },
     },
     defaultVariants: {
-      selected: false,
       size: 'sm',
     },
   },
 );
 
-type ChipProps = ComponentPropsWithoutRef<typeof BaseButton> &
-  VariantProps<typeof chipVariants> & {
-    iconLeft?: ReactNode;
-    iconRight?: ReactNode;
-  };
+type ChipSize = VariantProps<typeof chipVariants>['size'];
+
+type ChipProps = Omit<
+  ComponentPropsWithoutRef<typeof BaseToggle>,
+  'className'
+> & {
+  size?: ChipSize;
+  className?: string;
+  iconLeft?: ReactNode;
+  iconRight?: ReactNode;
+};
 
 const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
-  {
-    className,
-    children,
-    iconLeft,
-    iconRight,
-    selected,
-    size,
-    type = 'button',
-    ...props
-  },
+  { className, children, iconLeft, iconRight, size, type = 'button', ...props },
   ref,
 ) {
-  const isSelected = selected === true;
-
   return (
-    <BaseButton
+    <BaseToggle
       ref={ref}
       type={type}
-      aria-pressed={isSelected}
-      className={cn(chipVariants({ selected: isSelected, size }), className)}
+      className={(state) =>
+        cn(chipVariants({ pressed: state.pressed, size }), className)
+      }
       {...props}
     >
       {iconLeft}
       {children}
       {iconRight}
-    </BaseButton>
+    </BaseToggle>
   );
 });
 

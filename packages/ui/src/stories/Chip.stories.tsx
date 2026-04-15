@@ -11,15 +11,25 @@ const meta: Meta<typeof Chip> = {
     docs: {
       description: {
         component:
-          'Button 기반의 Chip 컴포넌트입니다. 기본 상태는 `enabled`, `hover`는 CSS로 처리하고 `selected`는 prop으로 제어합니다.',
+          'Toggle 기반의 Chip 컴포넌트입니다. `pressed`, `defaultPressed`, `onPressedChange`를 그대로 사용할 수 있어 선택 상태를 내장 방식으로 관리합니다.',
       },
     },
   },
   argTypes: {
-    selected: {
-      description: '선택 상태입니다. `true`면 selected 스타일이 적용됩니다.',
+    pressed: {
+      description: '선택된 상태를 제어하는 controlled prop입니다.',
       control: 'boolean',
       table: {
+        disable: true,
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    defaultPressed: {
+      description: '초기 선택 상태를 설정하는 uncontrolled prop입니다.',
+      control: 'boolean',
+      table: {
+        disable: true,
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
@@ -37,6 +47,9 @@ const meta: Meta<typeof Chip> = {
       description: 'Chip 라벨입니다.',
       control: 'text',
     },
+    className: { table: { disable: true } },
+    onPressedChange: { table: { disable: true } },
+    value: { table: { disable: true } },
     iconLeft: { table: { disable: true } },
     iconRight: { table: { disable: true } },
     type: { table: { disable: true } },
@@ -44,7 +57,6 @@ const meta: Meta<typeof Chip> = {
   args: {
     children: 'Chip',
     size: 'sm',
-    selected: false,
     disabled: false,
     iconLeft: <BlankIcon />,
     iconRight: <BlankIcon />,
@@ -76,8 +88,8 @@ export const States: Story = {
       <Chip {...args} className="bg-semantic-object-subtle">
         hover
       </Chip>
-      <Chip {...args} selected>
-        selected
+      <Chip {...args} pressed>
+        pressed
       </Chip>
       <Chip {...args} disabled>
         disabled
