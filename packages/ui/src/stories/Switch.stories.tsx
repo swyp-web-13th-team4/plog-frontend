@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useArgs } from 'storybook/internal/preview-api';
 
 import Switch from '@/components/Switch';
 
@@ -39,6 +40,22 @@ const meta: Meta<typeof Switch> = {
   args: {
     checked: false,
     disabled: false,
+  },
+
+  render: function Render(args) {
+    const [{ checked }, updateArgs] = useArgs();
+
+    const handleToggleSwitch = () => {
+      updateArgs({ checked: !checked });
+    };
+
+    return (
+      <Switch
+        {...args}
+        checked={checked}
+        onCheckedChange={handleToggleSwitch}
+      />
+    );
   },
 };
 

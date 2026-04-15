@@ -1,9 +1,9 @@
-import { type ComponentProps, forwardRef } from 'react';
+import { type ComponentPropsWithoutRef, forwardRef } from 'react';
 
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import { cn } from '@plog/utils';
 
-type SwitchProps = ComponentProps<typeof BaseSwitch.Root>;
+type SwitchProps = ComponentPropsWithoutRef<typeof BaseSwitch.Root>;
 
 const Switch = forwardRef<HTMLElement, SwitchProps>(function Switch(
   { className, ...props },
