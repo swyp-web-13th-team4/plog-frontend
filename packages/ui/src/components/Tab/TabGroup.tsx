@@ -1,6 +1,6 @@
 import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
 
-import { Tabs } from '@base-ui/react/tabs';
+import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { cn } from '@plog/utils';
 
 import TabItem, {
@@ -22,7 +22,7 @@ type TabGroupItem = {
 };
 
 type TabGroupProps = Omit<
-  ComponentPropsWithoutRef<typeof Tabs.Root>,
+  ComponentPropsWithoutRef<typeof BaseTabs.Root>,
   'children' | 'defaultValue' | 'onValueChange' | 'value'
 > & {
   items: TabGroupItem[];
@@ -59,14 +59,14 @@ function TabGroup({
       : undefined;
 
   return (
-    <Tabs.Root
+    <BaseTabs.Root
       value={value}
       defaultValue={resolvedDefaultValue}
       onValueChange={(nextValue) => onValueChange?.(String(nextValue))}
       className={cn('w-full', className)}
       {...props}
     >
-      <Tabs.List
+      <BaseTabs.List
         className={cn(
           'flex w-full items-stretch overflow-x-auto overflow-y-hidden',
           '[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
@@ -74,7 +74,7 @@ function TabGroup({
         )}
       >
         {items.map((item) => (
-          <Tabs.Tab
+          <BaseTabs.Tab
             key={item.value}
             value={item.value}
             disabled={item.disabled}
@@ -96,23 +96,23 @@ function TabGroup({
             style={tabWidth ? { width: tabWidth } : undefined}
           />
         ))}
-      </Tabs.List>
+      </BaseTabs.List>
 
       {hasPanels
         ? items.map((item) =>
             item.panel !== undefined ? (
-              <Tabs.Panel
+              <BaseTabs.Panel
                 key={item.value}
                 value={item.value}
                 keepMounted={item.keepMounted ?? keepMounted}
                 className={panelClassName}
               >
                 {item.panel}
-              </Tabs.Panel>
+              </BaseTabs.Panel>
             ) : null,
           )
         : null}
-    </Tabs.Root>
+    </BaseTabs.Root>
   );
 }
 
