@@ -109,6 +109,9 @@ const semantic = {
     white: '#FFFFFF',
     black: '#000000',
   },
+  tab: {
+    disabled: '#D6D6D6',
+  },
 } as const;
 
 export { semantic };

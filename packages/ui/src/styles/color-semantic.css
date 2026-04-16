@@ -103,4 +103,7 @@
   /* system */
   --color-semantic-system-white: var(--color-primitive-base-0);
   --color-semantic-system-black: var(--color-primitive-base-1000);
+
+  /* tab */
+  --color-semantic-tab-disabled: var(--color-primitive-gray-80);
 }
