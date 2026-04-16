@@ -22,7 +22,7 @@ const meta: Meta<typeof BottomNavigation> = {
     docs: {
       description: {
         component:
-          '앱 최상단 메뉴 간 이동을 담당하는 하단 내비게이션 바입니다. `BottomNavigation.Item`으로 탭을 구성할 수 있습니다.',
+          '앱 최상위 메뉴 간 이동을 담당하는 하단 내비게이션 바입니다. `BottomNavigation.Item`으로 탭을 구성할 수 있습니다.',
       },
       page: () => (
         <>
