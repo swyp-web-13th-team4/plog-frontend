@@ -30,8 +30,7 @@ function Item({ icon, label, isActive, ...props }: BottomNavigationItemProps) {
           : '[&_svg]:fill-semantic-tab-disabled',
       )}
       type="button"
-      role="tab"
-      aria-selected={isActive}
+      aria-current={isActive ? 'page' : undefined}
     >
       {icon}
       <span
@@ -53,7 +52,6 @@ function BottomNavigationRoot({ children, ...props }: BottomNavigationProps) {
     <nav
       {...props}
       className="flex w-full justify-between px-8 py-3 shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.04)]"
-      role="tablist"
     >
       {children}
     </nav>
