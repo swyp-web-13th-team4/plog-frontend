@@ -1,19 +1,22 @@
-import { cn } from '@plog/utils';
+type SpinnerProps = {
+  color?: 'white' | 'gray';
+  size?: 'small' | 'large';
+};
 
-interface SpinnerProps {
-  className?: string;
-}
+export default function Spinner({
+  color = 'gray',
+  size = 'small',
+}: SpinnerProps) {
+  const maskSize = size === 'small' ? 2.67 : 4;
+  const sizeClass = size === 'small' ? 'size-4' : 'size-8';
 
-export default function Spinner({ className }: SpinnerProps) {
   return (
     <span
-      className={cn('block animate-spin rounded-full', className)}
+      className={`block animate-spin rounded-full ${sizeClass}`}
       style={{
-        background:
-          'conic-gradient(from 90deg at 50% 50%, transparent 0%, currentColor 100%)',
-        WebkitMask:
-          'radial-gradient(farthest-side, transparent calc(100% - 2.67px), white calc(100% - 2.67px))',
-        mask: 'radial-gradient(farthest-side, transparent calc(100% - 2.67px), white calc(100% - 2.67px))',
+        background: `conic-gradient(from 90deg at 50% 50%, transparent 0%, ${color === 'white' ? 'var(--color-semantic-system-white)' : 'var(--color-semantic-object-normal)'} 100%)`,
+        WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - ${maskSize}px), white calc(100% - ${maskSize}px))`,
+        mask: `radial-gradient(farthest-side, transparent calc(100% - ${maskSize}px), white calc(100% - ${maskSize}px))`,
       }}
     />
   );
