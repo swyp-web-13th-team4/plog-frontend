@@ -89,7 +89,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 ) {
   const effectiveVariant = variant ?? 'primary';
 
-  const spinnerColorClass: ComponentPropsWithoutRef<typeof Spinner>['color'] =
+  const spinnerColor: ComponentPropsWithoutRef<typeof Spinner>['color'] =
     effectiveVariant === 'primary' ? 'white' : 'gray';
 
   return (
@@ -105,7 +105,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       aria-busy={loading}
       {...props}
     >
-      {loading && <Spinner color={spinnerColorClass} />}
+      {loading && <Spinner color={spinnerColor} />}
       {iconLeft}
       {children}
       {iconRight}
