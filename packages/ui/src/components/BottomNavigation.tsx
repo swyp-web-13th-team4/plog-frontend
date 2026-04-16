@@ -3,7 +3,10 @@ import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cn } from '@plog/utils';
 
-type BottomNavigationItemProps = ComponentPropsWithoutRef<typeof BaseButton> & {
+type BottomNavigationItemProps = Omit<
+  ComponentPropsWithoutRef<typeof BaseButton>,
+  'className' | 'style'
+> & {
   icon: ReactNode;
   label: string;
   isActive?: boolean;
@@ -19,6 +22,7 @@ type BottomNavigationProps = Omit<
 function Item({ icon, label, isActive, ...props }: BottomNavigationItemProps) {
   return (
     <BaseButton
+      {...props}
       className={cn(
         'flex cursor-pointer flex-col items-center justify-center gap-1',
         isActive
@@ -28,7 +32,6 @@ function Item({ icon, label, isActive, ...props }: BottomNavigationItemProps) {
       type="button"
       role="tab"
       aria-selected={isActive}
-      {...props}
     >
       {icon}
       <span
@@ -48,9 +51,9 @@ function Item({ icon, label, isActive, ...props }: BottomNavigationItemProps) {
 function BottomNavigationRoot({ children, ...props }: BottomNavigationProps) {
   return (
     <nav
+      {...props}
       className="flex w-full justify-between px-8 py-3 shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.04)]"
       role="tablist"
-      {...props}
     >
       {children}
     </nav>
