@@ -1,4 +1,8 @@
-import { type ComponentProps, forwardRef, type ReactNode } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  forwardRef,
+  type ReactNode,
+} from 'react';
 
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cn } from '@plog/utils';
@@ -60,7 +64,7 @@ const buttonVariants = cva(
   },
 );
 
-type ButtonProps = ComponentProps<typeof BaseButton> &
+type ButtonProps = ComponentPropsWithoutRef<typeof BaseButton> &
   VariantProps<typeof buttonVariants> & {
     iconLeft?: ReactNode;
     iconRight?: ReactNode;
@@ -85,10 +89,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 ) {
   const effectiveVariant = variant ?? 'primary';
 
-  const spinnerColorClass =
-    effectiveVariant === 'primary'
-      ? 'text-semantic-object-inverse'
-      : 'text-semantic-object-subtle';
+  const spinnerColorClass: ComponentPropsWithoutRef<typeof Spinner>['color'] =
+    effectiveVariant === 'primary' ? 'white' : 'gray';
 
   return (
     <BaseButton
@@ -103,9 +105,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
       aria-busy={loading}
       {...props}
     >
-      {loading && (
-        <Spinner className={cn('size-[18px] shrink-0', spinnerColorClass)} />
-      )}
+      {loading && <Spinner color={spinnerColorClass} />}
       {iconLeft}
       {children}
       {iconRight}
