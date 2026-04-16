@@ -1,4 +1,9 @@
-type SpinnerProps = {
+import { type ComponentPropsWithoutRef } from 'react';
+
+type SpinnerProps = Omit<
+  ComponentPropsWithoutRef<'span'>,
+  'className' | 'style'
+> & {
   color?: 'white' | 'gray';
   size?: 'small' | 'large';
 };
@@ -6,6 +11,7 @@ type SpinnerProps = {
 export default function Spinner({
   color = 'gray',
   size = 'small',
+  ...props
 }: SpinnerProps) {
   const spinnerColor =
     color === 'white'
@@ -22,6 +28,7 @@ export default function Spinner({
         WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - ${maskSize}px), white calc(100% - ${maskSize}px))`,
         mask: `radial-gradient(farthest-side, transparent calc(100% - ${maskSize}px), white calc(100% - ${maskSize}px))`,
       }}
+      {...props}
     />
   );
 }
