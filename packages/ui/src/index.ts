@@ -1,3 +1,4 @@
+export { default as BottomNavigation } from './components/BottomNavigation';
 export { default as BottomSheet } from './components/BottomSheet';
 export { default as Button } from './components/Button';
 export { default as Chip } from './components/Chip';
