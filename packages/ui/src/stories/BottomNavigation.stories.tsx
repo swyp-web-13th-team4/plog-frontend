@@ -56,7 +56,7 @@ function DefaultStory() {
           key={id}
           icon={icon}
           label={label}
-          isActive={active === id}
+          active={active === id}
           onClick={() => setActive(id)}
         />
       ))}
@@ -83,7 +83,7 @@ const TABS = [
       render={<Link href={href} />}
       icon={icon}
       label={label}
-      isActive={pathname === href}
+      active={pathname === href}
     />
   ))}
 </BottomNavigation>`,
