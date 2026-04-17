@@ -12,7 +12,7 @@ const meta: Meta<typeof TabItem> = {
     docs: {
       description: {
         component:
-          '탭 단일 아이템입니다. 선택 상태와 아이콘 노출 여부를 props로 제어할 수 있습니다.',
+          '`TabItem`은 `TabGroup` 내부에서 `BaseTabs.Tab`의 `render`를 통해 사용되는 시각 표현 컴포넌트입니다. 단독으로 사용할 경우 `role="tab"`, `aria-selected`, `aria-controls` 같은 ARIA 속성을 직접 관리해야 합니다.',
       },
     },
   },
@@ -23,7 +23,7 @@ const meta: Meta<typeof TabItem> = {
     },
     icon: { table: { disable: true } },
     selected: {
-      description: '선택 상태입니다.',
+      description: '선택 상태에 따른 시각 표현입니다.',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
@@ -45,7 +45,6 @@ const meta: Meta<typeof TabItem> = {
     selected: false,
     showIcon: true,
   },
-
   render: function Render(args) {
     const [{ selected }, updateArgs] = useArgs();
 
@@ -75,6 +74,5 @@ export const WithoutIcon: Story = {
   args: {
     showIcon: false,
   },
-
   render: (args) => <TabItem {...args} icon={<BlankIcon />} />,
 };

@@ -44,8 +44,6 @@ function TabGroup({
   keepMounted = false,
   ...props
 }: TabGroupProps) {
-  if (items.length === 0) return null;
-
   const fallbackValue = items.find((item) => !item.disabled)?.value ?? null;
   const resolvedDefaultValue =
     value === undefined
@@ -65,9 +63,7 @@ function TabGroup({
     <BaseTabs.Root
       value={value}
       defaultValue={resolvedDefaultValue}
-      onValueChange={(nextValue) => {
-        if (typeof nextValue === 'string') onValueChange?.(String(nextValue));
-      }}
+      onValueChange={(nextValue) => onValueChange?.(String(nextValue))}
       className={cn('w-full', className)}
       {...props}
     >
