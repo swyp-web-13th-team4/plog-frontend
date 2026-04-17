@@ -94,6 +94,7 @@ const Button = forwardRef<ComponentRef<typeof BaseButton>, ButtonProps>(
     ref,
   ) {
     const effectiveVariant = variant ?? 'primary';
+    const effectiveLoading = !disabled && !!loading;
 
     const spinnerColor: ComponentPropsWithoutRef<typeof Spinner>['color'] =
       effectiveVariant === 'primary' ? 'white' : 'gray';
@@ -102,16 +103,21 @@ const Button = forwardRef<ComponentRef<typeof BaseButton>, ButtonProps>(
       <BaseButton
         ref={ref}
         className={cn(
-          buttonVariants({ variant, size, fullWidth, loading }),
+          buttonVariants({
+            variant,
+            size,
+            fullWidth,
+            loading: effectiveLoading,
+          }),
           className,
         )}
         type={type}
         disabled={loading || disabled}
-        focusableWhenDisabled={loading}
-        aria-busy={loading}
+        focusableWhenDisabled={effectiveLoading}
+        aria-busy={effectiveLoading}
         {...props}
       >
-        {loading && <Spinner color={spinnerColor} />}
+        {effectiveLoading && <Spinner color={spinnerColor} />}
         {iconLeft}
         {children}
         {iconRight}
