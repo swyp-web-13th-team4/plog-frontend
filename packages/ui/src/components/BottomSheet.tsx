@@ -35,19 +35,19 @@ const popupBaseStyles =
 const popupBleedStyles =
   'after:pointer-events-none after:absolute after:inset-x-0 after:top-[calc(100%-1px)] after:h-12 after:bg-semantic-system-white after:content-[""]';
 
-const popupPaddingStyles = [
+const popupPaddingStyles = cn(
   '[padding-bottom:max(calc(20px+env(safe-area-inset-bottom,0px)),var(--drawer-snap-point-offset,_0px))]',
   'data-[starting-style]:[padding-bottom:0] data-[ending-style]:[padding-bottom:0]',
-].join(' ');
+);
 
-const popupAnimationStyles = [
+const popupAnimationStyles = cn(
   '[transform:translateY(calc(var(--drawer-snap-point-offset,_0px)+var(--drawer-swipe-movement-y,_0px)))]',
   'transition-transform duration-400 ease-out',
   'data-[starting-style]:[transform:translateY(calc(100dvh+2px))]',
   'data-[ending-style]:[transform:translateY(calc(100dvh+2px))]',
   'data-[ending-style]:!duration-[calc(var(--drawer-swipe-strength,_1)*400ms)]',
   'data-[swiping]:cursor-grabbing data-[swiping]:duration-0 data-[swiping]:select-none',
-].join(' ');
+);
 
 function Content({
   children,

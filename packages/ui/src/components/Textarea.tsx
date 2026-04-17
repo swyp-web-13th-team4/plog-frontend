@@ -1,22 +1,17 @@
-import React, {
-  type ComponentPropsWithoutRef,
-  forwardRef,
-  useEffect,
-  useState,
-} from 'react';
+import { type ComponentPropsWithoutRef, forwardRef, useEffect } from 'react';
 
 import { cn } from '@plog/utils';
 
 import { useFieldContext } from '@/hooks/useFieldContext';
+import { useTextInput } from '@/hooks/useTextInput';
 import { getFieldStateClass } from '@/utils/getFieldStateClass';
 
 type TextareaProps = Omit<
   ComponentPropsWithoutRef<'textarea'>,
-  'value' | 'defaultValue' | 'className'
+  'value' | 'defaultValue'
 > & {
   invalid?: boolean;
   maxLength?: number;
-  className?: string;
 } & (
     | { value?: undefined; defaultValue?: string }
     | { value: string; defaultValue?: never }
@@ -39,29 +34,29 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     },
     ref,
   ) {
+    const { insideField, onCharCountChange } = useFieldContext();
+
     const {
-      insideField,
-      invalid: ctxInvalid,
-      disabled: ctxDisabled,
-      required: ctxRequired,
-      onCharCountChange,
-    } = useFieldContext();
+      invalid,
+      effectiveDisabled,
+      effectiveRequired,
+      currentValue,
+      isFocused,
+      handleChange,
+      handleFocus,
+      handleBlur,
+    } = useTextInput<HTMLTextAreaElement>({
+      value,
+      defaultValue,
+      invalid: invalidProp,
+      disabled,
+      required,
+      onChange,
+      onFocus,
+      onBlur,
+    });
 
-    const invalid = invalidProp ?? ctxInvalid;
-    const effectiveDisabled = disabled ?? ctxDisabled;
-    const effectiveRequired = required ?? ctxRequired;
-
-    const [isFocused, setIsFocused] = useState(false);
-    const [internalValue, setInternalValue] = useState(defaultValue ?? '');
-
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? value : internalValue;
     const charCount = currentValue.length;
-
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      if (!isControlled) setInternalValue(e.target.value);
-      onChange?.(e);
-    };
 
     useEffect(() => {
       if (!insideField || maxLength === undefined) return;
@@ -83,14 +78,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           disabled={effectiveDisabled}
           required={effectiveRequired}
           maxLength={maxLength}
-          onFocus={(e) => {
-            setIsFocused(true);
-            onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setIsFocused(false);
-            onBlur?.(e);
-          }}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           className={cn(
             'body-md w-full resize-none rounded-[12px] border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
             getFieldStateClass(effectiveDisabled, invalid, isFocused),

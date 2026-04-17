@@ -36,7 +36,7 @@ function Field({
       required: !!required,
       onCharCountChange: setCharCount,
     }),
-    [error, disabled, required, setCharCount],
+    [error, disabled, required],
   );
 
   return (
@@ -72,13 +72,11 @@ function Field({
                 : 'text-semantic-object-subtle',
             )}
           >
-            <>
-              {error ? (
-                <span role="alert">{error}</span>
-              ) : description ? (
-                <BaseField.Description>{description}</BaseField.Description>
-              ) : null}
-            </>
+            {error ? (
+              <span role="alert">{error}</span>
+            ) : description ? (
+              <BaseField.Description>{description}</BaseField.Description>
+            ) : null}
 
             {charCount !== null && (
               <span>
