@@ -1,4 +1,5 @@
-import React, {
+import {
+  type ChangeEvent,
   type ComponentPropsWithoutRef,
   type ComponentRef,
   forwardRef,
@@ -61,7 +62,7 @@ const Input = forwardRef<ComponentRef<typeof BaseInput>, InputProps>(
     const showClear = isFocused && hasValue;
     const hasTrailing = showClear || !!trailing;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (!isControlled) setInternalValue(e.target.value);
       onChange?.(e);
     };

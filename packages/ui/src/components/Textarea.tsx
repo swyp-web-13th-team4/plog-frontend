@@ -1,4 +1,5 @@
-import React, {
+import {
+  type ChangeEvent,
   type ComponentPropsWithoutRef,
   forwardRef,
   useEffect,
@@ -57,7 +58,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const currentValue = isControlled ? value : internalValue;
     const charCount = currentValue.length;
 
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
       if (!isControlled) setInternalValue(e.target.value);
       onChange?.(e);
     };
