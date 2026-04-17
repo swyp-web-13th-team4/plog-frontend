@@ -34,7 +34,8 @@ export const useTextInput = <T extends HTMLInputElement | HTMLTextAreaElement>({
   const effectiveRequired = required ?? ctxRequired;
 
   const [internalValue, setInternalValue] = useState(defaultValue ?? '');
-  const [isFocused, setIsFocused] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const isFocused = focused && !effectiveDisabled;
 
   const isControlled = value !== undefined;
   const currentValue = isControlled ? value : internalValue;
@@ -45,12 +46,12 @@ export const useTextInput = <T extends HTMLInputElement | HTMLTextAreaElement>({
   };
 
   const handleFocus = (e: FocusEvent<T>) => {
-    setIsFocused(true);
+    setFocused(true);
     onFocus?.(e);
   };
 
   const handleBlur = (e: FocusEvent<T>) => {
-    setIsFocused(false);
+    setFocused(false);
     onBlur?.(e);
   };
 
