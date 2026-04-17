@@ -28,12 +28,6 @@ const tabItemVariants = cva(
   },
 );
 
-export const tabItemSelectedClassName =
-  'border-b-2 border-semantic-accent-normal text-semantic-accent-normal hover:border-semantic-accent-normal hover:text-semantic-accent-normal active:text-semantic-accent-normal';
-
-export const tabItemDisabledClassName =
-  'border-semantic-stroke-subtle text-semantic-object-subtle hover:border-semantic-stroke-subtle hover:text-semantic-object-subtle active:text-semantic-object-subtle';
-
 type TabItemProps = Omit<ComponentPropsWithoutRef<'button'>, 'children'> &
   VariantProps<typeof tabItemVariants> & {
     icon?: ReactNode;

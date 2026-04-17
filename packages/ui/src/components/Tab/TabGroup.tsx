@@ -3,10 +3,7 @@ import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { cn } from '@plog/utils';
 
-import TabItem, {
-  tabItemDisabledClassName,
-  tabItemSelectedClassName,
-} from '@/components/Tab/TabItem';
+import TabItem from '@/components/Tab/TabItem';
 
 const TAB_ITEM_MIN_WIDTH_PX = 91;
 const MAX_VISIBLE_TABS = 4;
@@ -47,6 +44,8 @@ function TabGroup({
   keepMounted = false,
   ...props
 }: TabGroupProps) {
+  if (items.length === 0) return null;
+
   const fallbackValue = items.find((item) => !item.disabled)?.value ?? null;
   const resolvedDefaultValue =
     value === undefined ? (defaultValue ?? fallbackValue) : undefined;
@@ -78,21 +77,17 @@ function TabGroup({
             key={item.value}
             value={item.value}
             disabled={item.disabled}
-            render={
+            render={(props, state) => (
               <TabItem
+                {...props}
                 label={item.label}
                 icon={item.icon}
                 showIcon={item.showIcon}
+                selected={state.active}
+                disabled={state.disabled}
               />
-            }
-            className={(state) =>
-              cn(
-                'flex-none justify-center',
-                state.active && tabItemSelectedClassName,
-                state.disabled && tabItemDisabledClassName,
-                itemClassName,
-              )
-            }
+            )}
+            className={cn('flex-none justify-center', itemClassName)}
             style={tabWidth ? { width: tabWidth } : undefined}
           />
         ))}
