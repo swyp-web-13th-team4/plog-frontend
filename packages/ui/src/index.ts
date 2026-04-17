@@ -1,6 +1,7 @@
 export { default as BottomSheet } from './components/BottomSheet';
 export { default as Button } from './components/Button';
 export { default as Checkbox } from './components/Checkbox';
+export { default as Chip } from './components/Chip';
 export { default as Dialog } from './components/Dialog';
 export { default as Field } from './components/Field';
 export { default as Input } from './components/Input';
