@@ -71,6 +71,7 @@ const meta: Meta<typeof Checkbox> = {
   },
 
   args: {
+    'aria-label': 'checkbox',
     disabled: false,
     indeterminate: false,
     checked: false,
