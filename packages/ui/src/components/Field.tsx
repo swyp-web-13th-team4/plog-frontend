@@ -72,13 +72,11 @@ function Field({
                 : 'text-semantic-object-subtle',
             )}
           >
-            <>
-              {error ? (
-                <span role="alert">{error}</span>
-              ) : description ? (
-                <BaseField.Description>{description}</BaseField.Description>
-              ) : null}
-            </>
+            {error ? (
+              <span role="alert">{error}</span>
+            ) : description ? (
+              <BaseField.Description>{description}</BaseField.Description>
+            ) : null}
 
             {charCount !== null && (
               <span>
