@@ -7,9 +7,6 @@ type CheckboxState = Pick<
 
 export function getCheckboxStateClass(state: CheckboxState) {
   const isSelected = state.checked || state.indeterminate;
-  const focusVisibleClass = isSelected
-    ? 'focus-visible:outline-semantic-accent-subtle'
-    : 'focus-visible:outline-semantic-stroke-subtle';
 
   if (state.disabled && isSelected) {
     return 'cursor-not-allowed border-semantic-object-subtle bg-semantic-object-subtle text-semantic-object-inverse';
@@ -18,6 +15,10 @@ export function getCheckboxStateClass(state: CheckboxState) {
   if (state.disabled) {
     return 'cursor-not-allowed border-semantic-stroke-subtle bg-semantic-bg-deep text-semantic-object-subtle';
   }
+
+  const focusVisibleClass = isSelected
+    ? 'focus-visible:outline-semantic-accent-subtle'
+    : 'focus-visible:outline-semantic-stroke-subtle';
 
   if (isSelected) {
     return `cursor-pointer border-semantic-accent-normal bg-semantic-accent-normal text-semantic-object-inverse ${focusVisibleClass}`;
