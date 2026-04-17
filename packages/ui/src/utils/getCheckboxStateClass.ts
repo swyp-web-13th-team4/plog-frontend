@@ -5,7 +5,7 @@ type CheckboxState = Pick<
   'checked' | 'indeterminate' | 'disabled'
 >;
 
-export function getCheckboxRootClass(state: CheckboxState) {
+export function getCheckboxStateClass(state: CheckboxState) {
   const isSelected = state.checked || state.indeterminate;
   const focusVisibleClass = isSelected
     ? 'focus-visible:outline-semantic-accent-subtle'

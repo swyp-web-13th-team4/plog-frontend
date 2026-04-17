@@ -5,7 +5,7 @@ import { cn } from '@plog/utils';
 
 import CheckIcon from '@/assets/check.svg?react';
 import MinusIcon from '@/assets/minus.svg?react';
-import { getCheckboxRootClass } from '@/utils/getCheckboxStateClass';
+import { getCheckboxStateClass } from '@/utils/getCheckboxStateClass';
 
 type CheckboxProps = Omit<
   ComponentPropsWithoutRef<typeof BasicCheckbox.Root>,
@@ -25,7 +25,7 @@ const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
         cn(
           'inline-flex size-5 shrink-0 items-center justify-center rounded-sm border transition-colors',
           'focus-visible:outline-2 focus-visible:outline-offset-2',
-          getCheckboxRootClass(state),
+          getCheckboxStateClass(state),
           typeof className === 'function' ? className(state) : className,
         )
       }
