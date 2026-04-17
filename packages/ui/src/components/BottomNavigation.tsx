@@ -9,7 +9,7 @@ type BottomNavigationItemProps = Omit<
 > & {
   icon: ReactNode;
   label: string;
-  isActive?: boolean;
+  active?: boolean;
 };
 
 type BottomNavigationProps = Omit<
@@ -19,24 +19,24 @@ type BottomNavigationProps = Omit<
   children: ReactNode;
 };
 
-function Item({ icon, label, isActive, ...props }: BottomNavigationItemProps) {
+function Item({ icon, label, active, ...props }: BottomNavigationItemProps) {
   return (
     <BaseButton
       {...props}
       className={cn(
         'flex cursor-pointer flex-col items-center justify-center gap-1',
-        isActive
+        active
           ? '[&_svg]:fill-semantic-accent-normal'
           : '[&_svg]:fill-semantic-tab-disabled',
       )}
       type="button"
-      aria-current={isActive ? 'page' : undefined}
+      aria-current={active ? 'page' : undefined}
     >
       {icon}
       <span
         className={cn(
           'caption-md',
-          isActive
+          active
             ? 'text-semantic-accent-normal'
             : 'text-semantic-object-subtle',
         )}
