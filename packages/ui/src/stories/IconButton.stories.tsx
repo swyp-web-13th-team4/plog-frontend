@@ -46,6 +46,30 @@ const meta: Meta<typeof IconButton> = {
         defaultValue: { summary: 'false' },
       },
     },
+    'aria-label': {
+      description: '버튼의 목적을 설명하는 텍스트입니다.',
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    'aria-labelledby': {
+      description:
+        '버튼을 설명하는 외부 요소의 ID입니다. `aria-label` 대신 사용할 수 있습니다.',
+      control: 'text',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
+    'aria-expanded': {
+      description:
+        '연결된 요소의 열림 상태입니다. `true`일 때 accent 색상으로 강조됩니다.',
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
     icon: { table: { disable: true } },
     className: { table: { disable: true } },
     type: { table: { disable: true } },
@@ -54,6 +78,7 @@ const meta: Meta<typeof IconButton> = {
     variant: 'outline',
     size: 'large',
     disabled: false,
+    'aria-label': '아이콘 버튼',
   },
   render: (args) => <IconButton {...args} icon={<BlankIcon />} />,
 };
@@ -114,7 +139,7 @@ export const Expanded: Story = {
     docs: {
       description: {
         story:
-          '`aria-expanded`로 연결된 요소의 열림 상태를 나타냅니다. `aria-controls`에 제어 대상 요소의 ID를 지정하면 스크린리더가 버튼과 연결된 요소를 인식할 수 있습니다.',
+          '`aria-expanded`로 연결된 요소의 열림 상태를 나타낼 수 있습니다. `aria-controls`에 제어 대상 요소의 ID를 지정하면 스크린리더가 버튼과 연결된 요소를 인식할 수 있습니다.',
       },
       source: {
         code: `const [expanded, setExpanded] = useState(false);
