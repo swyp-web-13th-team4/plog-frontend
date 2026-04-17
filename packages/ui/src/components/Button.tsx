@@ -1,5 +1,6 @@
 import {
   type ComponentPropsWithoutRef,
+  type ComponentRef,
   forwardRef,
   type ReactNode,
 } from 'react';
@@ -71,46 +72,48 @@ type ButtonProps = ComponentPropsWithoutRef<typeof BaseButton> &
     loading?: boolean;
   };
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  {
-    variant,
-    size,
-    children,
-    iconLeft,
-    iconRight,
-    loading,
-    disabled,
-    fullWidth,
-    className,
-    type = 'button',
-    ...props
+const Button = forwardRef<ComponentRef<typeof BaseButton>, ButtonProps>(
+  function Button(
+    {
+      variant,
+      size,
+      children,
+      iconLeft,
+      iconRight,
+      loading,
+      disabled,
+      fullWidth,
+      className,
+      type = 'button',
+      ...props
+    },
+    ref,
+  ) {
+    const effectiveVariant = variant ?? 'primary';
+
+    const spinnerColor: ComponentPropsWithoutRef<typeof Spinner>['color'] =
+      effectiveVariant === 'primary' ? 'white' : 'gray';
+
+    return (
+      <BaseButton
+        ref={ref}
+        className={cn(
+          buttonVariants({ variant, size, fullWidth, loading }),
+          className,
+        )}
+        type={type}
+        disabled={loading || disabled}
+        focusableWhenDisabled={loading}
+        aria-busy={loading}
+        {...props}
+      >
+        {loading && <Spinner color={spinnerColor} />}
+        {iconLeft}
+        {children}
+        {iconRight}
+      </BaseButton>
+    );
   },
-  ref,
-) {
-  const effectiveVariant = variant ?? 'primary';
-
-  const spinnerColor: ComponentPropsWithoutRef<typeof Spinner>['color'] =
-    effectiveVariant === 'primary' ? 'white' : 'gray';
-
-  return (
-    <BaseButton
-      ref={ref}
-      className={cn(
-        buttonVariants({ variant, size, fullWidth, loading }),
-        className,
-      )}
-      type={type}
-      disabled={loading || disabled}
-      focusableWhenDisabled={loading}
-      aria-busy={loading}
-      {...props}
-    >
-      {loading && <Spinner color={spinnerColor} />}
-      {iconLeft}
-      {children}
-      {iconRight}
-    </BaseButton>
-  );
-});
+);
 
 export default Button;
