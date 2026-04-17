@@ -14,7 +14,7 @@ const makeItems = (count: number): TabGroupItem[] =>
     label: `탭 ${index + 1}`,
     icon: <BlankIcon />,
     panel: (
-      <div className="body-md rounded-[12px] bg-semantic-bg-deep px-4 py-3 text-semantic-object-bold">
+      <div className="body-md rounded-xl bg-semantic-bg-deep px-4 py-3 text-semantic-object-bold">
         탭 {index + 1} 내용
       </div>
     ),
@@ -28,7 +28,7 @@ const meta: Meta<typeof TabGroup> = {
     docs: {
       description: {
         component:
-          '`items` 배열 길이만큼 탭 개수가 자동으로 결정되는 탭 그룹입니다. 아이콘, 라벨, 패널 콘텐츠를 각 탭별로 전달할 수 있고, `keepMounted`는 전체 기본값으로, 각 item의 `keepMounted`로 개별 override할 수 있습니다.',
+          '`items` 배열로 탭 목록을 구성하는 컴포넌트입니다. 아이콘, 라벨, 패널 콘텐츠를 각 탭별로 전달할 수 있습니다.',
       },
     },
   },
@@ -43,7 +43,7 @@ const meta: Meta<typeof TabGroup> = {
     panelClassName: { table: { disable: true } },
     keepMounted: {
       description:
-        '비활성 패널을 DOM에 유지할지 여부의 기본값입니다. 각 item의 `keepMounted`가 있으면 그 값이 우선합니다.',
+        '비활성 패널을 DOM에 유지합니다. 각 item의 `keepMounted`로 개별 override할 수 있습니다.',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
@@ -96,12 +96,18 @@ export const Default: Story = {
 };
 
 export const WithoutIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '아이콘 없이 라벨만 표시합니다.',
+      },
+    },
+  },
   render: (args) => (
     <ControlledTabGroupStory
       items={args.items.map((item) => ({
         ...item,
-        showIcon: false,
-        icon: null,
+        icon: undefined,
       }))}
       keepMounted={args.keepMounted}
     />
@@ -130,7 +136,7 @@ export const SelectiveKeepMounted: Story = {
     docs: {
       description: {
         story:
-          '전체 기본값은 `false`로 두고, 특정 탭만 `keepMounted: true`로 유지하는 예제입니다. 지도처럼 재마운트 비용이 큰 패널에 적합합니다.',
+          '마운트 비용이 큰 패널은 `keepMounted: true`로 DOM에 유지할 수 있습니다.',
       },
     },
   },
@@ -143,8 +149,8 @@ export const SelectiveKeepMounted: Story = {
           icon: <BlankIcon />,
           keepMounted: true,
           panel: (
-            <div className="body-md rounded-[12px] bg-semantic-bg-deep px-4 py-3 text-semantic-object-bold">
-              지도 패널은 keepMounted=true
+            <div className="body-md rounded-xl bg-semantic-bg-deep px-4 py-3 text-semantic-object-bold">
+              탭을 전환해도 마운트 상태가 유지됩니다.
             </div>
           ),
         },
@@ -153,8 +159,8 @@ export const SelectiveKeepMounted: Story = {
           label: '목록',
           icon: <BlankIcon />,
           panel: (
-            <div className="body-md rounded-[12px] bg-semantic-bg-deep px-4 py-3 text-semantic-object-bold">
-              목록 패널은 기본값 false
+            <div className="body-md rounded-xl bg-semantic-bg-deep px-4 py-3 text-semantic-object-bold">
+              탭을 전환하면 언마운트됩니다.
             </div>
           ),
         },

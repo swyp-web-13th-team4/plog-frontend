@@ -9,41 +9,43 @@ const meta: Meta<typeof TabItem> = {
   component: TabItem,
   tags: ['autodocs'],
   parameters: {
+    layout: 'centered',
     docs: {
       description: {
         component:
-          '`TabItem`은 `TabGroup` 내부에서 `BaseTabs.Tab`의 `render`를 통해 사용되는 시각 표현 컴포넌트입니다. 단독으로 사용할 경우 `role="tab"`, `aria-selected`, `aria-controls` 같은 ARIA 속성을 직접 관리해야 합니다.',
+          '탭 항목 컴포넌트입니다. `TabGroup` 내부에서 사용되며, 단독으로 사용할 경우 `role="tab"`, `aria-selected`, `aria-controls` 같은 ARIA 속성을 직접 관리해야 합니다.',
       },
     },
   },
   argTypes: {
     label: {
-      description: '탭에 표시할 텍스트입니다.',
+      description: '탭에 표시되는 레이블입니다.',
       control: 'text',
     },
-    icon: { table: { disable: true } },
     selected: {
-      description: '선택 상태에 따른 시각 표현입니다.',
+      description: '탭의 선택 여부를 나타냅니다.',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
       },
     },
-    showIcon: {
-      description: '아이콘 노출 여부입니다.',
+    disabled: {
+      description:
+        '비활성화 상태입니다. 클릭 이벤트가 차단되며 스타일이 변경됩니다.',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: 'true' },
+        defaultValue: { summary: 'false' },
       },
     },
+    icon: { table: { disable: true } },
     type: { table: { disable: true } },
   },
   args: {
     label: 'Text',
     selected: false,
-    showIcon: true,
+    disabled: false,
   },
   render: function Render(args) {
     const [{ selected }, updateArgs] = useArgs();
@@ -65,14 +67,38 @@ type Story = StoryObj<typeof TabItem>;
 export const Default: Story = {};
 
 export const Selected: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '선택 상태에서는 accent 색상의 구분선과 텍스트가 적용됩니다.',
+      },
+    },
+  },
   args: {
     selected: true,
   },
 };
 
-export const WithoutIcon: Story = {
-  args: {
-    showIcon: false,
+export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '비활성화 상태에서는 클릭 이벤트가 차단됩니다.',
+      },
+    },
   },
-  render: (args) => <TabItem {...args} icon={<BlankIcon />} />,
+  args: {
+    disabled: true,
+  },
+};
+
+export const WithoutIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '아이콘 없이 라벨만 표시합니다.',
+      },
+    },
+  },
+  render: (args) => <TabItem {...args} />,
 };
