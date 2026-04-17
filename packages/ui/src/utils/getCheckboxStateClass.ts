@@ -20,8 +20,8 @@ export function getCheckboxStateClass(state: CheckboxState) {
   }
 
   if (isSelected) {
-    return `border-semantic-accent-normal bg-semantic-accent-normal text-semantic-object-inverse ${focusVisibleClass}`;
+    return `cursor-pointer border-semantic-accent-normal bg-semantic-accent-normal text-semantic-object-inverse ${focusVisibleClass}`;
   }
 
-  return `border-semantic-stroke-assistive bg-semantic-system-white text-semantic-object-inverse hover:border-semantic-accent-normal ${focusVisibleClass}`;
+  return `cursor-pointer border-semantic-stroke-assistive bg-semantic-system-white hover:border-semantic-accent-normal ${focusVisibleClass}`;
 }

@@ -1,4 +1,8 @@
-import { type ComponentPropsWithoutRef, forwardRef } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentRef,
+  forwardRef,
+} from 'react';
 
 import { Checkbox as BasicCheckbox } from '@base-ui/react/checkbox';
 import { cn } from '@plog/utils';
@@ -11,13 +15,13 @@ type CheckboxProps = Omit<
   ComponentPropsWithoutRef<typeof BasicCheckbox.Root>,
   'children' | 'className' | 'render'
 > & {
-  className?: ComponentPropsWithoutRef<typeof BasicCheckbox.Root>['className'];
+  className?: string;
 };
 
-const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
-  { className, indeterminate, ...props },
-  ref,
-) {
+const Checkbox = forwardRef<
+  ComponentRef<typeof BasicCheckbox.Root>,
+  CheckboxProps
+>(function Checkbox({ className, indeterminate, ...props }, ref) {
   return (
     <BasicCheckbox.Root
       ref={ref}
@@ -26,24 +30,13 @@ const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
           'inline-flex size-5 shrink-0 items-center justify-center rounded-sm border transition-colors',
           'focus-visible:outline-2 focus-visible:outline-offset-2',
           getCheckboxStateClass(state),
-          typeof className === 'function' ? className(state) : className,
+          className,
         )
       }
       indeterminate={indeterminate}
       {...props}
     >
-      <BasicCheckbox.Indicator
-        className={(state) =>
-          cn(
-            'pointer-events-none flex size-3 items-center justify-center transition-all duration-150 data-[unchecked]:hidden',
-            'data-[indeterminate]:[&_[data-slot=check-icon]]:hidden',
-            'data-[indeterminate]:[&_[data-slot=minus-icon]]:block',
-            state.checked || state.indeterminate
-              ? 'scale-100 opacity-100'
-              : 'scale-75 opacity-0',
-          )
-        }
-      >
+      <BasicCheckbox.Indicator className="pointer-events-none flex size-3 items-center justify-center data-[unchecked]:hidden data-[indeterminate]:[&_[data-slot=check-icon]]:hidden data-[indeterminate]:[&_[data-slot=minus-icon]]:block">
         <CheckIcon
           data-slot="check-icon"
           className="size-3"
