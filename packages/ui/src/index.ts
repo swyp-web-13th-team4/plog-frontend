@@ -5,6 +5,7 @@ export { default as Checkbox } from './components/Checkbox';
 export { default as Chip } from './components/Chip';
 export { default as Dialog } from './components/Dialog';
 export { default as Field } from './components/Field';
+export { default as IconButton } from './components/IconButton';
 export { default as Input } from './components/Input';
 export { default as Spinner } from './components/Spinner';
 export { default as Switch } from './components/Switch';
