@@ -65,11 +65,15 @@ const buttonVariants = cva(
   },
 );
 
-type ButtonProps = ComponentPropsWithoutRef<typeof BaseButton> &
+type ButtonProps = Omit<
+  ComponentPropsWithoutRef<typeof BaseButton>,
+  'className'
+> &
   VariantProps<typeof buttonVariants> & {
     iconLeft?: ReactNode;
     iconRight?: ReactNode;
     loading?: boolean;
+    className?: string;
   };
 
 const Button = forwardRef<ComponentRef<typeof BaseButton>, ButtonProps>(

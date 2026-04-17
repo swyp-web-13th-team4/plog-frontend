@@ -12,11 +12,10 @@ import { getFieldStateClass } from '@/utils/getFieldStateClass';
 
 type TextareaProps = Omit<
   ComponentPropsWithoutRef<'textarea'>,
-  'value' | 'defaultValue' | 'className'
+  'value' | 'defaultValue'
 > & {
   invalid?: boolean;
   maxLength?: number;
-  className?: string;
 } & (
     | { value?: undefined; defaultValue?: string }
     | { value: string; defaultValue?: never }

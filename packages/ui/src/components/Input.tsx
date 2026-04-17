@@ -15,11 +15,10 @@ import { getFieldStateClass } from '@/utils/getFieldStateClass';
 
 type InputProps = Omit<
   ComponentPropsWithoutRef<'input'>,
-  'value' | 'defaultValue' | 'className'
+  'value' | 'defaultValue'
 > & {
   invalid?: boolean;
   trailing?: ReactNode;
-  className?: string;
 } & (
     | { value?: undefined; defaultValue?: string; onClear?: () => void }
     | { value: string; defaultValue?: never; onClear: () => void }

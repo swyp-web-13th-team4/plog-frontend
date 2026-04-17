@@ -7,7 +7,10 @@ import {
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import { cn } from '@plog/utils';
 
-type SwitchProps = ComponentPropsWithoutRef<typeof BaseSwitch.Root>;
+type SwitchProps = Omit<
+  ComponentPropsWithoutRef<typeof BaseSwitch.Root>,
+  'className'
+> & { className?: string };
 
 const Switch = forwardRef<ComponentRef<typeof BaseSwitch.Root>, SwitchProps>(
   function Switch({ className, ...props }, ref) {
