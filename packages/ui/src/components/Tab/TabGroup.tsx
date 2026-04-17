@@ -5,12 +5,11 @@ import { cn } from '@plog/utils';
 
 import TabItem from '@/components/Tab/TabItem';
 
-const TAB_ITEM_MIN_WIDTH_PX = 91;
+const TAB_ITEM_MIN_WIDTH_PX = 92;
 const MAX_VISIBLE_TABS = 4;
 
 type TabGroupItem = {
   value: string;
-  showIcon?: boolean;
   disabled?: boolean;
   label: ReactNode;
   icon?: ReactNode;
@@ -63,7 +62,9 @@ function TabGroup({
     <BaseTabs.Root
       value={value}
       defaultValue={resolvedDefaultValue}
-      onValueChange={(nextValue) => onValueChange?.(String(nextValue))}
+      onValueChange={(nextValue) => {
+        if (nextValue) onValueChange?.(nextValue);
+      }}
       className={cn('w-full', className)}
       {...props}
     >
@@ -84,9 +85,7 @@ function TabGroup({
                 {...props}
                 label={item.label}
                 icon={item.icon}
-                showIcon={item.showIcon}
                 selected={state.active}
-                disabled={state.disabled}
               />
             )}
             className={cn('flex-none justify-center', itemClassName)}

@@ -32,20 +32,10 @@ type TabItemProps = Omit<ComponentPropsWithoutRef<'button'>, 'children'> &
   VariantProps<typeof tabItemVariants> & {
     icon?: ReactNode;
     label: ReactNode;
-    showIcon?: boolean;
   };
 
 const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(function TabItem(
-  {
-    icon,
-    label,
-    showIcon = true,
-    selected,
-    disabled,
-    className,
-    type = 'button',
-    ...props
-  },
+  { icon, label, selected, disabled, className, type = 'button', ...props },
   ref,
 ) {
   return (
@@ -56,7 +46,7 @@ const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(function TabItem(
       className={cn(tabItemVariants({ selected, disabled }), className)}
       {...props}
     >
-      {showIcon && icon ? (
+      {icon ? (
         <span className="shrink-0 [&>svg]:block [&>svg]:size-6">{icon}</span>
       ) : null}
       <span className="truncate">{label}</span>
