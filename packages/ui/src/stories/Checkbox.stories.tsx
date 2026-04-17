@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
+import { useArgs } from 'storybook/preview-api';
 
 import Checkbox from '@/components/Checkbox';
 
@@ -27,11 +28,11 @@ const meta: Meta<typeof Checkbox> = {
     docs: {
       description: {
         component:
-          '20x20 크기의 체크박스 컴포넌트입니다. `default`, `hover`, `selected`, `indeterminate`, `disabled` 상태를 지원하며 Base UI Checkbox 프리미티브를 감싸 디자인 시스템 스타일만 고정합니다.',
+          '20x20 크기의 체크박스 컴포넌트입니다. `default`, `hover`, `selected`, `indeterminate`, `disabled` 상태를 지원합니다.',
       },
     },
     controls: {
-      exclude: ['className', 'aria-label', 'defaultChecked'],
+      exclude: ['className', 'aria-label', 'aria-labelledby', 'defaultChecked'],
     },
   },
   argTypes: {
@@ -64,32 +65,30 @@ const meta: Meta<typeof Checkbox> = {
       control: false,
       table: { disable: true },
     },
-    'aria-label': {
-      control: false,
-      table: { disable: true },
-    },
   },
-
   args: {
-    'aria-label': 'checkbox',
     disabled: false,
     indeterminate: false,
     checked: false,
+  },
+
+  render: function Render(args) {
+    const [{ checked }, updateArgs] = useArgs();
+
+    return (
+      <Checkbox
+        {...args}
+        checked={checked}
+        onCheckedChange={(nextValue) => updateArgs({ checked: nextValue })}
+      />
+    );
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
-export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: '기본 상태입니다. 흰 배경과 assistive border를 사용합니다.',
-      },
-    },
-  },
-};
+export const Default: Story = {};
 
 export const Selected: Story = {
   parameters: {
@@ -102,6 +101,7 @@ export const Selected: Story = {
   args: {
     checked: true,
   },
+  render: (args) => <Checkbox {...args} aria-label="선택된 체크박스" />,
 };
 
 export const Indeterminate: Story = {
@@ -115,6 +115,7 @@ export const Indeterminate: Story = {
   args: {
     indeterminate: true,
   },
+  render: (args) => <Checkbox {...args} aria-label="중간 상태 체크박스" />,
 };
 
 export const Disabled: Story = {
@@ -129,6 +130,7 @@ export const Disabled: Story = {
   args: {
     disabled: true,
   },
+  render: (args) => <Checkbox {...args} aria-label="비활성화 체크박스" />,
 };
 
 export const DisabledChecked: Story = {
@@ -144,6 +146,9 @@ export const DisabledChecked: Story = {
     checked: true,
     disabled: true,
   },
+  render: (args) => (
+    <Checkbox {...args} aria-label="선택된 비활성화 체크박스" />
+  ),
 };
 
 export const States: Story = {
@@ -151,32 +156,32 @@ export const States: Story = {
     docs: {
       description: {
         story:
-          '디자인 QA를 위해 주요 상태를 한 번에 비교합니다. hover는 시안 확인을 위해 정적 클래스로 시뮬레이션했습니다.',
+          '디자인 QA를 위해 주요 상태를 한 번에 비교합니다. 각 미리보기에는 구분 가능한 `aria-label`을 제공합니다.',
       },
     },
   },
   render: () => (
     <div className="flex flex-wrap gap-4">
       <StatePreview label="default">
-        <Checkbox aria-label="default" />
+        <Checkbox aria-label="default checkbox" />
       </StatePreview>
       <StatePreview label="hover">
         <Checkbox
-          aria-label="hover"
+          aria-label="hover checkbox"
           className="border-semantic-accent-normal bg-semantic-system-white"
         />
       </StatePreview>
       <StatePreview label="selected">
-        <Checkbox aria-label="selected" checked />
+        <Checkbox aria-label="selected checkbox" checked />
       </StatePreview>
       <StatePreview label="indeterminate">
-        <Checkbox aria-label="indeterminate" indeterminate />
+        <Checkbox aria-label="indeterminate checkbox" indeterminate />
       </StatePreview>
       <StatePreview label="disabled">
-        <Checkbox aria-label="disabled" disabled />
+        <Checkbox aria-label="disabled checkbox" disabled />
       </StatePreview>
       <StatePreview label="disabled checked">
-        <Checkbox aria-label="disabled checked" checked disabled />
+        <Checkbox aria-label="disabled checked checkbox" checked disabled />
       </StatePreview>
     </div>
   ),
