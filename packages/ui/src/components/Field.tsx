@@ -36,7 +36,7 @@ function Field({
       required: !!required,
       onCharCountChange: setCharCount,
     }),
-    [error, disabled, required, setCharCount],
+    [error, disabled, required],
   );
 
   return (
