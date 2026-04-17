@@ -1,17 +1,15 @@
 import {
-  type ChangeEvent,
   type ComponentPropsWithoutRef,
   type ComponentRef,
   forwardRef,
   type ReactNode,
-  useState,
 } from 'react';
 
 import { Input as BaseInput } from '@base-ui/react/input';
 import { cn } from '@plog/utils';
 
 import ClearIcon from '@/assets/clear.svg?react';
-import { useFieldContext } from '@/hooks/useFieldContext';
+import { useTextInput } from '@/hooks/useTextInput';
 import { getFieldStateClass } from '@/utils/getFieldStateClass';
 
 type InputProps = Omit<
@@ -44,42 +42,43 @@ const Input = forwardRef<ComponentRef<typeof BaseInput>, InputProps>(
     ref,
   ) {
     const {
-      invalid: ctxInvalid,
-      disabled: ctxDisabled,
-      required: ctxRequired,
-    } = useFieldContext();
+      invalid,
+      effectiveDisabled,
+      effectiveRequired,
+      currentValue,
+      isFocused,
+      handleChange,
+      handleFocus,
+      handleBlur,
+      reset,
+    } = useTextInput<HTMLInputElement>({
+      value,
+      defaultValue,
+      invalid: invalidProp,
+      disabled,
+      required,
+      onChange,
+      onFocus,
+      onBlur,
+    });
 
-    const invalid = invalidProp ?? ctxInvalid;
-    const effectiveDisabled = disabled ?? ctxDisabled;
-    const effectiveRequired = required ?? ctxRequired;
-
-    const [isFocused, setIsFocused] = useState(false);
-    const [internalValue, setInternalValue] = useState(defaultValue ?? '');
-
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? value : internalValue;
     const hasValue = currentValue.length > 0;
     const showClear = isFocused && hasValue;
     const hasTrailing = showClear || !!trailing;
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (!isControlled) setInternalValue(e.target.value);
-      onChange?.(e);
-    };
-
     const handleClear = () => {
-      if (!isControlled) setInternalValue('');
+      reset();
       onClear?.();
     };
 
-    const containerClass = cn(
-      'relative rounded-[12px] border transition-colors',
-      getFieldStateClass(effectiveDisabled, invalid, isFocused),
-      className,
-    );
-
     return (
-      <div className={containerClass}>
+      <div
+        className={cn(
+          'relative rounded-[12px] border transition-colors',
+          getFieldStateClass(effectiveDisabled, invalid, isFocused),
+          className,
+        )}
+      >
         <BaseInput
           ref={ref}
           aria-invalid={invalid}
@@ -87,14 +86,8 @@ const Input = forwardRef<ComponentRef<typeof BaseInput>, InputProps>(
           onChange={handleChange}
           disabled={effectiveDisabled}
           required={effectiveRequired}
-          onFocus={(e) => {
-            setIsFocused(true);
-            onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setIsFocused(false);
-            onBlur?.(e);
-          }}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           className={cn(
             'body-md w-full bg-transparent py-3 pl-4 text-semantic-object-boldest outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
             hasTrailing ? 'pr-12' : 'pr-4',
