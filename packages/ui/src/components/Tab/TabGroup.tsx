@@ -61,7 +61,9 @@ function TabGroup({
     <BaseTabs.Root
       value={value}
       defaultValue={resolvedDefaultValue}
-      onValueChange={(nextValue) => onValueChange?.(String(nextValue))}
+      onValueChange={(nextValue) => {
+        if (typeof nextValue === 'string') onValueChange?.(String(nextValue));
+      }}
       className={cn('w-full', className)}
       {...props}
     >
