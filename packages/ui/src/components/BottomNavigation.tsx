@@ -21,29 +21,31 @@ type BottomNavigationProps = Omit<
 
 function Item({ icon, label, active, ...props }: BottomNavigationItemProps) {
   return (
-    <BaseButton
-      {...props}
-      className={cn(
-        'flex cursor-pointer flex-col items-center justify-center gap-1',
-        active
-          ? '[&_svg]:fill-semantic-accent-normal'
-          : '[&_svg]:fill-semantic-tab-disabled',
-      )}
-      type="button"
-      aria-current={active ? 'page' : undefined}
-    >
-      {icon}
-      <span
+    <li>
+      <BaseButton
+        {...props}
         className={cn(
-          'caption-md',
+          'flex cursor-pointer flex-col items-center justify-center gap-1',
           active
-            ? 'text-semantic-accent-normal'
-            : 'text-semantic-object-subtle',
+            ? '[&_svg]:fill-semantic-accent-normal'
+            : '[&_svg]:fill-semantic-tab-disabled',
         )}
+        type="button"
+        aria-current={active ? 'page' : undefined}
       >
-        {label}
-      </span>
-    </BaseButton>
+        {icon}
+        <span
+          className={cn(
+            'caption-md',
+            active
+              ? 'text-semantic-accent-normal'
+              : 'text-semantic-object-subtle',
+          )}
+        >
+          {label}
+        </span>
+      </BaseButton>
+    </li>
   );
 }
 
@@ -51,9 +53,9 @@ function BottomNavigationRoot({ children, ...props }: BottomNavigationProps) {
   return (
     <nav
       {...props}
-      className="flex w-full justify-between px-8 py-3 shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.04)]"
+      className="w-full px-8 py-3 shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.04)]"
     >
-      {children}
+      <ul className="flex w-full justify-between">{children}</ul>
     </nav>
   );
 }
