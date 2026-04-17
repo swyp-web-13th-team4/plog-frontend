@@ -33,12 +33,15 @@ const iconButtonVariants = cva(
 
 type IconButtonProps = Omit<
   ComponentPropsWithoutRef<typeof BaseButton>,
-  'className' | 'children'
+  'className' | 'children' | 'aria-label' | 'aria-labelledby'
 > &
   VariantProps<typeof iconButtonVariants> & {
     icon: ReactNode;
     className?: string;
-  };
+  } & (
+    | { 'aria-label': string; 'aria-labelledby'?: string }
+    | { 'aria-label'?: string; 'aria-labelledby': string }
+  );
 
 const IconButton = forwardRef<ComponentRef<typeof BaseButton>, IconButtonProps>(
   function IconButton(
