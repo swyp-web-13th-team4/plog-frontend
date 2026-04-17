@@ -75,4 +75,6 @@ export const WithoutIcon: Story = {
   args: {
     showIcon: false,
   },
+
+  render: (args) => <TabItem {...args} icon={<BlankIcon />} />,
 };

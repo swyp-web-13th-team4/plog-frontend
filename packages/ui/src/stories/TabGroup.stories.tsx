@@ -3,7 +3,10 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import BlankIcon from '@/assets/blank.svg?react';
-import TabGroup, { type TabGroupItem } from '@/components/Tab/TabGroup';
+import TabGroup, {
+  type TabGroupItem,
+  type TabGroupProps,
+} from '@/components/Tab/TabGroup';
 
 const makeItems = (count: number): TabGroupItem[] =>
   Array.from({ length: count }, (_, index) => ({
@@ -57,13 +60,18 @@ const meta: Meta<typeof TabGroup> = {
 export default meta;
 type Story = StoryObj<typeof TabGroup>;
 
+type ControlledTabGroupStoryProps = Omit<
+  Partial<TabGroupProps>,
+  'value' | 'defaultValue' | 'onValueChange'
+> & {
+  items: TabGroupItem[];
+};
+
 function ControlledTabGroupStory({
   items,
   keepMounted,
-}: {
-  items: TabGroupItem[];
-  keepMounted?: boolean;
-}) {
+  ...restProps
+}: ControlledTabGroupStoryProps) {
   const [value, setValue] = useState(items[0]?.value ?? '');
 
   return (
@@ -73,6 +81,7 @@ function ControlledTabGroupStory({
       onValueChange={setValue}
       keepMounted={keepMounted}
       panelClassName="pt-4"
+      {...restProps}
     />
   );
 }
