@@ -48,7 +48,11 @@ function TabGroup({
 
   const fallbackValue = items.find((item) => !item.disabled)?.value ?? null;
   const resolvedDefaultValue =
-    value === undefined ? (defaultValue ?? fallbackValue) : undefined;
+    value === undefined
+      ? defaultValue !== undefined
+        ? defaultValue
+        : fallbackValue
+      : undefined;
   const hasPanels = items.some((item) => item.panel !== undefined);
   const tabWidth =
     items.length > 0
