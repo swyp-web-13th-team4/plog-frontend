@@ -39,8 +39,8 @@ type IconButtonProps = Omit<
     icon: ReactNode;
     className?: string;
   } & (
-    | { 'aria-label': string; 'aria-labelledby'?: string }
-    | { 'aria-label'?: string; 'aria-labelledby': string }
+    | { 'aria-label': string; 'aria-labelledby'?: never }
+    | { 'aria-label'?: never; 'aria-labelledby': string }
   );
 
 const IconButton = forwardRef<ComponentRef<typeof BaseButton>, IconButtonProps>(
