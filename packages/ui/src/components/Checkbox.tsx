@@ -11,7 +11,7 @@ type CheckboxProps = Omit<
   ComponentPropsWithoutRef<typeof BasicCheckbox.Root>,
   'children' | 'className' | 'render'
 > & {
-  className?: string;
+  className?: ComponentPropsWithoutRef<typeof BasicCheckbox.Root>['className'];
 };
 
 const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
@@ -26,7 +26,7 @@ const Checkbox = forwardRef<HTMLElement, CheckboxProps>(function Checkbox(
           'inline-flex size-5 shrink-0 items-center justify-center rounded-sm border transition-colors',
           'focus-visible:outline-2 focus-visible:outline-offset-2',
           getCheckboxRootClass(state),
-          className,
+          typeof className === 'function' ? className(state) : className,
         )
       }
       indeterminate={indeterminate}
