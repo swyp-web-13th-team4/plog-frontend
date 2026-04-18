@@ -67,7 +67,6 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
               triggerClassName,
               getSelectBoxClass({
                 active: state.open,
-                selected: !state.placeholder && !state.open,
                 disabled: state.disabled,
               }),
               state.disabled
@@ -113,13 +112,7 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
                         getDropDownItemFocusClass({
                           active: state.highlighted && state.selected,
                           selected: state.selected && !state.highlighted,
-                          disabled: !!state.disabled,
                         }),
-                        state.selected
-                          ? 'hover:bg-semantic-bg-deeper hover:text-semantic-accent-normal'
-                          : 'hover:bg-semantic-bg-deep hover:text-semantic-object-bold',
-                        state.disabled &&
-                          'cursor-not-allowed text-semantic-object-subtle',
                         optionClassName,
                       )
                     }
