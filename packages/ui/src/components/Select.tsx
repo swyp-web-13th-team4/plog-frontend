@@ -84,7 +84,6 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
                 'min-w-0 flex-1',
                 getSelectValueStateClass({
                   placeholder: state.placeholder,
-                  disabled: !!props.disabled,
                 }),
               )
             }

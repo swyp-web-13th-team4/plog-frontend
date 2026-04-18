@@ -51,12 +51,9 @@ export function getDropDownItemFocusClass({
 
 export function getSelectValueStateClass({
   placeholder,
-  disabled,
 }: {
   placeholder: boolean;
-  disabled: boolean;
 }) {
-  if (disabled) return 'text-semantic-object-subtle';
   if (placeholder) return 'text-semantic-object-normal';
   return 'text-semantic-object-bold';
 }
