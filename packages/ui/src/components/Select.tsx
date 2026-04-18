@@ -106,12 +106,13 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
                         itemClassName,
                         getDropDownItemStateClass({
                           hover: state.highlighted && !state.selected,
-                          active: state.highlighted && state.selected,
-                          selected: state.selected && !state.highlighted,
+                          selected: state.selected,
                         }),
+                        state.selected
+                          ? 'hover:bg-semantic-bg-deeper hover:text-semantic-accent-normal'
+                          : 'hover:bg-semantic-bg-deep hover:text-semantic-object-bold',
                         getDropDownItemFocusClass({
-                          active: state.highlighted && state.selected,
-                          selected: state.selected && !state.highlighted,
+                          selected: state.selected,
                         }),
                         optionClassName,
                       )

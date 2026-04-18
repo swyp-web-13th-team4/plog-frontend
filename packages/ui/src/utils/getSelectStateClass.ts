@@ -15,30 +15,19 @@ export function getSelectBoxClass({
 
 export function getDropDownItemStateClass({
   hover,
-  active,
   selected,
 }: {
   hover: boolean;
-  active: boolean;
   selected: boolean;
 }) {
+  if (selected) return 'cursor-pointer text-semantic-accent-normal';
   if (hover)
-    return 'cursor-pointer bg-semantic-bg-deep text-semantic-object-bold ';
-  if (active)
-    return 'cursor-pointer bg-semantic-bg-deeper text-semantic-accent-normal';
-  if (selected)
-    return 'cursor-pointer bg-semantic-bg-standard text-semantic-accent-normal';
+    return 'cursor-pointer bg-semantic-bg-deep text-semantic-object-bold';
   return 'cursor-pointer bg-semantic-bg-standard text-semantic-object-bold';
 }
 
-export function getDropDownItemFocusClass({
-  active,
-  selected,
-}: {
-  active: boolean;
-  selected: boolean;
-}) {
-  if (active || selected) return 'focus-visible:outline-semantic-accent-subtle';
+export function getDropDownItemFocusClass({ selected }: { selected: boolean }) {
+  if (selected) return 'focus-visible:outline-semantic-accent-subtle';
   return 'focus-visible:outline-semantic-stroke-subtle';
 }
 
