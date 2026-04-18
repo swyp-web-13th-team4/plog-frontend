@@ -9,6 +9,7 @@ import { cn } from '@plog/utils';
 
 import ArrowIcon from '@/assets/arrow.svg?react';
 import {
+  getDropDownItemFocusClass,
   getDropDownItemStateClass,
   getSelectBoxClass,
   getSelectValueStateClass,
@@ -31,16 +32,16 @@ type SelectProps = Omit<
 };
 
 const triggerClassName =
-  'label-sm inline-flex h-9 min-w-[104px] items-center gap-2 justify-between rounded-[12px] px-3 text-left transition-colors disabled:cursor-not-allowed focus-visible:outline-2';
+  'label-sm inline-flex h-9 min-w-[104px] items-center gap-2 justify-between rounded-[12px] px-3 text-left transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1';
 
 const iconClassName =
   'shrink-0 transition-transform data-[popup-open]:rotate-180 [&_svg]:size-4';
 
 const popupClassName =
-  'overflow-hidden rounded-[12px] border border-semantic-stroke-subtle bg-semantic-system-white p-1.5';
+  'overflow-hidden rounded-[12px] border border-semantic-stroke-subtle bg-semantic-system-white p-1.5 focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-semantic-stroke-subtle';
 
 const itemClassName =
-  'body-sm flex min-h-[30px] w-23 items-center justify-between rounded-[6px] px-[6px] py-1 transition-colors';
+  'body-sm flex min-h-[30px] w-23 items-center justify-between rounded-[6px] px-[6px] py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1';
 
 const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
   function Select(
@@ -106,6 +107,11 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
                           hover: state.highlighted && !state.selected,
                           active: state.highlighted && state.selected,
                           selected: state.selected && !state.highlighted,
+                        }),
+                        getDropDownItemFocusClass({
+                          active: state.highlighted && state.selected,
+                          selected: state.selected && !state.highlighted,
+                          disabled: !!state.disabled,
                         }),
                         state.selected
                           ? 'hover:bg-semantic-bg-deeper hover:text-semantic-accent-normal'
