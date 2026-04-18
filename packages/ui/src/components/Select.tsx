@@ -14,12 +14,12 @@ import {
   getSelectValueStateClass,
 } from '@/utils/getSelectStateClass';
 
-export type SelectOption = {
+type SelectOption = {
   label: string;
   value: string;
 };
 
-export type SelectProps = Omit<
+type SelectProps = Omit<
   ComponentPropsWithoutRef<typeof BaseSelect.Root>,
   'children' | 'items'
 > & {
