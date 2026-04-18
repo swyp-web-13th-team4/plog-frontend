@@ -26,6 +26,7 @@ type SelectProps = Omit<
 > & {
   options: SelectOption[];
   placeholder?: string;
+  ariaLabel?: string;
   className?: string;
   contentClassName?: string;
   optionClassName?: string;
@@ -48,6 +49,7 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
     {
       options,
       placeholder = '선택하세요',
+      ariaLabel,
       className,
       contentClassName,
       optionClassName,
@@ -59,6 +61,7 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
       <BaseSelect.Root {...props}>
         <BaseSelect.Trigger
           ref={ref}
+          aria-label={ariaLabel}
           className={(state) =>
             cn(
               triggerClassName,
