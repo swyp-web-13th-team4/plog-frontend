@@ -1,0 +1,19 @@
+@keyframes toast-pulse-a {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.02;
+  }
+}
+
+@keyframes toast-pulse-b {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.02;
+  }
+}
