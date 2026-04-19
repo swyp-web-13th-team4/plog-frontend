@@ -66,12 +66,12 @@ function ToastList() {
             }
             className={cn(
               toastVariants({ type: toast.type as ToastType }),
-              'transition-[opacity,translate] duration-200 ease-out',
+              'transition-[opacity,translate,transform] duration-200 ease-out',
               'data-[starting-style]:translate-y-2 data-[starting-style]:opacity-0',
-              'data-[ending-style]:translate-y-2 data-[ending-style]:opacity-0',
-              'data-[swiping]:[translate:var(--toast-swipe-movement-x,0px)_var(--toast-swipe-movement-y,0px)] data-[swiping]:duration-0 data-[swiping]:select-none',
-              'data-[swipe-direction=right]:translate-x-[150%] data-[swipe-direction=right]:opacity-0',
-              'data-[swipe-direction=down]:translate-y-[150%] data-[swipe-direction=down]:opacity-0',
+              'data-[ending-style]:opacity-0',
+              'data-[swiping]:duration-0 data-[swiping]:select-none',
+              'data-[ending-style]:data-[swipe-direction=right]:[transform:translateX(calc(var(--toast-swipe-movement-x,0px)+150%))]',
+              'data-[ending-style]:data-[swipe-direction=down]:[transform:translateY(calc(var(--toast-swipe-movement-y,0px)+150%))]',
               'data-[limited]:hidden',
             )}
           >
