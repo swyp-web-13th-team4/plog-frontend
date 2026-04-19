@@ -16,3 +16,4 @@ export { default as Textarea } from './components/Textarea';
 export { default as ToastProvider } from './components/ToastProvider';
 export { useToast } from './hooks/useToast';
 export * from './tokens';
+export type { ToastOptions } from './types/Toast.type';
