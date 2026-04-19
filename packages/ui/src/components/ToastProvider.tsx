@@ -72,6 +72,7 @@ function ToastList() {
               'data-[swiping]:[translate:var(--toast-swipe-movement-x,0px)_var(--toast-swipe-movement-y,0px)] data-[swiping]:duration-0 data-[swiping]:select-none',
               'data-[swipe-direction=right]:translate-x-[150%] data-[swipe-direction=right]:opacity-0',
               'data-[swipe-direction=down]:translate-y-[150%] data-[swipe-direction=down]:opacity-0',
+              'data-[limited]:hidden',
             )}
           >
             {icon && (
