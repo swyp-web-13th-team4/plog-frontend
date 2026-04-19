@@ -76,7 +76,12 @@ function ToastList() {
             )}
           >
             {icon && (
-              <span className="rounded-lg p-[6px] [&_svg]:size-4">{icon}</span>
+              <span
+                className="rounded-lg p-[6px] [&_svg]:size-4"
+                aria-hidden="true"
+              >
+                {icon}
+              </span>
             )}
             <BaseToast.Description className="label-md flex-1" />
           </BaseToast.Root>
