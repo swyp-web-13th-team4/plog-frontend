@@ -14,7 +14,7 @@ const toastVariants = cva(
     variants: {
       type: {
         default:
-          'border-semantic-stroke-assistive text-object-bold [&_span]:bg-semantic-object-subtler',
+          'border-semantic-stroke-assistive text-semantic-object-bold [&_span]:bg-semantic-object-subtler',
         success:
           'border-semantic-feedback-success-assistive text-semantic-feedback-success-bold [&_span]:bg-semantic-feedback-success-subtle',
         error:
