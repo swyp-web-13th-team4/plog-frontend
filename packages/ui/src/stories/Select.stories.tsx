@@ -25,7 +25,7 @@ const meta: Meta<typeof Select> = {
   },
   argTypes: {
     options: {
-      description: '드롭다운에 표시할 옵션 배열입니다.',
+      description: '드롭다운에 표시할 옵션 리스트입니다.',
       table: {
         type: { summary: '{ label: string; value: string }[]' },
       },
@@ -49,6 +49,16 @@ const meta: Meta<typeof Select> = {
     value: { table: { disable: true } },
     defaultValue: { table: { disable: true } },
     onValueChange: { table: { disable: true } },
+    'aria-label': {
+      description:
+        '단독으로 사용할 때 스크린리더에 전달할 레이블입니다. `aria-labelledby`와 동시에 사용할 수 없습니다.',
+      control: 'text',
+    },
+    'aria-labelledby': {
+      description:
+        '레이블 역할을 하는 요소의 id를 지정합니다. `aria-label`과 동시에 사용할 수 없습니다.',
+      control: 'text',
+    },
   },
   args: {
     options: OPTIONS,
@@ -59,13 +69,7 @@ const meta: Meta<typeof Select> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  parameters: {
-    docs: {
-      description: {},
-    },
-  },
-};
+export const Default: Story = {};
 
 export const WithValue: Story = {
   parameters: {
