@@ -51,6 +51,7 @@ const config = [
             groups: [
               ['^\\u0000'],
               ['^react'],
+              ['^next'],
               ['^@?\\w'],
               ...FSD_LAYERS.map(({ type }) => [`^@/${type}`]),
               ['^\\.'],
