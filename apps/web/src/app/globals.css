@@ -2,4 +2,15 @@
 @import 'tailwindcss';
 @import '@plog/ui/styles';
 
-@source "../../node_modules/@plog/ui/dist";
+@source '../../node_modules/@plog/ui/dist';
+
+@theme {
+  --max-width-layout: 480px;
+  --spacing-bottom-tab: 76px;
+}
+
+@layer base {
+  body {
+    @apply bg-semantic-system-white text-semantic-object-boldest;
+  }
+}
