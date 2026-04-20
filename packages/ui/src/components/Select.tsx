@@ -32,16 +32,16 @@ type SelectProps = Omit<
 };
 
 const triggerClassName =
-  'label-sm inline-flex h-9 min-w-[104px] items-center gap-2 justify-between rounded-[12px] px-3 text-left transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1';
+  'label-sm inline-flex h-9 w-26 items-center gap-2 justify-between rounded-xl px-3 text-left transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1';
 
 const iconClassName =
   'shrink-0 transition-transform data-[popup-open]:rotate-180';
 
 const popupClassName =
-  'overflow-hidden rounded-[12px] border border-semantic-stroke-subtle bg-semantic-system-white p-1.5 focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-semantic-stroke-subtle';
+  'overflow-hidden rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-1.5 focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-semantic-stroke-subtle';
 
 const itemClassName =
-  'body-sm flex min-h-[30px] w-23 items-center justify-between rounded-[6px] px-[6px] py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1';
+  'label-sm flex min-h-[30px] w-23 items-center justify-between rounded-md px-1.5 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1';
 
 const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
   function Select(
@@ -77,7 +77,7 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
             placeholder={placeholder}
             className={(state) =>
               cn(
-                'min-w-0 flex-1',
+                'min-w-0 flex-1 truncate',
                 getSelectValueStateClass({
                   placeholder: state.placeholder,
                   disabled: !!props.disabled,
