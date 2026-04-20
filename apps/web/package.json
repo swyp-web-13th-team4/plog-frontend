@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@plog/config": "workspace:*",
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/react-query-devtools": "^5",
     "@testing-library/jest-dom": "^6.9.1",
