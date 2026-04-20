@@ -31,7 +31,19 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: (id) => {
+        const externals = [
+          'react',
+          'react-dom',
+          'react/jsx-runtime',
+          '@base-ui/react',
+          '@plog/utils',
+          'class-variance-authority',
+          'tailwindcss',
+          'use-sync-external-store',
+        ];
+        return externals.some((ext) => id === ext || id.startsWith(`${ext}/`));
+      },
       output: {
         globals: {
           react: 'React',
