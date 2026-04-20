@@ -1,3 +1,4 @@
+export { default as Badge } from './components/Badge';
 export { default as BottomNavigation } from './components/BottomNavigation';
 export { default as BottomSheet } from './components/BottomSheet';
 export { default as Button } from './components/Button';
