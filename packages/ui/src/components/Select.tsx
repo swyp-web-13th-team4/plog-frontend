@@ -26,7 +26,6 @@ type SelectProps = Omit<
 > & {
   options: SelectOption[];
   placeholder?: string;
-  ariaLabel?: string;
   className?: string;
   contentClassName?: string;
   optionClassName?: string;
@@ -36,7 +35,7 @@ const triggerClassName =
   'label-sm inline-flex h-9 min-w-[104px] items-center gap-2 justify-between rounded-[12px] px-3 text-left transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1';
 
 const iconClassName =
-  'shrink-0 transition-transform data-[popup-open]:rotate-180 [&_svg]:size-4';
+  'shrink-0 transition-transform data-[popup-open]:rotate-180';
 
 const popupClassName =
   'overflow-hidden rounded-[12px] border border-semantic-stroke-subtle bg-semantic-system-white p-1.5 focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-semantic-stroke-subtle';
@@ -49,7 +48,6 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
     {
       options,
       placeholder = '선택하세요',
-      ariaLabel,
       className,
       contentClassName,
       optionClassName,
@@ -61,7 +59,6 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
       <BaseSelect.Root {...props}>
         <BaseSelect.Trigger
           ref={ref}
-          aria-label={ariaLabel}
           className={(state) =>
             cn(
               triggerClassName,
@@ -109,7 +106,7 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
                           selected: state.selected,
                         }),
                         state.selected
-                          ? 'hover:bg-semantic-bg-deeper hover:text-semantic-accent-normal'
+                          ? 'bg-semantic-bg-deeper hover:text-semantic-accent-normal'
                           : 'hover:bg-semantic-bg-deep hover:text-semantic-object-bold',
                         getDropDownItemFocusClass({
                           selected: state.selected,

@@ -15,14 +15,6 @@ const meta: Meta<typeof Select> = {
     },
   },
   argTypes: {
-    ariaLabel: {
-      description:
-        '스크린 리더에서 Select의 이름으로 읽히는 접근성 레이블입니다.',
-      control: 'text',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
     disabled: {
       description:
         '비활성화 상태입니다. 클릭 이벤트가 차단되며 스타일이 변경됩니다.',
@@ -38,7 +30,6 @@ const meta: Meta<typeof Select> = {
   },
   args: {
     placeholder: '선택하세요',
-    ariaLabel: '정렬 기준',
     options: [
       { label: 'label1', value: 'value1' },
       { label: 'label2', value: 'value2' },
