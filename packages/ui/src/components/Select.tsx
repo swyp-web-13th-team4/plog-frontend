@@ -29,7 +29,10 @@ type SelectProps = Omit<
   className?: string;
   contentClassName?: string;
   optionClassName?: string;
-};
+} & (
+    | { 'aria-label'?: string; 'aria-labelledby'?: never }
+    | { 'aria-label'?: never; 'aria-labelledby'?: string }
+  );
 
 const triggerClassName =
   'label-sm inline-flex h-9 w-26 items-center gap-2 justify-between rounded-xl px-3 text-left transition-colors disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-1';
@@ -51,6 +54,8 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
       className,
       contentClassName,
       optionClassName,
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy,
       ...props
     },
     ref,
@@ -59,6 +64,8 @@ const Select = forwardRef<ComponentRef<typeof BaseSelect.Trigger>, SelectProps>(
       <BaseSelect.Root {...props}>
         <BaseSelect.Trigger
           ref={ref}
+          aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
           className={(state) =>
             cn(
               triggerClassName,
