@@ -246,29 +246,6 @@ export const WithoutHandle: Story = {
   ),
 };
 
-function ControlledStory() {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>하단 시트 열기</Button>
-      <BottomSheet open={open} onOpenChange={setOpen}>
-        <BottomSheet.Content>
-          <BottomSheet.Handle />
-          <BottomSheet.Header>
-            <BottomSheet.Title>열림 상태 제어</BottomSheet.Title>
-          </BottomSheet.Header>
-          <BottomSheet.Body>
-            <p className="body-md mb-3 text-semantic-object-normal">
-              외부 상태로 열림을 제어하는 하단 시트입니다.
-            </p>
-            <BottomSheet.Close render={<Button fullWidth>확인</Button>} />
-          </BottomSheet.Body>
-        </BottomSheet.Content>
-      </BottomSheet>
-    </>
-  );
-}
-
 export const Controlled: Story = {
   parameters: {
     docs: {
@@ -279,41 +256,29 @@ export const Controlled: Story = {
       source: { code: CONTROLLED_CODE },
     },
   },
-  render: () => <ControlledStory />,
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>하단 시트 열기</Button>
+        <BottomSheet open={open} onOpenChange={setOpen}>
+          <BottomSheet.Content>
+            <BottomSheet.Handle />
+            <BottomSheet.Header>
+              <BottomSheet.Title>열림 상태 제어</BottomSheet.Title>
+            </BottomSheet.Header>
+            <BottomSheet.Body>
+              <p className="body-md mb-3 text-semantic-object-normal">
+                외부 상태로 열림을 제어하는 하단 시트입니다.
+              </p>
+              <BottomSheet.Close render={<Button fullWidth>확인</Button>} />
+            </BottomSheet.Body>
+          </BottomSheet.Content>
+        </BottomSheet>
+      </>
+    );
+  },
 };
-
-function FocusControlStory() {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const returnButtonRef = useRef<HTMLButtonElement>(null);
-  return (
-    <div className="flex flex-col items-start gap-3">
-      <BottomSheet>
-        <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
-        <BottomSheet.Content
-          initialFocus={inputRef}
-          finalFocus={returnButtonRef}
-        >
-          <BottomSheet.Handle />
-          <BottomSheet.Header>
-            <BottomSheet.Title>포커스 제어</BottomSheet.Title>
-          </BottomSheet.Header>
-          <BottomSheet.Body>
-            <Field className="mb-3">
-              <Input
-                ref={inputRef}
-                placeholder="초기 포커스가 여기로 이동합니다"
-              />
-            </Field>
-            <BottomSheet.Close render={<Button fullWidth>확인</Button>} />
-          </BottomSheet.Body>
-        </BottomSheet.Content>
-      </BottomSheet>
-      <Button ref={returnButtonRef} variant="secondary">
-        닫힌 후 포커스가 여기로 돌아옵니다
-      </Button>
-    </div>
-  );
-}
 
 export const FocusControl: Story = {
   parameters: {
@@ -325,33 +290,39 @@ export const FocusControl: Story = {
       source: { code: FOCUS_CONTROL_CODE },
     },
   },
-  render: () => <FocusControlStory />,
+  render: function Render() {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const returnButtonRef = useRef<HTMLButtonElement>(null);
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <BottomSheet>
+          <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
+          <BottomSheet.Content
+            initialFocus={inputRef}
+            finalFocus={returnButtonRef}
+          >
+            <BottomSheet.Handle />
+            <BottomSheet.Header>
+              <BottomSheet.Title>포커스 제어</BottomSheet.Title>
+            </BottomSheet.Header>
+            <BottomSheet.Body>
+              <Field className="mb-3">
+                <Input
+                  ref={inputRef}
+                  placeholder="초기 포커스가 여기로 이동합니다"
+                />
+              </Field>
+              <BottomSheet.Close render={<Button fullWidth>확인</Button>} />
+            </BottomSheet.Body>
+          </BottomSheet.Content>
+        </BottomSheet>
+        <Button ref={returnButtonRef} variant="secondary">
+          닫힌 후 포커스가 여기로 돌아옵니다
+        </Button>
+      </div>
+    );
+  },
 };
-
-function SnapPointsStory() {
-  const snapPoints = [0.5, 1];
-  return (
-    <BottomSheet snapPoints={snapPoints}>
-      <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
-      <BottomSheet.Content>
-        <BottomSheet.Handle />
-        <BottomSheet.Header>
-          <BottomSheet.Title>스냅 포인트</BottomSheet.Title>
-        </BottomSheet.Header>
-        <BottomSheet.Body className="min-h-0 overflow-y-auto overscroll-contain">
-          {Array.from({ length: 30 }, (_, i) => (
-            <p
-              key={i}
-              className="body-md border-b border-semantic-object-subtler px-1 py-4 text-semantic-object-normal last:border-0"
-            >
-              항목 {i + 1}
-            </p>
-          ))}
-        </BottomSheet.Body>
-      </BottomSheet.Content>
-    </BottomSheet>
-  );
-}
 
 export const WithoutBackdrop: Story = {
   name: 'Without Backdrop (Non Modal)',
@@ -393,7 +364,30 @@ export const SnapPoints: Story = {
       source: { code: SNAP_POINTS_CODE },
     },
   },
-  render: () => <SnapPointsStory />,
+  render: function Render() {
+    const snapPoints = [0.5, 1];
+    return (
+      <BottomSheet snapPoints={snapPoints}>
+        <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
+        <BottomSheet.Content>
+          <BottomSheet.Handle />
+          <BottomSheet.Header>
+            <BottomSheet.Title>스냅 포인트</BottomSheet.Title>
+          </BottomSheet.Header>
+          <BottomSheet.Body className="min-h-0 overflow-y-auto overscroll-contain">
+            {Array.from({ length: 30 }, (_, i) => (
+              <p
+                key={i}
+                className="body-md border-b border-semantic-object-subtler px-1 py-4 text-semantic-object-normal last:border-0"
+              >
+                항목 {i + 1}
+              </p>
+            ))}
+          </BottomSheet.Body>
+        </BottomSheet.Content>
+      </BottomSheet>
+    );
+  },
 };
 
 export const DetachedTrigger: Story = {

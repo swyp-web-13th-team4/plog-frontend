@@ -40,30 +40,6 @@ const meta: Meta<typeof BottomNavigation> = {
 export default meta;
 type Story = StoryObj<typeof BottomNavigation>;
 
-function DefaultStory() {
-  const TABS = [
-    { id: 'map', icon: <MapIcon />, label: '지도' },
-    { id: 'feed', icon: <FeedIcon />, label: '피드' },
-    { id: 'log', icon: <LogIcon />, label: '기록' },
-    { id: 'my', icon: <MyIcon />, label: 'MY' },
-  ] as const;
-  const [active, setActive] = useState<(typeof TABS)[number]['id']>('feed');
-
-  return (
-    <BottomNavigation>
-      {TABS.map(({ id, icon, label }) => (
-        <BottomNavigation.Item
-          key={id}
-          icon={icon}
-          label={label}
-          active={active === id}
-          onClick={() => setActive(id)}
-        />
-      ))}
-    </BottomNavigation>
-  );
-}
-
 export const Default: Story = {
   parameters: {
     docs: {
@@ -91,5 +67,26 @@ const TABS = [
       },
     },
   },
-  render: () => <DefaultStory />,
+  render: function Render() {
+    const TABS = [
+      { id: 'map', icon: <MapIcon />, label: '지도' },
+      { id: 'feed', icon: <FeedIcon />, label: '피드' },
+      { id: 'log', icon: <LogIcon />, label: '기록' },
+      { id: 'my', icon: <MyIcon />, label: 'MY' },
+    ] as const;
+    const [active, setActive] = useState<(typeof TABS)[number]['id']>('feed');
+    return (
+      <BottomNavigation>
+        {TABS.map(({ id, icon, label }) => (
+          <BottomNavigation.Item
+            key={id}
+            icon={icon}
+            label={label}
+            active={active === id}
+            onClick={() => setActive(id)}
+          />
+        ))}
+      </BottomNavigation>
+    );
+  },
 };

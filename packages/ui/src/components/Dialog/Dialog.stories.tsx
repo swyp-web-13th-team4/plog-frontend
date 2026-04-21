@@ -275,28 +275,6 @@ export const VerticalActions: Story = {
   ),
 };
 
-function ControlledStory() {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <Button onClick={() => setOpen(true)}>다이얼로그 열기</Button>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <Dialog.Content>
-          <Dialog.Header>
-            <Dialog.Title>열림 상태 제어</Dialog.Title>
-            <Dialog.Description>
-              외부 상태로 열림을 제어하는 다이얼로그입니다.
-            </Dialog.Description>
-          </Dialog.Header>
-          <Dialog.Actions>
-            <Dialog.Close render={<Button fullWidth>확인</Button>} />
-          </Dialog.Actions>
-        </Dialog.Content>
-      </Dialog>
-    </>
-  );
-}
-
 export const Controlled: Story = {
   parameters: {
     docs: {
@@ -307,42 +285,28 @@ export const Controlled: Story = {
       source: { code: CONTROLLED_CODE },
     },
   },
-  render: () => <ControlledStory />,
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>다이얼로그 열기</Button>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>열림 상태 제어</Dialog.Title>
+              <Dialog.Description>
+                외부 상태로 열림을 제어하는 다이얼로그입니다.
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Actions>
+              <Dialog.Close render={<Button fullWidth>확인</Button>} />
+            </Dialog.Actions>
+          </Dialog.Content>
+        </Dialog>
+      </>
+    );
+  },
 };
-
-function FocusControlStory() {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const returnButtonRef = useRef<HTMLButtonElement>(null);
-  return (
-    <div className="flex flex-col items-start gap-3">
-      <Dialog>
-        <Dialog.Trigger render={<Button>다이얼로그 열기</Button>} />
-        <Dialog.Content initialFocus={inputRef} finalFocus={returnButtonRef}>
-          <Dialog.Header>
-            <Dialog.Title>포커스 제어</Dialog.Title>
-            <Dialog.Description>
-              열릴 때 입력 필드로, 닫힐 때 아래 버튼으로 포커스가 이동합니다.
-            </Dialog.Description>
-          </Dialog.Header>
-          <Dialog.Body>
-            <Field>
-              <Input
-                ref={inputRef}
-                placeholder="초기 포커스가 여기로 이동합니다"
-              />
-            </Field>
-          </Dialog.Body>
-          <Dialog.Actions>
-            <Dialog.Close render={<Button fullWidth>확인</Button>} />
-          </Dialog.Actions>
-        </Dialog.Content>
-      </Dialog>
-      <Button ref={returnButtonRef} variant="secondary">
-        닫힌 후 포커스가 여기로 돌아옵니다
-      </Button>
-    </div>
-  );
-}
 
 export const FocusControl: Story = {
   parameters: {
@@ -354,7 +318,39 @@ export const FocusControl: Story = {
       source: { code: FOCUS_CONTROL_CODE },
     },
   },
-  render: () => <FocusControlStory />,
+  render: function Render() {
+    const inputRef = useRef<HTMLInputElement>(null);
+    const returnButtonRef = useRef<HTMLButtonElement>(null);
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <Dialog>
+          <Dialog.Trigger render={<Button>다이얼로그 열기</Button>} />
+          <Dialog.Content initialFocus={inputRef} finalFocus={returnButtonRef}>
+            <Dialog.Header>
+              <Dialog.Title>포커스 제어</Dialog.Title>
+              <Dialog.Description>
+                열릴 때 입력 필드로, 닫힐 때 아래 버튼으로 포커스가 이동합니다.
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Body>
+              <Field>
+                <Input
+                  ref={inputRef}
+                  placeholder="초기 포커스가 여기로 이동합니다"
+                />
+              </Field>
+            </Dialog.Body>
+            <Dialog.Actions>
+              <Dialog.Close render={<Button fullWidth>확인</Button>} />
+            </Dialog.Actions>
+          </Dialog.Content>
+        </Dialog>
+        <Button ref={returnButtonRef} variant="secondary">
+          닫힌 후 포커스가 여기로 돌아옵니다
+        </Button>
+      </div>
+    );
+  },
 };
 
 export const DetachedTrigger: Story = {
