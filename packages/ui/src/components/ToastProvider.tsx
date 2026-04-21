@@ -9,7 +9,7 @@ import SuccessIcon from '@/assets/toast-success.svg?react';
 import { type ToastData, type ToastType } from '@/types/Toast.type';
 
 const toastVariants = cva(
-  'flex w-[90dvw] min-h-14 items-center gap-2 rounded-xl border bg-semantic-system-white p-3 shadow-[0px_4px_12px_0px_rgba(0,0,0,0.08)]',
+  'flex w-[90vw] max-w-[432px] min-h-14 items-center gap-2 rounded-xl border bg-semantic-system-white p-3 shadow-[0px_4px_12px_0px_rgba(0,0,0,0.08)]',
   {
     variants: {
       type: {
