@@ -9,7 +9,7 @@ import { cn } from '@plog/utils';
 
 type SwitchProps = Omit<
   ComponentPropsWithoutRef<typeof BaseSwitch.Root>,
-  'className'
+  'className' | 'children'
 > & {
   className?: string;
   ref?: Ref<ComponentRef<typeof BaseSwitch.Root>>;
