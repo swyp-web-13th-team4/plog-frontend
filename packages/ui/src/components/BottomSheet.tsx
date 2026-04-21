@@ -15,6 +15,7 @@ type BottomSheetContentProps = BottomSheetSubComponentProps & {
     typeof BaseDrawer.Popup
   >['initialFocus'];
   finalFocus?: ComponentPropsWithoutRef<typeof BaseDrawer.Popup>['finalFocus'];
+  backdrop?: boolean;
 };
 
 function BottomSheetRoot(
@@ -54,10 +55,13 @@ function Content({
   className,
   initialFocus,
   finalFocus,
+  backdrop = true,
 }: BottomSheetContentProps) {
   return (
     <BaseDrawer.Portal>
-      <BaseDrawer.Backdrop className="fixed inset-0 bg-semantic-system-black/60 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+      {backdrop && (
+        <BaseDrawer.Backdrop className="fixed inset-0 bg-semantic-system-black/60 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+      )}
       <BaseDrawer.Viewport className="fixed inset-0 flex items-end justify-center">
         <BaseDrawer.Popup
           initialFocus={initialFocus}

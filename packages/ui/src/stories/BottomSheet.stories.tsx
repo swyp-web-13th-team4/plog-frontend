@@ -147,6 +147,23 @@ return (
   </div>
 );`;
 
+const WITHOUT_BACKDROP_CODE = `\
+<BottomSheet modal={false}>
+  <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
+  <BottomSheet.Content backdrop={false}>
+    <BottomSheet.Handle />
+    <BottomSheet.Header>
+      <BottomSheet.Title>백드롭 없음</BottomSheet.Title>
+    </BottomSheet.Header>
+    <BottomSheet.Body>
+      <p className="body-md mb-3 text-semantic-object-normal">
+        백드롭 없이 사용하는 하단 시트입니다.
+      </p>
+      <BottomSheet.Close render={<Button fullWidth>확인</Button>} />
+    </BottomSheet.Body>
+  </BottomSheet.Content>
+</BottomSheet>`;
+
 const SNAP_POINTS_CODE = `\
 const snapPoints = [0.5, 1];
 
@@ -334,6 +351,36 @@ function SnapPointsStory() {
     </BottomSheet>
   );
 }
+
+export const WithoutBackdrop: Story = {
+  name: 'Without Backdrop (Non Modal)',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`backdrop={false}`를 설정하면 백드롭 없이 하단 시트를 사용할 수 있습니다. 루트에 `modal={false}`를 함께 설정해 포커스 트래핑과 스크롤 잠금을 해제할 수 있습니다.',
+      },
+      source: { code: WITHOUT_BACKDROP_CODE },
+    },
+  },
+  render: () => (
+    <BottomSheet modal={false}>
+      <BottomSheet.Trigger render={<Button>하단 시트 열기</Button>} />
+      <BottomSheet.Content backdrop={false}>
+        <BottomSheet.Handle />
+        <BottomSheet.Header>
+          <BottomSheet.Title>백드롭 없음</BottomSheet.Title>
+        </BottomSheet.Header>
+        <BottomSheet.Body>
+          <p className="body-md mb-3 text-semantic-object-normal">
+            백드롭 없이 사용하는 하단 시트입니다.
+          </p>
+          <BottomSheet.Close render={<Button fullWidth>확인</Button>} />
+        </BottomSheet.Body>
+      </BottomSheet.Content>
+    </BottomSheet>
+  ),
+};
 
 export const SnapPoints: Story = {
   parameters: {
