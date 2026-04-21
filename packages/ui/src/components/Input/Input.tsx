@@ -14,7 +14,7 @@ import { useTextInput } from '@/shared/useTextInput';
 
 type InputProps = Omit<
   ComponentPropsWithoutRef<'input'>,
-  'value' | 'defaultValue'
+  'value' | 'defaultValue' | 'aria-invalid'
 > & {
   invalid?: boolean;
   trailing?: ReactNode;

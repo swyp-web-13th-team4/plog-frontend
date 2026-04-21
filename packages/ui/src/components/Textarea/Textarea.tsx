@@ -8,7 +8,7 @@ import { useTextInput } from '@/shared/useTextInput';
 
 type TextareaProps = Omit<
   ComponentPropsWithoutRef<'textarea'>,
-  'value' | 'defaultValue'
+  'value' | 'defaultValue' | 'aria-invalid'
 > & {
   invalid?: boolean;
   maxLength?: number;
