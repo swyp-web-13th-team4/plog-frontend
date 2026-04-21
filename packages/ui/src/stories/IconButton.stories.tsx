@@ -70,6 +70,7 @@ const meta: Meta<typeof IconButton> = {
         defaultValue: { summary: 'false' },
       },
     },
+    ref: { table: { disable: true } },
     icon: { table: { disable: true } },
     className: { table: { disable: true } },
     type: { table: { disable: true } },

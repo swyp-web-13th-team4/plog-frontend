@@ -39,6 +39,7 @@ const meta: Meta<typeof TabItem> = {
         defaultValue: { summary: 'false' },
       },
     },
+    ref: { table: { disable: true } },
     icon: { table: { disable: true } },
     type: { table: { disable: true } },
   },

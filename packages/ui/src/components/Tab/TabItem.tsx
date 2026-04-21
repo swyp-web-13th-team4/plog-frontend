@@ -1,8 +1,4 @@
-import {
-  type ComponentPropsWithoutRef,
-  forwardRef,
-  type ReactNode,
-} from 'react';
+import { type ComponentPropsWithoutRef, type ReactNode, type Ref } from 'react';
 
 import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -32,12 +28,19 @@ type TabItemProps = Omit<ComponentPropsWithoutRef<'button'>, 'children'> &
   VariantProps<typeof tabItemVariants> & {
     icon?: ReactNode;
     label: ReactNode;
+    ref?: Ref<HTMLButtonElement>;
   };
 
-const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(function TabItem(
-  { icon, label, selected, disabled, className, type = 'button', ...props },
+function TabItem({
   ref,
-) {
+  icon,
+  label,
+  selected,
+  disabled,
+  className,
+  type = 'button',
+  ...props
+}: TabItemProps) {
   return (
     <button
       ref={ref}
@@ -52,7 +55,7 @@ const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(function TabItem(
       <span className="truncate">{label}</span>
     </button>
   );
-});
+}
 
 export type { TabItemProps };
 export default TabItem;

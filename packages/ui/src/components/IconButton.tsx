@@ -1,8 +1,8 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
-  forwardRef,
   type ReactNode,
+  type Ref,
 } from 'react';
 
 import { Button as BaseButton } from '@base-ui/react/button';
@@ -38,27 +38,31 @@ type IconButtonProps = Omit<
   VariantProps<typeof iconButtonVariants> & {
     icon: ReactNode;
     className?: string;
+    ref?: Ref<ComponentRef<typeof BaseButton>>;
   } & (
     | { 'aria-label': string; 'aria-labelledby'?: never }
     | { 'aria-label'?: never; 'aria-labelledby': string }
   );
 
-const IconButton = forwardRef<ComponentRef<typeof BaseButton>, IconButtonProps>(
-  function IconButton(
-    { variant, size, icon, className, type = 'button', ...props },
-    ref,
-  ) {
-    return (
-      <BaseButton
-        ref={ref}
-        type={type}
-        className={cn(iconButtonVariants({ variant, size }), className)}
-        {...props}
-      >
-        {icon}
-      </BaseButton>
-    );
-  },
-);
+function IconButton({
+  ref,
+  variant,
+  size,
+  icon,
+  className,
+  type = 'button',
+  ...props
+}: IconButtonProps) {
+  return (
+    <BaseButton
+      ref={ref}
+      type={type}
+      className={cn(iconButtonVariants({ variant, size }), className)}
+      {...props}
+    >
+      {icon}
+    </BaseButton>
+  );
+}
 
 export default IconButton;

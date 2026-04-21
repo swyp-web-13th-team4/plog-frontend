@@ -43,12 +43,6 @@ const meta: Meta<typeof Select> = {
         defaultValue: { summary: 'false' },
       },
     },
-    className: { table: { disable: true } },
-    contentClassName: { table: { disable: true } },
-    optionClassName: { table: { disable: true } },
-    value: { table: { disable: true } },
-    defaultValue: { table: { disable: true } },
-    onValueChange: { table: { disable: true } },
     'aria-label': {
       description:
         '단독으로 사용할 때 스크린리더에 전달할 레이블입니다. `aria-labelledby`와 동시에 사용할 수 없습니다.',
@@ -59,6 +53,13 @@ const meta: Meta<typeof Select> = {
         '레이블 역할을 하는 요소의 id를 지정합니다. `aria-label`과 동시에 사용할 수 없습니다.',
       control: 'text',
     },
+    ref: { table: { disable: true } },
+    className: { table: { disable: true } },
+    contentClassName: { table: { disable: true } },
+    optionClassName: { table: { disable: true } },
+    value: { table: { disable: true } },
+    defaultValue: { table: { disable: true } },
+    onValueChange: { table: { disable: true } },
   },
   args: {
     options: OPTIONS,

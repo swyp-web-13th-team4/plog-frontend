@@ -41,6 +41,7 @@ const meta: Meta<typeof Textarea> = {
         defaultValue: { summary: 'false' },
       },
     },
+    ref: { table: { disable: true } },
     value: { table: { disable: true } },
     defaultValue: { table: { disable: true } },
     className: { table: { disable: true } },

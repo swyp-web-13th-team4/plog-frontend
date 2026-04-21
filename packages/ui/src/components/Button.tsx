@@ -1,8 +1,8 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
-  forwardRef,
   type ReactNode,
+  type Ref,
 } from 'react';
 
 import { Button as BaseButton } from '@base-ui/react/button';
@@ -74,56 +74,53 @@ type ButtonProps = Omit<
     iconRight?: ReactNode;
     loading?: boolean;
     className?: string;
+    ref?: Ref<ComponentRef<typeof BaseButton>>;
   };
 
-const Button = forwardRef<ComponentRef<typeof BaseButton>, ButtonProps>(
-  function Button(
-    {
-      variant,
-      size,
-      children,
-      iconLeft,
-      iconRight,
-      loading,
-      disabled,
-      fullWidth,
-      className,
-      type = 'button',
-      ...props
-    },
-    ref,
-  ) {
-    const effectiveVariant = variant ?? 'primary';
-    const effectiveLoading = !disabled && !!loading;
+function Button({
+  ref,
+  variant,
+  size,
+  children,
+  iconLeft,
+  iconRight,
+  loading,
+  disabled,
+  fullWidth,
+  className,
+  type = 'button',
+  ...props
+}: ButtonProps) {
+  const effectiveVariant = variant ?? 'primary';
+  const effectiveLoading = !disabled && !!loading;
 
-    const spinnerColor: ComponentPropsWithoutRef<typeof Spinner>['color'] =
-      effectiveVariant === 'primary' ? 'white' : 'gray';
+  const spinnerColor: ComponentPropsWithoutRef<typeof Spinner>['color'] =
+    effectiveVariant === 'primary' ? 'white' : 'gray';
 
-    return (
-      <BaseButton
-        ref={ref}
-        className={cn(
-          buttonVariants({
-            variant,
-            size,
-            fullWidth,
-            loading: effectiveLoading,
-          }),
-          className,
-        )}
-        type={type}
-        disabled={loading || disabled}
-        focusableWhenDisabled={effectiveLoading}
-        aria-busy={effectiveLoading}
-        {...props}
-      >
-        {effectiveLoading && <Spinner color={spinnerColor} />}
-        {iconLeft}
-        {children}
-        {iconRight}
-      </BaseButton>
-    );
-  },
-);
+  return (
+    <BaseButton
+      ref={ref}
+      className={cn(
+        buttonVariants({
+          variant,
+          size,
+          fullWidth,
+          loading: effectiveLoading,
+        }),
+        className,
+      )}
+      type={type}
+      disabled={loading || disabled}
+      focusableWhenDisabled={effectiveLoading}
+      aria-busy={effectiveLoading}
+      {...props}
+    >
+      {effectiveLoading && <Spinner color={spinnerColor} />}
+      {iconLeft}
+      {children}
+      {iconRight}
+    </BaseButton>
+  );
+}
 
 export default Button;

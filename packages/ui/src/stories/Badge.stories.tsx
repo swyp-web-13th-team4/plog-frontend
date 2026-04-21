@@ -38,6 +38,7 @@ const meta: Meta<typeof Badge> = {
       description: '배지에 표시될 텍스트입니다.',
       control: 'text',
     },
+    ref: { table: { disable: true } },
     className: { table: { disable: true } },
   },
   args: {

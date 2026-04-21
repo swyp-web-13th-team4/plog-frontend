@@ -42,6 +42,7 @@ const meta: Meta<typeof Input> = {
         '우측 슬롯에 표시할 ReactNode입니다. 값이 입력되면 자동으로 초기화 버튼으로 전환됩니다.',
       table: { disable: true },
     },
+    ref: { table: { disable: true } },
     onClear: { table: { disable: true } },
     value: { table: { disable: true } },
     defaultValue: { table: { disable: true } },

@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, forwardRef } from 'react';
+import { type ComponentPropsWithoutRef, type Ref } from 'react';
 
 import { cn } from '@plog/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -100,12 +100,10 @@ type BadgeColor = NonNullable<VariantProps<typeof badgeVariants>['color']>;
 type BadgeProps = ComponentPropsWithoutRef<'span'> & {
   variant: BadgeVariant;
   color: BadgeColor;
+  ref?: Ref<HTMLSpanElement>;
 };
 
-const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { className, variant, color, ...props },
-  ref,
-) {
+function Badge({ ref, className, variant, color, ...props }: BadgeProps) {
   return (
     <span
       ref={ref}
@@ -113,6 +111,6 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
       {...props}
     />
   );
-});
+}
 
 export default Badge;

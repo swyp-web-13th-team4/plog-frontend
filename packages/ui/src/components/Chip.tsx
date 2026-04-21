@@ -1,8 +1,8 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
-  forwardRef,
   type ReactNode,
+  type Ref,
 } from 'react';
 
 import { Toggle as BaseToggle } from '@base-ui/react/toggle';
@@ -62,37 +62,34 @@ type ChipProps = Omit<
   className?: string;
   iconLeft?: ReactNode;
   iconRight?: ReactNode;
+  ref?: Ref<ComponentRef<typeof BaseToggle>>;
 };
 
-const Chip = forwardRef<ComponentRef<typeof BaseToggle>, ChipProps>(
-  function Chip(
-    {
-      className,
-      children,
-      iconLeft,
-      iconRight,
-      size,
-      variant,
-      type = 'button',
-      ...props
-    },
-    ref,
-  ) {
-    return (
-      <BaseToggle
-        ref={ref}
-        type={type}
-        className={(state) =>
-          cn(chipVariants({ pressed: state.pressed, size, variant }), className)
-        }
-        {...props}
-      >
-        {iconLeft}
-        {children}
-        {iconRight}
-      </BaseToggle>
-    );
-  },
-);
+function Chip({
+  ref,
+  className,
+  children,
+  iconLeft,
+  iconRight,
+  size,
+  variant,
+  type = 'button',
+  ...props
+}: ChipProps) {
+  return (
+    <BaseToggle
+      ref={ref}
+      type={type}
+      className={(state) =>
+        cn(chipVariants({ pressed: state.pressed, size, variant }), className)
+      }
+      {...props}
+    >
+      {iconLeft}
+      {children}
+      {iconRight}
+    </BaseToggle>
+  );
+}
 
 export default Chip;

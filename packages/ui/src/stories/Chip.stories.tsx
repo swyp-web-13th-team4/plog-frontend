@@ -56,6 +56,7 @@ const meta: Meta<typeof Chip> = {
         defaultValue: { summary: 'false' },
       },
     },
+    ref: { table: { disable: true } },
     className: { table: { disable: true } },
     iconLeft: { table: { disable: true } },
     iconRight: { table: { disable: true } },

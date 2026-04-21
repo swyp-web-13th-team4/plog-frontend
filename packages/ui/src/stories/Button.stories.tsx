@@ -69,6 +69,8 @@ const meta: Meta<typeof Button> = {
         defaultValue: { summary: 'false' },
       },
     },
+    ref: { table: { disable: true } },
+    className: { table: { disable: true } },
   },
   args: {
     children: '버튼',

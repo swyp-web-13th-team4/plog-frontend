@@ -44,6 +44,7 @@ const meta: Meta<typeof Checkbox> = {
         defaultValue: { summary: 'false' },
       },
     },
+    ref: { table: { disable: true } },
     className: { table: { disable: true } },
     onCheckedChange: { table: { disable: true } },
   },

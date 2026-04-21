@@ -1,7 +1,7 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentRef,
-  forwardRef,
+  type Ref,
 } from 'react';
 
 import { Checkbox as BasicCheckbox } from '@base-ui/react/checkbox';
@@ -16,12 +16,10 @@ type CheckboxProps = Omit<
   'children' | 'className' | 'render'
 > & {
   className?: string;
+  ref?: Ref<ComponentRef<typeof BasicCheckbox.Root>>;
 };
 
-const Checkbox = forwardRef<
-  ComponentRef<typeof BasicCheckbox.Root>,
-  CheckboxProps
->(function Checkbox({ className, indeterminate, ...props }, ref) {
+function Checkbox({ ref, className, indeterminate, ...props }: CheckboxProps) {
   return (
     <BasicCheckbox.Root
       ref={ref}
@@ -50,6 +48,6 @@ const Checkbox = forwardRef<
       </BasicCheckbox.Indicator>
     </BasicCheckbox.Root>
   );
-});
+}
 
 export default Checkbox;
