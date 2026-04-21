@@ -1,5 +1,7 @@
 import { type ComponentPropsWithoutRef } from 'react';
 
+import { cn } from '@plog/utils';
+
 type SpinnerProps = Omit<
   ComponentPropsWithoutRef<'span'>,
   'className' | 'style'
@@ -22,7 +24,7 @@ export default function Spinner({
 
   return (
     <span
-      className={`block animate-spin rounded-full ${sizeClass}`}
+      className={cn('block animate-spin rounded-full', sizeClass)}
       style={{
         background: `conic-gradient(from 90deg at 50% 50%, transparent 0%, ${spinnerColor} 100%)`,
         WebkitMask: `radial-gradient(farthest-side, transparent calc(100% - ${maskSize}px), white calc(100% - ${maskSize}px))`,
