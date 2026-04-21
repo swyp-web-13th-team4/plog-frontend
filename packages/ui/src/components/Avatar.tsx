@@ -74,6 +74,9 @@ export default function Avatar({
               src={fallbackSrc}
               alt={alt}
               className="size-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
             />
           )}
         </BaseAvatar.Fallback>
