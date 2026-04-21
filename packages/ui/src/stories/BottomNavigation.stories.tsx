@@ -21,9 +21,8 @@ const meta: Meta<typeof BottomNavigation> = {
   parameters: {
     docs: {
       description: {
-        component: `앱 최상위 메뉴 간 이동을 담당하는 하단 내비게이션 바입니다. \`BottomNavigation.Item\`으로 탭을 구성할 수 있습니다.
-
-페이지 이동이 목적인 경우 \`render\`로 \`<a>\` 또는 라우터 링크 컴포넌트를 전달하는 것이 좋습니다. \`<a>\`로 렌더링되어 스크린리더에서 링크로 인식되고, 새 탭에서 열기 등 기본 동작도 지원합니다.`,
+        component:
+          '앱 최상위 메뉴 간 이동을 담당하는 하단 내비게이션 바입니다. `BottomNavigation.Item`으로 탭을 구성할 수 있습니다.\n\n페이지 이동이 목적인 경우 `render` prop에 라우터 링크 컴포넌트를 전달하고 `nativeButton={false}`를 함께 설정하세요. `<a>` 태그로 렌더링되어 스크린리더에서 링크로 인식되고, 새 탭에서 열기 등 브라우저 기본 동작도 지원됩니다.',
       },
       page: () => (
         <>
@@ -81,9 +80,10 @@ const TABS = [
     <BottomNavigation.Item
       key={id}
       render={<Link href={href} />}
+      nativeButton={false}
       icon={icon}
       label={label}
-      active={pathname === href}
+      active={pathname === href || pathname.startsWith(\`\${href}/\`)}
     />
   ))}
 </BottomNavigation>`,
