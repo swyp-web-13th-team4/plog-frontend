@@ -33,13 +33,13 @@ const chipVariants = cva(
       {
         variant: 'solid',
         pressed: true,
-        className:
+        class:
           'bg-semantic-accent-normal text-semantic-object-inverse enabled:hover:bg-semantic-accent-bold enabled:active:bg-semantic-accent-bolder focus-visible:outline-semantic-accent-subtle',
       },
       {
         variant: 'soft',
         pressed: true,
-        className:
+        class:
           'bg-semantic-feedback-success-subtle text-semantic-accent-normal ring-1 ring-semantic-accent-normal enabled:hover:bg-semantic-feedback-success-assistive enabled:active:bg-semantic-feedback-success-alternative focus-visible:outline-semantic-accent-subtle',
       },
     ],
