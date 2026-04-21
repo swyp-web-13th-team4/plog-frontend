@@ -21,9 +21,9 @@ const meta: Meta<typeof Avatar> = {
     size: {
       description: '아바타 크기를 설정합니다.',
       control: 'select',
-      options: ['lg', 'md', 'sm', 'xs'],
+      options: ['large', 'medium', 'small', 'xsmall'],
       table: {
-        type: { summary: "'lg' | 'md' | 'sm' | 'xs'" },
+        type: { summary: "'large' | 'medium' | 'small' | 'xsmall'" },
       },
     },
     src: {
@@ -58,7 +58,7 @@ const meta: Meta<typeof Avatar> = {
     },
     loading: {
       description:
-        '업로드 중 오버레이를 표시합니다. `xs` 크기에서는 작은 스피너를 사용합니다.',
+        '업로드 중 오버레이를 표시합니다. `xsmall` 크기에서는 작은 스피너를 사용합니다.',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
@@ -68,7 +68,7 @@ const meta: Meta<typeof Avatar> = {
     className: { table: { disable: true } },
   },
   args: {
-    size: 'md',
+    size: 'medium',
     src: SAMPLE_SRC,
     alt: '사용자 프로필',
     selected: false,
@@ -105,7 +105,7 @@ export const Sizes: Story = {
   },
   render: (args) => (
     <div className="flex items-end gap-6">
-      {(['lg', 'md', 'sm', 'xs'] as const).map((size) => (
+      {(['large', 'medium', 'small', 'xsmall'] as const).map((size) => (
         <div key={size} className="flex flex-col items-center gap-2">
           <Avatar {...args} size={size} />
           <span className="caption-md text-semantic-object-normal">{size}</span>
@@ -139,12 +139,12 @@ export const Loading: Story = {
   render: (args) => (
     <div className="flex items-end gap-6">
       <div className="flex flex-col items-center gap-2">
-        <Avatar {...args} size="lg" loading />
-        <span className="caption-md text-semantic-object-normal">lg</span>
+        <Avatar {...args} size="large" loading />
+        <span className="caption-md text-semantic-object-normal">large</span>
       </div>
       <div className="flex flex-col items-center gap-2">
-        <Avatar {...args} size="xs" loading />
-        <span className="caption-md text-semantic-object-normal">xs</span>
+        <Avatar {...args} size="xsmall" loading />
+        <span className="caption-md text-semantic-object-normal">xsmall</span>
       </div>
     </div>
   ),

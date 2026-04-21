@@ -1,1 +1,1 @@
-export type AvatarSize = 'lg' | 'md' | 'sm' | 'xs';
+export type AvatarSize = 'large' | 'medium' | 'small' | 'xsmall';

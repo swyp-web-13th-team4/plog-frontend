@@ -8,24 +8,24 @@ import { Spinner } from '@/components/Spinner';
 import { type AvatarSize } from './Avatar.types';
 
 const sizeClass: Record<AvatarSize, string> = {
-  lg: 'size-38',
-  md: 'size-24',
-  sm: 'size-20',
-  xs: 'size-12',
+  large: 'size-38',
+  medium: 'size-24',
+  small: 'size-20',
+  xsmall: 'size-12',
 };
 
 const defaultOutlineClass: Record<AvatarSize, string> = {
-  lg: 'outline-2 outline-semantic-stroke-neutral/30',
-  md: 'outline outline-semantic-stroke-neutral/30',
-  sm: 'outline outline-semantic-stroke-neutral/30',
-  xs: 'outline outline-semantic-stroke-neutral/30',
+  large: 'outline-2 outline-semantic-stroke-neutral/30',
+  medium: 'outline outline-semantic-stroke-neutral/30',
+  small: 'outline outline-semantic-stroke-neutral/30',
+  xsmall: 'outline outline-semantic-stroke-neutral/30',
 };
 
 const selectedOutlineClass: Record<AvatarSize, string> = {
-  lg: 'outline-4 outline-semantic-accent-normal',
-  md: 'outline-3 outline-semantic-accent-normal',
-  sm: 'outline-2 outline-semantic-accent-normal',
-  xs: 'outline-2 outline-semantic-accent-normal',
+  large: 'outline-4 outline-semantic-accent-normal',
+  medium: 'outline-3 outline-semantic-accent-normal',
+  small: 'outline-2 outline-semantic-accent-normal',
+  xsmall: 'outline-2 outline-semantic-accent-normal',
 };
 
 type AvatarProps = {
@@ -51,7 +51,7 @@ export default function Avatar({
   className,
   ...props
 }: AvatarProps) {
-  const spinnerSize = size === 'xs' ? 'small' : 'large';
+  const spinnerSize = size === 'xsmall' ? 'small' : 'large';
 
   return (
     <span className={cn('relative inline-flex shrink-0', sizeClass[size])}>
