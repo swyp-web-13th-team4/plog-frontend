@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { type ComponentPropsWithoutRef, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 import BlankIcon from '@/assets/blank.svg?react';
 
-import { type TabGroupItem, type TabGroupProps } from './Tab.types';
+import { type TabGroupItem } from './Tab.types';
 import TabGroup from './TabGroup';
 
 const makeItems = (count: number): TabGroupItem[] =>
@@ -60,7 +60,7 @@ export default meta;
 type Story = StoryObj<typeof TabGroup>;
 
 type ControlledTabGroupStoryProps = Omit<
-  Partial<TabGroupProps>,
+  Partial<ComponentPropsWithoutRef<typeof TabGroup>>,
   'value' | 'defaultValue' | 'onValueChange'
 > & {
   items: TabGroupItem[];
