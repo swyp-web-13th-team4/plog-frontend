@@ -1,21 +1,10 @@
-import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { type ComponentPropsWithoutRef } from 'react';
 
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { cn } from '@plog/utils';
 
-import TabItem from '@/components/Tab/TabItem';
-
-const TAB_ITEM_MIN_WIDTH_PX = 92;
-const MAX_VISIBLE_TABS = 4;
-
-type TabGroupItem = {
-  value: string;
-  disabled?: boolean;
-  label: ReactNode;
-  icon?: ReactNode;
-  panel?: ReactNode;
-  keepMounted?: boolean;
-};
+import { type TabGroupItem } from './Tab.types';
+import TabItem from './TabItem';
 
 type TabGroupProps = Omit<
   ComponentPropsWithoutRef<typeof BaseTabs.Root>,
@@ -30,6 +19,9 @@ type TabGroupProps = Omit<
   panelClassName?: string;
   keepMounted?: boolean;
 };
+
+const TAB_ITEM_MIN_WIDTH_PX = 92;
+const MAX_VISIBLE_TABS = 4;
 
 function TabGroup({
   items,
@@ -112,5 +104,4 @@ function TabGroup({
   );
 }
 
-export type { TabGroupItem, TabGroupProps };
 export default TabGroup;
