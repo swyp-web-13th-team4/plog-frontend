@@ -53,7 +53,7 @@ function BottomNavigationRoot({ children, ...props }: BottomNavigationProps) {
   return (
     <nav
       {...props}
-      className="w-full px-8 py-3 shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.04)]"
+      className="w-full bg-semantic-system-white px-8 py-3 shadow-[0px_-4px_12px_0px_rgba(0,0,0,0.04)]"
     >
       <ul className="flex w-full justify-between">{children}</ul>
     </nav>
