@@ -8,7 +8,7 @@ export const useToast = () => {
   const toast = (options: ToastOptions) => {
     const { id, type, description } = options;
     const icon =
-      options.type === 'default' || options.type == null
+      options.type === 'default' || options.type === undefined
         ? options.icon
         : undefined;
     toastManager.add({ id, type, description, data: { icon } });
