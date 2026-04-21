@@ -72,7 +72,7 @@ function Input({
   return (
     <div
       className={cn(
-        'relative rounded-[12px] border transition-colors',
+        'relative rounded-xl border transition-colors',
         getFieldStateClass(effectiveDisabled, invalid, isFocused),
         className,
       )}

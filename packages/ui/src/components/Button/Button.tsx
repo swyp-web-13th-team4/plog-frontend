@@ -27,11 +27,11 @@ const buttonVariants = cva(
       },
       size: {
         large:
-          'label-lg rounded-[12px] px-5 py-3 gap-2.5 [&>svg]:size-6 focus-visible:outline-offset-2',
+          'label-lg rounded-xl px-5 py-3 gap-2.5 [&>svg]:size-6 focus-visible:outline-offset-2',
         medium:
-          'label-md rounded-[12px] px-4 py-3 gap-2 [&>svg]:size-5 focus-visible:outline-offset-2',
+          'label-md rounded-xl px-4 py-3 gap-2 [&>svg]:size-5 focus-visible:outline-offset-2',
         small:
-          'label-sm rounded-[8px] px-3 py-2 gap-1.5 [&>svg]:size-4 focus-visible:outline-offset-1',
+          'label-sm rounded-lg px-3 py-2 gap-1.5 [&>svg]:size-4 focus-visible:outline-offset-1',
       },
       fullWidth: {
         true: 'w-full',

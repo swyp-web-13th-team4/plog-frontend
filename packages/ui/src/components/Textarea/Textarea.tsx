@@ -79,7 +79,7 @@ function Textarea({
         onFocus={handleFocus}
         onBlur={handleBlur}
         className={cn(
-          'body-md w-full resize-none rounded-[12px] border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
+          'body-md w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
           getFieldStateClass(effectiveDisabled, invalid, isFocused),
         )}
         {...props}

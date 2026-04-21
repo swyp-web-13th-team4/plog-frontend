@@ -78,7 +78,7 @@ function ToastList() {
           >
             {icon && (
               <span
-                className="rounded-lg p-[6px] [&_svg]:size-4"
+                className="rounded-lg p-1.5 [&_svg]:size-4"
                 aria-hidden="true"
               >
                 {icon}
