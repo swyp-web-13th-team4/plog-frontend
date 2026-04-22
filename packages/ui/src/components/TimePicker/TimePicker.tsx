@@ -63,30 +63,27 @@ function TimePicker({
         aria-hidden="true"
         className="absolute h-10 w-66 rounded-lg bg-semantic-feedback-success-subtle"
       />
-      <div aria-label="오전/오후">
-        <TimePickerColumn
-          items={['오전', '오후'] as const}
-          selectedIndex={meridiemIndex}
-          onChange={(i) =>
-            update({ hour: indexToHour(hourToIndex(current.hour), i) })
-          }
-          loop={false}
-        />
-      </div>
-      <div aria-label="시">
-        <TimePickerColumn
-          items={HOURS}
-          selectedIndex={hourToIndex(current.hour)}
-          onChange={(i) => update({ hour: indexToHour(i, meridiemIndex) })}
-        />
-      </div>
-      <div aria-label="분">
-        <TimePickerColumn
-          items={MINUTES}
-          selectedIndex={current.minute}
-          onChange={(i) => update({ minute: i })}
-        />
-      </div>
+      <TimePickerColumn
+        aria-label="오전/오후"
+        items={['오전', '오후'] as const}
+        selectedIndex={meridiemIndex}
+        onChange={(i) =>
+          update({ hour: indexToHour(hourToIndex(current.hour), i) })
+        }
+        loop={false}
+      />
+      <TimePickerColumn
+        aria-label="시"
+        items={HOURS}
+        selectedIndex={hourToIndex(current.hour)}
+        onChange={(i) => update({ hour: indexToHour(i, meridiemIndex) })}
+      />
+      <TimePickerColumn
+        aria-label="분"
+        items={MINUTES}
+        selectedIndex={current.minute}
+        onChange={(i) => update({ minute: i })}
+      />
     </div>
   );
 }

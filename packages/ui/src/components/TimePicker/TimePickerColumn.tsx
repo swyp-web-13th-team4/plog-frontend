@@ -13,6 +13,7 @@ type TimePickerColumnProps = {
   selectedIndex: number;
   onChange: (index: number) => void;
   loop?: boolean;
+  'aria-label'?: string;
 };
 
 function TimePickerColumn({
@@ -20,6 +21,7 @@ function TimePickerColumn({
   selectedIndex,
   onChange,
   loop = true,
+  'aria-label': ariaLabel,
 }: TimePickerColumnProps) {
   const swiperRef = useRef<SwiperType | null>(null);
 
@@ -38,6 +40,7 @@ function TimePickerColumn({
   return (
     <div
       role="listbox"
+      aria-label={ariaLabel}
       className="relative overflow-hidden"
       style={{ height: SLIDE_HEIGHT * VISIBLE_COUNT }}
     >
