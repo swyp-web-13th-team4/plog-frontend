@@ -30,9 +30,9 @@ function TimePickerColumn({
     const swiper = swiperRef.current;
     if (swiper.realIndex !== selectedIndex) {
       if (loop) {
-        swiper.slideToLoop(selectedIndex, 0);
+        swiper.slideToLoop(selectedIndex, 0, false);
       } else {
-        swiper.slideTo(selectedIndex, 0);
+        swiper.slideTo(selectedIndex, 0, false);
       }
     }
   }, [selectedIndex, loop]);
