@@ -51,11 +51,14 @@ function TimePicker({
   };
 
   const meridiemIndex = current.hour < 12 ? 0 : 1;
+  const effectiveAriaLabel = ariaLabelledBy
+    ? ariaLabel
+    : (ariaLabel ?? '시간 선택');
 
   return (
     <div
       role="group"
-      aria-label={ariaLabel}
+      aria-label={effectiveAriaLabel}
       aria-labelledby={ariaLabelledBy}
       className="relative inline-flex items-center justify-center gap-6"
     >
