@@ -57,7 +57,7 @@ function TimePicker({
       role="group"
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
-      className="inline-flex items-center justify-center gap-6"
+      className="relative inline-flex items-center justify-center gap-6"
     >
       <div
         aria-hidden="true"
