@@ -35,7 +35,6 @@ const meta: Meta<typeof Switch> = {
     },
     ref: { table: { disable: true } },
     className: { table: { disable: true } },
-    children: { table: { disable: true } },
     onCheckedChange: { table: { disable: true } },
   },
   args: {
