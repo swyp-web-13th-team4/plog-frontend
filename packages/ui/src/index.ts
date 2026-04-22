@@ -15,5 +15,6 @@ export * from './components/Spinner';
 export * from './components/Switch';
 export * from './components/Tab';
 export * from './components/Textarea';
+export * from './components/TimePicker';
 export * from './components/Toast';
 export * from './tokens';
