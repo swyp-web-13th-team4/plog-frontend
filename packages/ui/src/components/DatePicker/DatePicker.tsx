@@ -1,4 +1,4 @@
-import { type KeyboardEvent, useState } from 'react';
+import { type KeyboardEvent, useMemo, useState } from 'react';
 
 import { cn } from '@plog/utils';
 
@@ -82,8 +82,11 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
   });
   const [focusedDate, setFocusedDate] = useState<Date | undefined>(undefined);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const today = useMemo(() => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }, []);
 
   const current = isControlled ? value : internalValue;
   const selectedDate = current ? valueToDate(current) : undefined;
