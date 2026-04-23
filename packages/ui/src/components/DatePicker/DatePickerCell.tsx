@@ -24,8 +24,8 @@ function DatePickerCell({
       type="button"
       onClick={onClick}
       disabled={isDisabled}
-      aria-pressed={isSelected}
-      aria-label={`${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`}
+      aria-selected={isSelected}
+      aria-label={`${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일${isToday ? ', 오늘' : ''}`}
       className={getDatePickerCellStateClass(
         isDisabled,
         isSelected,

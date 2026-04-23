@@ -103,7 +103,10 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
           aria-label="이전 월"
           onClick={handlePrevMonth}
         />
-        <span className="label-lg text-semantic-object-boldest">
+        <span
+          aria-live="polite"
+          className="label-lg text-semantic-object-boldest"
+        >
           {year}년 {month + 1}월
         </span>
         <IconButton
