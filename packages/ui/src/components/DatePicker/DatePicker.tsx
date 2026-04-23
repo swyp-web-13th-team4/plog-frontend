@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type KeyboardEvent, useState } from 'react';
 
 import { cn } from '@plog/utils';
 
@@ -31,6 +31,39 @@ function valueToDate(value: DateValue): Date {
   return new Date(value.year, value.month - 1, value.date);
 }
 
+function shiftDate(date: Date, days: number): Date {
+  const next = new Date(date);
+  next.setDate(date.getDate() + days);
+  return next;
+}
+
+function shiftMonth(date: Date, months: number): Date {
+  const next = new Date(date);
+  next.setMonth(date.getMonth() + months);
+  return next;
+}
+
+function getNextFocusDate(key: string, base: Date): Date | undefined {
+  switch (key) {
+    case 'ArrowRight':
+      return shiftDate(base, 1);
+    case 'ArrowLeft':
+      return shiftDate(base, -1);
+    case 'ArrowDown':
+      return shiftDate(base, 7);
+    case 'ArrowUp':
+      return shiftDate(base, -7);
+    case 'Home':
+      return shiftDate(base, -base.getDay());
+    case 'End':
+      return shiftDate(base, 6 - base.getDay());
+    case 'PageUp':
+      return shiftMonth(base, -1);
+    case 'PageDown':
+      return shiftMonth(base, 1);
+  }
+}
+
 type DatePickerProps = {
   defaultValue?: DateValue;
   value?: DateValue;
@@ -47,6 +80,7 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
     const seed = value ?? defaultValue;
     return seed ? valueToDate(seed) : new Date();
   });
+  const [focusedDate, setFocusedDate] = useState<Date | undefined>(undefined);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -59,6 +93,8 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
 
   const isCurrentMonth =
     year === today.getFullYear() && month === today.getMonth();
+
+  const activeFocusDate = focusedDate ?? selectedDate ?? today;
 
   const firstDay = new Date(year, month, 1);
   const start = new Date(firstDay);
@@ -88,11 +124,32 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
   };
 
   const handlePrevMonth = () => {
+    setFocusedDate(undefined);
     setCurrentDate(new Date(year, month - 1, 1));
   };
 
   const handleNextMonth = () => {
+    setFocusedDate(undefined);
     setCurrentDate(new Date(year, month + 1, 1));
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (activeFocusDate <= today) handleSelect(activeFocusDate);
+      return;
+    }
+
+    const next = getNextFocusDate(e.key, activeFocusDate);
+    if (!next) return;
+
+    e.preventDefault();
+    if (next > today) return;
+
+    setFocusedDate(next);
+    if (next.getMonth() !== month || next.getFullYear() !== year) {
+      setCurrentDate(new Date(next.getFullYear(), next.getMonth(), 1));
+    }
   };
 
   return (
@@ -116,7 +173,11 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
           disabled={isCurrentMonth}
         />
       </div>
-      <div role="grid" aria-label={`${year}년 ${month + 1}월`}>
+      <div
+        role="grid"
+        aria-label={`${year}년 ${month + 1}월`}
+        onKeyDown={handleKeyDown}
+      >
         <div role="row" className="grid grid-cols-7">
           {DAY_LABELS.map((day) => (
             <div
@@ -143,6 +204,10 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
                   }
                   isDisabled={date > today}
                   isToday={isSameDate(date, today)}
+                  isTabTarget={isSameDate(date, activeFocusDate)}
+                  isFocused={
+                    focusedDate !== undefined && isSameDate(date, focusedDate)
+                  }
                   onClick={() => handleSelect(date)}
                 />
               </div>
