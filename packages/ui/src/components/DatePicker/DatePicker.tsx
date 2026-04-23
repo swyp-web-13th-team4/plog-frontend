@@ -43,6 +43,18 @@ function shiftMonth(date: Date, months: number): Date {
   return next;
 }
 
+function getActiveFocusDate(
+  focusedDate: Date | undefined,
+  selectedDate: Date | undefined,
+  today: Date,
+  dates: Date[],
+  month: number,
+): Date {
+  const candidate = focusedDate ?? selectedDate ?? today;
+  if (dates.some((date) => isSameDate(date, candidate))) return candidate;
+  return dates.find((date) => date.getMonth() === month && date <= today)!;
+}
+
 function getNextFocusDate(key: string, base: Date): Date | undefined {
   switch (key) {
     case 'ArrowRight':
@@ -97,8 +109,6 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
   const isCurrentMonth =
     year === today.getFullYear() && month === today.getMonth();
 
-  const activeFocusDate = focusedDate ?? selectedDate ?? today;
-
   const firstDay = new Date(year, month, 1);
   const start = new Date(firstDay);
   start.setDate(1 - firstDay.getDay());
@@ -116,6 +126,14 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
   for (let i = 0; i < dates.length; i += 7) {
     weeks.push(dates.slice(i, i + 7));
   }
+
+  const activeFocusDate = getActiveFocusDate(
+    focusedDate,
+    selectedDate,
+    today,
+    dates,
+    month,
+  );
 
   const handleSelect = (date: Date) => {
     if (date.getMonth() !== month) {
@@ -139,7 +157,7 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (activeFocusDate <= today) handleSelect(activeFocusDate);
+      handleSelect(activeFocusDate);
       return;
     }
 
