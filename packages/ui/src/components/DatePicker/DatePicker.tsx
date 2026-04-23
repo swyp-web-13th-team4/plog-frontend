@@ -213,8 +213,12 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
             </div>
           ))}
         </div>
-        {weeks.map((week, i) => (
-          <div key={i} role="row" className="grid grid-cols-7">
+        {weeks.map((week) => (
+          <div
+            key={week[0].toISOString()}
+            role="row"
+            className="grid grid-cols-7"
+          >
             {week.map((date) => (
               <div key={date.toISOString()} role="gridcell">
                 <DatePickerCell
