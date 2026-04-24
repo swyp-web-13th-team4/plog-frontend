@@ -25,7 +25,7 @@ type AppBarProps = AppBarNavigationProps | AppBarBrandProps;
 
 type AppBarActionProps = Omit<
   ComponentPropsWithoutRef<typeof BaseButton>,
-  'className' | 'children'
+  'className' | 'children' | 'aria-label' | 'aria-labelledby'
 > & {
   icon: ReactNode;
   className?: string;
