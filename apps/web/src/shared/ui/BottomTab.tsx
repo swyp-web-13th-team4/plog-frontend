@@ -24,13 +24,14 @@ export default function BottomTab() {
     <footer className="fixed right-0 bottom-0 left-0 mx-auto w-full max-w-layout">
       <BottomNavigation>
         {TABS.map(({ id, href, icon, label }) => (
-          <Link href={href} key={id}>
-            <BottomNavigation.Item
-              icon={icon}
-              label={label}
-              active={pathname === href || pathname.startsWith(`${href}/`)}
-            />
-          </Link>
+          <BottomNavigation.Item
+            key={id}
+            render={<Link href={href} />}
+            nativeButton={false}
+            icon={icon}
+            label={label}
+            active={pathname === href || pathname.startsWith(`${href}/`)}
+          />
         ))}
       </BottomNavigation>
     </footer>
