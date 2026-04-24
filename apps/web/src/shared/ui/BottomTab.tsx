@@ -28,6 +28,7 @@ export default function BottomTab() {
             key={id}
             render={<Link href={href} />}
             nativeButton={false}
+            role="link"
             icon={icon}
             label={label}
             active={pathname === href || pathname.startsWith(`${href}/`)}

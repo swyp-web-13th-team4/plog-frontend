@@ -37,17 +37,19 @@ type AppBarActionProps = Omit<
 function Action({
   icon,
   className,
+  nativeButton,
   type = 'button',
   ...props
 }: AppBarActionProps) {
   return (
     <BaseButton
-      type={type}
+      {...props}
+      nativeButton={nativeButton}
       className={cn(
         'inline-flex cursor-pointer items-center justify-center rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle [&_svg]:size-7 [&_svg]:fill-semantic-object-bold',
         className,
       )}
-      {...props}
+      {...(nativeButton !== false && { type })}
     >
       {icon}
     </BaseButton>

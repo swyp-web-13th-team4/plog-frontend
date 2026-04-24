@@ -19,18 +19,25 @@ type BottomNavigationProps = Omit<
   children: ReactNode;
 };
 
-function Item({ icon, label, active, ...props }: BottomNavigationItemProps) {
+function Item({
+  icon,
+  label,
+  active,
+  nativeButton,
+  ...props
+}: BottomNavigationItemProps) {
   return (
     <li>
       <BaseButton
         {...props}
+        nativeButton={nativeButton}
         className={cn(
           'flex cursor-pointer flex-col items-center justify-center gap-1',
           active
             ? '[&_svg]:fill-semantic-accent-normal'
             : '[&_svg]:fill-semantic-tab-disabled',
         )}
-        type="button"
+        {...(nativeButton !== false && { type: 'button' })}
         aria-current={active ? 'page' : undefined}
       >
         {icon}
