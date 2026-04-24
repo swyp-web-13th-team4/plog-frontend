@@ -6,7 +6,7 @@ import boundaries from 'eslint-plugin-boundaries';
 
 const FSD_LAYERS = [
   { type: 'app', pattern: 'src/app/**', mode: 'full' },
-  { type: 'pages', pattern: 'src/pages/*', mode: 'folder' },
+  { type: 'views', pattern: 'src/views/*', mode: 'folder' },
   { type: 'widgets', pattern: 'src/widgets/*', mode: 'folder' },
   { type: 'features', pattern: 'src/features/*', mode: 'folder' },
   { type: 'entities', pattern: 'src/entities/*', mode: 'folder' },

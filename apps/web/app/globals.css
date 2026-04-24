@@ -2,7 +2,7 @@
 @import 'tailwindcss';
 @import '@plog/ui/styles';
 
-@source '../../node_modules/@plog/ui/dist';
+@source '../node_modules/@plog/ui/dist';
 
 @theme {
   --max-width-layout: 480px;
