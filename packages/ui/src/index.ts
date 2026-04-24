@@ -1,3 +1,4 @@
+export * from './components/AppBar';
 export * from './components/Avatar';
 export * from './components/Badge';
 export * from './components/BottomNavigation';
