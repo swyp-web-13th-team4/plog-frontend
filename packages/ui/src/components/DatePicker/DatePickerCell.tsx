@@ -39,7 +39,6 @@ function DatePickerCell({
       onClick={onClick}
       disabled={isDisabled}
       tabIndex={isTabTarget ? 0 : -1}
-      aria-selected={isSelected}
       aria-label={`${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일${isToday ? ', 오늘' : ''}`}
       className={cn(
         'body-lg flex size-10 items-center justify-center rounded-lg transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-subtle',

@@ -220,7 +220,13 @@ function DatePicker({ defaultValue, value, onChange }: DatePickerProps) {
             className="grid grid-cols-7"
           >
             {week.map((date) => (
-              <div key={date.toISOString()} role="gridcell">
+              <div
+                key={date.toISOString()}
+                role="gridcell"
+                aria-selected={
+                  selectedDate !== undefined && isSameDate(date, selectedDate)
+                }
+              >
                 <DatePickerCell
                   date={date}
                   isCurrentMonth={date.getMonth() === month}
