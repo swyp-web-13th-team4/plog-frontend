@@ -6,6 +6,7 @@
 
 @theme {
   --max-width-layout: 480px;
+  --spacing-header: 64px;
   --spacing-bottom-tab: 76px;
 }
 
