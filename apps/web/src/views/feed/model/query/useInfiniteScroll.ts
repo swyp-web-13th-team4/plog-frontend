@@ -151,8 +151,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       createdAt: '5시간 전',
       heartCount: 31,
       title: '콘센트 맛집 작업 공간',
-      content:
-        '노트북이랑 태블릿을 같이 써야 해서 콘센트 위치가 중요한 날이었는데, 이곳은 거의 모든 좌석에서 전원 연결이 쉬웠다. 의자가 너무 푹신하지 않아서 오히려 오래 앉아 있기 좋았고, 음료 나오는 속도도 빨라서 바로 작업 시작할 수 있었다.',
+      content: '노트북이랑 태블릿을 같이 써야 해서 콘센트 위치가중요함123456',
       image: postImageSrc,
       tags: [
         { id: '4-1', name: '#콘센트맛집' },
@@ -352,7 +351,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
   },
 ];
 
-const MOCK_FEED_DATA = Array.from({ length: 5 }, (_, pageIndex) =>
+const MOCK_FEED_DATA = Array.from({ length: 3 }, (_, pageIndex) =>
   BASE_FEED_DATA.map((post, postIndex) => ({
     ...post,
     POST_INFO: {
@@ -376,6 +375,11 @@ const MOCK_FEED_DATA = Array.from({ length: 5 }, (_, pageIndex) =>
 
 async function fetchFeedPage(pageParam: number): Promise<FeedPage> {
   await new Promise((resolve) => setTimeout(resolve, 400));
+
+  // 강제로 네트워크 오류 발생시키기(테스트용)
+  // if (pageParam === 1) {
+  //   throw new Error('네트워크 오류 발생');
+  // }
 
   const start = pageParam * PAGE_SIZE;
   const end = start + PAGE_SIZE;

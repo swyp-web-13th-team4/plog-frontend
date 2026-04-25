@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-import { Avatar, Badge, Spinner, useToast } from '@plog/ui';
+import { Avatar, Badge, Button, Spinner, useToast } from '@plog/ui';
 import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
+import ArrowIcon from '@/shared/assets/icons/arrow.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
 import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
@@ -34,7 +36,7 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
   const hasHiddenTags = hiddenTags.length > 0;
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex gap-2">
       {visibleTags.map((tag) => (
         <Badge
           color="gray"
@@ -78,13 +80,54 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
   );
 }
 
+function MaxContentLength({
+  content,
+  maxLength,
+}: {
+  content: string;
+  maxLength: number;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (content.length <= maxLength) {
+    return <p className="body-sm text-semantic-object-normal">{content}</p>;
+  }
+
+  return (
+    <div className="flex justify-between gap-3">
+      <p className="body-sm text-semantic-object-normal">
+        {isExpanded ? content : `${content.slice(0, maxLength)}...`}
+      </p>
+
+      {!isExpanded ? (
+        <button
+          className="caption-md flex cursor-pointer items-center gap-2 text-semantic-object-subtle"
+          onClick={() => setIsExpanded((prev) => !prev)}
+        >
+          더보기
+          <ArrowIcon />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 export default function FeedPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data, fetchNextPage, isFetchingNextPage, isPending } =
-    useInfiniteFeedQuery();
-  const { ref, inView } = useInView();
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isFetchNextPageError,
+  } = useInfiniteFeedQuery();
+  const { ref, inView } = useInView({
+    rootMargin: '0px 0px 200px 0px',
+  });
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
+  const router = useRouter();
 
   const updatePostState = (
     postId: string,
@@ -127,10 +170,36 @@ export default function FeedPage() {
     );
   }
 
+  if (posts.length === 0) {
+    return (
+      <section className="flex min-h-screen flex-col items-center justify-center gap-3">
+        <div className="flex flex-col gap-3">
+          <span className="label-lg text-semantic-object-bold">
+            아직 올라온 기록이 없어요
+          </span>
+          <p className="body-sm text-semantic-object-normal">
+            가장 먼저 기록을 남겨볼까요?
+          </p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="small"
+          onClick={() => router.push('/log')}
+        >
+          기록하기
+        </Button>
+      </section>
+    );
+  }
+
   return (
     <section>
-      {posts.map((data) => (
-        <div key={data.POST_INFO.id} className="mb-13.5">
+      {posts.map((data, index) => (
+        <div
+          key={data.POST_INFO.id}
+          className={`${index === posts.length - 1 ? '' : 'mb-13.5'}`}
+        >
           <div className="flex items-center gap-3 px-6 py-3">
             <Avatar
               size="xsmall"
@@ -206,9 +275,10 @@ export default function FeedPage() {
                   <span className="title-xs text-semantic-object-boldest">
                     {data.POST_INFO.title}
                   </span>
-                  <p className="body-sm text-semantic-object-normal">
-                    {data.POST_INFO.content}
-                  </p>
+                  <MaxContentLength
+                    content={data.POST_INFO.content}
+                    maxLength={35}
+                  />
                 </div>
                 <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-6">
                   <div className="flex flex-col gap-1.5">
@@ -240,12 +310,41 @@ export default function FeedPage() {
           </div>
         </div>
       ))}
-      {isFetchingNextPage && (
-        <div className="flex justify-center">
-          <Spinner size="large" />
+
+      {hasNextPage && (
+        <div className="flex flex-col items-center justify-center gap-3 py-12">
+          {isFetchingNextPage ? (
+            <Spinner size="large" />
+          ) : isFetchNextPageError ? (
+            <>
+              <div className="flex flex-col items-center gap-1 text-center">
+                <p className="label-md text-semantic-object-bold">
+                  데이터를 불러오지 못했습니다
+                </p>
+                <p className="body-sm text-semantic-object-subtle">
+                  네트워크 연결 상태를 확인해 주세요.
+                </p>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="small"
+                onClick={() => fetchNextPage()}
+              >
+                다시 시도
+              </Button>
+            </>
+          ) : (
+            <div ref={ref} aria-hidden="true" />
+          )}
         </div>
       )}
       <div ref={ref} aria-hidden="true"></div>
+      {!hasNextPage && posts.length > 0 && (
+        <p className="body-sm py-12 text-center text-semantic-object-subtle">
+          마지막 기록까지 확인했어요
+        </p>
+      )}
     </section>
   );
 }
