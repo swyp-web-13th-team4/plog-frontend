@@ -9,9 +9,11 @@ type FeedLayoutProps = {
 };
 export default function FeedLayout({ children }: FeedLayoutProps) {
   return (
-    <div>
-      <AppBar variant="navigation" title="피드" />
+    <>
+      <header>
+        <AppBar variant="navigation" title="피드" />
+      </header>
       {children}
-    </div>
+    </>
   );
 }

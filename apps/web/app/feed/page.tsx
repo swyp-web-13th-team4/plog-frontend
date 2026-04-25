@@ -1,1 +1,1 @@
-export { default } from '@/pages/feed';
+export { default } from '@/views/feed';
