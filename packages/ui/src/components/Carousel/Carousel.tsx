@@ -47,7 +47,6 @@ function CarouselRoot({
         !isSingle && 'cursor-grab active:cursor-grabbing',
         className,
       )}
-      aria-controls="carousel-swiper"
       tabIndex={0}
       onFocus={() => {
         swiperRef.current?.keyboard.enable();
