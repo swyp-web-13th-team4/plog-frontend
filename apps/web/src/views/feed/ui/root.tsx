@@ -25,6 +25,7 @@ import {
   type FeedTag,
   useInfiniteFeedQuery,
 } from '../model/query/useInfiniteScroll';
+import ScrollToTopButton from './ScrollToTopButton';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
@@ -126,6 +127,11 @@ export default function FeedPage() {
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
   });
+  const { ref: topRef, inView: isTopAreaVisible } = useInView({
+    threshold: 0,
+  });
+  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
+    useState(false);
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
   const router = useRouter();
 
@@ -162,6 +168,21 @@ export default function FeedPage() {
     }
   }, [inView, fetchNextPage]);
 
+  useEffect(() => {
+    const updateScrollableState = () => {
+      setCanShowScrollToTopButton(
+        document.documentElement.scrollHeight > window.innerHeight,
+      );
+    };
+
+    updateScrollableState();
+    window.addEventListener('resize', updateScrollableState);
+
+    return () => {
+      window.removeEventListener('resize', updateScrollableState);
+    };
+  }, [posts.length]);
+
   if (isPending) {
     return (
       <section className="flex min-h-screen items-center justify-center">
@@ -194,7 +215,8 @@ export default function FeedPage() {
   }
 
   return (
-    <section>
+    <section className="relative">
+      <div ref={topRef} aria-hidden="true" className="h-px w-full" />
       {posts.map((data, index) => (
         <div
           key={data.POST_INFO.id}
@@ -345,6 +367,9 @@ export default function FeedPage() {
           마지막 기록까지 확인했어요
         </p>
       )}
+      <ScrollToTopButton
+        visible={canShowScrollToTopButton && !isTopAreaVisible}
+      />
     </section>
   );
 }
