@@ -4,7 +4,7 @@ import 'swiper/css/pagination';
 import { Children, type ReactNode, useRef } from 'react';
 
 import { cn } from '@plog/utils';
-import { Keyboard, Pagination } from 'swiper/modules';
+import { A11y, Keyboard, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper/types';
 
@@ -39,10 +39,6 @@ function CarouselRoot({
 
   return (
     <div
-      role="region"
-      aria-roledescription="carousel"
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledBy}
       className={cn(
         'relative w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-alternative',
         '[--swiper-pagination-bottom:12px] [--swiper-pagination-bullet-horizontal-gap:6px] [--swiper-pagination-color:white]',
@@ -51,6 +47,7 @@ function CarouselRoot({
         !isSingle && 'cursor-grab active:cursor-grabbing',
         className,
       )}
+      aria-controls="carousel-swiper"
       tabIndex={0}
       onFocus={() => {
         swiperRef.current?.keyboard.enable();
@@ -60,7 +57,17 @@ function CarouselRoot({
       }}
     >
       <Swiper
-        modules={[Keyboard, Pagination]}
+        className="w-full"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        modules={[A11y, Keyboard, Pagination]}
+        a11y={{
+          enabled: true,
+          containerRole: 'region',
+          containerRoleDescriptionMessage: 'carousel',
+          itemRoleDescriptionMessage: 'slide',
+          slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
+        }}
         keyboard={{ enabled: false }}
         pagination={isSingle ? false : { clickable: false }}
         allowTouchMove={!isSingle}
@@ -70,7 +77,6 @@ function CarouselRoot({
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
         }}
-        className="w-full"
       >
         {children}
       </Swiper>
@@ -81,8 +87,6 @@ function CarouselRoot({
 function Slide({ children, className }: CarouselSlideProps) {
   return (
     <SwiperSlide
-      role="group"
-      aria-roledescription="slide"
       className={cn(
         'relative aspect-square [&_img]:h-full [&_img]:w-full [&_img]:object-cover [&_img]:drag-none',
         className,
