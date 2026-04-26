@@ -42,7 +42,7 @@ function CarouselRoot({
       role="region"
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
-      aria-roledescription="carousel"
+      aria-roledescription="캐러셀"
       className={cn(
         'relative w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-alternative',
         '[--swiper-pagination-bottom:12px] [--swiper-pagination-bullet-horizontal-gap:6px] [--swiper-pagination-color:white]',
@@ -64,7 +64,7 @@ function CarouselRoot({
         modules={[A11y, Keyboard, Pagination]}
         a11y={{
           enabled: true,
-          itemRoleDescriptionMessage: 'slide',
+          itemRoleDescriptionMessage: '슬라이드',
           slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
         }}
         keyboard={{ enabled: false }}
