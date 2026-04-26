@@ -4,6 +4,7 @@ export * from './components/Badge';
 export * from './components/BottomNavigation';
 export * from './components/BottomSheet';
 export * from './components/Button';
+export * from './components/Carousel';
 export * from './components/Checkbox';
 export * from './components/Chip';
 export * from './components/DatePicker';
