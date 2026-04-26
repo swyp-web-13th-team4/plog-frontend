@@ -71,7 +71,7 @@ function CarouselRoot({
         keyboard={{ enabled: false }}
         pagination={isSingle ? false : { clickable: false }}
         allowTouchMove={!isSingle}
-        loop={loop}
+        loop={!isSingle && loop}
         initialSlide={initialSlide}
         onSlideChange={(swiper) => onChange?.(swiper.realIndex)}
         onSwiper={(swiper) => {
