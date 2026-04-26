@@ -21,7 +21,6 @@ function EmptyState({
 
   return (
     <div
-      role="region"
       aria-labelledby={titleId}
       className={cn(
         'flex flex-col items-center gap-2.5 text-center',
@@ -37,9 +36,9 @@ function EmptyState({
         </div>
       )}
       <div className="flex flex-col items-center gap-1.5">
-        <p id={titleId} className="label-lg text-semantic-object-bold">
+        <h2 id={titleId} className="label-lg text-semantic-object-bold">
           {title}
-        </p>
+        </h2>
         {description && (
           <p className="body-sm line-clamp-3 whitespace-pre-line text-semantic-object-normal">
             {description}
