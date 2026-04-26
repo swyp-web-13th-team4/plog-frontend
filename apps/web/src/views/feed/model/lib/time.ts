@@ -24,3 +24,9 @@ export function formatTimeAgo(time: Date | string | number) {
   const yearDiff = Math.floor(dayDiff / 365);
   return `${yearDiff}년 전`;
 }
+
+export function formatStudyDate(time: Date | string | number) {
+  const date = new Date(time);
+
+  return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+}
