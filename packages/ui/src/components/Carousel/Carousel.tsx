@@ -39,6 +39,10 @@ function CarouselRoot({
 
   return (
     <div
+      role="region"
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      aria-roledescription="carousel"
       className={cn(
         'relative w-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-alternative',
         '[--swiper-pagination-bottom:12px] [--swiper-pagination-bullet-horizontal-gap:6px] [--swiper-pagination-color:white]',
@@ -57,13 +61,9 @@ function CarouselRoot({
     >
       <Swiper
         className="w-full"
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledBy}
         modules={[A11y, Keyboard, Pagination]}
         a11y={{
           enabled: true,
-          containerRole: 'region',
-          containerRoleDescriptionMessage: 'carousel',
           itemRoleDescriptionMessage: 'slide',
           slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
         }}
