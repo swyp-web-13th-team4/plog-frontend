@@ -45,7 +45,7 @@ function EmptyState({
           </p>
         )}
       </div>
-      {actions}
+      {actions && <div className="mt-2.5">{actions}</div>}
     </div>
   );
 }
