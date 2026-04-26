@@ -77,7 +77,9 @@ function CarouselRoot({
           swiperRef.current = swiper;
         }}
       >
-        {children}
+        {Children.map(children, (child) => (
+          <SwiperSlide>{child}</SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
@@ -85,7 +87,7 @@ function CarouselRoot({
 
 function Slide({ children, className }: CarouselSlideProps) {
   return (
-    <SwiperSlide
+    <div
       className={cn(
         'relative aspect-square [&_img]:h-full [&_img]:w-full [&_img]:object-cover [&_img]:drag-none',
         className,
@@ -93,10 +95,9 @@ function Slide({ children, className }: CarouselSlideProps) {
     >
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_72.08%,rgba(0,0,0,0.5)_100%)]" />
       {children}
-    </SwiperSlide>
+    </div>
   );
 }
-Slide.displayName = 'SwiperSlide';
 
 const Carousel = Object.assign(CarouselRoot, { Slide });
 
