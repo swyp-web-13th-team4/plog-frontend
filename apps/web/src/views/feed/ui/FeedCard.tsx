@@ -15,6 +15,7 @@ import FillBookmarkIcon from '@/shared/assets/icons/fill_bookmark.svg';
 import FillHeartIcon from '@/shared/assets/icons/fill_heart.svg';
 import ShareIcon from '@/shared/assets/icons/share.svg';
 
+import { formatStudyDate, formatTimeAgo } from '../model/lib/time';
 import { type FeedPost, type FeedTag } from '../model/query/useInfiniteScroll';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
@@ -134,7 +135,7 @@ export default function FeedCard({
             {POST_INFO.USER_INFO.nickname}
           </span>
           <span className="caption-md text-semantic-object-normal">
-            {POST_INFO.createdAt}
+            {formatTimeAgo(POST_INFO.createdAt)}
           </span>
         </div>
       </div>
@@ -209,7 +210,7 @@ export default function FeedCard({
                 </div>
               </div>
               <span className="caption-md text-semantic-object-subtle">
-                {POST_INFO.PLACE_INFO.studyDate}
+                {formatStudyDate(POST_INFO.PLACE_INFO.studyDate)}
               </span>
             </div>
             <TagBadgeGroup tags={POST_INFO.tags} />

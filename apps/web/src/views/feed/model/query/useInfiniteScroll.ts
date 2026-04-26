@@ -47,7 +47,7 @@ export type FeedPage = {
   nextPage: number | undefined;
 };
 
-export const BASE_FEED_DATA: FeedPost[] = [
+const MOCK_FEED_DATA: FeedPost[] = [
   {
     POST_INFO: {
       id: '1',
@@ -58,11 +58,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '승민',
         profileImage: profileImageSrc,
       },
-      createdAt: '1시간 전',
+      createdAt: '2026-04-26T16:54:45.000Z',
       heartCount: 213219,
       title: '동네 카페 작업 일지',
       content:
-        '광화문 근처에서 작업하기 좋은 곳을 드디어 찾았다. 재즈 음악이 흐르지만 소음이 적당해서 집중하기 딱 좋다. 특히 오후 2시쯤 창가 자리는 채광이 정말 예뻐서 사진 찍기에도 최고. 와이파이도 끊김 없고 테이블 높이도 적당해서 자주 오게 될 것 같은 느낌!',
+        '광화문 근처에서 작업하기 좋은 곳을 드디어 찾았다. 재즈 음악이 흐르지만 소음이 적당해서 집중하기 딱 좋다.',
       image: postImageSrc,
       tags: [
         { id: '1-1', name: '#카페' },
@@ -72,7 +72,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '1',
         placeName: '스타벅스 광화문점',
-        studyDate: '2026년 4월 16일',
+        studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '2시간 30분',
         concentrateCount: 4,
       },
@@ -88,11 +88,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '민서',
         profileImage: profileImageSrc,
       },
-      createdAt: '2시간 전',
+      createdAt: '2026-04-26T16:52:00.000Z',
       heartCount: 24,
       title: '조용한 도서관 라운지 발견',
       content:
-        '주말 오전에 사람이 많지 않은 공간을 찾다가 들렀는데 생각보다 훨씬 만족스러웠다. 좌석 간 간격이 넓어서 답답하지 않고, 콘센트도 자리마다 가까워서 노트북 작업하기 편했다. 커피 향이 은은하게 나고 전체적으로 차분한 분위기라서 긴 글을 써야 할 때 다시 오고 싶다.',
+        '주말 오전에 들렀는데 좌석 간 간격이 넓고 콘센트도 가까워서 노트북 작업하기 편했다.',
       image: postImageSrc,
       tags: [
         { id: '2-1', name: '#도서관' },
@@ -102,7 +102,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '2',
         placeName: '시청 북라운지',
-        studyDate: '2026년 4월 17일',
+        studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '3시간 10분',
         concentrateCount: 5,
       },
@@ -118,11 +118,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '도윤',
         profileImage: profileImageSrc,
       },
-      createdAt: '3시간 전',
+      createdAt: '2026-04-26T16:43:00.000Z',
       heartCount: 17,
       title: '비 오는 날엔 이 카페',
       content:
-        '창문이 크게 나 있어서 비 오는 풍경을 보며 작업하기 좋았다. 잔잔한 플레이리스트가 계속 나와서 집중 흐름도 끊기지 않았고, 디저트가 너무 달지 않아서 커피랑 같이 먹기 좋았다. 오후 늦게 가면 살짝 붐비긴 하지만, 그래도 재방문 의사는 충분하다.',
+        '창문이 크게 나 있어서 비 오는 풍경을 보며 작업하기 좋았다. 플레이리스트도 잔잔해서 마음에 들었다.',
       image: postImageSrc,
       tags: [
         { id: '3-1', name: '#비오는날' },
@@ -132,7 +132,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '3',
         placeName: '레인드롭 카페',
-        studyDate: '2026년 4월 18일',
+        studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '1시간 45분',
         concentrateCount: 3,
       },
@@ -148,10 +148,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '하린',
         profileImage: profileImageSrc,
       },
-      createdAt: '5시간 전',
+      createdAt: '2026-04-26T15:56:00.000Z',
       heartCount: 31,
       title: '콘센트 맛집 작업 공간',
-      content: '노트북이랑 태블릿을 같이 써야 해서 콘센트 위치가중요함123456',
+      content:
+        '노트북이랑 태블릿을 같이 써야 해서 콘센트 위치가 중요했는데 자리 배치가 좋아서 오래 앉아도 편했다.',
       image: postImageSrc,
       tags: [
         { id: '4-1', name: '#콘센트맛집' },
@@ -161,7 +162,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '4',
         placeName: '워크룸 성수',
-        studyDate: '2026년 4월 19일',
+        studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '4시간 5분',
         concentrateCount: 2,
       },
@@ -177,11 +178,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '지후',
         profileImage: profileImageSrc,
       },
-      createdAt: '6시간 전',
+      createdAt: '2026-04-26T15:55:00.000Z',
       heartCount: 8,
       title: '짧게 몰입하기 좋았던 곳',
       content:
-        '잠깐 할 일 정리하려고 들어갔는데 예상보다 집중이 잘 됐다. 매장이 크진 않지만 동선이 복잡하지 않고 음악 소리도 크지 않아서 짧은 시간 안에 할 일을 끝내기 좋았다. 음료 가격도 무난해서 근처 올 때 부담 없이 들를 수 있을 것 같다.',
+        '잠깐 할 일 정리하려고 들어갔는데 예상보다 집중이 잘 됐다. 매장 동선도 단순해서 편했다.',
       image: postImageSrc,
       tags: [
         { id: '5-1', name: '#짧은시간' },
@@ -191,7 +192,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '5',
         placeName: '카페 모먼트',
-        studyDate: '2026년 4월 20일',
+        studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '1시간 20분',
         concentrateCount: 2,
       },
@@ -207,11 +208,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '서윤',
         profileImage: profileImageSrc,
       },
-      createdAt: '8시간 전',
+      createdAt: '2026-04-26T14:55:00.000Z',
       heartCount: 42,
       title: '오전 집중력이 잘 나왔던 스팟',
       content:
-        '아침 일찍 방문했더니 햇살이 부드럽게 들어와서 기분 좋게 시작할 수 있었다. 테이블이 넓어서 책이랑 노트북을 같이 펼쳐도 공간이 남았고, 전체적으로 정돈된 분위기 덕분에 산만해지지 않았다. 오전 공부 루틴 만들기에 꽤 괜찮은 장소다.',
+        '햇살이 부드럽게 들어와서 기분 좋게 시작할 수 있었다. 테이블도 넓어서 책과 노트북을 같이 펼치기 좋았다.',
       image: postImageSrc,
       tags: [
         { id: '6-1', name: '#오전' },
@@ -221,7 +222,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '6',
         placeName: '라이트업 커피',
-        studyDate: '2026년 4월 21일',
+        studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '2시간 50분',
         concentrateCount: 4,
       },
@@ -237,11 +238,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '예준',
         profileImage: profileImageSrc,
       },
-      createdAt: '10시간 전',
+      createdAt: '2026-04-26T13:55:00.000Z',
       heartCount: 13,
-      title: '사람은 많지만 이상하게 집중되는 분위기',
+      title: '사람은 많지만 집중되는 분위기',
       content:
-        '처음엔 조금 시끄러울까 걱정했는데 오히려 적당한 생활 소음 덕분에 더 몰입됐다. 주변에 혼자 작업하는 사람이 많아서 자연스럽게 나도 집중 모드로 들어가게 되는 느낌이다. 좌석 회전도 빠른 편이라 기다림 없이 앉을 수 있었던 것도 좋았다.',
+        '적당한 생활 소음 덕분에 오히려 더 몰입됐다. 주변에도 혼자 작업하는 사람이 많아서 분위기가 좋았다.',
       image: postImageSrc,
       tags: [
         { id: '7-1', name: '#사람많은' },
@@ -251,7 +252,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '7',
         placeName: '브루클린 로스터스',
-        studyDate: '2026년 4월 21일',
+        studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '2시간 15분',
         concentrateCount: 4,
       },
@@ -267,11 +268,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '가은',
         profileImage: profileImageSrc,
       },
-      createdAt: '12시간 전',
+      createdAt: '2026-04-25T19:55:00.000Z',
       heartCount: 27,
       title: '팀플 준비하기 괜찮은 좌석 구성',
       content:
-        '혼자 정리하는 시간도 좋았지만, 나중에 둘이 같이 와서 이야기 나누기에도 괜찮겠다는 생각이 들었다. 좌석 간 간섭이 심하지 않고, 테이블 폭이 넉넉해서 자료 펼쳐두기 편했다. 매장 조명이 너무 노랗지 않아서 눈이 덜 피로한 것도 만족 포인트.',
+        '혼자 정리하는 시간도 좋았지만 둘이 같이 와서 이야기 나누기에도 괜찮겠다는 생각이 들었다.',
       image: postImageSrc,
       tags: [
         { id: '8-1', name: '#팀플' },
@@ -281,7 +282,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '8',
         placeName: '커먼테이블 을지로',
-        studyDate: '2026년 4월 22일',
+        studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '3시간 25분',
         concentrateCount: 5,
       },
@@ -297,11 +298,11 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '현우',
         profileImage: profileImageSrc,
       },
-      createdAt: '1일 전',
+      createdAt: '2026-04-25T18:55:00.000Z',
       heartCount: 19,
       title: '재방문 확정한 저녁 작업 장소',
       content:
-        '저녁 시간대에 방문했는데 조명이 너무 어둡지 않아서 작업하기 편했다. 의외로 늦은 시간까지도 분위기가 안정적이었고, 직원 응대도 빠르고 친절해서 전반적인 경험이 좋았다. 특히 마감 전까지 와이파이가 안정적으로 유지돼서 화상 회의도 무리 없었다.',
+        '조명이 너무 어둡지 않아서 작업하기 편했고 와이파이도 안정적으로 유지돼서 만족스러웠다.',
       image: postImageSrc,
       tags: [
         { id: '9-1', name: '#저녁' },
@@ -311,7 +312,7 @@ export const BASE_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '9',
         placeName: '문라이트 스터디카페',
-        studyDate: '2026년 4월 22일',
+        studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '2시간 40분',
         concentrateCount: 4,
       },
@@ -327,59 +328,631 @@ export const BASE_FEED_DATA: FeedPost[] = [
         nickname: '채원',
         profileImage: profileImageSrc,
       },
-      createdAt: '1일 전',
+      createdAt: '2026-04-24T18:55:00.000Z',
       heartCount: 35,
       title: '창가 자리가 특히 좋았던 곳',
       content:
-        '오후 햇빛이 비치는 시간대에 앉았는데 공간 분위기가 정말 좋아서 시작부터 만족스러웠다. 자리마다 간격이 적당하고 주변 소음도 낮아서 글쓰기나 기획 정리에 잘 맞았다. 커피 맛도 무난하게 괜찮아서 작업 공간으로 재사용하기 좋은 밸런스였다.',
+        '오후 햇빛이 비치는 시간대에 앉았는데 공간 분위기가 정말 좋아서 시작부터 만족스러웠다.',
       image: postImageSrc,
       tags: [
         { id: '10-1', name: '#창가자리' },
         { id: '10-2', name: '#오후' },
         { id: '10-3', name: '#카페' },
-        { id: '10-4', name: '#작업카페' },
-        { id: '10-5', name: '#채광좋음' },
+        { id: '10-4', name: '#채광좋음' },
       ],
       PLACE_INFO: {
         id: '10',
         placeName: '플로우 커피하우스',
-        studyDate: '2026년 4월 23일',
+        studyDate: '2026-04-25T00:00:00.000Z',
         studyTime: '3시간',
         concentrateCount: 4,
       },
     },
   },
-];
-
-const MOCK_FEED_DATA = Array.from({ length: 3 }, (_, pageIndex) =>
-  BASE_FEED_DATA.map((post, postIndex) => ({
-    ...post,
+  {
     POST_INFO: {
-      ...post.POST_INFO,
-      id: String(pageIndex * BASE_FEED_DATA.length + postIndex + 1),
-      createdAt:
-        pageIndex === 0
-          ? post.POST_INFO.createdAt
-          : `${pageIndex + 1}페이지 · ${post.POST_INFO.createdAt}`,
-      title:
-        pageIndex === 0
-          ? post.POST_INFO.title
-          : `${post.POST_INFO.title} ${pageIndex + 1}`,
+      id: '11',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '11',
+        nickname: '유진',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-04-20T18:55:00.000Z',
+      heartCount: 61,
+      title: '회의 전 빠르게 정리하기 좋은 라운지',
+      content:
+        '미팅 전에 잠깐 정리할 곳이 필요했는데 좌석이 편하고 주변이 조용해서 짧은 시간에도 효율이 잘 나왔다.',
+      image: postImageSrc,
+      tags: [
+        { id: '11-1', name: '#라운지' },
+        { id: '11-2', name: '#빠른정리' },
+        { id: '11-3', name: '#역세권' },
+      ],
       PLACE_INFO: {
-        ...post.POST_INFO.PLACE_INFO,
-        id: String(pageIndex * BASE_FEED_DATA.length + postIndex + 1),
+        id: '11',
+        placeName: '센트럴 라운지',
+        studyDate: '2026-04-21T00:00:00.000Z',
+        studyTime: '55분',
+        concentrateCount: 3,
       },
     },
-  })),
-).flat();
+  },
+  {
+    POST_INFO: {
+      id: '12',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '12',
+        nickname: '정우',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-04-19T18:55:00.000Z',
+      heartCount: 5,
+      title: '조도 낮은 공간 좋아하면 추천',
+      content:
+        '조명이 차분해서 저녁 시간에 머리 식히며 정리하기 좋았다. 음악도 과하지 않아서 흐름이 깨지지 않았다.',
+      image: postImageSrc,
+      tags: [
+        { id: '12-1', name: '#조명' },
+        { id: '12-2', name: '#저녁공간' },
+        { id: '12-3', name: '#집중' },
+      ],
+      PLACE_INFO: {
+        id: '12',
+        placeName: '어스톤 북카페',
+        studyDate: '2026-04-20T00:00:00.000Z',
+        studyTime: '1시간 35분',
+        concentrateCount: 3,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '13',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '13',
+        nickname: '소연',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-04-18T18:55:00.000Z',
+      heartCount: 88,
+      title: '자료 조사할 때 다시 오고 싶은 곳',
+      content:
+        '검색하고 메모하는 흐름이 끊기지 않을 만큼 자리가 안정적이었다. 오래 있어도 꽤 편했다.',
+      image: postImageSrc,
+      tags: [
+        { id: '13-1', name: '#리서치' },
+        { id: '13-2', name: '#장시간' },
+        { id: '13-3', name: '#테이블' },
+      ],
+      PLACE_INFO: {
+        id: '13',
+        placeName: '아카이브 카페',
+        studyDate: '2026-04-19T00:00:00.000Z',
+        studyTime: '3시간 40분',
+        concentrateCount: 4,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '14',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '14',
+        nickname: '태윤',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-04-13T18:55:00.000Z',
+      heartCount: 22,
+      title: '노트 필기하기 편했던 큰 테이블',
+      content:
+        '노트북 옆에 공책까지 펼쳐야 해서 넓은 자리가 필요했는데 여기 테이블이 딱 좋았다.',
+      image: postImageSrc,
+      tags: [
+        { id: '14-1', name: '#큰테이블' },
+        { id: '14-2', name: '#필기' },
+        { id: '14-3', name: '#작업카페' },
+      ],
+      PLACE_INFO: {
+        id: '14',
+        placeName: '오브제 커피랩',
+        studyDate: '2026-04-14T00:00:00.000Z',
+        studyTime: '2시간 5분',
+        concentrateCount: 4,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '15',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '15',
+        nickname: '다은',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-04-06T18:55:00.000Z',
+      heartCount: 140,
+      title: '몰입감이 오래 유지된 조용한 공간',
+      content:
+        '처음 앉고 나서 한 번도 산만해지지 않을 정도로 전체 분위기가 차분했다. 긴 작업 세션에도 좋았다.',
+      image: postImageSrc,
+      tags: [
+        { id: '15-1', name: '#몰입' },
+        { id: '15-2', name: '#조용한공간' },
+        { id: '15-3', name: '#장시간' },
+      ],
+      PLACE_INFO: {
+        id: '15',
+        placeName: '하버 스터디룸',
+        studyDate: '2026-04-07T00:00:00.000Z',
+        studyTime: '4시간 20분',
+        concentrateCount: 5,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '16',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '16',
+        nickname: '준호',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-04-05T18:55:00.000Z',
+      heartCount: 16,
+      title: '오후에 사람 빠질 때가 진짜 좋다',
+      content:
+        '오후 늦게부터 한결 여유로워졌다. 그 시간대부터는 집중 흐름이 훨씬 좋아서 다음에도 그때 오고 싶다.',
+      image: postImageSrc,
+      tags: [
+        { id: '16-1', name: '#오후' },
+        { id: '16-2', name: '#한산한시간' },
+        { id: '16-3', name: '#재방문' },
+      ],
+      PLACE_INFO: {
+        id: '16',
+        placeName: '레이어드 커피',
+        studyDate: '2026-04-06T00:00:00.000Z',
+        studyTime: '2시간 10분',
+        concentrateCount: 3,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '17',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '17',
+        nickname: '연우',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-03-27T18:55:00.000Z',
+      heartCount: 77,
+      title: '30일 이후 달 전 케이스 확인용',
+      content:
+        '달 전 표기가 자연스럽게 보이는지 확인하려고 시간을 다양하게 넣어봤다. 카드 레이아웃 점검하기 좋다.',
+      image: postImageSrc,
+      tags: [
+        { id: '17-1', name: '#테스트' },
+        { id: '17-2', name: '#달전' },
+        { id: '17-3', name: '#목데이터' },
+      ],
+      PLACE_INFO: {
+        id: '17',
+        placeName: '테스트 스팟 A',
+        studyDate: '2026-03-28T00:00:00.000Z',
+        studyTime: '1시간 50분',
+        concentrateCount: 4,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '18',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '18',
+        nickname: '수빈',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-03-12T18:55:00.000Z',
+      heartCount: 54,
+      title: '45일 전 데이터도 자연스럽게 보이는지',
+      content:
+        '상대 시간 포맷은 경계값에서 어색해지기 쉬워서 45일 정도 케이스도 넣어두는 편이 도움이 된다.',
+      image: postImageSrc,
+      tags: [
+        { id: '18-1', name: '#경계값' },
+        { id: '18-2', name: '#상대시간' },
+        { id: '18-3', name: '#디자인체크' },
+      ],
+      PLACE_INFO: {
+        id: '18',
+        placeName: '테스트 스팟 B',
+        studyDate: '2026-03-12T00:00:00.000Z',
+        studyTime: '2시간',
+        concentrateCount: 3,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '19',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '19',
+        nickname: '시우',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-02-25T18:55:00.000Z',
+      heartCount: 92,
+      title: '두 달 전 느낌 점검',
+      content:
+        '두 달 전 같은 문구가 카드 텍스트 길이 안에서 안정적으로 보이는지 같이 보려고 넣은 샘플이다.',
+      image: postImageSrc,
+      tags: [
+        { id: '19-1', name: '#두달전' },
+        { id: '19-2', name: '#타이포' },
+        { id: '19-3', name: '#검수' },
+      ],
+      PLACE_INFO: {
+        id: '19',
+        placeName: '테스트 스팟 C',
+        studyDate: '2026-02-26T00:00:00.000Z',
+        studyTime: '3시간 5분',
+        concentrateCount: 5,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '20',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '20',
+        nickname: '은호',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2026-01-26T18:55:00.000Z',
+      heartCount: 38,
+      title: '세 달 전 예시 데이터',
+      content:
+        '주 단위에서 달 단위로 넘어가는 체감이 중요해서 오래된 기록도 함께 보는 게 좋다.',
+      image: postImageSrc,
+      tags: [
+        { id: '20-1', name: '#세달전' },
+        { id: '20-2', name: '#피드' },
+        { id: '20-3', name: '#오래된기록' },
+      ],
+      PLACE_INFO: {
+        id: '20',
+        placeName: '테스트 스팟 D',
+        studyDate: '2026-01-27T00:00:00.000Z',
+        studyTime: '1시간 15분',
+        concentrateCount: 2,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '21',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '21',
+        nickname: '지안',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-12-27T18:55:00.000Z',
+      heartCount: 64,
+      title: '네 달 전 카드도 섞어두기',
+      content:
+        '목업 검수에서는 최근 데이터만 보기 쉬운데 오래된 상대 시간도 같이 보는 편이 안전하다.',
+      image: postImageSrc,
+      tags: [
+        { id: '21-1', name: '#네달전' },
+        { id: '21-2', name: '#목업' },
+        { id: '21-3', name: '#검수용' },
+      ],
+      PLACE_INFO: {
+        id: '21',
+        placeName: '테스트 스팟 E',
+        studyDate: '2025-12-28T00:00:00.000Z',
+        studyTime: '2시간 30분',
+        concentrateCount: 4,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '22',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '22',
+        nickname: '재민',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-10-28T18:55:00.000Z',
+      heartCount: 11,
+      title: '반년 전 케이스도 확인',
+      content:
+        '반년 전은 숫자가 조금 커지기 시작해서 시선 분산이 생길 수 있다. 헤더 타이포와 같이 보면 좋다.',
+      image: postImageSrc,
+      tags: [
+        { id: '22-1', name: '#반년전' },
+        { id: '22-2', name: '#타이포' },
+        { id: '22-3', name: '#레이아웃' },
+      ],
+      PLACE_INFO: {
+        id: '22',
+        placeName: '테스트 스팟 F',
+        studyDate: '2025-10-29T00:00:00.000Z',
+        studyTime: '2시간 45분',
+        concentrateCount: 3,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '23',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '23',
+        nickname: '나윤',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-08-29T18:55:00.000Z',
+      heartCount: 29,
+      title: '8개월 전 표시 확인',
+      content:
+        '8달 전 같은 케이스도 실제로는 자주 보이기 때문에 헤더가 안정적으로 보이는지 체크했다.',
+      image: postImageSrc,
+      tags: [
+        { id: '23-1', name: '#8개월전' },
+        { id: '23-2', name: '#헤더' },
+        { id: '23-3', name: '#상대시간' },
+      ],
+      PLACE_INFO: {
+        id: '23',
+        placeName: '테스트 스팟 G',
+        studyDate: '2025-08-30T00:00:00.000Z',
+        studyTime: '1시간 55분',
+        concentrateCount: 2,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '24',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '24',
+        nickname: '서하',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-06-30T18:55:00.000Z',
+      heartCount: 102,
+      title: '10개월 전 데이터 샘플',
+      content:
+        '10달 전 문구가 시각적으로 너무 튀지 않는지도 같이 볼 수 있도록 넣어둔 샘플이다.',
+      image: postImageSrc,
+      tags: [
+        { id: '24-1', name: '#10개월전' },
+        { id: '24-2', name: '#샘플' },
+        { id: '24-3', name: '#피드카드' },
+      ],
+      PLACE_INFO: {
+        id: '24',
+        placeName: '테스트 스팟 H',
+        studyDate: '2025-07-01T00:00:00.000Z',
+        studyTime: '3시간 20분',
+        concentrateCount: 5,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '25',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '25',
+        nickname: '민재',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-04-27T18:55:00.000Z',
+      heartCount: 46,
+      title: '거의 1년 전 직전 데이터',
+      content:
+        '연 전으로 넘어가기 직전 숫자도 확인하면 경계에서 기대한 표현이 나오는지 확실히 볼 수 있다.',
+      image: postImageSrc,
+      tags: [
+        { id: '25-1', name: '#364일' },
+        { id: '25-2', name: '#경계테스트' },
+        { id: '25-3', name: '#직전값' },
+      ],
+      PLACE_INFO: {
+        id: '25',
+        placeName: '테스트 스팟 I',
+        studyDate: '2025-04-28T00:00:00.000Z',
+        studyTime: '2시간 35분',
+        concentrateCount: 4,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '26',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '26',
+        nickname: '아윤',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-04-26T18:55:00.000Z',
+      heartCount: 58,
+      title: '딱 1년 전 케이스',
+      content:
+        '1년 전으로 바뀌는 지점은 제품에서 자주 체크하는 경계라서 의도적으로 분리해두는 게 좋다.',
+      image: postImageSrc,
+      tags: [
+        { id: '26-1', name: '#1년전' },
+        { id: '26-2', name: '#경계값' },
+        { id: '26-3', name: '#검증' },
+      ],
+      PLACE_INFO: {
+        id: '26',
+        placeName: '테스트 스팟 J',
+        studyDate: '2025-04-27T00:00:00.000Z',
+        studyTime: '1시간 40분',
+        concentrateCount: 3,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '27',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '27',
+        nickname: '선우',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2025-03-22T18:55:00.000Z',
+      heartCount: 25,
+      title: '1년 조금 지난 기록',
+      content:
+        '365일 이후와 400일 이후가 모두 1년 전으로 보일 텐데 이게 의도된 동작인지 확인하기 위한 데이터다.',
+      image: postImageSrc,
+      tags: [
+        { id: '27-1', name: '#400일' },
+        { id: '27-2', name: '#1년전' },
+        { id: '27-3', name: '#오래된기록' },
+      ],
+      PLACE_INFO: {
+        id: '27',
+        placeName: '테스트 스팟 K',
+        studyDate: '2025-03-23T00:00:00.000Z',
+        studyTime: '2시간 5분',
+        concentrateCount: 3,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '28',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '28',
+        nickname: '주원',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2024-12-12T18:55:00.000Z',
+      heartCount: 71,
+      title: '500일 전 기록 샘플',
+      content:
+        '연 단위 표기는 숫자 변화가 느리기 때문에 오래된 기록 여러 개를 함께 섞어볼 필요가 있다.',
+      image: postImageSrc,
+      tags: [
+        { id: '28-1', name: '#500일' },
+        { id: '28-2', name: '#연단위' },
+        { id: '28-3', name: '#시간포맷' },
+      ],
+      PLACE_INFO: {
+        id: '28',
+        placeName: '테스트 스팟 L',
+        studyDate: '2024-12-13T00:00:00.000Z',
+        studyTime: '3시간 15분',
+        concentrateCount: 4,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '29',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '29',
+        nickname: '하준',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2024-04-26T18:55:00.000Z',
+      heartCount: 90,
+      title: '2년 전 표시 예시',
+      content:
+        '2년 전 문구는 한눈에 오래된 기록으로 보이기 때문에 헤더 정보 계층도와 함께 보는 것이 중요하다.',
+      image: postImageSrc,
+      tags: [
+        { id: '29-1', name: '#2년전' },
+        { id: '29-2', name: '#계층' },
+        { id: '29-3', name: '#피드정보' },
+      ],
+      PLACE_INFO: {
+        id: '29',
+        placeName: '테스트 스팟 M',
+        studyDate: '2024-04-27T00:00:00.000Z',
+        studyTime: '2시간 55분',
+        concentrateCount: 5,
+      },
+    },
+  },
+  {
+    POST_INFO: {
+      id: '30',
+      isLiked: false,
+      isBookmarked: false,
+      USER_INFO: {
+        id: '30',
+        nickname: '다온',
+        profileImage: profileImageSrc,
+      },
+      createdAt: '2023-01-13T18:55:00.000Z',
+      heartCount: 14,
+      title: '3년 전까지도 UI 확인',
+      content:
+        '3년 전 정도까지 가도 헤더가 무너지지 않는지 보려고 넣은 마지막 목데이터다.',
+      image: postImageSrc,
+      tags: [
+        { id: '30-1', name: '#3년전' },
+        { id: '30-2', name: '#마지막샘플' },
+        { id: '30-3', name: '#UI확인' },
+      ],
+      PLACE_INFO: {
+        id: '30',
+        placeName: '테스트 스팟 N',
+        studyDate: '2023-01-14T00:00:00.000Z',
+        studyTime: '1시간 25분',
+        concentrateCount: 2,
+      },
+    },
+  },
+];
 
 async function fetchFeedPage(pageParam: number): Promise<FeedPage> {
   await new Promise((resolve) => setTimeout(resolve, 400));
-
-  // 강제로 네트워크 오류 발생시키기(테스트용)
-  // if (pageParam === 1) {
-  //   throw new Error('네트워크 오류 발생');
-  // }
 
   const start = pageParam * PAGE_SIZE;
   const end = start + PAGE_SIZE;
