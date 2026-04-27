@@ -12,6 +12,7 @@ type CarouselProps = {
   loop?: boolean;
   initialSlide?: number;
   onChange?: (index: number) => void;
+  onSwiper?: (swiper: SwiperType) => void;
   className?: string;
   children: ReactNode;
 } & (
@@ -28,6 +29,7 @@ function CarouselRoot({
   loop = false,
   initialSlide = 0,
   onChange,
+  onSwiper,
   className,
   children,
   'aria-label': ariaLabel,
@@ -75,6 +77,7 @@ function CarouselRoot({
         onSlideChange={(swiper) => onChange?.(swiper.realIndex)}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
+          onSwiper?.(swiper);
         }}
       >
         {Children.map(children, (child) => (

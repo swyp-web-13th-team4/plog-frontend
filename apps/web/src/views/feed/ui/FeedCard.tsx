@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -13,12 +13,21 @@ import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
 import EmptyHeartIcon from '@/shared/assets/icons/empty_heart.svg';
 import FillBookmarkIcon from '@/shared/assets/icons/fill_bookmark.svg';
 import FillHeartIcon from '@/shared/assets/icons/fill_heart.svg';
+import LeftIcon from '@/shared/assets/icons/left_arrow.svg';
+import RightIcon from '@/shared/assets/icons/right_arrow.svg';
 import ShareIcon from '@/shared/assets/icons/share.svg';
 
 import { formatStudyDate, formatTimeAgo } from '../model/lib/time';
 import { type FeedPost, type FeedTag } from '../model/query/useInfiniteScroll';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
+
+type FeedCarouselController = {
+  slidePrev: () => void;
+  slideNext: () => void;
+  isBeginning: boolean;
+  isEnd: boolean;
+};
 
 type FeedCardProps = {
   post: FeedPost;
@@ -121,6 +130,19 @@ export default function FeedCard({
   onShare,
 }: FeedCardProps) {
   const { POST_INFO } = post;
+  const carouselRef = useRef<FeedCarouselController | null>(null);
+  const [carouselState, setCarouselState] = useState({
+    isBeginning: true,
+    isEnd: POST_INFO.image.length <= 1,
+  });
+  const hasMultipleImages = POST_INFO.image.length > 1;
+
+  const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
+    setCarouselState({
+      isBeginning: swiper.isBeginning,
+      isEnd: swiper.isEnd,
+    });
+  };
 
   return (
     <div className={isLast ? '' : 'mb-13.5'}>
@@ -140,19 +162,67 @@ export default function FeedCard({
         </div>
       </div>
       <div className="flex flex-col">
-        <Carousel aria-label={`${POST_INFO.title} 이미지 캐러셀`}>
-          {POST_INFO.image.map((imageSrc, index) => (
-            <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
-              <Image
-                src={imageSrc}
-                loading="eager"
-                alt={`${POST_INFO.title} 이미지 ${index + 1}`}
-                width={480}
-                height={480}
-              />
-            </Carousel.Slide>
-          ))}
-        </Carousel>
+        <div className="group relative">
+          <Carousel
+            aria-label={`${POST_INFO.title} 이미지 캐러셀`}
+            onSwiper={(swiper) => {
+              carouselRef.current = swiper;
+              updateCarouselEdgeState(swiper);
+            }}
+            onChange={() => {
+              if (carouselRef.current) {
+                updateCarouselEdgeState(carouselRef.current);
+              }
+            }}
+          >
+            {POST_INFO.image.map((imageSrc, index) => (
+              <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
+                <Image
+                  src={imageSrc}
+                  loading="eager"
+                  alt={`${POST_INFO.title} 이미지 ${index + 1}`}
+                  width={480}
+                  height={480}
+                />
+              </Carousel.Slide>
+            ))}
+          </Carousel>
+
+          {hasMultipleImages && (
+            <div className="pointer-events-none absolute inset-y-0 z-10 flex w-full items-center justify-between px-3 opacity-0 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
+              {!carouselState.isBeginning ? (
+                <button
+                  type="button"
+                  aria-label="이전 이미지 보기"
+                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    carouselRef.current?.slidePrev();
+                  }}
+                >
+                  <LeftIcon />
+                </button>
+              ) : (
+                <div aria-hidden="true" className="size-11" />
+              )}
+              {!carouselState.isEnd ? (
+                <button
+                  type="button"
+                  aria-label="다음 이미지 보기"
+                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    carouselRef.current?.slideNext();
+                  }}
+                >
+                  <RightIcon />
+                </button>
+              ) : (
+                <div aria-hidden="true" className="size-11" />
+              )}
+            </div>
+          )}
+        </div>
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">
