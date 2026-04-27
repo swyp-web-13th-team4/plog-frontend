@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, Spinner, useToast } from '@plog/ui';
+import { Button, EmptyState, Spinner, useToast } from '@plog/ui';
 import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
 import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
@@ -98,24 +98,19 @@ export default function FeedPage() {
 
   if (posts.length === 0) {
     return (
-      <section className="flex min-h-screen flex-col items-center justify-center gap-3">
-        <div className="flex flex-col gap-3">
-          <span className="label-lg text-semantic-object-bold">
-            아직 올라온 기록이 없어요
-          </span>
-          <p className="body-sm text-semantic-object-normal">
-            가장 먼저 기록을 남겨볼까요?
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          size="small"
-          onClick={() => router.push('/log')}
-        >
-          기록하기
-        </Button>
-      </section>
+      <EmptyState
+        title="아직 올라온 기록이 없어요"
+        description="가장 먼저 기록을 남겨볼까요?"
+        actions={
+          <Button
+            variant="outline"
+            size="small"
+            onClick={() => router.push('/log')}
+          >
+            기록하기
+          </Button>
+        }
+      />
     );
   }
 
