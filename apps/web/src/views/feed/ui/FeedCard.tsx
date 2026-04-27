@@ -145,6 +145,7 @@ export default function FeedCard({
             <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
               <Image
                 src={imageSrc}
+                loading="eager"
                 alt={`${POST_INFO.title} 이미지 ${index + 1}`}
                 width={480}
                 height={480}
