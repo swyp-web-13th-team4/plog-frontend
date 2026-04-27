@@ -194,7 +194,7 @@ export default function FeedCard({
                 <button
                   type="button"
                   aria-label="이전 이미지 보기"
-                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50"
+                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
                   onClick={(event) => {
                     event.stopPropagation();
                     carouselRef.current?.slidePrev();
@@ -209,7 +209,7 @@ export default function FeedCard({
                 <button
                   type="button"
                   aria-label="다음 이미지 보기"
-                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50"
+                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
                   onClick={(event) => {
                     event.stopPropagation();
                     carouselRef.current?.slideNext();
