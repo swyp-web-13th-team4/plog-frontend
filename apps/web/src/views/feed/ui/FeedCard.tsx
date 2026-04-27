@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Image from 'next/image';
 
-import { Avatar, Badge } from '@plog/ui';
+import { Avatar, Badge, Carousel } from '@plog/ui';
 
 import ArrowIcon from '@/shared/assets/icons/arrow.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
@@ -140,13 +140,18 @@ export default function FeedCard({
         </div>
       </div>
       <div className="flex flex-col">
-        <Image
-          width={480}
-          height={480}
-          loading="eager"
-          src={POST_INFO.image}
-          alt={`${POST_INFO.title} 이미지`}
-        />
+        <Carousel aria-label={`${POST_INFO.title} 이미지 캐러셀`}>
+          {POST_INFO.image.map((imageSrc, index) => (
+            <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
+              <Image
+                src={imageSrc}
+                alt={`${POST_INFO.title} 이미지 ${index + 1}`}
+                width={480}
+                height={480}
+              />
+            </Carousel.Slide>
+          ))}
+        </Carousel>
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">

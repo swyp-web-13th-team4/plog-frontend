@@ -1,3 +1,5 @@
+@import 'swiper/css';
+@import 'swiper/css/pagination';
 @import './animations.css';
 @import './color-primitive.css';
 @import './color-semantic.css';
