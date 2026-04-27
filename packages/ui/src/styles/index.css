@@ -1,5 +1,6 @@
-@import "./animations.css";
-@import "./color-primitive.css";
-@import "./color-semantic.css";
-@import "./typography-primitive.css";
-@import "./typography-semantic.css";
+@import './animations.css';
+@import './color-primitive.css';
+@import './color-semantic.css';
+@import './typography-primitive.css';
+@import './typography-semantic.css';
+@import './utilities.css';
