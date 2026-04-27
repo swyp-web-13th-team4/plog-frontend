@@ -2,11 +2,15 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import postImage from '@/shared/assets/images/image.png';
 import profileImage from '@/shared/assets/images/profileImage.png';
 
+const FEED_CAROUSEL_IMAGES = [
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=800&fit=crop',
+  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=800&fit=crop',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=800&fit=crop',
+];
+
 const profileImageSrc = profileImage.src;
-const postImageSrc = postImage.src;
 
 const PAGE_SIZE = 10;
 export const FEED_QUERY_KEY = ['feed'] as const;
@@ -30,7 +34,7 @@ export type FeedPost = {
     heartCount: number;
     title: string;
     content: string;
-    image: string;
+    image: string[];
     tags: FeedTag[];
     PLACE_INFO: {
       id: string;
@@ -63,7 +67,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '동네 카페 작업 일지',
       content:
         '광화문 근처에서 작업하기 좋은 곳을 드디어 찾았다. 재즈 음악이 흐르지만 소음이 적당해서 집중하기 딱 좋다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '1-1', name: '#카페' },
         { id: '1-2', name: '#작업공간' },
@@ -93,7 +97,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '조용한 도서관 라운지 발견',
       content:
         '주말 오전에 들렀는데 좌석 간 간격이 넓고 콘센트도 가까워서 노트북 작업하기 편했다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '2-1', name: '#도서관' },
         { id: '2-2', name: '#라운지' },
@@ -123,7 +127,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '비 오는 날엔 이 카페',
       content:
         '창문이 크게 나 있어서 비 오는 풍경을 보며 작업하기 좋았다. 플레이리스트도 잔잔해서 마음에 들었다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '3-1', name: '#비오는날' },
         { id: '3-2', name: '#카페' },
@@ -153,7 +157,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '콘센트 맛집 작업 공간',
       content:
         '노트북이랑 태블릿을 같이 써야 해서 콘센트 위치가 중요했는데 자리 배치가 좋아서 오래 앉아도 편했다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '4-1', name: '#콘센트맛집' },
         { id: '4-2', name: '#작업공간' },
@@ -183,7 +187,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '짧게 몰입하기 좋았던 곳',
       content:
         '잠깐 할 일 정리하려고 들어갔는데 예상보다 집중이 잘 됐다. 매장 동선도 단순해서 편했다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '5-1', name: '#짧은시간' },
         { id: '5-2', name: '#몰입' },
@@ -213,7 +217,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '오전 집중력이 잘 나왔던 스팟',
       content:
         '햇살이 부드럽게 들어와서 기분 좋게 시작할 수 있었다. 테이블도 넓어서 책과 노트북을 같이 펼치기 좋았다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '6-1', name: '#오전' },
         { id: '6-2', name: '#집중력' },
@@ -243,7 +247,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '사람은 많지만 집중되는 분위기',
       content:
         '적당한 생활 소음 덕분에 오히려 더 몰입됐다. 주변에도 혼자 작업하는 사람이 많아서 분위기가 좋았다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '7-1', name: '#사람많은' },
         { id: '7-2', name: '#집중되는' },
@@ -273,7 +277,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '팀플 준비하기 괜찮은 좌석 구성',
       content:
         '혼자 정리하는 시간도 좋았지만 둘이 같이 와서 이야기 나누기에도 괜찮겠다는 생각이 들었다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '8-1', name: '#팀플' },
         { id: '8-2', name: '#좌석' },
@@ -303,7 +307,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '재방문 확정한 저녁 작업 장소',
       content:
         '조명이 너무 어둡지 않아서 작업하기 편했고 와이파이도 안정적으로 유지돼서 만족스러웠다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '9-1', name: '#저녁' },
         { id: '9-2', name: '#작업' },
@@ -333,7 +337,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '창가 자리가 특히 좋았던 곳',
       content:
         '오후 햇빛이 비치는 시간대에 앉았는데 공간 분위기가 정말 좋아서 시작부터 만족스러웠다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '10-1', name: '#창가자리' },
         { id: '10-2', name: '#오후' },
@@ -364,7 +368,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '회의 전 빠르게 정리하기 좋은 라운지',
       content:
         '미팅 전에 잠깐 정리할 곳이 필요했는데 좌석이 편하고 주변이 조용해서 짧은 시간에도 효율이 잘 나왔다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '11-1', name: '#라운지' },
         { id: '11-2', name: '#빠른정리' },
@@ -394,7 +398,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '조도 낮은 공간 좋아하면 추천',
       content:
         '조명이 차분해서 저녁 시간에 머리 식히며 정리하기 좋았다. 음악도 과하지 않아서 흐름이 깨지지 않았다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '12-1', name: '#조명' },
         { id: '12-2', name: '#저녁공간' },
@@ -424,7 +428,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '자료 조사할 때 다시 오고 싶은 곳',
       content:
         '검색하고 메모하는 흐름이 끊기지 않을 만큼 자리가 안정적이었다. 오래 있어도 꽤 편했다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '13-1', name: '#리서치' },
         { id: '13-2', name: '#장시간' },
@@ -454,7 +458,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '노트 필기하기 편했던 큰 테이블',
       content:
         '노트북 옆에 공책까지 펼쳐야 해서 넓은 자리가 필요했는데 여기 테이블이 딱 좋았다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '14-1', name: '#큰테이블' },
         { id: '14-2', name: '#필기' },
@@ -484,7 +488,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '몰입감이 오래 유지된 조용한 공간',
       content:
         '처음 앉고 나서 한 번도 산만해지지 않을 정도로 전체 분위기가 차분했다. 긴 작업 세션에도 좋았다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '15-1', name: '#몰입' },
         { id: '15-2', name: '#조용한공간' },
@@ -514,7 +518,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '오후에 사람 빠질 때가 진짜 좋다',
       content:
         '오후 늦게부터 한결 여유로워졌다. 그 시간대부터는 집중 흐름이 훨씬 좋아서 다음에도 그때 오고 싶다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '16-1', name: '#오후' },
         { id: '16-2', name: '#한산한시간' },
@@ -544,7 +548,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '30일 이후 달 전 케이스 확인용',
       content:
         '달 전 표기가 자연스럽게 보이는지 확인하려고 시간을 다양하게 넣어봤다. 카드 레이아웃 점검하기 좋다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '17-1', name: '#테스트' },
         { id: '17-2', name: '#달전' },
@@ -574,7 +578,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '45일 전 데이터도 자연스럽게 보이는지',
       content:
         '상대 시간 포맷은 경계값에서 어색해지기 쉬워서 45일 정도 케이스도 넣어두는 편이 도움이 된다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '18-1', name: '#경계값' },
         { id: '18-2', name: '#상대시간' },
@@ -604,7 +608,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '두 달 전 느낌 점검',
       content:
         '두 달 전 같은 문구가 카드 텍스트 길이 안에서 안정적으로 보이는지 같이 보려고 넣은 샘플이다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '19-1', name: '#두달전' },
         { id: '19-2', name: '#타이포' },
@@ -634,7 +638,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '세 달 전 예시 데이터',
       content:
         '주 단위에서 달 단위로 넘어가는 체감이 중요해서 오래된 기록도 함께 보는 게 좋다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '20-1', name: '#세달전' },
         { id: '20-2', name: '#피드' },
@@ -664,7 +668,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '네 달 전 카드도 섞어두기',
       content:
         '목업 검수에서는 최근 데이터만 보기 쉬운데 오래된 상대 시간도 같이 보는 편이 안전하다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '21-1', name: '#네달전' },
         { id: '21-2', name: '#목업' },
@@ -694,7 +698,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '반년 전 케이스도 확인',
       content:
         '반년 전은 숫자가 조금 커지기 시작해서 시선 분산이 생길 수 있다. 헤더 타이포와 같이 보면 좋다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '22-1', name: '#반년전' },
         { id: '22-2', name: '#타이포' },
@@ -724,7 +728,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '8개월 전 표시 확인',
       content:
         '8달 전 같은 케이스도 실제로는 자주 보이기 때문에 헤더가 안정적으로 보이는지 체크했다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '23-1', name: '#8개월전' },
         { id: '23-2', name: '#헤더' },
@@ -754,7 +758,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '10개월 전 데이터 샘플',
       content:
         '10달 전 문구가 시각적으로 너무 튀지 않는지도 같이 볼 수 있도록 넣어둔 샘플이다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '24-1', name: '#10개월전' },
         { id: '24-2', name: '#샘플' },
@@ -784,7 +788,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '거의 1년 전 직전 데이터',
       content:
         '연 전으로 넘어가기 직전 숫자도 확인하면 경계에서 기대한 표현이 나오는지 확실히 볼 수 있다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '25-1', name: '#364일' },
         { id: '25-2', name: '#경계테스트' },
@@ -814,7 +818,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '딱 1년 전 케이스',
       content:
         '1년 전으로 바뀌는 지점은 제품에서 자주 체크하는 경계라서 의도적으로 분리해두는 게 좋다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '26-1', name: '#1년전' },
         { id: '26-2', name: '#경계값' },
@@ -844,7 +848,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '1년 조금 지난 기록',
       content:
         '365일 이후와 400일 이후가 모두 1년 전으로 보일 텐데 이게 의도된 동작인지 확인하기 위한 데이터다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '27-1', name: '#400일' },
         { id: '27-2', name: '#1년전' },
@@ -874,7 +878,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '500일 전 기록 샘플',
       content:
         '연 단위 표기는 숫자 변화가 느리기 때문에 오래된 기록 여러 개를 함께 섞어볼 필요가 있다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '28-1', name: '#500일' },
         { id: '28-2', name: '#연단위' },
@@ -904,7 +908,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '2년 전 표시 예시',
       content:
         '2년 전 문구는 한눈에 오래된 기록으로 보이기 때문에 헤더 정보 계층도와 함께 보는 것이 중요하다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '29-1', name: '#2년전' },
         { id: '29-2', name: '#계층' },
@@ -934,7 +938,7 @@ const MOCK_FEED_DATA: FeedPost[] = [
       title: '3년 전까지도 UI 확인',
       content:
         '3년 전 정도까지 가도 헤더가 무너지지 않는지 보려고 넣은 마지막 목데이터다.',
-      image: postImageSrc,
+      image: FEED_CAROUSEL_IMAGES,
       tags: [
         { id: '30-1', name: '#3년전' },
         { id: '30-2', name: '#마지막샘플' },
