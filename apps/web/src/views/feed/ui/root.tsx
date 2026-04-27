@@ -98,19 +98,21 @@ export default function FeedPage() {
 
   if (posts.length === 0) {
     return (
-      <EmptyState
-        title="아직 올라온 기록이 없어요"
-        description="가장 먼저 기록을 남겨볼까요?"
-        actions={
-          <Button
-            variant="outline"
-            size="small"
-            onClick={() => router.push('/log')}
-          >
-            기록하기
-          </Button>
-        }
-      />
+      <div className="flex min-h-screen items-center justify-center">
+        <EmptyState
+          title="아직 올라온 기록이 없어요"
+          description="가장 먼저 기록을 남겨볼까요?"
+          actions={
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => router.push('/log')}
+            >
+              기록하기
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
