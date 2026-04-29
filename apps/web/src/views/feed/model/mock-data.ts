@@ -30,10 +30,14 @@ export const MOCK_FEED_DATA: FeedPost[] = [
         { id: '1-1', name: '#카페' },
         { id: '1-2', name: '#작업공간' },
         { id: '1-3', name: '#광화문' },
+        { id: '1-4', name: '#채광맛집' },
+        { id: '1-5', name: '#자리넉넉함' },
       ],
       PLACE_INFO: {
         id: '1',
         placeName: '스타벅스 광화문점',
+        roadAddress: '서울 종로구 세종대로 149',
+        category: '카페',
         studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '2시간 30분',
         concentrateCount: 4,
@@ -64,6 +68,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '2',
         placeName: '시청 북라운지',
+        roadAddress: '서울 중구 세종대로 110',
+        category: '도서관',
         studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '3시간 10분',
         concentrateCount: 5,
@@ -94,6 +100,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '3',
         placeName: '레인드롭 카페',
+        roadAddress: '서울 마포구 와우산로 29길 48',
+        category: '카페',
         studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '1시간 45분',
         concentrateCount: 3,
@@ -124,8 +132,10 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '4',
         placeName: '워크룸 성수',
+        roadAddress: '서울 성동구 연무장길 83',
+        category: '사무실',
         studyDate: '2026-04-27T00:00:00.000Z',
-        studyTime: '4시간 5분',
+        studyTime: '24시간',
         concentrateCount: 2,
       },
     },
@@ -154,6 +164,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '5',
         placeName: '카페 모먼트',
+        roadAddress: '서울 용산구 한강대로 23길 55',
+        category: '카페',
         studyDate: '2026-04-27T00:00:00.000Z',
         studyTime: '1시간 20분',
         concentrateCount: 2,
@@ -184,6 +196,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '6',
         placeName: '라이트업 커피',
+        roadAddress: '서울 마포구 독막로 7길 51',
+        category: '카페',
         studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '2시간 50분',
         concentrateCount: 4,
@@ -214,6 +228,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '7',
         placeName: '브루클린 로스터스',
+        roadAddress: '서울 성동구 서울숲2길 32-14',
+        category: '카페',
         studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '2시간 15분',
         concentrateCount: 4,
@@ -244,6 +260,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '8',
         placeName: '커먼테이블 을지로',
+        roadAddress: '서울 중구 을지로 100',
+        category: '공유 오피스',
         studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '3시간 25분',
         concentrateCount: 5,
@@ -274,6 +292,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '9',
         placeName: '문라이트 스터디카페',
+        roadAddress: '서울 서대문구 연세로 5다길 41',
+        category: '스터디 카페',
         studyDate: '2026-04-26T00:00:00.000Z',
         studyTime: '2시간 40분',
         concentrateCount: 4,
@@ -305,6 +325,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '10',
         placeName: '플로우 커피하우스',
+        roadAddress: '서울 송파구 백제고분로 45길 12',
+        category: '카페',
         studyDate: '2026-04-25T00:00:00.000Z',
         studyTime: '3시간',
         concentrateCount: 4,
@@ -335,6 +357,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '11',
         placeName: '센트럴 라운지',
+        roadAddress: '서울 강남구 테헤란로 142',
+        category: '사무실',
         studyDate: '2026-04-21T00:00:00.000Z',
         studyTime: '55분',
         concentrateCount: 3,
@@ -365,6 +389,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '12',
         placeName: '어스톤 북카페',
+        roadAddress: '서울 은평구 진관길 18',
+        category: '도서관',
         studyDate: '2026-04-20T00:00:00.000Z',
         studyTime: '1시간 35분',
         concentrateCount: 3,
@@ -395,6 +421,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '13',
         placeName: '아카이브 카페',
+        roadAddress: '서울 종로구 자하문로 10길 9',
+        category: '카페',
         studyDate: '2026-04-19T00:00:00.000Z',
         studyTime: '3시간 40분',
         concentrateCount: 4,
@@ -425,6 +453,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '14',
         placeName: '오브제 커피랩',
+        roadAddress: '서울 성동구 아차산로 17길 49',
+        category: '카페',
         studyDate: '2026-04-14T00:00:00.000Z',
         studyTime: '2시간 5분',
         concentrateCount: 4,
@@ -455,6 +485,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '15',
         placeName: '하버 스터디룸',
+        roadAddress: '서울 노원구 동일로 214길 21',
+        category: '스터디 카페',
         studyDate: '2026-04-07T00:00:00.000Z',
         studyTime: '4시간 20분',
         concentrateCount: 5,
@@ -485,6 +517,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '16',
         placeName: '레이어드 커피',
+        roadAddress: '서울 강서구 공항대로 247',
+        category: '카페',
         studyDate: '2026-04-06T00:00:00.000Z',
         studyTime: '2시간 10분',
         concentrateCount: 3,
@@ -515,6 +549,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '17',
         placeName: '테스트 스팟 A',
+        roadAddress: '서울 강남구 봉은사로 302',
+        category: '기타 장소',
         studyDate: '2026-03-28T00:00:00.000Z',
         studyTime: '1시간 50분',
         concentrateCount: 4,
@@ -545,6 +581,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '18',
         placeName: '테스트 스팟 B',
+        roadAddress: '서울 서초구 서초대로 398',
+        category: '공유 오피스',
         studyDate: '2026-03-12T00:00:00.000Z',
         studyTime: '2시간',
         concentrateCount: 3,
@@ -575,6 +613,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '19',
         placeName: '테스트 스팟 C',
+        roadAddress: '서울 마포구 양화로 161',
+        category: '카페',
         studyDate: '2026-02-26T00:00:00.000Z',
         studyTime: '3시간 5분',
         concentrateCount: 5,
@@ -605,6 +645,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '20',
         placeName: '테스트 스팟 D',
+        roadAddress: '서울 종로구 종로 51',
+        category: '사무실',
         studyDate: '2026-01-27T00:00:00.000Z',
         studyTime: '1시간 15분',
         concentrateCount: 2,
@@ -635,6 +677,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '21',
         placeName: '테스트 스팟 E',
+        roadAddress: '서울 동작구 노량진로 132',
+        category: '도서관',
         studyDate: '2025-12-28T00:00:00.000Z',
         studyTime: '2시간 30분',
         concentrateCount: 4,
@@ -665,6 +709,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '22',
         placeName: '테스트 스팟 F',
+        roadAddress: '서울 영등포구 국제금융로 10',
+        category: '공유 오피스',
         studyDate: '2025-10-29T00:00:00.000Z',
         studyTime: '2시간 45분',
         concentrateCount: 3,
@@ -695,6 +741,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '23',
         placeName: '테스트 스팟 G',
+        roadAddress: '서울 광진구 아차산로 272',
+        category: '카페',
         studyDate: '2025-08-30T00:00:00.000Z',
         studyTime: '1시간 55분',
         concentrateCount: 2,
@@ -725,6 +773,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '24',
         placeName: '테스트 스팟 H',
+        roadAddress: '서울 성북구 고려대로 24길 53',
+        category: '스터디 카페',
         studyDate: '2025-07-01T00:00:00.000Z',
         studyTime: '3시간 20분',
         concentrateCount: 5,
@@ -755,6 +805,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '25',
         placeName: '테스트 스팟 I',
+        roadAddress: '서울 중구 퇴계로 67',
+        category: '기타 장소',
         studyDate: '2025-04-28T00:00:00.000Z',
         studyTime: '2시간 35분',
         concentrateCount: 4,
@@ -785,6 +837,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '26',
         placeName: '테스트 스팟 J',
+        roadAddress: '서울 강동구 천호대로 1077',
+        category: '사무실',
         studyDate: '2025-04-27T00:00:00.000Z',
         studyTime: '1시간 40분',
         concentrateCount: 3,
@@ -815,6 +869,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '27',
         placeName: '테스트 스팟 K',
+        roadAddress: '서울 서대문구 통일로 135',
+        category: '도서관',
         studyDate: '2025-03-23T00:00:00.000Z',
         studyTime: '2시간 5분',
         concentrateCount: 3,
@@ -845,6 +901,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '28',
         placeName: '테스트 스팟 L',
+        roadAddress: '서울 구로구 디지털로 300',
+        category: '공유 오피스',
         studyDate: '2024-12-13T00:00:00.000Z',
         studyTime: '3시간 15분',
         concentrateCount: 4,
@@ -875,6 +933,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '29',
         placeName: '테스트 스팟 M',
+        roadAddress: '서울 용산구 이태원로 191',
+        category: '기타 장소',
         studyDate: '2024-04-27T00:00:00.000Z',
         studyTime: '2시간 55분',
         concentrateCount: 5,
@@ -905,6 +965,8 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       PLACE_INFO: {
         id: '30',
         placeName: '테스트 스팟 N',
+        roadAddress: '서울 중랑구 망우로 353',
+        category: '카페',
         studyDate: '2023-01-14T00:00:00.000Z',
         studyTime: '1시간 25분',
         concentrateCount: 2,
