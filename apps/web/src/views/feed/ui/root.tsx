@@ -26,8 +26,10 @@ export default function FeedPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isError,
     isPending,
     isFetchNextPageError,
+    refetch,
   } = useInfiniteFeedQuery();
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
@@ -68,10 +70,10 @@ export default function FeedPage() {
   };
 
   useEffect(() => {
-    if (inView) {
+    if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   useEffect(() => {
     const updateScrollableState = () => {
@@ -93,6 +95,27 @@ export default function FeedPage() {
       <section className="flex min-h-screen items-center justify-center">
         <Spinner size="large" />
       </section>
+    );
+  }
+
+  if (isError && posts.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <EmptyState
+          title="데이터를 불러오지 못했습니다"
+          description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
+          actions={
+            <Button
+              type="button"
+              variant="outline"
+              size="small"
+              onClick={() => refetch()}
+            >
+              다시 시도
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
