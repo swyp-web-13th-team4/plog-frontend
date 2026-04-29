@@ -1,15 +1,37 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { Avatar, Badge, Carousel, Icon } from '@plog/ui';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Carousel,
+  EmptyState,
+  useToast,
+} from '@plog/ui';
 
-import { type FeedPost, type FeedTag } from '@/entities/feed';
+import { formatStudyDate, formatTimeAgo } from '@/views/feed/model/lib/time';
+import {
+  type FeedPost,
+  type FeedTag,
+  MOCK_FEED_DATA,
+} from '@/views/feed/model/query/useInfiniteScroll';
 
-import { formatStudyDate, formatTimeAgo } from '../lib/time';
+import ArrowIcon from '@/shared/assets/icons/arrow.svg';
+import ClockIcon from '@/shared/assets/icons/clock.svg';
+import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
+import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
+import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
+import EmptyHeartIcon from '@/shared/assets/icons/empty_heart.svg';
+import FillBookmarkIcon from '@/shared/assets/icons/fill_bookmark.svg';
+import FillHeartIcon from '@/shared/assets/icons/fill_heart.svg';
+import LeftIcon from '@/shared/assets/icons/left_arrow.svg';
+import RightIcon from '@/shared/assets/icons/right_arrow.svg';
+import ShareIcon from '@/shared/assets/icons/share.svg';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
@@ -20,16 +42,7 @@ type FeedCarouselController = {
   isEnd: boolean;
 };
 
-type FeedCardProps = {
-  post: FeedPost;
-  isLast: boolean;
-  onLike: (postId: string) => void;
-  onBookmark: (postId: string) => void;
-  onShare: () => void;
-};
-
 function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
-  const hiddenTagsId = useId();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const visibleTags = tags.slice(0, DEFAULT_VISIBLE_TAG_COUNT);
@@ -40,47 +53,34 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
     <div className="flex gap-2">
       {visibleTags.map((tag) => (
         <Badge
+          key={tag.id}
           color="gray"
           variant="soft"
           className="caption-md flex items-center text-semantic-object-normal"
-          key={tag.id}
         >
           {tag.name}
         </Badge>
       ))}
       {hasHiddenTags && (
         <div className="relative">
-          <button
-            type="button"
-            aria-expanded={isExpanded}
-            aria-controls={hiddenTagsId}
-            aria-label={
-              isExpanded
-                ? '숨겨진 태그 접기'
-                : `숨겨진 태그 ${hiddenTags.length}개 보기`
-            }
+          <Badge
+            color="gray"
+            variant="outline"
+            className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
-            <Badge
-              color="gray"
-              variant="outline"
-              className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
-            >
-              {`+${hiddenTags.length}`}
-            </Badge>
-          </button>
+            {`+${hiddenTags.length}`}
+          </Badge>
+
           {isExpanded && (
-            <div
-              id={hiddenTagsId}
-              className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2"
-            >
+            <div className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2">
               <div className="flex flex-col gap-2">
                 {hiddenTags.map((tag) => (
                   <Badge
+                    key={tag.id}
                     color="gray"
                     variant="soft"
                     className="caption-md flex items-center text-semantic-object-normal"
-                    key={tag.id}
                   >
                     {tag.name}
                   </Badge>
@@ -120,28 +120,38 @@ function MaxContentLength({
           onClick={() => setIsExpanded((prev) => !prev)}
         >
           더보기
-          <Icon name="chevron-right" size={9} />
+          <ArrowIcon />
         </button>
       ) : null}
     </div>
   );
 }
 
-export default function FeedCard({
-  post,
-  isLast,
-  onLike,
-  onBookmark,
-  onShare,
-}: FeedCardProps) {
-  const { POST_INFO } = post;
+export default function FeedDetailCard({ postId }: { postId: string }) {
+  const router = useRouter();
+  const { toast } = useToast();
+  const feed = MOCK_FEED_DATA.find((item) => item.POST_INFO.id === postId);
+  const [post, setPost] = useState<FeedPost | null>(feed ?? null);
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
-    isEnd: POST_INFO.image.length <= 1,
+    isEnd: feed ? feed.POST_INFO.image.length <= 1 : true,
   });
-  const hasMultipleImages = POST_INFO.image.length > 1;
-  const router = useRouter();
+
+  const updatePostState = (field: 'isLiked' | 'isBookmarked') => {
+    setPost((prev) => {
+      if (!prev) return prev;
+
+      return {
+        ...prev,
+        POST_INFO: {
+          ...prev.POST_INFO,
+          [field]: !prev.POST_INFO[field],
+        },
+      };
+    });
+  };
+
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
@@ -149,8 +159,31 @@ export default function FeedCard({
     });
   };
 
+  if (!post) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-6">
+        <EmptyState
+          title="피드를 찾을 수 없어요"
+          description="목록으로 돌아가서 다른 기록을 확인해 보세요."
+          actions={
+            <Button
+              variant="outline"
+              size="small"
+              onClick={() => router.push('/feed')}
+            >
+              피드로 돌아가기
+            </Button>
+          }
+        />
+      </div>
+    );
+  }
+
+  const { POST_INFO } = post;
+  const hasMultipleImages = POST_INFO.image.length > 1;
+
   return (
-    <div className={isLast ? '' : 'mb-13.5'}>
+    <section className="relative">
       <div className="flex items-center gap-3 px-6 py-3">
         <Avatar
           size="xsmall"
@@ -166,6 +199,7 @@ export default function FeedCard({
           </span>
         </div>
       </div>
+
       <div className="flex flex-col">
         <div className="group relative">
           <Carousel
@@ -184,7 +218,7 @@ export default function FeedCard({
               <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
                 <Image
                   src={imageSrc}
-                  loading={index === 0 ? 'eager' : 'lazy'}
+                  loading="eager"
                   alt={`${POST_INFO.title} 이미지 ${index + 1}`}
                   width={480}
                   height={480}
@@ -205,10 +239,7 @@ export default function FeedCard({
                     carouselRef.current?.slidePrev();
                   }}
                 >
-                  <Icon
-                    name="chevron-left"
-                    className="text-semantic-system-white"
-                  />
+                  <LeftIcon />
                 </button>
               ) : (
                 <div aria-hidden="true" className="size-11" />
@@ -223,10 +254,7 @@ export default function FeedCard({
                     carouselRef.current?.slideNext();
                   }}
                 >
-                  <Icon
-                    name="chevron-right"
-                    className="text-semantic-system-white"
-                  />
+                  <RightIcon />
                 </button>
               ) : (
                 <div aria-hidden="true" className="size-11" />
@@ -234,24 +262,16 @@ export default function FeedCard({
             </div>
           )}
         </div>
+
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">
               <button
-                aria-label={POST_INFO.isLiked ? '좋아요 취소' : '좋아요'}
-                aria-pressed={POST_INFO.isLiked}
                 type="button"
-                className="flex cursor-pointer items-center"
-                onClick={() => onLike(POST_INFO.id)}
+                className="cursor-pointer"
+                onClick={() => updatePostState('isLiked')}
               >
-                {POST_INFO.isLiked ? (
-                  <Icon
-                    name="heart-filled"
-                    className="text-semantic-feedback-error-neutral"
-                  />
-                ) : (
-                  <Icon name="heart" className="text-semantic-object-normal" />
-                )}
+                {POST_INFO.isLiked ? <FillHeartIcon /> : <EmptyHeartIcon />}
               </button>
               <span className="caption-md text-semantic-object-normal">
                 {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
@@ -259,34 +279,31 @@ export default function FeedCard({
             </div>
             <div className="flex items-center gap-3">
               <button
-                aria-label={POST_INFO.isBookmarked ? '북마크 취소' : '북마크'}
-                aria-pressed={POST_INFO.isBookmarked}
                 type="button"
                 className="cursor-pointer"
-                onClick={() => onBookmark(POST_INFO.id)}
+                onClick={() => updatePostState('isBookmarked')}
               >
                 {POST_INFO.isBookmarked ? (
-                  <Icon
-                    name="bookmark-filled"
-                    className="text-semantic-accent-normal"
-                  />
+                  <FillBookmarkIcon />
                 ) : (
-                  <Icon
-                    name="bookmark"
-                    className="text-semantic-object-normal"
-                  />
+                  <EmptyBookmarkIcon />
                 )}
               </button>
               <button
-                aria-label="공유하기"
                 type="button"
                 className="cursor-pointer"
-                onClick={onShare}
+                onClick={() =>
+                  toast({
+                    icon: <CopyLinkIcon />,
+                    description: '링크가 복사되었습니다.',
+                  })
+                }
               >
-                <Icon name="share" className="text-semantic-object-normal" />
+                <ShareIcon />
               </button>
             </div>
           </div>
+
           <div className="flex flex-col gap-3">
             <div>
               <span className="title-xs text-semantic-object-boldest">
@@ -294,33 +311,21 @@ export default function FeedCard({
               </span>
               <MaxContentLength content={POST_INFO.content} maxLength={35} />
             </div>
-            <div
-              className="flex cursor-pointer justify-between rounded-xl border border-semantic-stroke-subtle p-4"
-              onClick={() => {
-                router.push(`/feed/${POST_INFO.id}`);
-              }}
-            >
+
+            <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-6">
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
                   {POST_INFO.PLACE_INFO.placeName}
                 </span>
                 <div className="flex gap-3">
                   <div className="flex items-center gap-1.5">
-                    <Icon
-                      name="clock"
-                      size={16}
-                      className="text-semantic-object-normal"
-                    />
+                    <ClockIcon />
                     <p className="caption-md text-semantic-object-normal">
                       {POST_INFO.PLACE_INFO.studyTime}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Icon
-                      name="fire"
-                      size={16}
-                      className="text-semantic-object-normal"
-                    />
+                    <ConcentrateIcon />
                     <p className="caption-md text-semantic-object-normal">
                       {POST_INFO.PLACE_INFO.concentrateCount}/5
                     </p>
@@ -331,10 +336,11 @@ export default function FeedCard({
                 {formatStudyDate(POST_INFO.PLACE_INFO.studyDate)}
               </span>
             </div>
+
             <TagBadgeGroup tags={POST_INFO.tags} />
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
