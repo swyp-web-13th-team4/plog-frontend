@@ -100,18 +100,18 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
 function ShowOutlineAboutFeed({
   value,
   label,
-  isHighlighted,
+  isUserOwnFeed,
 }: {
   value: number | string;
   label: string;
-  isHighlighted: boolean;
+  isUserOwnFeed: boolean;
 }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center text-center">
       <span
         className={cn(
           'title-lg',
-          isHighlighted
+          isUserOwnFeed
             ? 'text-semantic-feedback-success-normal'
             : 'text-semantic-theme-sky-normal',
         )}
@@ -339,7 +339,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               <ShowOutlineAboutFeed
                 value={post.POST_INFO.heartCount}
                 label="좋아요"
-                isHighlighted={isSeungMinPost}
+                isUserOwnFeed={isSeungMinPost}
               />
 
               <Divider
@@ -355,7 +355,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               <ShowOutlineAboutFeed
                 value={formatStudyDuration(post.POST_INFO.PLACE_INFO.studyTime)}
                 label="총 작업시간"
-                isHighlighted={isSeungMinPost}
+                isUserOwnFeed={isSeungMinPost}
               />
               <Divider
                 orientation="vertical"
@@ -370,7 +370,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               <ShowOutlineAboutFeed
                 value={post.POST_INFO.PLACE_INFO.concentrateCount}
                 label="작업 집중도"
-                isHighlighted={isSeungMinPost}
+                isUserOwnFeed={isSeungMinPost}
               />
             </div>
           </div>
