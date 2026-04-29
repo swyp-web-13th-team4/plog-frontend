@@ -179,7 +179,7 @@ export default function FeedCard({
               <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
                 <Image
                   src={imageSrc}
-                  loading="eager"
+                  loading={index === 0 ? 'eager' : 'lazy'}
                   alt={`${POST_INFO.title} 이미지 ${index + 1}`}
                   width={480}
                   height={480}
@@ -227,6 +227,8 @@ export default function FeedCard({
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">
               <button
+                aria-label={POST_INFO.isLiked ? '좋아요 취소' : '좋아요'}
+                aria-pressed={POST_INFO.isLiked}
                 type="button"
                 className="cursor-pointer"
                 onClick={() => onLike(POST_INFO.id)}
@@ -239,6 +241,8 @@ export default function FeedCard({
             </div>
             <div className="flex items-center gap-3">
               <button
+                aria-label={POST_INFO.isBookmarked ? '북마크 취소' : '북마크'}
+                aria-pressed={POST_INFO.isBookmarked}
                 type="button"
                 className="cursor-pointer"
                 onClick={() => onBookmark(POST_INFO.id)}
@@ -250,6 +254,7 @@ export default function FeedCard({
                 )}
               </button>
               <button
+                aria-label="공유하기"
                 type="button"
                 className="cursor-pointer"
                 onClick={onShare}

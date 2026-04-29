@@ -1,8 +1,12 @@
 export function formatTimeAgo(time: Date | string | number) {
   const start = new Date(time);
+  if (Number.isNaN(start.getTime())) return '';
   const end = new Date();
 
-  const secondDiff = Math.floor((end.getTime() - start.getTime()) / 1000);
+  const secondDiff = Math.max(
+    0,
+    Math.floor((end.getTime() - start.getTime()) / 1000),
+  );
 
   if (secondDiff < 60) return '방금 전';
 
@@ -27,6 +31,7 @@ export function formatTimeAgo(time: Date | string | number) {
 
 export function formatStudyDate(time: Date | string | number) {
   const date = new Date(time);
+  if (Number.isNaN(date.getTime())) return null;
 
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
