@@ -1,20 +1,53 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import Script from 'next/script';
 
 import { BottomSheet, Input } from '@plog/ui';
 
+import { MapListSheet } from '@/widgets/map-list-sheet';
+import { SelectedPlaceSheet } from '@/widgets/map-selected-sheet';
+
+import { type Place, type PlaceLayer } from '@/entities/place';
+
 import ArrowIcon from '@/shared/assets/icons/arrow.svg';
 import SearchIcon from '@/shared/assets/icons/search.svg';
-import { useUserLocation } from '@/shared/lib/geolocation/use-user-location';
+import { useUserLocation } from '@/shared/lib/geolocation';
 
 import { useKakaoMap } from '../lib/use-kakao-map';
+import { MOCK_BOOKMARK_PLACES, MOCK_PLACES } from '../model/mock-data';
 
 export default function MapPage() {
-  const { containerRef, mapRef, handleLoad } = useKakaoMap();
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedType, setSelectedType] = useState<PlaceLayer>('record');
+  const [fromList, setFromList] = useState<PlaceLayer | null>(null);
+  const [recordVisible, setRecordVisible] = useState(true);
+  const [bookmarkVisible, setBookmarkVisible] = useState(true);
+
   const handle = useMemo(() => BottomSheet.createHandle(), []);
+  const listHandle = useMemo(() => BottomSheet.createHandle(), []);
+
+  const {
+    containerRef,
+    mapRef,
+    handleLoad,
+    deselect,
+    selectPlace,
+    panToWithOffset,
+    setRecordVisible: setMapRecordVisible,
+    setBookmarkVisible: setMapBookmarkVisible,
+  } = useKakaoMap({
+    recordPlaces: MOCK_PLACES,
+    bookmarkPlaces: MOCK_BOOKMARK_PLACES,
+    onPlaceSelect: (place, type) => {
+      setSelectedPlace(place);
+      if (type) setSelectedType(type);
+      setFromList(null);
+      handle.close();
+      listHandle.close();
+    },
+  });
 
   useUserLocation((coords) => {
     if (!mapRef.current) return;
@@ -23,10 +56,44 @@ export default function MapPage() {
     );
   });
 
+  const handleToggleRecord = (v: boolean) => {
+    setRecordVisible(v);
+    setMapRecordVisible(v);
+  };
+
+  const handleToggleBookmark = (v: boolean) => {
+    setBookmarkVisible(v);
+    setMapBookmarkVisible(v);
+  };
+
+  const handlePlaceSelect = (place: Place, type: PlaceLayer) => {
+    setSelectedPlace(place);
+    setSelectedType(type);
+    setFromList(type);
+    selectPlace(place);
+    panToWithOffset(place.lat, place.lng);
+  };
+
+  const handleSelectedClose = () => {
+    deselect();
+    setSelectedPlace(null);
+    setFromList(null);
+  };
+
+  const handleSelectedBack = () => {
+    setSelectedPlace(null);
+    setFromList(null);
+    listHandle.open(null);
+  };
+
+  const handleViewPosts = () => {
+    if (!selectedPlace) return;
+  };
+
   return (
     <>
       <Script
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&autoload=false`}
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=clusterer&autoload=false`}
         strategy="afterInteractive"
         onLoad={handleLoad}
       />
@@ -55,22 +122,24 @@ export default function MapPage() {
           />
         </div>
       </div>
-      <BottomSheet
+      <MapListSheet
         handle={handle}
-        modal={false}
-        disablePointerDismissal
-        snapPoints={[0.4, 1]}
-      >
-        <BottomSheet.Content
-          className="mb-bottom-tab h-[calc(90%-96px)] max-w-layout"
-          backdrop={false}
-        >
-          <BottomSheet.Handle />
-          <BottomSheet.Body className="min-h-0 overflow-y-auto overscroll-contain">
-            <p />
-          </BottomSheet.Body>
-        </BottomSheet.Content>
-      </BottomSheet>
+        listHandle={listHandle}
+        recordPlaces={MOCK_PLACES}
+        bookmarkPlaces={MOCK_BOOKMARK_PLACES}
+        recordVisible={recordVisible}
+        bookmarkVisible={bookmarkVisible}
+        onToggleRecord={handleToggleRecord}
+        onToggleBookmark={handleToggleBookmark}
+        onPlaceSelect={handlePlaceSelect}
+      />
+      <SelectedPlaceSheet
+        place={selectedPlace}
+        placeType={selectedType}
+        onClose={handleSelectedClose}
+        onBack={fromList ? handleSelectedBack : undefined}
+        onViewPosts={handleViewPosts}
+      />
     </>
   );
 }
