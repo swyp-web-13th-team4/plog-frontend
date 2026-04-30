@@ -27,14 +27,7 @@ function EmptyState({
         className,
       )}
     >
-      {graphic && (
-        <div
-          aria-hidden="true"
-          className="[&_svg]:size-15 [&_svg]:fill-semantic-object-normal"
-        >
-          {graphic}
-        </div>
-      )}
+      {graphic && <div aria-hidden="true">{graphic}</div>}
       <div className="flex flex-col items-center gap-1.5">
         <h2 id={titleId} className="label-lg text-semantic-object-bold">
           {title}
