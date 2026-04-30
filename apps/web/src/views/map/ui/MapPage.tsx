@@ -70,7 +70,7 @@ export default function MapPage() {
     setSelectedPlace(place);
     setSelectedType(type);
     setFromList(type);
-    selectPlace(place);
+    selectPlace(place, type);
     panToWithOffset(place.lat, place.lng);
   };
 

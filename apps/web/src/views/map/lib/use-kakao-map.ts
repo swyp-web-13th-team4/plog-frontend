@@ -62,7 +62,7 @@ export function useKakaoMap({
   const recordMarkersRef = useRef<kakao.maps.Marker[]>([]);
   const bookmarkMarkersRef = useRef<kakao.maps.Marker[]>([]);
   const clustererRef = useRef<kakao.maps.MarkerClusterer | null>(null);
-  const overlayInfoMapRef = useRef<Map<number, SelectedInfo>>(new Map());
+  const overlayInfoMapRef = useRef<Map<string, SelectedInfo>>(new Map());
   const recordVisibleRef = useRef(true);
   const bookmarkVisibleRef = useRef(true);
 
@@ -149,7 +149,7 @@ export function useKakaoMap({
     );
     const overlays: kakao.maps.CustomOverlay[] = [];
     const markers: kakao.maps.Marker[] = [];
-    const infos = new Map<number, SelectedInfo>();
+    const infos = new Map<string, SelectedInfo>();
 
     places.forEach((place) => {
       const position = new window.kakao.maps.LatLng(place.lat, place.lng);
@@ -161,7 +161,7 @@ export function useKakaoMap({
         false,
       );
 
-      infos.set(place.id, {
+      infos.set(`${placeType}:${place.id}`, {
         el,
         place,
         placeType,
@@ -274,8 +274,8 @@ export function useKakaoMap({
     });
   };
 
-  const selectPlace = (place: Place) => {
-    const info = overlayInfoMapRef.current.get(place.id);
+  const selectPlace = (place: Place, placeType: PlaceLayer) => {
+    const info = overlayInfoMapRef.current.get(`${placeType}:${place.id}`);
     if (!info) return;
     if (selectedRef.current?.el === info.el) return;
     deselect();
