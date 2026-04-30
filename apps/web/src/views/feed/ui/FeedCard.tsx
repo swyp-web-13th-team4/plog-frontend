@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -38,6 +38,7 @@ type FeedCardProps = {
 };
 
 function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
+  const hiddenTagsId = useId();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const visibleTags = tags.slice(0, DEFAULT_VISIBLE_TAG_COUNT);
@@ -61,6 +62,7 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
           <button
             type="button"
             aria-expanded={isExpanded}
+            aria-controls={hiddenTagsId}
             aria-label={
               isExpanded
                 ? '숨겨진 태그 접기'
@@ -77,7 +79,10 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
             </Badge>
           </button>
           {isExpanded && (
-            <div className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2">
+            <div
+              id={hiddenTagsId}
+              className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2"
+            >
               <div className="flex flex-col gap-2">
                 {hiddenTags.map((tag) => (
                   <Badge
