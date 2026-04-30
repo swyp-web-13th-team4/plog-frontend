@@ -58,15 +58,24 @@ function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
       ))}
       {hasHiddenTags && (
         <div className="relative">
-          <Badge
-            color="gray"
-            variant="outline"
-            className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
+          <button
+            type="button"
+            aria-expanded={isExpanded}
+            aria-label={
+              isExpanded
+                ? '숨겨진 태그 접기'
+                : `숨겨진 태그 ${hiddenTags.length}개 보기`
+            }
             onClick={() => setIsExpanded((prev) => !prev)}
           >
-            {`+${hiddenTags.length}`}
-          </Badge>
-
+            <Badge
+              color="gray"
+              variant="outline"
+              className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
+            >
+              {`+${hiddenTags.length}`}
+            </Badge>
+          </button>
           {isExpanded && (
             <div className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2">
               <div className="flex flex-col gap-2">
