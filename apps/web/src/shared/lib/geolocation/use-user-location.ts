@@ -1,14 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useUserLocation(
   onSuccess: (coords: GeolocationCoordinates) => void,
 ) {
+  const onSuccessRef = useRef(onSuccess);
+  useEffect(() => {
+    onSuccessRef.current = onSuccess;
+  });
+
   useEffect(() => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition((position) => {
-      onSuccess(position.coords);
+      onSuccessRef.current(position.coords);
     });
   }, []);
 }
