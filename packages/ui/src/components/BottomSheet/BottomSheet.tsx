@@ -28,7 +28,7 @@ function BottomSheetRoot(
 
 function Handle() {
   return (
-    <div className="h-1.5 w-15 shrink-0 cursor-grab rounded-full bg-semantic-object-subtler" />
+    <div className="h-1.5 w-15 shrink-0 cursor-grab rounded-full bg-semantic-object-subtler first:-mt-2" />
   );
 }
 
