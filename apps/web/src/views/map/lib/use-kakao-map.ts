@@ -51,12 +51,10 @@ export function useKakaoMap({
 }: UseKakaoMapOptions = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<kakao.maps.Map | null>(null);
+  const cleanupListenersRef = useRef<(() => void) | null>(null);
+
   const selectedRef = useRef<SelectedInfo | null>(null);
   const onPlaceSelectRef = useRef(onPlaceSelect);
-  useEffect(() => {
-    onPlaceSelectRef.current = onPlaceSelect;
-  });
-
   const recordOverlaysRef = useRef<kakao.maps.CustomOverlay[]>([]);
   const bookmarkOverlaysRef = useRef<kakao.maps.CustomOverlay[]>([]);
   const recordMarkersRef = useRef<kakao.maps.Marker[]>([]);
@@ -65,6 +63,16 @@ export function useKakaoMap({
   const overlayInfoMapRef = useRef<Map<string, SelectedInfo>>(new Map());
   const recordVisibleRef = useRef(true);
   const bookmarkVisibleRef = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      cleanupListenersRef.current?.();
+    };
+  }, []);
+
+  useEffect(() => {
+    onPlaceSelectRef.current = onPlaceSelect;
+  });
 
   const deselect = () => {
     if (!selectedRef.current) return;
@@ -262,13 +270,25 @@ export function useKakaoMap({
         );
       };
 
-      window.kakao.maps.event.addListener(map, 'zoom_changed', updateOverlays);
-      window.kakao.maps.event.addListener(map, 'click', () => {
+      const onZoomChanged = updateOverlays;
+      const onMapClick = () => {
         if (selectedRef.current) {
           deselect();
           onPlaceSelectRef.current?.(null);
         }
-      });
+      };
+
+      window.kakao.maps.event.addListener(map, 'zoom_changed', onZoomChanged);
+      window.kakao.maps.event.addListener(map, 'click', onMapClick);
+
+      cleanupListenersRef.current = () => {
+        window.kakao.maps.event.removeListener(
+          map,
+          'zoom_changed',
+          onZoomChanged,
+        );
+        window.kakao.maps.event.removeListener(map, 'click', onMapClick);
+      };
 
       updateOverlays();
     });
