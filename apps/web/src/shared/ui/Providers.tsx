@@ -6,6 +6,8 @@ import { ToastProvider } from '@plog/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+import GlobalDialog from './GlobalDialog';
+
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
     () =>
@@ -22,6 +24,7 @@ export default function Providers({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ToastProvider>{children}</ToastProvider>
+      <GlobalDialog />
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
