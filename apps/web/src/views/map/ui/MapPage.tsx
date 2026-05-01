@@ -6,8 +6,8 @@ import Script from 'next/script';
 
 import { BottomSheet, Input } from '@plog/ui';
 
-import { MapListSheet } from '@/widgets/map-list-sheet';
-import { SelectedPlaceSheet } from '@/widgets/map-selected-sheet';
+import MapListSheet from './MapListSheet';
+import SelectedPlaceSheet from './SelectedPlaceSheet';
 
 import { type Place, type PlaceLayer } from '@/entities/place';
 
