@@ -1,13 +1,12 @@
 'use client';
 
-import Image from 'next/image';
-
 import { Badge, BottomSheet, Button } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { type Place, type PlaceLayer } from '@/entities/place';
 
 import PrevIcon from '@/shared/assets/icons/prev.svg';
+import { ImageWithFallback } from '@/shared/ui';
 
 export type SelectedPlaceSheetProps = {
   place: Place | null;
@@ -104,7 +103,7 @@ export default function SelectedPlaceSheet({
           {place && (
             <>
               <div className="relative aspect-[432/192] w-full overflow-hidden rounded-2xl bg-semantic-object-subtler">
-                <Image
+                <ImageWithFallback
                   src={place.imageUrl}
                   alt={place.name}
                   fill

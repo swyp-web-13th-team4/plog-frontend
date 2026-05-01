@@ -6,9 +6,6 @@ import Script from 'next/script';
 
 import { BottomSheet, Input } from '@plog/ui';
 
-import MapListSheet from './MapListSheet';
-import SelectedPlaceSheet from './SelectedPlaceSheet';
-
 import { type Place, type PlaceLayer } from '@/entities/place';
 
 import ArrowIcon from '@/shared/assets/icons/arrow.svg';
@@ -17,6 +14,8 @@ import { useUserLocation } from '@/shared/lib/geolocation';
 
 import { useKakaoMap } from '../lib/use-kakao-map';
 import { MOCK_BOOKMARK_PLACES, MOCK_PLACES } from '../model/mock-data';
+import MapListSheet from './MapListSheet';
+import SelectedPlaceSheet from './SelectedPlaceSheet';
 
 export default function MapPage() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);

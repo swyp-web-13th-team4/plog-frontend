@@ -1,12 +1,11 @@
 'use client';
 
-import Image from 'next/image';
-
 import { cn } from '@plog/utils';
 
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import FireIcon from '@/shared/assets/icons/fire.svg';
 import PinIcon from '@/shared/assets/icons/pin.svg';
+import { ImageWithFallback } from '@/shared/ui';
 
 import { type Place } from '../model/types';
 
@@ -24,7 +23,7 @@ export default function MapPlaceItem({ place, onClick }: MapPlaceItemProps) {
       onClick={onClick}
       onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
     >
-      <Image
+      <ImageWithFallback
         src={place.imageUrl}
         alt={place.name}
         width={72}
