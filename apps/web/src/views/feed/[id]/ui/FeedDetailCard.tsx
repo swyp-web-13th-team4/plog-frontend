@@ -301,7 +301,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           <div className="flex flex-col gap-0.5">
             <div className={cn('flex', isSeungMinPost && 'justify-between')}>
               <div className="flex items-center gap-2">
-                <span className="title-xs text-semantic-object-bolest">
+                <span className="title-xs text-semantic-object-boldest">
                   {post.POST_INFO.PLACE_INFO.placeName}
                 </span>
                 <Badge color="skyblue" variant="soft">
