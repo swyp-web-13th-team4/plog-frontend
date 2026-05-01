@@ -15,8 +15,12 @@ const MAX_LEVEL = 12;
 const MIN_CLUSTER_LEVEL = 4;
 export const SELECTED_LEVEL = 3;
 
+const OVERLAY_Z_INDEX = 3;
+const SELECTED_OVERLAY_Z_INDEX = 4;
+
 type SelectedInfo = {
   el: HTMLDivElement;
+  overlay: kakao.maps.CustomOverlay;
   place: Place;
   placeType: PlaceLayer;
   markerSrc: string;
@@ -76,13 +80,14 @@ export function useKakaoMap({
 
   const deselect = () => {
     if (!selectedRef.current) return;
-    const { el, place, placeType, markerSrc } = selectedRef.current;
+    const { el, overlay, place, placeType, markerSrc } = selectedRef.current;
     el.innerHTML = buildPinHtml(
       markerSrc,
       place.imageUrl,
       getPlaceCount(place, placeType),
       false,
     );
+    overlay.setZIndex(OVERLAY_Z_INDEX);
     selectedRef.current = null;
   };
 
@@ -125,6 +130,7 @@ export function useKakaoMap({
       place: Place,
       position: kakao.maps.LatLng,
       el: HTMLDivElement,
+      overlay: kakao.maps.CustomOverlay,
       markerSrc: string,
       selectedSrc: string,
       placeType: PlaceLayer,
@@ -138,7 +144,15 @@ export function useKakaoMap({
         getPlaceCount(place, placeType),
         true,
       );
-      selectedRef.current = { el, place, placeType, markerSrc, selectedSrc };
+      overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
+      selectedRef.current = {
+        el,
+        overlay,
+        place,
+        placeType,
+        markerSrc,
+        selectedSrc,
+      };
       if (map.getLevel() > SELECTED_LEVEL) map.setLevel(SELECTED_LEVEL);
       panToPosition(map, position, containerRef.current?.clientHeight ?? 0);
       onPlaceSelectRef.current?.(place, placeType);
@@ -169,8 +183,17 @@ export function useKakaoMap({
         false,
       );
 
+      const overlay = new window.kakao.maps.CustomOverlay({
+        position,
+        content: el,
+        xAnchor: 0.5,
+        yAnchor: WRAPPER_Y_ANCHOR,
+        zIndex: OVERLAY_Z_INDEX,
+      });
+
       infos.set(`${placeType}:${place.id}`, {
         el,
+        overlay,
         place,
         placeType,
         markerSrc,
@@ -183,21 +206,14 @@ export function useKakaoMap({
           place,
           position,
           el,
+          overlay,
           markerSrc,
           selectedSrc,
           placeType,
         ),
       );
 
-      overlays.push(
-        new window.kakao.maps.CustomOverlay({
-          position,
-          content: el,
-          xAnchor: 0.5,
-          yAnchor: WRAPPER_Y_ANCHOR,
-          zIndex: 3,
-        }),
-      );
+      overlays.push(overlay);
 
       for (let i = 0; i < getPlaceCount(place, placeType); i++) {
         markers.push(
@@ -305,6 +321,7 @@ export function useKakaoMap({
       getPlaceCount(place, info.placeType),
       true,
     );
+    info.overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
     selectedRef.current = info;
   };
 

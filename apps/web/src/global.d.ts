@@ -66,6 +66,8 @@ declare namespace kakao.maps {
     constructor(options: CustomOverlayOptions);
     setMap(map: Map | null): void;
     getMap(): Map | null;
+    setZIndex(zIndex: number): void;
+    getZIndex(): number;
   }
 
   interface ClusterStyle {
