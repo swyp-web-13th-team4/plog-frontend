@@ -17,6 +17,7 @@ type DialogState = {
   open: boolean;
   options: DialogOptions | null;
   resolve: ((value: boolean) => void) | null;
+  clearTimer: ReturnType<typeof setTimeout> | null;
   show: (options: DialogOptions) => Promise<boolean>;
   close: (value: boolean) => void;
 };
@@ -27,15 +28,25 @@ export const useDialogStore = create<DialogState>((set, get) => ({
   open: false,
   options: null,
   resolve: null,
+  clearTimer: null,
   show: (options) =>
     new Promise<boolean>((resolve) => {
-      set({ open: true, options, resolve });
+      const { clearTimer, resolve: prevResolve } = get();
+      if (clearTimer) clearTimeout(clearTimer);
+      prevResolve?.(false);
+      set({ open: true, options, resolve, clearTimer: null });
     }),
   close: (value) => {
-    get().resolve?.(value);
-    set({ open: false });
-    setTimeout(() => {
-      set({ options: null, resolve: null });
+    const { resolve, clearTimer } = get();
+    resolve?.(value);
+    if (clearTimer) clearTimeout(clearTimer);
+
+    const timer = setTimeout(() => {
+      if (!get().open) {
+        set({ options: null, resolve: null, clearTimer: null });
+      }
     }, DIALOG_CLOSE_DELAY_MS);
+
+    set({ open: false, resolve: null, clearTimer: timer });
   },
 }));
