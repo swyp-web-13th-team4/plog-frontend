@@ -71,7 +71,7 @@ function PlaceStatBar({
       )}
     >
       {stats.map((stat) => (
-        <StatItem key={stat.value} {...stat} isRecord={isRecord} />
+        <StatItem key={stat.label} {...stat} isRecord={isRecord} />
       ))}
     </div>
   );
