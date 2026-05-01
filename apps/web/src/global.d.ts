@@ -122,5 +122,5 @@ declare namespace kakao.maps {
 }
 
 interface Window {
-  kakao: typeof kakao;
+  kakao?: typeof kakao;
 }

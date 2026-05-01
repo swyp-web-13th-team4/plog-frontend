@@ -50,7 +50,7 @@ export default function MapPage() {
   });
 
   useUserLocation((coords) => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || !window.kakao) return;
     mapRef.current.setCenter(
       new window.kakao.maps.LatLng(coords.latitude, coords.longitude),
     );
