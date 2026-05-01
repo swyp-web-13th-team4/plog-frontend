@@ -18,6 +18,9 @@ const HOURS = Array.from({ length: 12 }, (_, i) =>
 );
 
 function buildMinutes(step: number) {
+  if (!Number.isInteger(step) || step < 1) {
+    throw new Error(`minuteStep must be a positive integer, got ${step}`);
+  }
   const minutes: string[] = [];
   for (let m = 0; m < 60; m += step) {
     minutes.push(String(m).padStart(2, '0'));
