@@ -100,6 +100,15 @@
   --color-semantic-theme-sky-subtle: var(--color-primitive-sky-40);
   --color-semantic-theme-sky-subtler: var(--color-primitive-sky-20);
 
+  --color-semantic-theme-purple-bolder: var(--color-primitive-purple-700);
+  --color-semantic-theme-purple-bold: var(--color-primitive-purple-500);
+  --color-semantic-theme-purple-normal: var(--color-primitive-purple-400);
+  --color-semantic-theme-purple-neutral: var(--color-primitive-purple-300);
+  --color-semantic-theme-purple-alternative: var(--color-primitive-purple-200);
+  --color-semantic-theme-purple-assistive: var(--color-primitive-purple-80);
+  --color-semantic-theme-purple-subtle: var(--color-primitive-purple-40);
+  --color-semantic-theme-purple-subtler: var(--color-primitive-purple-20);
+
   /* system */
   --color-semantic-system-white: var(--color-primitive-base-0);
   --color-semantic-system-black: var(--color-primitive-base-1000);
