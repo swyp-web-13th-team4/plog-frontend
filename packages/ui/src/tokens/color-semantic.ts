@@ -104,6 +104,16 @@ const semantic = {
       subtle: '#E4F3FF',
       subtler: '#F6FBFF',
     },
+    purple: {
+      bolder: '#442370',
+      bold: '#7344CB',
+      normal: '#7C4BE2',
+      neutral: '#915EEC',
+      alternative: '#A785FF',
+      assistive: '#D8C7FF',
+      subtle: '#EDE4FF',
+      subtler: '#FAF7FF',
+    },
   },
   system: {
     white: '#FFFFFF',
