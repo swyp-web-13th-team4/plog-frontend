@@ -56,7 +56,7 @@ function PlaceStatBar({
         { value: String(place.averageFocus), label: '평균 집중도' },
       ]
     : [
-        { value: String(place.bookmarkCount), label: '북마크 수' },
+        { value: String(place.bookmarkCount ?? 0), label: '북마크 수' },
         { value: `${place.totalWorkHours}h`, label: '평균 작업시간' },
         { value: String(place.averageFocus), label: '평균 집중도' },
       ];
