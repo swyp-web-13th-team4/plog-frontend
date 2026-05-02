@@ -17,12 +17,6 @@ import {
 import { cn } from '@plog/utils';
 
 import { FeedPost, FeedTag } from '@/entities/feed';
-import {
-  formatStudyDate,
-  formatStudyDuration,
-  formatTimeAgo,
-} from '@/entities/feed/lib/time';
-import { MOCK_FEED_DATA } from '@/entities/feed/model/useInfiniteFeedQuery';
 
 import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
 import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
@@ -32,6 +26,13 @@ import FillHeartIcon from '@/shared/assets/icons/fill_heart.svg';
 import LeftIcon from '@/shared/assets/icons/left_arrow.svg';
 import RightIcon from '@/shared/assets/icons/right_arrow.svg';
 import ShareIcon from '@/shared/assets/icons/share.svg';
+
+import {
+  formatStudyDate,
+  formatStudyDuration,
+  formatTimeAgo,
+} from '../../lib/time';
+import { MOCK_FEED_DATA } from '../../model/mock-data';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
