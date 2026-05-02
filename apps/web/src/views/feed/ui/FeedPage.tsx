@@ -12,7 +12,7 @@ import { ScrollToTopButton } from '@/features/scroll-to-top';
 
 import { type FeedPage } from '@/entities/feed';
 
-import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
+import CopyLinkIcon from '@/shared/assets/icons/copy-link.svg';
 
 import {
   FEED_QUERY_KEY,

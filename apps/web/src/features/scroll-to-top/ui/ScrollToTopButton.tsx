@@ -1,4 +1,4 @@
-import UpArrowIcon from '@/shared/assets/icons/up_arrow.svg';
+import UpArrowIcon from '@/shared/assets/icons/up-arrow.svg';
 
 type ScrollToTopButtonProps = {
   visible: boolean;

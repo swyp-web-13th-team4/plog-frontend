@@ -8,15 +8,15 @@ import { Avatar, Badge, Carousel } from '@plog/ui';
 
 import { type FeedPost, type FeedTag } from '@/entities/feed';
 
-import ArrowIcon from '@/shared/assets/icons/arrow.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
-import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
-import EmptyHeartIcon from '@/shared/assets/icons/empty_heart.svg';
-import FillBookmarkIcon from '@/shared/assets/icons/fill_bookmark.svg';
-import FillHeartIcon from '@/shared/assets/icons/fill_heart.svg';
-import LeftIcon from '@/shared/assets/icons/left_arrow.svg';
-import RightIcon from '@/shared/assets/icons/right_arrow.svg';
+import EmptyBookmarkIcon from '@/shared/assets/icons/empty-bookmark.svg';
+import EmptyHeartIcon from '@/shared/assets/icons/empty-heart.svg';
+import FillBookmarkIcon from '@/shared/assets/icons/fill-bookmark.svg';
+import FillHeartIcon from '@/shared/assets/icons/fill-heart.svg';
+import LeftIcon from '@/shared/assets/icons/left-arrow.svg';
+import MoreTextArrow from '@/shared/assets/icons/more-text-arrow.svg';
+import RightIcon from '@/shared/assets/icons/right-arrow.svg';
 import ShareIcon from '@/shared/assets/icons/share.svg';
 
 import { formatStudyDate, formatTimeAgo } from '../lib/time';
@@ -130,7 +130,7 @@ function MaxContentLength({
           onClick={() => setIsExpanded((prev) => !prev)}
         >
           더보기
-          <ArrowIcon />
+          <MoreTextArrow />
         </button>
       ) : null}
     </div>
