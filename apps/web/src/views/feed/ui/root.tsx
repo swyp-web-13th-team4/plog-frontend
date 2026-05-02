@@ -10,14 +10,15 @@ import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
 import { ScrollToTopButton } from '@/features/scroll-to-top';
 
-import {
-  FEED_QUERY_KEY,
-  FeedCard,
-  type FeedPage,
-  useInfiniteFeedQuery,
-} from '@/entities/feed';
+import { type FeedPage } from '@/entities/feed';
 
 import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
+
+import {
+  FEED_QUERY_KEY,
+  useInfiniteFeedQuery,
+} from '../model/useInfiniteFeedQuery';
+import FeedCard from './FeedCard';
 
 export default function FeedPage() {
   const { toast } = useToast();

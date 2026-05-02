@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 import { Avatar, Badge, Carousel } from '@plog/ui';
 
+import { type FeedPost, type FeedTag } from '@/entities/feed';
+
 import ArrowIcon from '@/shared/assets/icons/arrow.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
@@ -18,7 +20,6 @@ import RightIcon from '@/shared/assets/icons/right_arrow.svg';
 import ShareIcon from '@/shared/assets/icons/share.svg';
 
 import { formatStudyDate, formatTimeAgo } from '../lib/time';
-import { type FeedPost, type FeedTag } from '../model/types';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
