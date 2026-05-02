@@ -4,6 +4,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import profileImage from '@/shared/assets/images/profileImage.png';
 
+import { type FeedPage, type FeedPost } from './types';
+
 const FEED_CAROUSEL_IMAGES = [
   'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=800&fit=crop',
   'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=800&fit=crop',
@@ -14,42 +16,6 @@ const profileImageSrc = profileImage.src;
 
 const PAGE_SIZE = 10;
 export const FEED_QUERY_KEY = ['feed'] as const;
-
-export type FeedTag = {
-  id: string;
-  name: string;
-};
-
-export type FeedPost = {
-  POST_INFO: {
-    id: string;
-    isLiked: boolean;
-    isBookmarked: boolean;
-    USER_INFO: {
-      id: string;
-      nickname: string;
-      profileImage: string;
-    };
-    createdAt: string;
-    heartCount: number;
-    title: string;
-    content: string;
-    image: string[];
-    tags: FeedTag[];
-    PLACE_INFO: {
-      id: string;
-      placeName: string;
-      studyDate: string;
-      studyTime: string;
-      concentrateCount: number;
-    };
-  };
-};
-
-export type FeedPage = {
-  items: FeedPost[];
-  nextPage: number | undefined;
-};
 
 const MOCK_FEED_DATA: FeedPost[] = [
   {

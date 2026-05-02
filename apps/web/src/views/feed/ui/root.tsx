@@ -8,15 +8,16 @@ import { useRouter } from 'next/navigation';
 import { Button, EmptyState, Spinner, useToast } from '@plog/ui';
 import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
-import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
+import { ScrollToTopButton } from '@/features/scroll-to-top';
 
 import {
   FEED_QUERY_KEY,
+  FeedCard,
   type FeedPage,
   useInfiniteFeedQuery,
-} from '../model/query/useInfiniteScroll';
-import FeedCard from './FeedCard';
-import ScrollToTopButton from './ScrollToTopButton';
+} from '@/entities/feed';
+
+import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
 
 export default function FeedPage() {
   const { toast } = useToast();
