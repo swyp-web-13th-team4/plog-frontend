@@ -136,7 +136,7 @@ export const AllIcons: Story = {
     },
   },
   render: () => (
-    <div className="grid grid-cols-6 gap-6">
+    <div className="grid grid-cols-7 gap-6">
       {allIconNames.map((name) => (
         <div key={name} className="flex flex-col items-center gap-4">
           <Icon name={name} />
