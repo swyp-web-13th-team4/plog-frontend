@@ -1,4 +1,4 @@
-import { FeedPost } from '@/entities/feed';
+import { type FeedPost } from '@/entities/feed';
 
 import profileImage from '@/shared/assets/images/profileImage.png';
 const FEED_CAROUSEL_IMAGES = [

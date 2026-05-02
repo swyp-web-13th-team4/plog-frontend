@@ -2,9 +2,9 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
+import { type FeedPage } from '@/entities/feed';
 
-import { type FeedPage } from './types';
+import { MOCK_FEED_DATA } from './mock-data';
 
 const PAGE_SIZE = 10;
 export const FEED_QUERY_KEY = ['feed'] as const;
