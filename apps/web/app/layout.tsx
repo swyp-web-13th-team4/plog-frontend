@@ -4,8 +4,8 @@ import { type ReactNode } from 'react';
 
 import type { Metadata } from 'next';
 
-import BottomTab from '@/shared/ui/BottomTab';
-import Providers from '@/shared/ui/Providers';
+import { BottomTab } from '@/shared/ui';
+import { Providers } from '@/shared/ui';
 
 export const metadata: Metadata = {
   title: 'plog',

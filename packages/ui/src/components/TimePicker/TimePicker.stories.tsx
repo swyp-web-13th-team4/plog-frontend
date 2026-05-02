@@ -25,6 +25,14 @@ const meta: Meta<typeof TimePicker> = {
         type: { summary: '{ hour: number; minute: number }' },
       },
     },
+    minuteStep: {
+      description: '분 선택 단위를 지정합니다.',
+      control: { type: 'number', min: 1, max: 30 },
+      table: {
+        type: { summary: 'number' },
+        defaultValue: { summary: '1' },
+      },
+    },
     value: { table: { disable: true } },
     onChange: { table: { disable: true } },
   },
@@ -45,6 +53,20 @@ export const WithDefaultValue: Story = {
   },
   args: {
     defaultValue: { hour: 14, minute: 30 },
+  },
+};
+
+export const WithMinuteStep: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`minuteStep`으로 분 선택 단위를 지정할 수 있습니다.',
+      },
+    },
+  },
+  args: {
+    minuteStep: 10,
+    defaultValue: { hour: 9, minute: 0 },
   },
 };
 

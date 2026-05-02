@@ -56,8 +56,7 @@ export const WithActions: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          '`actions`를 전달하여 CTA를 추가할 수 있습니다.',
+        story: '`actions`를 전달하여 CTA를 추가할 수 있습니다.',
       },
     },
   },

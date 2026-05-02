@@ -1,3 +1,5 @@
+import 'swiper/css';
+
 import { useEffect, useRef } from 'react';
 
 import { cn } from '@plog/utils';
@@ -61,7 +63,7 @@ function TimePickerColumn({
         {items.map((item) => (
           <SwiperSlide
             key={item}
-            className="flex w-14 cursor-pointer items-center justify-center select-none"
+            className="flex! w-14! cursor-pointer items-center justify-center select-none"
           >
             {({ isActive }) => (
               <span

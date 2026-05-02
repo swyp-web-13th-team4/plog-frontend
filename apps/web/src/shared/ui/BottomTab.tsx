@@ -21,7 +21,7 @@ export default function BottomTab() {
   const pathname = usePathname();
 
   return (
-    <footer className="fixed right-0 bottom-0 left-0 z-30 mx-auto w-full max-w-layout">
+    <footer className="fixed right-0 bottom-0 left-0 z-100 mx-auto w-full max-w-layout">
       <BottomNavigation>
         {TABS.map(({ id, href, icon, label }) => (
           <BottomNavigation.Item
@@ -31,7 +31,7 @@ export default function BottomTab() {
             role="link"
             icon={icon}
             label={label}
-            active={pathname === href || pathname.startsWith(`${href}/`)}
+            active={pathname === href || pathname?.startsWith(`${href}/`)}
           />
         ))}
       </BottomNavigation>

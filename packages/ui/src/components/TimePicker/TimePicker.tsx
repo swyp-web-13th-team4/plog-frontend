@@ -7,6 +7,7 @@ type TimePickerProps = {
   defaultValue?: TimeValue;
   value?: TimeValue;
   onChange?: (value: TimeValue) => void;
+  minuteStep?: number;
 } & (
   | { 'aria-label'?: string; 'aria-labelledby'?: never }
   | { 'aria-label'?: never; 'aria-labelledby'?: string }
@@ -15,9 +16,17 @@ type TimePickerProps = {
 const HOURS = Array.from({ length: 12 }, (_, i) =>
   String(i + 1).padStart(2, '0'),
 );
-const MINUTES = Array.from({ length: 60 }, (_, i) =>
-  String(i).padStart(2, '0'),
-);
+
+function buildMinutes(step: number) {
+  if (!Number.isInteger(step) || step < 1) {
+    throw new Error(`minuteStep must be a positive integer, got ${step}`);
+  }
+  const minutes: string[] = [];
+  for (let m = 0; m < 60; m += step) {
+    minutes.push(String(m).padStart(2, '0'));
+  }
+  return minutes;
+}
 
 function hourToIndex(hour24: number): number {
   const h12 = hour24 % 12;
@@ -34,6 +43,7 @@ function TimePicker({
   defaultValue,
   value,
   onChange,
+  minuteStep = 1,
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledBy,
 }: TimePickerProps) {
@@ -49,6 +59,12 @@ function TimePicker({
     if (!isControlled) setInternalValue(next);
     onChange?.(next);
   };
+
+  const MINUTES = buildMinutes(minuteStep);
+  const minuteIndex = Math.min(
+    Math.round(current.minute / minuteStep),
+    MINUTES.length - 1,
+  );
 
   const meridiemIndex = current.hour < 12 ? 0 : 1;
   const effectiveAriaLabel = ariaLabelledBy
@@ -84,8 +100,9 @@ function TimePicker({
       <TimePickerColumn
         aria-label="분"
         items={MINUTES}
-        selectedIndex={current.minute}
-        onChange={(i) => update({ minute: i })}
+        selectedIndex={minuteIndex}
+        onChange={(i) => update({ minute: i * minuteStep })}
+        loop={MINUTES.length > 3}
       />
     </div>
   );

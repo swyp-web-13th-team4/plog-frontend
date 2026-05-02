@@ -21,7 +21,7 @@ type SelectProps = Omit<
   ComponentPropsWithoutRef<typeof BaseSelect.Root>,
   'children' | 'items'
 > & {
-  options: SelectOption[];
+  items: SelectOption[];
   placeholder?: string;
   className?: string;
   contentClassName?: string;
@@ -46,7 +46,7 @@ const itemClassName =
 
 function Select({
   ref,
-  options,
+  items,
   placeholder = '선택하세요',
   className,
   contentClassName,
@@ -56,7 +56,7 @@ function Select({
   ...props
 }: SelectProps) {
   return (
-    <BaseSelect.Root {...props}>
+    <BaseSelect.Root items={items} {...props}>
       <BaseSelect.Trigger
         ref={ref}
         aria-label={ariaLabel}
@@ -97,10 +97,10 @@ function Select({
         <BaseSelect.Positioner sideOffset={8} alignItemWithTrigger={false}>
           <BaseSelect.Popup className={cn(popupClassName, contentClassName)}>
             <BaseSelect.List className="flex flex-col gap-2">
-              {options.map((option) => (
+              {items.map((item) => (
                 <BaseSelect.Item
-                  key={option.value}
-                  value={option.value}
+                  key={item.value}
+                  value={item.value}
                   className={(state) =>
                     cn(
                       itemClassName,
@@ -119,7 +119,7 @@ function Select({
                   }
                 >
                   <BaseSelect.ItemText className="flex-1 truncate">
-                    {option.label}
+                    {item.label}
                   </BaseSelect.ItemText>
                 </BaseSelect.Item>
               ))}

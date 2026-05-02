@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import Select from './Select';
 
-const OPTIONS = [
+const ITEMS = [
   { label: '옵션 1', value: 'option1' },
   { label: '옵션 2', value: 'option2' },
   { label: '옵션 3', value: 'option3' },
@@ -19,12 +19,12 @@ const meta: Meta<typeof Select> = {
     docs: {
       description: {
         component:
-          '선택 가능한 옵션 목록을 드롭다운으로 표시하는 컴포넌트입니다. `options`로 선택지를 전달할 수 있습니다.',
+          '선택 가능한 옵션 목록을 드롭다운으로 표시하는 컴포넌트입니다. `items`로 선택지를 전달할 수 있습니다.',
       },
     },
   },
   argTypes: {
-    options: {
+    items: {
       description: '드롭다운에 표시할 옵션 리스트입니다.',
       table: {
         type: { summary: '{ label: string; value: string }[]' },
@@ -62,7 +62,7 @@ const meta: Meta<typeof Select> = {
     onValueChange: { table: { disable: true } },
   },
   args: {
-    options: OPTIONS,
+    items: ITEMS,
     disabled: false,
   },
 };

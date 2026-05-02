@@ -28,7 +28,7 @@ function BottomSheetRoot(
 
 function Handle() {
   return (
-    <div className="h-1.5 w-15 shrink-0 cursor-grab rounded-full bg-semantic-object-subtler" />
+    <div className="h-1.5 w-15 shrink-0 cursor-grab rounded-full bg-semantic-object-subtler first:-mt-2" />
   );
 }
 
@@ -64,11 +64,12 @@ function Content({
       {backdrop && (
         <BaseDrawer.Backdrop className="fixed inset-0 bg-semantic-system-black/60 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
       )}
-      <BaseDrawer.Viewport className="fixed inset-0 flex items-end justify-center">
+      <BaseDrawer.Viewport className="pointer-events-none fixed inset-0 flex items-end justify-center">
         <BaseDrawer.Popup
           initialFocus={initialFocus}
           finalFocus={finalFocus}
           className={cn(
+            'pointer-events-auto',
             popupBaseStyles,
             popupBleedStyles,
             popupPaddingStyles,
