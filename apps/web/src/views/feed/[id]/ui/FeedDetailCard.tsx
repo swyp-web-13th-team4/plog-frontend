@@ -377,7 +377,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           <TagBadgeGroup tags={post.POST_INFO.tags} />
         </div>
         <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <span className="title-xs text-semantic-object-boldest">
               {post.POST_INFO.title}
             </span>
