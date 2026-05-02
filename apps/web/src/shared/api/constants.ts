@@ -1,4 +1,4 @@
-export const BASE_URL = `${process.env.NEXT_PUBLIC_SERVER_URL}/api`;
+export const BASE_URL = `${(process.env.NEXT_PUBLIC_SERVER_URL ?? '').replace(/\/$/, '')}/api`;
 
 export const API_ERROR_CODE = {
   // 400
