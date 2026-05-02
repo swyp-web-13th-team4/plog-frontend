@@ -1,1 +1,3 @@
-export { default } from '@/views/log/ui/root';
+import { CreateFeedPage } from '@/views/log';
+
+export default CreateFeedPage;

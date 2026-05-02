@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 
-import { Button, Field, Input, Select, Switch, Textarea } from '@plog/ui';
+import { Button, Field, Input, Switch, Textarea } from '@plog/ui';
 import { cn } from '@plog/utils';
+
+import { PlaceCategorySelectBottomSheet } from '@/features/place-category-select';
+
+import { type PlaceCategoryValue } from '@/entities/place';
 
 import FocusLevel1 from '@/shared/assets/focus-levels/focus-level-1.svg';
 import FocusLevel2 from '@/shared/assets/focus-levels/focus-level-2.svg';
@@ -55,14 +59,6 @@ const FOCUS_LEVEL_OPTIONS = [
     SelectedIcon: FocusLevelSelect5,
   },
 ] as const;
-
-const PLACE_CATEGORY_OPTIONS = [
-  { label: '공원', value: 'park' },
-  { label: '하천', value: 'river' },
-  { label: '등산로', value: 'trail' },
-  { label: '해변', value: 'beach' },
-  { label: '기타', value: 'etc' },
-];
 
 const PRIVACY_SETTING_OPTIONS = [
   {
@@ -167,6 +163,9 @@ function PrivacySettingSection({ isPublic }: { isPublic: boolean }) {
 export default function CreateFeedPage() {
   const [title, setTitle] = useState('');
   const [focusScore, setFocusScore] = useState<FocusScore | null>(null);
+  const [placeCategory, setPlaceCategory] = useState<PlaceCategoryValue | null>(
+    null,
+  );
   const [isPublic, setIsPublic] = useState(true);
 
   return (
@@ -206,13 +205,9 @@ export default function CreateFeedPage() {
             <Input placeholder="위치를 입력해 주세요." />
           </Field>
 
-          <Select
-            options={PLACE_CATEGORY_OPTIONS}
-            placeholder="장소 카테고리를 선택해 주세요."
-            aria-label="장소 카테고리"
-            className="body-md h-auto w-full px-4 py-3 text-semantic-object-normal [&>svg]:size-5"
-            contentClassName="w-[var(--anchor-width)]"
-            optionClassName="body-md w-full px-3 py-2"
+          <PlaceCategorySelectBottomSheet
+            value={placeCategory}
+            onChange={setPlaceCategory}
           />
         </div>
 
@@ -260,7 +255,7 @@ export default function CreateFeedPage() {
               size="large"
               fullWidth
               iconLeft={<PlusIcon />}
-              className="text-semantic-object-normal"
+              className="text-semantic-object-normal [&>svg]:size-4!"
             >
               태그 추가하기
             </Button>

@@ -16,7 +16,7 @@ export default function CreateFeedLayout({
       <AppBar
         variant="navigation"
         title="환경 기록"
-        onBack={() => router.push('/feed')}
+        onBack={() => router.push('/map')}
       />
       {children}
     </>
