@@ -4,9 +4,13 @@ import { Icon } from '@plog/ui';
 
 type ScrollToTopButtonProps = {
   visible: boolean;
+  onClick?: () => void;
 };
 
-export default function ScrollToTopButton({ visible }: ScrollToTopButtonProps) {
+export default function ScrollToTopButton({
+  visible,
+  onClick,
+}: ScrollToTopButtonProps) {
   return (
     <div className="pointer-events-none fixed bottom-[calc(var(--spacing-bottom-tab)+36px)] left-1/2 z-20 w-full max-w-layout -translate-x-1/2 px-9">
       <div className="flex justify-end">
@@ -20,7 +24,9 @@ export default function ScrollToTopButton({ visible }: ScrollToTopButtonProps) {
               ? 'translate-y-0 opacity-100'
               : 'pointer-events-none translate-y-2 opacity-0'
           }`}
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={
+            onClick ?? (() => window.scrollTo({ top: 0, behavior: 'smooth' }))
+          }
         >
           <Icon name="arrow-up" />
         </button>

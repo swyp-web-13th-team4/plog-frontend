@@ -148,6 +148,7 @@ export default function FeedCard({
       isEnd: swiper.isEnd,
     });
   };
+  const isSeungminPost = POST_INFO.USER_INFO.nickname === '승민';
 
   return (
     <div className={isLast ? '' : 'mb-13.5'}>
@@ -156,6 +157,11 @@ export default function FeedCard({
           size="xsmall"
           src={POST_INFO.USER_INFO.profileImage}
           alt={`${POST_INFO.USER_INFO.nickname}의 프로필 이미지`}
+          className="cursor-pointer"
+          onClick={(e) => {
+            if (isSeungminPost) return e.stopPropagation();
+            router.push(`/feed/users/${POST_INFO.USER_INFO.id}`);
+          }}
         />
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
