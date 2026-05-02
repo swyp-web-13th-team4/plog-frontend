@@ -16,16 +16,13 @@ import {
 } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { FeedPost, FeedTag } from '@/entities/feed';
 import {
   formatStudyDate,
   formatStudyDuration,
   formatTimeAgo,
-} from '@/views/feed/model/lib/time';
-import {
-  type FeedPost,
-  type FeedTag,
-  MOCK_FEED_DATA,
-} from '@/views/feed/model/query/useInfiniteScroll';
+} from '@/entities/feed/lib/time';
+import { MOCK_FEED_DATA } from '@/entities/feed/model/useInfiniteFeedQuery';
 
 import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
 import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
