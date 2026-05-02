@@ -4,9 +4,8 @@ import { cn } from '@plog/utils';
 
 import { type Place } from '@/entities/place/model/types';
 
-import ClockIcon from '@/shared/assets/icons/clock.svg';
-import FireIcon from '@/shared/assets/icons/fire.svg';
-import PinIcon from '@/shared/assets/icons/pin.svg';
+import { Icon } from '@plog/ui';
+
 import { ImageWithFallback } from '@/shared/ui';
 
 type MapPlaceItemProps = {
@@ -39,15 +38,27 @@ export default function MapPlaceItem({ place, onClick }: MapPlaceItemProps) {
         </p>
         <div className="caption-md mt-0.5 flex items-center gap-3 text-semantic-object-normal">
           <span className="body-xs flex items-center gap-1">
-            <PinIcon />
+            <Icon
+              name="pin"
+              size={16}
+              className="text-semantic-object-subtle"
+            />
             {place.category}
           </span>
           <span className="body-xs flex items-center gap-1">
-            <ClockIcon />
+            <Icon
+              name="clock"
+              size={16}
+              className="text-semantic-object-subtle"
+            />
             {place.totalWorkHours}h
           </span>
           <span className="body-xs flex items-center gap-1">
-            <FireIcon />
+            <Icon
+              name="fire"
+              size={16}
+              className="text-semantic-object-subtle"
+            />
             집중도 {place.averageFocus}
           </span>
         </div>

@@ -6,6 +6,7 @@ import {
   BottomSheet,
   Button,
   Divider,
+  Icon,
   EmptyState,
   Select,
   Switch,
@@ -17,10 +18,6 @@ import { type Place, type PlaceLayer } from '@/entities/place';
 
 import BookmarkEmptyGraphic from '@/shared/assets/empty-graphics/bookmark-empty.svg';
 import RecordEmptyGraphic from '@/shared/assets/empty-graphics/record-empty.svg';
-import ArrowIcon from '@/shared/assets/icons/arrow.svg';
-import BookmarkIcon from '@/shared/assets/icons/bookmark.svg';
-import PencilIcon from '@/shared/assets/icons/pencil.svg';
-import PrevIcon from '@/shared/assets/icons/prev.svg';
 
 type RecordSort = 'latest' | 'records' | 'worktime' | 'focus';
 type BookmarkSort = 'latest' | 'focus';
@@ -87,14 +84,18 @@ function LayerSwitchRow({
         onKeyDown={(e) => e.key === 'Enter' && onClick()}
       >
         <div
-          className={`flex size-9 shrink-0 items-center justify-center rounded-full ${iconBg}`}
+          className={`flex size-9 shrink-0 items-center justify-center rounded-full ${iconBg} text-semantic-object-inverse`}
         >
           {icon}
         </div>
         <div className="flex flex-col items-start">
           <span className="title-xs flex items-center gap-2 text-semantic-object-boldest">
             {label}
-            <ArrowIcon className="size-5 rotate-90 fill-semantic-object-subtle" />
+            <Icon
+              name="chevron-right"
+              size={20}
+              className="text-semantic-object-subtle"
+            />
           </span>
           <span className="body-sm text-semantic-object-subtle">{count}개</span>
         </div>
@@ -173,7 +174,11 @@ function PlaceList({
                   className="label-md pointer-events-auto inline-flex cursor-pointer items-center gap-2 rounded-full bg-semantic-accent-normal px-6 py-3 text-semantic-system-white"
                 >
                   지도 보기
-                  <ArrowIcon className="rotate-180 fill-semantic-system-white" />
+                  <Icon
+                    name="chevron-down"
+                    size={20}
+                    className="text-semantic-object-inverse"
+                  />
                 </button>
               }
             />
@@ -226,7 +231,7 @@ export default function MapListSheet({
           <BottomSheet.Handle />
           <BottomSheet.Body className="flex flex-col">
             <LayerSwitchRow
-              icon={<PencilIcon />}
+              icon={<Icon name="pencil-filled" size={20} />}
               iconBg="bg-semantic-accent-normal"
               label="내 기록"
               count={recordPlaces.length}
@@ -236,7 +241,7 @@ export default function MapListSheet({
             />
             <Divider thickness="small" />
             <LayerSwitchRow
-              icon={<BookmarkIcon />}
+              icon={<Icon name="bookmark-filled" size={20} />}
               iconBg="bg-semantic-theme-sky-normal"
               label="북마크"
               count={bookmarkPlaces.length}
@@ -265,9 +270,9 @@ export default function MapListSheet({
             <button
               type="button"
               onClick={handleBack}
-              className="cursor-pointer text-semantic-object-boldest"
+              className="flex cursor-pointer items-center justify-center text-semantic-object-boldest"
             >
-              <PrevIcon className="size-6 fill-semantic-object-boldest" />
+              <Icon name="chevron-left" size={24} />
             </button>
             <BottomSheet.Title>
               {listView === 'record' ? '내 기록' : '북마크'}
