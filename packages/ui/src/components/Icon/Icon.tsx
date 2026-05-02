@@ -20,7 +20,14 @@ export default function Icon({
   const { Component, width: rawWidth, height: rawHeight } = iconMap[name];
 
   if (!boxed) {
-    return <Component width={size} height={size} className={className} />;
+    return (
+      <Component
+        width={size}
+        height={size}
+        className={className}
+        aria-hidden="true"
+      />
+    );
   }
 
   const containerSize = size ?? BASE_SIZE;
@@ -30,6 +37,7 @@ export default function Icon({
 
   return (
     <span
+      aria-hidden="true"
       className={cn(
         'inline-flex shrink-0 items-center justify-center',
         className,
