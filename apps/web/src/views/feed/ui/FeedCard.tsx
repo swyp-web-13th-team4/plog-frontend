@@ -284,7 +284,7 @@ export default function FeedCard({
               </span>
               <MaxContentLength content={POST_INFO.content} maxLength={35} />
             </div>
-            <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-6">
+            <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-4">
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
                   {POST_INFO.PLACE_INFO.placeName}
