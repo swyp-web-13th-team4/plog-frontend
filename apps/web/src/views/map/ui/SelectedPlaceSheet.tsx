@@ -111,6 +111,7 @@ export default function SelectedPlaceSheet({
                 {onBack && (
                   <button
                     type="button"
+                    aria-label="뒤로 가기"
                     onClick={onBack}
                     className="absolute top-3 left-3 flex size-8 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40"
                   >

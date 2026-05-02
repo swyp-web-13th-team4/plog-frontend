@@ -269,6 +269,7 @@ export default function MapListSheet({
           <BottomSheet.Header className="justify-start gap-2.5">
             <button
               type="button"
+              aria-label="뒤로 가기"
               onClick={handleBack}
               className="flex cursor-pointer items-center justify-center text-semantic-object-boldest"
             >

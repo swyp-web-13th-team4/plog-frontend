@@ -101,7 +101,11 @@ export default function MapPage() {
             className="shadow-[0px_2px_12px_0px_rgba(0,0,0,0.15)]"
             placeholder="기록했던 장소를 입력해 주세요"
             trailing={
-              <button className="flex items-center justify-center">
+              <button
+                type="button"
+                aria-label="검색"
+                className="flex items-center justify-center"
+              >
                 <Icon
                   name="search"
                   size={20}
