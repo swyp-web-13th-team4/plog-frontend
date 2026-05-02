@@ -17,8 +17,8 @@ import LeftIcon from '@/shared/assets/icons/left_arrow.svg';
 import RightIcon from '@/shared/assets/icons/right_arrow.svg';
 import ShareIcon from '@/shared/assets/icons/share.svg';
 
-import { formatStudyDate, formatTimeAgo } from '../model/lib/time';
-import { type FeedPost, type FeedTag } from '../model/query/useInfiniteScroll';
+import { formatStudyDate, formatTimeAgo } from '../lib/time';
+import { type FeedPost, type FeedTag } from '../model/types';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
