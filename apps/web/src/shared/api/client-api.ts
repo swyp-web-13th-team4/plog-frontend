@@ -1,6 +1,6 @@
 import { BASE_URL } from './constants';
-import { parseApiResponse } from './parse-api-response';
-import { resolveBody } from './resolve-body';
+import { mergeHeaders, resolveBody } from './request.utils';
+import { parseApiResponse } from './response.utils';
 
 async function request<T>(
   endpoint: string,
@@ -13,7 +13,7 @@ async function request<T>(
     ...options,
     method,
     credentials: 'include',
-    headers: { ...bodyOptions.headers, ...options?.headers },
+    headers: mergeHeaders(bodyOptions.headers, options?.headers),
     body: bodyOptions.body,
   });
   return parseApiResponse<T>(res);

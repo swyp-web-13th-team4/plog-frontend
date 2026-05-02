@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
 
 import { BASE_URL } from './constants';
-import { parseApiResponse } from './parse-api-response';
-import { resolveBody } from './resolve-body';
+import { mergeHeaders, resolveBody } from './request.utils';
+import { parseApiResponse } from './response.utils';
 
 async function request<T>(
   endpoint: string,
@@ -17,14 +17,13 @@ async function request<T>(
     .join('; ');
 
   const bodyOptions = resolveBody(body);
+  const headers = mergeHeaders(bodyOptions.headers, options?.headers);
+  if (cookieString) headers.set('Cookie', cookieString);
+
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     ...options,
     method,
-    headers: {
-      ...bodyOptions.headers,
-      ...(cookieString ? { Cookie: cookieString } : {}),
-      ...options?.headers,
-    },
+    headers,
     body: bodyOptions.body,
   });
   return parseApiResponse<T>(res);
