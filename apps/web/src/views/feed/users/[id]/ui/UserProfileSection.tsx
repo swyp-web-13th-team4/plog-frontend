@@ -8,6 +8,11 @@ import { MOCK_FEED_DATA } from '@/views/feed/model/query/useInfiniteScroll';
 
 import ArrowIcon from '@/shared/assets/icons/arrow.svg';
 
+const BIO_COLLAPSED_LINE_COUNT = 1;
+const BIO_OVERFLOW_THRESHOLD = 1;
+const BIO_TEXT =
+  '글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자';
+
 export default function UserProfileSection({ userId }: { userId: string }) {
   const user = MOCK_FEED_DATA.find(
     (item) => item.POST_INFO.USER_INFO.id === userId,
@@ -15,27 +20,51 @@ export default function UserProfileSection({ userId }: { userId: string }) {
 
   const userProfileInfo = user?.POST_INFO.USER_INFO;
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedUserId, setExpandedUserId] = useState<string | null>(null);
   const [isClamped, setIsClamped] = useState(false);
 
-  const textRef = useRef<HTMLParagraphElement>(null);
-  const measureRef = useRef<HTMLParagraphElement>(null);
-
-  const bioText =
-    'kshdkajsdhkasksdhkhasjdkhaskdaskdhksa129836721986721uydashgahjsdbajshcbjascjajhhjcabhjcasvkdhgcdshfㅍ너hddasljkdhaskdjashdkasdhklkasdhjlkasjdhkjh21jieg12iㅣㅏㅁㄴ옴너ㅗ안마오';
+  const bioRef = useRef<HTMLParagraphElement>(null);
+  const bioMeasureRef = useRef<HTMLParagraphElement>(null);
+  const isExpanded = expandedUserId === userId;
 
   useLayoutEffect(() => {
-    const textEl = textRef.current;
-    const measureEl = measureRef.current;
+    const bioEl = bioRef.current;
+    const bioMeasureEl = bioMeasureRef.current;
 
-    if (!textEl || !measureEl) return;
+    if (!bioEl || !bioMeasureEl) return;
 
-    const lineHeight = parseFloat(getComputedStyle(textEl).lineHeight);
+    const updateIsClamped = () => {
+      const lineHeight = parseFloat(getComputedStyle(bioEl).lineHeight);
 
-    const fullHeight = measureEl.scrollHeight;
+      if (Number.isNaN(lineHeight)) {
+        setIsClamped(false);
+        return;
+      }
 
-    setIsClamped(fullHeight > lineHeight * 1.5);
-  }, [bioText]);
+      const collapsedHeight = lineHeight * BIO_COLLAPSED_LINE_COUNT;
+
+      setIsClamped(
+        bioMeasureEl.scrollHeight > collapsedHeight + BIO_OVERFLOW_THRESHOLD,
+      );
+    };
+
+    updateIsClamped();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateIsClamped);
+
+      return () => {
+        window.removeEventListener('resize', updateIsClamped);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(updateIsClamped);
+    resizeObserver.observe(bioEl);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   if (!user) return null;
 
@@ -55,20 +84,20 @@ export default function UserProfileSection({ userId }: { userId: string }) {
 
           <div className="relative w-full">
             <p
-              ref={textRef}
+              ref={bioRef}
               className={`body-sm wrap-break-word text-semantic-object-boldest ${
                 isExpanded ? 'line-clamp-none' : 'line-clamp-1'
               }`}
             >
-              {bioText}
+              {BIO_TEXT}
             </p>
 
             <p
-              ref={measureRef}
+              ref={bioMeasureRef}
               aria-hidden="true"
               className="body-sm pointer-events-none invisible absolute top-0 left-0 w-full wrap-break-word text-semantic-object-boldest"
             >
-              {bioText}
+              {BIO_TEXT}
             </p>
           </div>
           {isClamped && (
@@ -76,7 +105,9 @@ export default function UserProfileSection({ userId }: { userId: string }) {
               type="button"
               aria-label={isExpanded ? 'bio 접기' : 'bio 더보기'}
               className="body-sm flex cursor-pointer items-center gap-1 text-semantic-object-subtle"
-              onClick={() => setIsExpanded((prev) => !prev)}
+              onClick={() =>
+                setExpandedUserId((prev) => (prev === userId ? null : userId))
+              }
             >
               {isExpanded ? '접기' : '더보기'}
               <ArrowIcon
