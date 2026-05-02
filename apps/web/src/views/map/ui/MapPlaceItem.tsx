@@ -2,12 +2,12 @@
 
 import { cn } from '@plog/utils';
 
+import { type Place } from '@/entities/place/model/types';
+
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import FireIcon from '@/shared/assets/icons/fire.svg';
 import PinIcon from '@/shared/assets/icons/pin.svg';
 import { ImageWithFallback } from '@/shared/ui';
-
-import { type Place } from '../model/types';
 
 type MapPlaceItemProps = {
   place: Place;

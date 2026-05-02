@@ -11,7 +11,9 @@ import {
   Switch,
 } from '@plog/ui';
 
-import { MapPlaceItem, type Place, type PlaceLayer } from '@/entities/place';
+import MapPlaceItem from '@/views/map/ui/MapPlaceItem';
+
+import { type Place, type PlaceLayer } from '@/entities/place';
 
 import BookmarkEmptyGraphic from '@/shared/assets/empty-graphics/bookmark-empty.svg';
 import RecordEmptyGraphic from '@/shared/assets/empty-graphics/record-empty.svg';
