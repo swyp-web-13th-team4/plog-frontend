@@ -1,7 +1,7 @@
 import { type ReactNode } from 'react';
 
 import { create } from 'zustand';
-import { combine } from 'zustand/middleware/combine';
+import { combine } from 'zustand/middleware';
 
 export type DialogType = 'alert' | 'confirm';
 
