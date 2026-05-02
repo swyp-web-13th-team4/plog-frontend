@@ -1,10 +1,9 @@
 'use client';
 
+import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { type Place } from '@/entities/place/model/types';
-
-import { Icon } from '@plog/ui';
 
 import { ImageWithFallback } from '@/shared/ui';
 

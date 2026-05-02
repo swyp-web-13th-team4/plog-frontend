@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 
 import Script from 'next/script';
 
-import { BottomSheet, Input, Icon } from '@plog/ui';
+import { BottomSheet, Icon, Input } from '@plog/ui';
 
 import { type Place, type PlaceLayer } from '@/entities/place';
 
