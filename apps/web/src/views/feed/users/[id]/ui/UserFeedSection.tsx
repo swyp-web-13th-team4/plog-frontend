@@ -192,7 +192,11 @@ function ListTypeFeed({
       {feeds.map((feed) => (
         <div
           key={feed.POST_INFO.id}
-          onClick={() => router.push(`/feed/${feed.POST_INFO.id}`)}
+          onClick={() =>
+            router.push(
+              `/feed/${feed.POST_INFO.id}?backTo=${encodeURIComponent(`/feed/users/${feed.POST_INFO.USER_INFO.id}`)}`,
+            )
+          }
           className="flex cursor-pointer gap-4 border-b border-b-semantic-object-subtler bg-semantic-system-white px-6 py-5"
         >
           {/* 이미지 영역 */}
@@ -270,7 +274,11 @@ function GridTypeFeed({
       {feeds.map((feed) => (
         <div
           key={feed.POST_INFO.id}
-          onClick={() => router.push(`/feed/${feed.POST_INFO.id}`)}
+          onClick={() =>
+            router.push(
+              `/feed/${feed.POST_INFO.id}?backTo=${encodeURIComponent(`/feed/users/${feed.POST_INFO.USER_INFO.id}`)}`,
+            )
+          }
           className="flex cursor-pointer flex-col gap-4"
         >
           <div className="relative overflow-hidden rounded-lg">
