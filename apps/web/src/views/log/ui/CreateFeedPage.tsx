@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
+
+import Image from 'next/image';
 
 import {
   Button,
@@ -21,11 +23,11 @@ import { WorkTimeSelectDialog } from '@/features/work-time-select';
 import { type PlaceTagValue } from '@/entities/log';
 import { type PlaceCategoryValue } from '@/entities/place';
 
-import FocusLevel1 from '@/shared/assets/focus-levels/focus-level-1.svg';
-import FocusLevel2 from '@/shared/assets/focus-levels/focus-level-2.svg';
-import FocusLevel3 from '@/shared/assets/focus-levels/focus-level-3.svg';
-import FocusLevel4 from '@/shared/assets/focus-levels/focus-level-4.svg';
-import FocusLevel5 from '@/shared/assets/focus-levels/focus-level-5.svg';
+import FocusLevelDefault1 from '@/shared/assets/focus-levels/focus-level-default-1.svg';
+import FocusLevelDefault2 from '@/shared/assets/focus-levels/focus-level-default-2.svg';
+import FocusLevelDefault3 from '@/shared/assets/focus-levels/focus-level-default-3.svg';
+import FocusLevelDefault4 from '@/shared/assets/focus-levels/focus-level-default-4.svg';
+import FocusLevelDefault5 from '@/shared/assets/focus-levels/focus-level-default-5.svg';
 import FocusLevelSelect1 from '@/shared/assets/focus-levels/focus-level-select-1.svg';
 import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2.svg';
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
@@ -34,38 +36,45 @@ import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5
 import CameraIcon from '@/shared/assets/icons/camera.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import InfoIcon from '@/shared/assets/icons/Info.svg';
-
 type FocusScore = 1 | 2 | 3 | 4 | 5;
+
+type PhotoPreview = {
+  id: string;
+  file: File;
+  url: string;
+};
+
+const MAX_PHOTO_COUNT = 5;
 
 const FOCUS_LEVEL_OPTIONS = [
   {
     value: 1,
     label: '매우 낮음',
-    DefaultIcon: FocusLevel1,
+    DefaultIcon: FocusLevelDefault1,
     SelectedIcon: FocusLevelSelect1,
   },
   {
     value: 2,
     label: '낮음',
-    DefaultIcon: FocusLevel2,
+    DefaultIcon: FocusLevelDefault2,
     SelectedIcon: FocusLevelSelect2,
   },
   {
     value: 3,
     label: '보통',
-    DefaultIcon: FocusLevel3,
+    DefaultIcon: FocusLevelDefault3,
     SelectedIcon: FocusLevelSelect3,
   },
   {
     value: 4,
     label: '높음',
-    DefaultIcon: FocusLevel4,
+    DefaultIcon: FocusLevelDefault4,
     SelectedIcon: FocusLevelSelect4,
   },
   {
     value: 5,
     label: '매우 높음',
-    DefaultIcon: FocusLevel5,
+    DefaultIcon: FocusLevelDefault5,
     SelectedIcon: FocusLevelSelect5,
   },
 ] as const;
@@ -85,16 +94,96 @@ const PRIVACY_SETTING_OPTIONS = [
   },
 ] as const;
 
-function PhotoUploader() {
+function createPhotoPreview(file: File, index: number): PhotoPreview {
+  return {
+    id: `${file.name}-${file.size}-${file.lastModified}-${Date.now()}-${index}`,
+    file,
+    url: URL.createObjectURL(file),
+  };
+}
+
+function PhotoUploader({
+  photos,
+  onAdd,
+  onRemove,
+}: {
+  photos: PhotoPreview[];
+  onAdd: (files: File[]) => void;
+  onRemove: (id: string) => void;
+}) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const canAddMore = photos.length < MAX_PHOTO_COUNT;
+
+  useEffect(() => {
+    if (!fileInputRef.current) return;
+
+    const dataTransfer = new DataTransfer();
+    photos.forEach(({ file }) => dataTransfer.items.add(file));
+    fileInputRef.current.files = dataTransfer.files;
+  }, [photos]);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(event.target.files ?? []).filter((file) =>
+      file.type.startsWith('image/'),
+    );
+
+    if (selectedFiles.length === 0) return;
+    onAdd(selectedFiles);
+  };
+
   return (
-    <button
-      type="button"
-      className="flex size-25 flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle"
-      aria-label="사진 등록"
-    >
-      <CameraIcon />
-      <span className="label-sm">0/5</span>
-    </button>
+    <div className="flex gap-4 pt-1 pb-1">
+      <input
+        ref={fileInputRef}
+        type="file"
+        name="photos"
+        accept=".jpg, .png, .heic"
+        multiple
+        className="sr-only"
+        onChange={handleFileChange}
+      />
+
+      <button
+        type="button"
+        disabled={!canAddMore}
+        className="flex size-25 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
+        aria-label="사진 등록"
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <CameraIcon />
+        <span className="label-sm">
+          {photos.length}/{MAX_PHOTO_COUNT}
+        </span>
+      </button>
+
+      <div className="min-w-0 flex-1 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex w-max gap-4">
+          {photos.map((photo, index) => (
+            <div
+              key={photo.id}
+              className="relative size-25 shrink-0 overflow-hidden rounded-xl bg-semantic-object-subtler"
+            >
+              <Image
+                src={photo.url}
+                alt={`등록된 사진 ${index + 1}`}
+                fill
+                sizes="100px"
+                unoptimized
+                className="object-cover"
+              />
+              <button
+                type="button"
+                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-system-white bg-semantic-feedback-error-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
+                aria-label={`등록된 사진 ${index + 1} 삭제`}
+                onClick={() => onRemove(photo.id)}
+              >
+                x
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -119,7 +208,7 @@ function RatingPicker({
           return (
             <label
               key={score}
-              className="group relative aspect-square cursor-pointer overflow-hidden rounded-sm transition outline-none focus-within:ring-2 focus-within:ring-semantic-accent-normal focus-within:ring-offset-2 focus-within:ring-offset-semantic-bg-standard"
+              className="group relative flex aspect-square cursor-pointer items-center justify-center overflow-visible rounded-sm transition outline-none focus-within:ring-2 focus-within:ring-semantic-accent-normal focus-within:ring-offset-2 focus-within:ring-offset-semantic-bg-standard"
             >
               <input
                 type="radio"
@@ -130,7 +219,10 @@ function RatingPicker({
                 className="sr-only"
                 aria-label={`집중도 ${score}점, ${label}`}
               />
-              <RatingIcon aria-hidden="true" />
+              <RatingIcon
+                aria-hidden="true"
+                className="block size-full scale-140"
+              />
             </label>
           );
         },
@@ -171,7 +263,10 @@ function PrivacySettingSection({ isPublic }: { isPublic: boolean }) {
 }
 
 export default function CreateFeedPage() {
+  const photoPreviewsRef = useRef<PhotoPreview[]>([]);
+
   const [title, setTitle] = useState('');
+  const [photos, setPhotos] = useState<PhotoPreview[]>([]);
   const [focusScore, setFocusScore] = useState<FocusScore | null>(null);
   const [placeCategory, setPlaceCategory] = useState<PlaceCategoryValue | null>(
     null,
@@ -182,11 +277,46 @@ export default function CreateFeedPage() {
   const [reviewTags, setReviewTags] = useState<PlaceTagValue[]>([]);
   const [isPublic, setIsPublic] = useState(true);
 
+  useEffect(() => {
+    photoPreviewsRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      photoPreviewsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
+    };
+  }, []);
+
+  const handleAddPhotos = (files: File[]) => {
+    setPhotos((currentPhotos) => {
+      const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
+      const nextFiles = files.slice(0, availableCount);
+
+      return [
+        ...currentPhotos,
+        ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
+      ];
+    });
+  };
+
+  const handleRemovePhoto = (id: string) => {
+    setPhotos((currentPhotos) => {
+      const targetPhoto = currentPhotos.find((photo) => photo.id === id);
+      if (targetPhoto) URL.revokeObjectURL(targetPhoto.url);
+
+      return currentPhotos.filter((photo) => photo.id !== id);
+    });
+  };
+
   return (
     <form className="bg-semantic-bg-standard">
       <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
         <Field label="사진 등록" required>
-          <PhotoUploader />
+          <PhotoUploader
+            photos={photos}
+            onAdd={handleAddPhotos}
+            onRemove={handleRemovePhoto}
+          />
         </Field>
 
         <Field label="제목" required>
@@ -216,7 +346,11 @@ export default function CreateFeedPage() {
       <section className="flex flex-col gap-6 px-6 py-6">
         <div className="flex flex-col gap-3">
           <Field label="작업 장소" required>
-            <Input placeholder="위치를 입력해 주세요." />
+            <Input
+              placeholder="위치를 입력해 주세요."
+              readOnly
+              onClick={() => console.log('클릭')}
+            />
           </Field>
 
           <PlaceCategorySelectBottomSheet
