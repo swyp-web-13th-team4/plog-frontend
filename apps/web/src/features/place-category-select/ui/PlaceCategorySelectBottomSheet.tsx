@@ -80,7 +80,7 @@ export default function PlaceCategorySelectBottomSheet({
           }
         />
 
-        <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-3 pb-6">
+        <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-5 pb-6">
           <BottomSheet.Handle />
           <BottomSheet.Header className="items-center">
             <BottomSheet.Title className="title-sm text-semantic-object-boldest">
