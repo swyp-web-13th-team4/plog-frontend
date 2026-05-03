@@ -14,9 +14,11 @@ import {
 import { cn } from '@plog/utils';
 
 import { PlaceCategorySelectBottomSheet } from '@/features/place-category-select';
+import { ReviewTagsSelectBottomSheet } from '@/features/review-tags-select';
 import { WorkDateSelectDialog } from '@/features/work-date-select';
 import { WorkTimeSelectDialog } from '@/features/work-time-select';
 
+import { type PlaceTagValue } from '@/entities/log';
 import { type PlaceCategoryValue } from '@/entities/place';
 
 import FocusLevel1 from '@/shared/assets/focus-levels/focus-level-1.svg';
@@ -32,7 +34,6 @@ import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5
 import CameraIcon from '@/shared/assets/icons/camera.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import InfoIcon from '@/shared/assets/icons/Info.svg';
-import PlusIcon from '@/shared/assets/icons/plus.svg';
 
 type FocusScore = 1 | 2 | 3 | 4 | 5;
 
@@ -178,6 +179,7 @@ export default function CreateFeedPage() {
   const [workDate, setWorkDate] = useState<DateValue | null>(null);
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
   const [endTime, setEndTime] = useState<TimeValue | null>(null);
+  const [reviewTags, setReviewTags] = useState<PlaceTagValue[]>([]);
   const [isPublic, setIsPublic] = useState(true);
 
   return (
@@ -260,15 +262,10 @@ export default function CreateFeedPage() {
 
         <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6">
           <Field label="후기 요약 태그를 선택해주세요" required>
-            <Button
-              variant="outline"
-              size="large"
-              fullWidth
-              iconLeft={<PlusIcon />}
-              className="text-semantic-object-normal [&>svg]:size-4!"
-            >
-              태그 추가하기
-            </Button>
+            <ReviewTagsSelectBottomSheet
+              value={reviewTags}
+              onChange={setReviewTags}
+            />
           </Field>
         </div>
       </section>
@@ -288,7 +285,7 @@ export default function CreateFeedPage() {
         <PrivacySettingSection isPublic={isPublic} />
       </section>
       <section className="px-6 pt-6 pb-10">
-        <Button fullWidth size="large" disabled type="submit">
+        <Button fullWidth size="large" type="submit">
           기록하기
         </Button>
       </section>
