@@ -2,10 +2,20 @@
 
 import { useState } from 'react';
 
-import { Button, Field, Input, Switch, Textarea } from '@plog/ui';
+import {
+  Button,
+  type DateValue,
+  Field,
+  Input,
+  Switch,
+  Textarea,
+  type TimeValue,
+} from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { PlaceCategorySelectBottomSheet } from '@/features/place-category-select';
+import { WorkDateSelectDialog } from '@/features/work-date-select';
+import { WorkTimeSelectDialog } from '@/features/work-time-select';
 
 import { type PlaceCategoryValue } from '@/entities/place';
 
@@ -19,7 +29,6 @@ import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
-import CalendarIcon from '@/shared/assets/icons/calendar.svg';
 import CameraIcon from '@/shared/assets/icons/camera.svg';
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import InfoIcon from '@/shared/assets/icons/Info.svg';
@@ -166,6 +175,9 @@ export default function CreateFeedPage() {
   const [placeCategory, setPlaceCategory] = useState<PlaceCategoryValue | null>(
     null,
   );
+  const [workDate, setWorkDate] = useState<DateValue | null>(null);
+  const [startTime, setStartTime] = useState<TimeValue | null>(null);
+  const [endTime, setEndTime] = useState<TimeValue | null>(null);
   const [isPublic, setIsPublic] = useState(true);
 
   return (
@@ -213,26 +225,24 @@ export default function CreateFeedPage() {
 
         <div className="flex flex-col gap-3">
           <Field label="작업 날짜" required>
-            <Input
-              placeholder="YYYY.MM.DD"
-              inputMode="numeric"
-              trailing={<CalendarIcon />}
-            />
+            <WorkDateSelectDialog value={workDate} onChange={setWorkDate} />
           </Field>
 
           <div className="grid grid-cols-2 gap-4">
             <Field label="시작 시간" required>
-              <Input
-                placeholder="--:--"
-                inputMode="numeric"
-                trailing={<ClockIcon />}
+              <WorkTimeSelectDialog
+                value={startTime}
+                onChange={setStartTime}
+                label="시작 시간"
+                name="startTime"
               />
             </Field>
             <Field label="종료 시간" required>
-              <Input
-                placeholder="--:--"
-                inputMode="numeric"
-                trailing={<ClockIcon />}
+              <WorkTimeSelectDialog
+                value={endTime}
+                onChange={setEndTime}
+                label="종료 시간"
+                name="endTime"
               />
             </Field>
           </div>
