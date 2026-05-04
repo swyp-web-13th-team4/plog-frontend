@@ -38,11 +38,7 @@ export function useTermsAgreement() {
   const [agreed, setAgreed] = useState<Set<TermId>>(() => {
     if (typeof window === 'undefined') return new Set();
     const isReturningFromTerms = sessionStorage.getItem(NAV_FLAG_KEY) === '1';
-    sessionStorage.removeItem(NAV_FLAG_KEY);
-    if (!isReturningFromTerms) {
-      sessionStorage.removeItem(STORAGE_KEY);
-      return new Set();
-    }
+    if (!isReturningFromTerms) return new Set();
     try {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       return saved ? new Set(JSON.parse(saved) as TermId[]) : new Set();
@@ -50,6 +46,13 @@ export function useTermsAgreement() {
       return new Set();
     }
   });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isReturningFromTerms = sessionStorage.getItem(NAV_FLAG_KEY) === '1';
+    sessionStorage.removeItem(NAV_FLAG_KEY);
+    if (!isReturningFromTerms) sessionStorage.removeItem(STORAGE_KEY);
+  }, []);
 
   useEffect(() => {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify([...agreed]));
