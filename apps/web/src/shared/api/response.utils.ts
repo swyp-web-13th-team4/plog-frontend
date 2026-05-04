@@ -11,7 +11,9 @@ export class ApiResponseError extends Error {
 }
 
 export async function parseApiResponse<T>(res: Response): Promise<T> {
-  const json: ApiResponse<T> = await res.json();
+  const json: ApiResponse<T> = await res.json().catch(() => {
+    throw new ApiResponseError('E500', `API Error: ${res.status}`);
+  });
   if (json.resultType !== 'SUCCESS' || !res.ok) {
     throw new ApiResponseError(
       json.error?.errorCode ?? 'E500',
