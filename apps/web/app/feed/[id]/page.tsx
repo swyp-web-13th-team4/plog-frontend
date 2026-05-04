@@ -1,1 +1,3 @@
-export { default } from '@/views/feed/[id]';
+import { FeedDetailPage } from '@/views/feed/[id]';
+
+export default FeedDetailPage;
