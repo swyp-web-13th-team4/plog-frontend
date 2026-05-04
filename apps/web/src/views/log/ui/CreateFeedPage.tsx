@@ -286,7 +286,7 @@ export default function CreateFeedPage({
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
   const [endTime, setEndTime] = useState<TimeValue | null>(null);
   const [reviewTags, setReviewTags] = useState<PlaceTagValue[]>([]);
-  const [isPublic, setIsPublic] = useState(true);
+  const [isPublic, setIsPublic] = useState(false);
 
   useEffect(() => {
     photoPreviewsRef.current = photos;
