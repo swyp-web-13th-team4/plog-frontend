@@ -1,1 +1,3 @@
-export { default } from '@/views/feed/users/[id]/ui/root';
+import { UserProfilePage } from '@/views/feed/users/[id]';
+
+export default UserProfilePage;
