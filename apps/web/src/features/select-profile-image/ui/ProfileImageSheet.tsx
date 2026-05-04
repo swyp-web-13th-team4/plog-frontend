@@ -1,6 +1,11 @@
 'use client';
 
-import { type ChangeEvent, type MouseEvent, useRef } from 'react';
+import {
+  type ChangeEvent,
+  type KeyboardEvent,
+  type MouseEvent,
+  useRef,
+} from 'react';
 
 import { Avatar, BottomSheet, Button, Icon, useToast } from '@plog/ui';
 
@@ -28,6 +33,7 @@ export default function ProfileImageSheet({
   onUpload,
 }: ProfileImageSheetProps) {
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const { toast } = useToast();
 
@@ -53,6 +59,28 @@ export default function ProfileImageSheet({
     onOpenChange(false);
   };
 
+  const handleRadioKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const count = defaultImages.length;
+    const currentIndex = defaultImages.findIndex(
+      (img) => img.id === selectedImageId,
+    );
+
+    let nextIndex: number | null = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % count;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      nextIndex =
+        currentIndex === -1 ? count - 1 : (currentIndex - 1 + count) % count;
+    }
+
+    if (nextIndex !== null) {
+      onSelectedImageIdChange(defaultImages[nextIndex].id);
+      radioRefs.current[nextIndex]?.focus();
+    }
+  };
+
   const handleSubmit = () => {
     if (selectedImageId === null) return;
     onSelectDefault(selectedImageId);
@@ -72,14 +100,24 @@ export default function ProfileImageSheet({
             role="radiogroup"
             aria-label="기본 프로필 이미지"
             className="grid grid-cols-4 gap-x-4 gap-y-6 pb-12"
+            onKeyDown={handleRadioKeyDown}
           >
             {defaultImages.map((img, index) => (
               <button
                 key={img.id}
+                ref={(el) => {
+                  radioRefs.current[index] = el;
+                }}
                 type="button"
                 role="radio"
                 aria-label={`기본 프로필 이미지 ${index + 1}`}
                 aria-checked={selectedImageId === img.id}
+                tabIndex={
+                  selectedImageId === img.id ||
+                  (selectedImageId === null && index === 0)
+                    ? 0
+                    : -1
+                }
                 className="relative flex aspect-square w-full min-w-0 cursor-pointer items-center"
                 onClick={() => onSelectedImageIdChange(img.id)}
               >
