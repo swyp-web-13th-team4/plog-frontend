@@ -3,6 +3,7 @@
 import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import {
   Button,
@@ -262,10 +263,17 @@ function PrivacySettingSection({ isPublic }: { isPublic: boolean }) {
   );
 }
 
-export default function CreateFeedPage() {
-  const photoPreviewsRef = useRef<PhotoPreview[]>([]);
+type CreateFeedPageProps = {
+  initialPlaceName?: string;
+};
 
+export default function CreateFeedPage({
+  initialPlaceName = '',
+}: CreateFeedPageProps) {
+  const photoPreviewsRef = useRef<PhotoPreview[]>([]);
+  const router = useRouter();
   const [title, setTitle] = useState('');
+  const [placeName, setPlaceName] = useState(initialPlaceName);
   const [photos, setPhotos] = useState<PhotoPreview[]>([]);
   const [focusScore, setFocusScore] = useState<FocusScore | null>(null);
   const [placeCategory, setPlaceCategory] = useState<PlaceCategoryValue | null>(
@@ -308,6 +316,11 @@ export default function CreateFeedPage() {
     });
   };
 
+  const handleClearPlaceName = () => {
+    setPlaceName('');
+    router.replace('/log', { scroll: false });
+  };
+
   return (
     <form className="bg-semantic-bg-standard">
       <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
@@ -347,9 +360,11 @@ export default function CreateFeedPage() {
         <div className="flex flex-col gap-3">
           <Field label="작업 장소" required>
             <Input
+              value={placeName}
               placeholder="위치를 입력해 주세요."
               readOnly
-              onClick={() => console.log('클릭')}
+              onClear={handleClearPlaceName}
+              onClick={() => router.push('/log/place')}
             />
           </Field>
 

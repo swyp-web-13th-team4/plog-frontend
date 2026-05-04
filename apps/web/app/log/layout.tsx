@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 
 import { AppBar } from '@plog/ui';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function CreateFeedLayout({
   children,
@@ -11,12 +11,19 @@ export default function CreateFeedLayout({
   children: ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isPlaceSearchPage = pathname.startsWith('/log/place');
   return (
     <>
       <AppBar
         variant="navigation"
-        title="환경 기록"
-        onBack={() => router.push('/map')}
+        title={isPlaceSearchPage ? '장소 검색' : '환경 기록'}
+        onBack={
+          isPlaceSearchPage
+            ? () => router.push('/log')
+            : () => router.push('map')
+        }
       />
       {children}
     </>
