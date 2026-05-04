@@ -27,6 +27,7 @@ type ProfileFormProps = {
   initialAvatarSrc?: string;
   initialImageOption?: ProfileImageOption;
   ownNickname?: string;
+  initialIntroduction?: string;
   submitLabel: string;
   isSubmitting?: boolean;
   onSubmit: (data: ProfileFormData) => void;
@@ -37,6 +38,7 @@ export default function ProfileForm({
   initialAvatarSrc,
   initialImageOption,
   ownNickname,
+  initialIntroduction,
   submitLabel,
   isSubmitting = false,
   onSubmit,
@@ -60,13 +62,20 @@ export default function ProfileForm({
     setIntroduction,
     nicknameValidation,
     introductionValidation,
-  } = useProfileValidation({ ownNickname });
+  } = useProfileValidation({ ownNickname, initialIntroduction });
+
+  const nicknameChanged = nickname.trim() !== (ownNickname ?? '');
+  const hasChanges =
+    nicknameChanged ||
+    introduction.trim() !== (initialIntroduction ?? '') ||
+    imageOption !== (initialImageOption ?? null);
 
   const canSubmit =
     nickname.trim().length > 0 &&
-    nicknameValidation?.status === 'success' &&
+    (!nicknameChanged || nicknameValidation?.status === 'success') &&
     imageOption !== null &&
     introductionValidation?.status !== 'error' &&
+    hasChanges &&
     !isSubmitting;
 
   const handleSubmit = (e: SubmitEvent) => {

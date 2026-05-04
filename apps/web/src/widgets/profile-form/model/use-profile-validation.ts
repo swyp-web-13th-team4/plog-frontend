@@ -16,13 +16,15 @@ type ValidationResult =
 
 type UseProfileValidationOptions = {
   ownNickname?: string;
+  initialIntroduction?: string;
 };
 
 export function useProfileValidation({
   ownNickname,
+  initialIntroduction,
 }: UseProfileValidationOptions = {}) {
-  const [nickname, setNickname] = useState('');
-  const [introduction, setIntroduction] = useState('');
+  const [nickname, setNickname] = useState(ownNickname ?? '');
+  const [introduction, setIntroduction] = useState(initialIntroduction ?? '');
   const [nicknameValidationResult, setNicknameValidationResult] =
     useState<ValidationResult | null>(null);
   const [introductionValidationResult, setIntroductionValidationResult] =
@@ -33,9 +35,7 @@ export function useProfileValidation({
 
   const nicknameValidation = useMemo<ValidationResult | null>(() => {
     if (!debouncedNickname.trim()) return null;
-    if (ownNickname && debouncedNickname.trim() === ownNickname) {
-      return { status: 'success', message: '사용 가능한 닉네임입니다.' };
-    }
+    if (ownNickname && debouncedNickname.trim() === ownNickname) return null;
     return nicknameValidationResult;
   }, [debouncedNickname, ownNickname, nicknameValidationResult]);
 
