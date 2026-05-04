@@ -9,6 +9,7 @@ type FieldProps = {
   label?: string;
   required?: boolean;
   error?: string;
+  success?: string;
   description?: string;
   disabled?: boolean;
   className?: string;
@@ -19,6 +20,7 @@ function Field({
   label,
   required,
   error,
+  success,
   description,
   disabled,
   className,
@@ -26,7 +28,7 @@ function Field({
 }: FieldProps) {
   const [charCount, setCharCount] = useState<CharCountInfo | null>(null);
 
-  const hasFooter = !!error || !!description || charCount !== null;
+  const hasFooter = !!error || !!success || !!description || charCount !== null;
 
   const contextValue = useMemo(
     () => ({
@@ -64,22 +66,35 @@ function Field({
         {children}
 
         {hasFooter && (
-          <div
-            className={cn(
-              'caption-md mx-2 mt-1.5 flex items-center justify-between',
-              error
-                ? 'text-semantic-feedback-error-normal'
-                : 'text-semantic-object-subtle',
-            )}
-          >
+          <div className="caption-md mt-1.5 flex items-center justify-between">
             {error ? (
-              <span role="alert">{error}</span>
+              <span
+                role="alert"
+                className="text-semantic-feedback-error-normal"
+              >
+                {error}
+              </span>
+            ) : success ? (
+              <span className="text-semantic-feedback-success-normal">
+                {success}
+              </span>
             ) : description ? (
-              <BaseField.Description>{description}</BaseField.Description>
+              <BaseField.Description className="text-semantic-object-subtle">
+                {description}
+              </BaseField.Description>
             ) : null}
 
             {charCount !== null && (
-              <span>
+              <span
+                className={cn(
+                  'ml-auto',
+                  error
+                    ? 'text-semantic-feedback-error-normal'
+                    : success
+                      ? 'text-semantic-feedback-success-bold'
+                      : 'text-semantic-object-subtle',
+                )}
+              >
                 {charCount.count}/{charCount.max}자
               </span>
             )}
