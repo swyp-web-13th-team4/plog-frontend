@@ -41,12 +41,14 @@ export default function ProfileImageSheet({
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_IMAGE_SIZE) {
+      e.currentTarget.value = '';
       toast({
         type: 'error',
         description: '10MB 이하의 이미지 파일만 등록 가능해요.',
       });
       return;
     }
+    e.currentTarget.value = '';
     onUpload(file);
     onOpenChange(false);
   };
