@@ -423,8 +423,6 @@ export default function SearchPlacePage() {
   };
 
   const handleSelectRecentPlace = (place: RecentPlace) => {
-    setRecentPlaces(addRecentPlace(place));
-
     const params = new URLSearchParams({ placeName: place.placeName });
     router.push(`/log?${params.toString()}`);
   };
