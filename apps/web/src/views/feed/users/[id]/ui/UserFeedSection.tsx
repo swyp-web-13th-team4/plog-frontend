@@ -5,7 +5,7 @@ import { type MouseEvent, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { Badge, IconButton, Select } from '@plog/ui';
+import { Badge, Icon, IconButton, Select } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { MOCK_FEED_DATA } from '@/views/feed/model/mock-data';
@@ -13,14 +13,6 @@ import { MOCK_FEED_DATA } from '@/views/feed/model/mock-data';
 import { ScrollToTopButton } from '@/features/scroll-to-top';
 
 import { FeedPost, FeedTag } from '@/entities/feed';
-
-import ClockIcon from '@/shared/assets/icons/clock.svg';
-import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
-import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
-import FillBookmark from '@/shared/assets/icons/fill_bookmark.svg';
-import GridIcon from '@/shared/assets/icons/grid.svg';
-import ListIcon from '@/shared/assets/icons/list.svg';
-import MapPinIcon from '@/shared/assets/icons/MapPin.svg';
 
 type RecordTypeValue = 'latest' | 'like' | 'concentrate';
 type FeedType = 'list' | 'grid';
@@ -145,7 +137,7 @@ function SelectFeedType({
             ? '그리드 형식으로 게시글 보기'
             : '리스트 형식으로 게시글 보기'
         }
-        icon={feedType === 'list' ? <GridIcon /> : <ListIcon />}
+        icon={feedType === 'list' ? <Icon name="grid" /> : <Icon name="list" />}
         size="small"
         variant="outline"
         onClick={onChangeFeedType}
@@ -170,7 +162,11 @@ function BookmarkButton({
       onClick={onClick}
       className={className}
     >
-      {isBookmarked ? <FillBookmark /> : <EmptyBookmarkIcon />}
+      {isBookmarked ? (
+        <Icon name="bookmark-filled" className="text-semantic-accent-normal" />
+      ) : (
+        <Icon name="bookmark" className="text-semantic-object-subtle" />
+      )}
     </button>
   );
 }
@@ -233,19 +229,31 @@ function ListTypeFeed({
             {/* 카테고리 + 공부 시간 + 집중도 */}
             <div className="flex gap-3">
               <div className="flex items-center gap-1">
-                <MapPinIcon />
+                <Icon
+                  name="pin"
+                  size={16}
+                  className="text-semantic-object-subtle"
+                />
                 <span className="caption-md text-semantic-object-bold">
                   {feed.POST_INFO.PLACE_INFO.category}
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                <ClockIcon />
+                <Icon
+                  name="clock"
+                  size={16}
+                  className="text-semantic-object-subtle"
+                />
                 <span className="caption-md text-semantic-object-bold">
                   {feed.POST_INFO.PLACE_INFO.studyTime}
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                <ConcentrateIcon />
+                <Icon
+                  name="fire"
+                  size={16}
+                  className="text-semantic-object-subtle"
+                />
                 <span className="caption-md text-semantic-object-bold">
                   {`집중도 ${feed.POST_INFO.PLACE_INFO.concentrateCount}`}
                 </span>
@@ -292,7 +300,7 @@ function GridTypeFeed({
             {/* 공부 시간 + 북마크 */}
             <div className="absolute inset-x-3 top-3 flex items-center justify-between">
               <div className="flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
-                <ClockIcon />
+                <Icon name="clock" />
                 <span className="caption-md">
                   {feed.POST_INFO.PLACE_INFO.studyTime}
                 </span>

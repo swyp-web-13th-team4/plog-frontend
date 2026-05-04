@@ -2,11 +2,9 @@
 
 import { useLayoutEffect, useRef, useState } from 'react';
 
-import { Avatar } from '@plog/ui';
+import { Avatar, Icon } from '@plog/ui';
 
-import { MOCK_FEED_DATA } from '@/views/feed/model/query/useInfiniteScroll';
-
-import ArrowIcon from '@/shared/assets/icons/arrow.svg';
+import { MOCK_FEED_DATA } from '@/views/feed/model/mock-data';
 
 const BIO_COLLAPSED_LINE_COUNT = 1;
 const BIO_OVERFLOW_THRESHOLD = 1;
@@ -110,10 +108,9 @@ export default function UserProfileSection({ userId }: { userId: string }) {
               }
             >
               {isExpanded ? '접기' : '더보기'}
-              <ArrowIcon
-                className={`transition-transform duration-200 ${
-                  isExpanded ? 'rotate-270' : 'rotate-90'
-                }`}
+              <Icon
+                size={16}
+                name={isExpanded ? 'chevron-up' : 'chevron-down'}
               />
             </button>
           )}
