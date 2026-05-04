@@ -258,7 +258,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
-                  className="cursor-pointer"
+                  className="flex cursor-pointer items-center"
                   onClick={() => updatePostState('isLiked')}
                 >
                   {POST_INFO.isLiked ? (
