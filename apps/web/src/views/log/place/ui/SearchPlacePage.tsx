@@ -173,52 +173,40 @@ function RecentPlaceItem({
   onRemove: (id: string) => void;
 }) {
   return (
-    <li>
-      <button
-        type="button"
-        onClick={() => onSelect(place)}
-        className="flex w-full cursor-pointer justify-between px-6 py-5 hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-accent-normal"
-      >
-        {/* 시계 + placeName */}
-        <div className="flex items-center gap-1">
-          <Icon
-            name="clock"
-            size={20}
-            className="text-semantic-object-subtle"
-          />
-          <span className="label-md text-semantic-object-boldest">
-            {place.placeName}
+    <li className="border-b border-semantic-stroke-subtle">
+      <div className="flex w-full justify-between px-6 py-5 hover:bg-semantic-bg-deep">
+        <button
+          type="button"
+          onClick={() => onSelect(place)}
+          className="flex min-w-0 flex-1 cursor-pointer items-center justify-between gap-2 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal"
+        >
+          <span className="flex min-w-0 items-center gap-1">
+            <Icon
+              name="clock"
+              size={20}
+              className="shrink-0 text-semantic-object-subtle"
+            />
+            <span className="label-md truncate text-semantic-object-boldest">
+              {place.placeName}
+            </span>
           </span>
-        </div>
-        {/* 날짜 + 삭제 */}
-        <div className="flex items-center gap-2">
-          <span className="label-md text-semantic-object-subtle">
+          <span className="label-md shrink-0 text-semantic-object-subtle">
             {formatRecentPlaceDate(place.searchedDate)}
           </span>
-          <span
-            role="button"
-            tabIndex={0}
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation();
-              onRemove(place.id);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                e.stopPropagation();
-                onRemove(place.id);
-              }
-            }}
-          >
-            <Icon
-              name="close"
-              size={20}
-              className="text-semantic-object-normal"
-            />
-          </span>
-        </div>
-      </button>
+        </button>
+        <button
+          type="button"
+          className="ml-2 shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal"
+          onClick={() => onRemove(place.id)}
+          aria-label={`${place.placeName} 삭제`}
+        >
+          <Icon
+            name="close"
+            size={20}
+            className="text-semantic-object-normal"
+          />
+        </button>
+      </div>
     </li>
   );
 }
