@@ -22,7 +22,7 @@ export default function CreateFeedLayout({
         onBack={
           isPlaceSearchPage
             ? () => router.push('/log')
-            : () => router.push('map')
+            : () => router.push('/map')
         }
       />
       {children}

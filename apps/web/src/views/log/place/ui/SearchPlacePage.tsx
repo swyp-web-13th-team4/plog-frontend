@@ -173,36 +173,52 @@ function RecentPlaceItem({
   onRemove: (id: string) => void;
 }) {
   return (
-    <li
-      onClick={() => onSelect(place)}
-      className="flex cursor-pointer justify-between border-b border-semantic-stroke-subtle px-6 py-5 hover:bg-semantic-bg-deep"
-    >
-      {/* 시계 + placeName */}
-      <div className="flex items-center gap-1">
-        <Icon name="clock" size={20} className="text-semantic-object-subtle" />
-        <span className="label-md text-semantic-object-boldest">
-          {place.placeName}
-        </span>
-      </div>
-      {/* 날짜 + 삭제 */}
-      <div className="flex items-center gap-2">
-        <span className="label-md text-semantic-object-subtle">
-          {formatRecentPlaceDate(place.searchedDate)}
-        </span>
-        <button
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove(place.id);
-          }}
-        >
+    <li>
+      <button
+        type="button"
+        onClick={() => onSelect(place)}
+        className="flex w-full cursor-pointer justify-between px-6 py-5 hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-accent-normal"
+      >
+        {/* 시계 + placeName */}
+        <div className="flex items-center gap-1">
           <Icon
-            name="close"
+            name="clock"
             size={20}
-            className="text-semantic-object-normal"
+            className="text-semantic-object-subtle"
           />
-        </button>
-      </div>
+          <span className="label-md text-semantic-object-boldest">
+            {place.placeName}
+          </span>
+        </div>
+        {/* 날짜 + 삭제 */}
+        <div className="flex items-center gap-2">
+          <span className="label-md text-semantic-object-subtle">
+            {formatRecentPlaceDate(place.searchedDate)}
+          </span>
+          <span
+            role="button"
+            tabIndex={0}
+            className="cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              onRemove(place.id);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                onRemove(place.id);
+              }
+            }}
+          >
+            <Icon
+              name="close"
+              size={20}
+              className="text-semantic-object-normal"
+            />
+          </span>
+        </div>
+      </button>
     </li>
   );
 }

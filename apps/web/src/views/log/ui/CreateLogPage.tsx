@@ -120,8 +120,14 @@ function PhotoUploader({
   }, [photos]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const ACCEPTED_TYPES = new Set([
+      'image/jpeg',
+      'image/png',
+      'image/heic',
+      'image/heif',
+    ]);
     const selectedFiles = Array.from(event.target.files ?? []).filter((file) =>
-      file.type.startsWith('image/'),
+      ACCEPTED_TYPES.has(file.type),
     );
 
     if (selectedFiles.length === 0) return;
@@ -276,6 +282,7 @@ export default function CreateLogPage({
   const photoPreviewsRef = useRef<PhotoPreview[]>([]);
   const router = useRouter();
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [placeName, setPlaceName] = useState(initialPlaceName);
   const [photos, setPhotos] = useState<PhotoPreview[]>([]);
   const [focusScore, setFocusScore] = useState<FocusLevel | null>(null);
@@ -350,6 +357,10 @@ export default function CreateLogPage({
 
         <Field label="환경 기록을 작성해 주세요" required>
           <Textarea
+            value={content}
+            onChange={(event) => {
+              setContent(event.target.value);
+            }}
             placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
             maxLength={300}
             className="[&_textarea]:body-sm [&_textarea]:h-40"

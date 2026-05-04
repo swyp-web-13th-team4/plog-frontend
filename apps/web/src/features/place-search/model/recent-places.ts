@@ -95,8 +95,8 @@ export function clearRecentPlaces() {
 }
 
 export function formatRecentPlaceDate(dateKey: string) {
-  const [year, month, date] = dateKey.split('-');
-  if (!year || !month || !date) return dateKey;
+  const [month, date] = dateKey.split('-');
+  if (!month || !date) return dateKey;
 
   return `${month}.${date}`;
 }

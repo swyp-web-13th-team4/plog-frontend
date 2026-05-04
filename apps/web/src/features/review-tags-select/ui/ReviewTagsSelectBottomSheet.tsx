@@ -5,11 +5,11 @@ import { type Ref, useMemo, useState } from 'react';
 import { BottomSheet, Button, Chip, Icon, useToast } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { PlaceTagValue } from '@/entities/place';
 import {
   PLACE_TAG_LABELS,
+  PlaceTagValue,
   TAG_CATEGORIES,
-} from '@/entities/place/model/place-tag';
+} from '@/entities/place';
 
 type ReviewTagsSelectBottomSheetProps = {
   value: PlaceTagValue[];
@@ -90,7 +90,7 @@ export default function ReviewTagsSelectBottomSheet({
               key={tag}
               size="small"
               variant="soft"
-              pressed={selectedTagSet.has(tag)}
+              pressed
               className="[&>svg]:size-2.5"
               onClick={() => handleRemoveSelectedTag(tag)}
             >
@@ -132,13 +132,17 @@ export default function ReviewTagsSelectBottomSheet({
           >
             {TAG_CATEGORIES.map(({ title }) => {
               const selected = title === activeCategoryTitle;
+              const panelId = `review-tags-panel-${title}`;
+              const tabId = `review-tags-tab-${title}`;
 
               return (
                 <button
                   key={title}
+                  id={tabId}
                   type="button"
                   role="tab"
                   aria-selected={selected}
+                  aria-controls={panelId}
                   className={cn(
                     'label-lg flex shrink-0',
                     selected
