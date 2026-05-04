@@ -96,40 +96,42 @@ export default function ProfileImageSheet({
           <BottomSheet.CloseButton />
         </BottomSheet.Header>
         <BottomSheet.Body>
-          <div
-            role="radiogroup"
-            aria-label="기본 프로필 이미지"
-            className="grid grid-cols-4 gap-x-4 gap-y-6 pb-12"
-            onKeyDown={handleRadioKeyDown}
-          >
-            {defaultImages.map((img, index) => (
-              <button
-                key={img.id}
-                ref={(el) => {
-                  radioRefs.current[index] = el;
-                }}
-                type="button"
-                role="radio"
-                aria-label={`기본 프로필 이미지 ${index + 1}`}
-                aria-checked={selectedImageId === img.id}
-                tabIndex={
-                  selectedImageId === img.id ||
-                  (selectedImageId === null && index === 0)
-                    ? 0
-                    : -1
-                }
-                className="relative flex aspect-square w-full min-w-0 cursor-pointer items-center"
-                onClick={() => onSelectedImageIdChange(img.id)}
-              >
-                <Avatar
-                  size="medium"
-                  alt=""
-                  src={img.imageUrl}
-                  containerClassName="size-full"
-                  selected={selectedImageId === img.id}
-                />
-              </button>
-            ))}
+          <div className="grid grid-cols-4 gap-x-4 gap-y-6 pb-12">
+            <div
+              role="radiogroup"
+              aria-label="기본 프로필 이미지"
+              className="contents"
+              onKeyDown={handleRadioKeyDown}
+            >
+              {defaultImages.map((img, index) => (
+                <button
+                  key={img.id}
+                  ref={(el) => {
+                    radioRefs.current[index] = el;
+                  }}
+                  type="button"
+                  role="radio"
+                  aria-label={`기본 프로필 이미지 ${index + 1}`}
+                  aria-checked={selectedImageId === img.id}
+                  tabIndex={
+                    selectedImageId === img.id ||
+                    (selectedImageId === null && index === 0)
+                      ? 0
+                      : -1
+                  }
+                  className="relative flex aspect-square w-full min-w-0 cursor-pointer items-center"
+                  onClick={() => onSelectedImageIdChange(img.id)}
+                >
+                  <Avatar
+                    size="medium"
+                    alt=""
+                    src={img.imageUrl}
+                    containerClassName="size-full"
+                    selected={selectedImageId === img.id}
+                  />
+                </button>
+              ))}
+            </div>
             <button
               type="button"
               aria-label="기기에서 이미지 선택"
