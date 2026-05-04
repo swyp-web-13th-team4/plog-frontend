@@ -1,11 +1,10 @@
 'use client';
 
-import { Badge, BottomSheet, Button } from '@plog/ui';
+import { Badge, BottomSheet, Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { type Place, type PlaceLayer } from '@/entities/place';
 
-import PrevIcon from '@/shared/assets/icons/prev.svg';
 import { ImageWithFallback } from '@/shared/ui';
 
 export type SelectedPlaceSheetProps = {
@@ -112,10 +111,15 @@ export default function SelectedPlaceSheet({
                 {onBack && (
                   <button
                     type="button"
+                    aria-label="뒤로 가기"
                     onClick={onBack}
                     className="absolute top-3 left-3 flex size-8 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40"
                   >
-                    <PrevIcon className="fill-white" />
+                    <Icon
+                      name="chevron-left"
+                      size={20}
+                      className="text-semantic-object-inverse"
+                    />
                   </button>
                 )}
               </div>

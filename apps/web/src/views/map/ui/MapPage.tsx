@@ -4,12 +4,10 @@ import { useMemo, useState } from 'react';
 
 import Script from 'next/script';
 
-import { BottomSheet, Input } from '@plog/ui';
+import { BottomSheet, Icon, Input } from '@plog/ui';
 
 import { type Place, type PlaceLayer } from '@/entities/place';
 
-import ArrowIcon from '@/shared/assets/icons/arrow.svg';
-import SearchIcon from '@/shared/assets/icons/search.svg';
 import { useUserLocation } from '@/shared/lib/geolocation';
 
 import { useKakaoMap } from '../lib/use-kakao-map';
@@ -103,8 +101,16 @@ export default function MapPage() {
             className="shadow-[0px_2px_12px_0px_rgba(0,0,0,0.15)]"
             placeholder="기록했던 장소를 입력해 주세요"
             trailing={
-              <button>
-                <SearchIcon />
+              <button
+                type="button"
+                aria-label="검색"
+                className="flex items-center justify-center"
+              >
+                <Icon
+                  name="search"
+                  size={20}
+                  className="text-semantic-object-subtle"
+                />
               </button>
             }
           />
@@ -115,7 +121,11 @@ export default function MapPage() {
             render={
               <button className="label-md inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-semantic-accent-normal bg-semantic-system-white px-6 py-3 text-semantic-accent-normal">
                 리스트 보기
-                <ArrowIcon />
+                <Icon
+                  name="chevron-up"
+                  size={20}
+                  className="text-semantic-accent-normal"
+                />
               </button>
             }
           />

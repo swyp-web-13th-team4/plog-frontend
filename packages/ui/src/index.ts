@@ -12,6 +12,7 @@ export * from './components/Dialog';
 export * from './components/Divider';
 export * from './components/EmptyState';
 export * from './components/Field';
+export * from './components/Icon';
 export * from './components/IconButton';
 export * from './components/Input';
 export * from './components/Select';
