@@ -1,4 +1,6 @@
-import UpArrowIcon from '@/shared/assets/icons/up-arrow.svg';
+'use client';
+
+import { Icon } from '@plog/ui';
 
 type ScrollToTopButtonProps = {
   visible: boolean;
@@ -20,7 +22,7 @@ export default function ScrollToTopButton({ visible }: ScrollToTopButtonProps) {
           }`}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <UpArrowIcon />
+          <Icon name="arrow-up" />
         </button>
       </div>
     </div>

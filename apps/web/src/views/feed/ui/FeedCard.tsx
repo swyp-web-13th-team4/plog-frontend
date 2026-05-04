@@ -4,20 +4,9 @@ import { useId, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
-import { Avatar, Badge, Carousel } from '@plog/ui';
+import { Avatar, Badge, Carousel, Icon } from '@plog/ui';
 
 import { type FeedPost, type FeedTag } from '@/entities/feed';
-
-import ClockIcon from '@/shared/assets/icons/clock.svg';
-import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
-import EmptyBookmarkIcon from '@/shared/assets/icons/empty-bookmark.svg';
-import EmptyHeartIcon from '@/shared/assets/icons/empty-heart.svg';
-import FillBookmarkIcon from '@/shared/assets/icons/fill-bookmark.svg';
-import FillHeartIcon from '@/shared/assets/icons/fill-heart.svg';
-import LeftIcon from '@/shared/assets/icons/left-arrow.svg';
-import MoreTextArrow from '@/shared/assets/icons/more-text-arrow.svg';
-import RightIcon from '@/shared/assets/icons/right-arrow.svg';
-import ShareIcon from '@/shared/assets/icons/share.svg';
 
 import { formatStudyDate, formatTimeAgo } from '../lib/time';
 
@@ -130,7 +119,7 @@ function MaxContentLength({
           onClick={() => setIsExpanded((prev) => !prev)}
         >
           더보기
-          <MoreTextArrow />
+          <Icon name="chevron-right" size={9} />
         </button>
       ) : null}
     </div>
@@ -215,7 +204,10 @@ export default function FeedCard({
                     carouselRef.current?.slidePrev();
                   }}
                 >
-                  <LeftIcon />
+                  <Icon
+                    name="chevron-left"
+                    className="text-semantic-system-white"
+                  />
                 </button>
               ) : (
                 <div aria-hidden="true" className="size-11" />
@@ -230,7 +222,10 @@ export default function FeedCard({
                     carouselRef.current?.slideNext();
                   }}
                 >
-                  <RightIcon />
+                  <Icon
+                    name="chevron-right"
+                    className="text-semantic-system-white"
+                  />
                 </button>
               ) : (
                 <div aria-hidden="true" className="size-11" />
@@ -245,10 +240,17 @@ export default function FeedCard({
                 aria-label={POST_INFO.isLiked ? '좋아요 취소' : '좋아요'}
                 aria-pressed={POST_INFO.isLiked}
                 type="button"
-                className="cursor-pointer"
+                className="flex cursor-pointer items-center"
                 onClick={() => onLike(POST_INFO.id)}
               >
-                {POST_INFO.isLiked ? <FillHeartIcon /> : <EmptyHeartIcon />}
+                {POST_INFO.isLiked ? (
+                  <Icon
+                    name="heart-filled"
+                    className="text-semantic-feedback-error-neutral"
+                  />
+                ) : (
+                  <Icon name="heart" className="text-semantic-object-normal" />
+                )}
               </button>
               <span className="caption-md text-semantic-object-normal">
                 {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
@@ -263,9 +265,15 @@ export default function FeedCard({
                 onClick={() => onBookmark(POST_INFO.id)}
               >
                 {POST_INFO.isBookmarked ? (
-                  <FillBookmarkIcon />
+                  <Icon
+                    name="bookmark-filled"
+                    className="text-semantic-accent-normal"
+                  />
                 ) : (
-                  <EmptyBookmarkIcon />
+                  <Icon
+                    name="bookmark"
+                    className="text-semantic-object-normal"
+                  />
                 )}
               </button>
               <button
@@ -274,7 +282,7 @@ export default function FeedCard({
                 className="cursor-pointer"
                 onClick={onShare}
               >
-                <ShareIcon />
+                <Icon name="share" className="text-semantic-object-normal" />
               </button>
             </div>
           </div>
@@ -292,13 +300,21 @@ export default function FeedCard({
                 </span>
                 <div className="flex gap-3">
                   <div className="flex items-center gap-1.5">
-                    <ClockIcon />
+                    <Icon
+                      name="clock"
+                      size={16}
+                      className="text-semantic-object-normal"
+                    />
                     <p className="caption-md text-semantic-object-normal">
                       {POST_INFO.PLACE_INFO.studyTime}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <ConcentrateIcon />
+                    <Icon
+                      name="fire"
+                      size={16}
+                      className="text-semantic-object-normal"
+                    />
                     <p className="caption-md text-semantic-object-normal">
                       {POST_INFO.PLACE_INFO.concentrateCount}/5
                     </p>
