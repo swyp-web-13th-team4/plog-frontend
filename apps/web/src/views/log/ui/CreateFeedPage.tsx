@@ -174,7 +174,11 @@ function PhotoUploader({
                 aria-label={`등록된 사진 ${index + 1} 삭제`}
                 onClick={() => onRemove(photo.id)}
               >
-                x
+                <Icon
+                  name="close"
+                  className="text-semantic-system-white"
+                  size={16}
+                />
               </button>
             </div>
           ))}
