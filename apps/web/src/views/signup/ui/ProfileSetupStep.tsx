@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useRouter } from 'next/navigation';
 
 import { AppBar, useToast } from '@plog/ui';
+import { useMutation } from '@tanstack/react-query';
 
 import { ProfileForm, type ProfileFormData } from '@/widgets/profile-form';
 
@@ -26,31 +25,25 @@ export default function ProfileSetupStep({
   onBack,
 }: ProfileSetupStepProps) {
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async ({
-    nickname,
-    introduction,
-    imageOption,
-  }: ProfileFormData) => {
-    setIsSubmitting(true);
-    try {
-      await signup(
+  const { mutate: submit, isPending } = useMutation({
+    mutationFn: ({ nickname, introduction, imageOption }: ProfileFormData) =>
+      signup(
         { nickname, introduction: introduction || undefined, termsAgreements },
         imageOption,
-      );
+      ),
+    onSuccess: () => {
       toast({ type: 'success', description: '회원가입이 완료되었어요.' });
       router.push('/');
-    } catch {
+    },
+    onError: () => {
       toast({
         type: 'error',
         description: '오류가 발생했어요. 다시 시도해 주세요.',
       });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+  });
 
   return (
     <>
@@ -60,8 +53,8 @@ export default function ProfileSetupStep({
       <ProfileForm
         defaultImages={defaultImages}
         submitLabel="시작하기"
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmit}
+        isSubmitting={isPending}
+        onSubmit={submit}
       />
     </>
   );
