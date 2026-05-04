@@ -34,7 +34,7 @@ function Textarea({
   containerClassName,
   ...props
 }: TextareaProps) {
-  const { insideField, onCharCountChange } = useFieldContext();
+  const { insideField, onCharCountChange, messageId } = useFieldContext();
 
   const {
     invalid,
@@ -73,6 +73,7 @@ function Textarea({
       <textarea
         ref={ref}
         aria-invalid={invalid}
+        aria-describedby={messageId}
         value={currentValue}
         onChange={handleChange}
         disabled={effectiveDisabled}

@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useId, useMemo, useState } from 'react';
 
 import { Field as BaseField } from '@base-ui/react/field';
 import { cn } from '@plog/utils';
@@ -27,6 +27,8 @@ function Field({
   children,
 }: FieldProps) {
   const [charCount, setCharCount] = useState<CharCountInfo | null>(null);
+  const id = useId();
+  const messageId = `${id}-message`;
 
   const hasFooter = !!error || !!success || !!description || charCount !== null;
 
@@ -37,8 +39,9 @@ function Field({
       disabled: !!disabled,
       required: !!required,
       onCharCountChange: setCharCount,
+      messageId,
     }),
-    [error, disabled, required],
+    [error, disabled, required, messageId],
   );
 
   return (
@@ -69,17 +72,24 @@ function Field({
           <div className="caption-md mt-1.5 flex items-center justify-between">
             {error ? (
               <span
+                id={messageId}
                 role="alert"
                 className="text-semantic-feedback-error-normal"
               >
                 {error}
               </span>
             ) : success ? (
-              <span className="text-semantic-feedback-success-normal">
+              <span
+                id={messageId}
+                className="text-semantic-feedback-success-normal"
+              >
                 {success}
               </span>
             ) : description ? (
-              <BaseField.Description className="text-semantic-object-subtle">
+              <BaseField.Description
+                id={messageId}
+                className="text-semantic-object-subtle"
+              >
                 {description}
               </BaseField.Description>
             ) : null}

@@ -44,7 +44,7 @@ function Input({
   containerClassName,
   ...props
 }: InputProps) {
-  const { insideField, onCharCountChange } = useFieldContext();
+  const { insideField, onCharCountChange, messageId } = useFieldContext();
 
   const {
     invalid,
@@ -99,6 +99,7 @@ function Input({
         <BaseInput
           ref={ref}
           aria-invalid={invalid}
+          aria-describedby={messageId}
           value={currentValue}
           onChange={handleChange}
           disabled={effectiveDisabled}

@@ -90,7 +90,10 @@ export default function Avatar({
         </BaseAvatar.Fallback>
 
         {loading && (
-          <span className="absolute inset-0 flex items-center justify-center rounded-full bg-semantic-system-black/40">
+          <span
+            role="status"
+            className="absolute inset-0 flex items-center justify-center rounded-full bg-semantic-system-black/40"
+          >
             <Spinner size={spinnerSize} color="white" />
           </span>
         )}
