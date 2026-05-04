@@ -1,4 +1,4 @@
-import { CreateFeedPage } from '@/views/log';
+import { CreateLogPage } from '@/views/log';
 
 type LogPageProps = {
   searchParams: Promise<{
@@ -9,5 +9,5 @@ type LogPageProps = {
 export default async function LogPage({ searchParams }: LogPageProps) {
   const { placeName = '' } = await searchParams;
 
-  return <CreateFeedPage key={placeName} initialPlaceName={placeName} />;
+  return <CreateLogPage key={placeName} initialPlaceName={placeName} />;
 }

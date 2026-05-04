@@ -270,7 +270,7 @@ type CreateFeedPageProps = {
   initialPlaceName?: string;
 };
 
-export default function CreateFeedPage({
+export default function CreateLogPage({
   initialPlaceName = '',
 }: CreateFeedPageProps) {
   const photoPreviewsRef = useRef<PhotoPreview[]>([]);

@@ -1,1 +1,1 @@
-export { default as CreateFeedPage } from './ui/CreateFeedPage';
+export { default as CreateLogPage } from './ui/CreateLogPage';
