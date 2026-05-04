@@ -39,9 +39,9 @@ function Field({
       disabled: !!disabled,
       required: !!required,
       onCharCountChange: setCharCount,
-      messageId,
+      messageId: hasFooter ? messageId : undefined,
     }),
-    [error, disabled, required, messageId],
+    [error, disabled, required, messageId, hasFooter],
   );
 
   return (
