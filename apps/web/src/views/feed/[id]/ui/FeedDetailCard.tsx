@@ -12,20 +12,12 @@ import {
   Carousel,
   Divider,
   EmptyState,
+  Icon,
   useToast,
 } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { FeedPost, FeedTag } from '@/entities/feed';
-
-import CopyLinkIcon from '@/shared/assets/icons/copy_link.svg';
-import EmptyBookmarkIcon from '@/shared/assets/icons/empty_bookmark.svg';
-import EmptyHeartIcon from '@/shared/assets/icons/empty_heart.svg';
-import FillBookmarkIcon from '@/shared/assets/icons/fill_bookmark.svg';
-import FillHeartIcon from '@/shared/assets/icons/fill_heart.svg';
-import LeftIcon from '@/shared/assets/icons/left_arrow.svg';
-import RightIcon from '@/shared/assets/icons/right_arrow.svg';
-import ShareIcon from '@/shared/assets/icons/share.svg';
 
 import {
   formatStudyDate,
@@ -231,7 +223,10 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                     carouselRef.current?.slidePrev();
                   }}
                 >
-                  <LeftIcon />
+                  <Icon
+                    name="chevron-left"
+                    className="text-semantic-system-white"
+                  />
                 </button>
               ) : (
                 <div aria-hidden="true" className="size-11" />
@@ -246,7 +241,10 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                     carouselRef.current?.slideNext();
                   }}
                 >
-                  <RightIcon />
+                  <Icon
+                    name="chevron-right"
+                    className="text-semantic-system-white"
+                  />
                 </button>
               ) : (
                 <div aria-hidden="true" className="size-11" />
@@ -263,7 +261,17 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   className="cursor-pointer"
                   onClick={() => updatePostState('isLiked')}
                 >
-                  {POST_INFO.isLiked ? <FillHeartIcon /> : <EmptyHeartIcon />}
+                  {POST_INFO.isLiked ? (
+                    <Icon
+                      name="heart-filled"
+                      className="text-semantic-feedback-error-neutral"
+                    />
+                  ) : (
+                    <Icon
+                      name="heart"
+                      className="text-semantic-object-normal"
+                    />
+                  )}
                 </button>
                 <span className="caption-md text-semantic-object-normal">
                   {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
@@ -276,9 +284,15 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   onClick={() => updatePostState('isBookmarked')}
                 >
                   {POST_INFO.isBookmarked ? (
-                    <FillBookmarkIcon />
+                    <Icon
+                      name="bookmark-filled"
+                      className="text-semantic-accent-normal"
+                    />
                   ) : (
-                    <EmptyBookmarkIcon />
+                    <Icon
+                      name="bookmark"
+                      className="text-semantic-object-normal"
+                    />
                   )}
                 </button>
                 <button
@@ -286,12 +300,12 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   className="cursor-pointer"
                   onClick={() =>
                     toast({
-                      icon: <CopyLinkIcon />,
+                      icon: <Icon name="link" />,
                       description: '링크가 복사되었습니다.',
                     })
                   }
                 >
-                  <ShareIcon />
+                  <Icon name="share" className="text-semantic-object-normal" />
                 </button>
               </div>
             </div>
@@ -312,12 +326,12 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   className="cursor-pointer"
                   onClick={() =>
                     toast({
-                      icon: <CopyLinkIcon />,
+                      icon: <Icon name="link" />,
                       description: '링크가 복사되었습니다.',
                     })
                   }
                 >
-                  <ShareIcon />
+                  <Icon name="share" className="text-semantic-object-normal" />
                 </button>
               )}
             </div>
