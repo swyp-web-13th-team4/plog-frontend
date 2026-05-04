@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 
-import { Button, DatePicker, type DateValue, Dialog } from '@plog/ui';
+import { Button, DatePicker, type DateValue, Dialog, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
-
-import CalendarIcon from '@/shared/assets/icons/calendar.svg';
 
 type WorkDateSelectDialogProps = {
   value: DateValue | null;
@@ -85,7 +83,7 @@ export default function WorkDateSelectDialog({
               >
                 {value ? formatDisplayDate(value) : placeholder}
               </span>
-              <CalendarIcon aria-hidden="true" className="shrink-0" />
+              <Icon name="calendar" className="text-semantic-object-subtle" />
             </button>
           }
         />

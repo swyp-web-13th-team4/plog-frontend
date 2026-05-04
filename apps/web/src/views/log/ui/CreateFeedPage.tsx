@@ -9,6 +9,7 @@ import {
   Button,
   type DateValue,
   Field,
+  Icon,
   Input,
   Switch,
   Textarea,
@@ -21,8 +22,7 @@ import { ReviewTagsSelectBottomSheet } from '@/features/review-tags-select';
 import { WorkDateSelectDialog } from '@/features/work-date-select';
 import { WorkTimeSelectDialog } from '@/features/work-time-select';
 
-import { type PlaceTagValue } from '@/entities/log';
-import { type PlaceCategoryValue } from '@/entities/place';
+import { type PlaceCategoryValue, PlaceTagValue } from '@/entities/place';
 
 import FocusLevelDefault1 from '@/shared/assets/focus-levels/focus-level-default-1.svg';
 import FocusLevelDefault2 from '@/shared/assets/focus-levels/focus-level-default-2.svg';
@@ -34,9 +34,7 @@ import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
-import CameraIcon from '@/shared/assets/icons/camera.svg';
-import ClockIcon from '@/shared/assets/icons/clock.svg';
-import InfoIcon from '@/shared/assets/icons/Info.svg';
+
 type FocusScore = 1 | 2 | 3 | 4 | 5;
 
 type PhotoPreview = {
@@ -85,13 +83,11 @@ const PRIVACY_SETTING_OPTIONS = [
     type: 'all',
     title: '이 기록은 피드에 공유됩니다',
     content: '다른 사용자들이 회원님의 환경 기록을 볼 수 있습니다.',
-    Icon: InfoIcon,
   },
   {
     type: 'private',
     title: '이 기록은 나만 볼 수 있습니다',
     content: '비공개로 설정되어 다른 사용자들이 볼 수 없습니다.',
-    Icon: ClockIcon,
   },
 ] as const;
 
@@ -151,7 +147,7 @@ function PhotoUploader({
         aria-label="사진 등록"
         onClick={() => fileInputRef.current?.click()}
       >
-        <CameraIcon />
+        <Icon name="camera-filled" />
         <span className="label-sm">
           {photos.length}/{MAX_PHOTO_COUNT}
         </span>
@@ -234,7 +230,7 @@ function RatingPicker({
 
 function PrivacySettingSection({ isPublic }: { isPublic: boolean }) {
   const privacyType = isPublic ? 'all' : 'private';
-  const { title, content, Icon } =
+  const { title, content } =
     PRIVACY_SETTING_OPTIONS.find(({ type }) => type === privacyType) ??
     PRIVACY_SETTING_OPTIONS[0];
 
@@ -253,7 +249,10 @@ function PrivacySettingSection({ isPublic }: { isPublic: boolean }) {
             : 'text-semantic-object-normal',
         )}
       >
-        <Icon />
+        <Icon
+          name="circle-exclamation"
+          className={`${isPublic ? 'text-semantic-accent-normal' : 'text-semantic-object-normal'}`}
+        />
       </div>
       <div className="min-w-0 flex-1">
         <p className="label-lg text-semantic-object-bold">{title}</p>

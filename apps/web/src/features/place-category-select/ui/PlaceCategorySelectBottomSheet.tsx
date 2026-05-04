@@ -2,13 +2,10 @@
 
 import { useMemo, useState } from 'react';
 
-import { BottomSheet, Button } from '@plog/ui';
+import { BottomSheet, Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { PLACE_CATEGORIES, type PlaceCategoryValue } from '@/entities/place';
-
-import ArrowIcon from '@/shared/assets/icons/arrow.svg';
-import CheckPlaceIcon from '@/shared/assets/icons/check-place.svg';
 
 type PlaceCategorySelectProps = {
   value: PlaceCategoryValue | null;
@@ -72,9 +69,9 @@ export default function PlaceCategorySelectBottomSheet({
               >
                 {selectedCategory?.label ?? placeholder}
               </span>
-              <ArrowIcon
-                aria-hidden="true"
-                className="size-5 shrink-0 rotate-180 text-semantic-object-subtle"
+              <Icon
+                name="chevron-down"
+                className="text-semantic-object-subtle"
               />
             </button>
           }
@@ -107,7 +104,12 @@ export default function PlaceCategorySelectBottomSheet({
                     onClick={() => setDraftValue(categoryValue)}
                   >
                     <span className="min-w-0 flex-1 truncate">{label}</span>
-                    {selected && <CheckPlaceIcon />}
+                    {selected && (
+                      <Icon
+                        name="check-thick"
+                        className="text-semantic-feedback-success-normal"
+                      />
+                    )}
                   </button>
                 );
               })}

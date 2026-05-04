@@ -2,10 +2,8 @@
 
 import { useState } from 'react';
 
-import { Button, Dialog, TimePicker, type TimeValue } from '@plog/ui';
+import { Button, Dialog, Icon, TimePicker, type TimeValue } from '@plog/ui';
 import { cn } from '@plog/utils';
-
-import ClockIcon from '@/shared/assets/icons/clock.svg';
 
 type WorkTimeSelectDialogProps = {
   value: TimeValue | null;
@@ -82,7 +80,7 @@ export default function WorkTimeSelectDialog({
               >
                 {value ? formatTimeValue(value) : placeholder}
               </span>
-              <ClockIcon aria-hidden="true" className="shrink-0" />
+              <Icon name="clock" className="text-semantic-object-subtle" />
             </button>
           }
         />

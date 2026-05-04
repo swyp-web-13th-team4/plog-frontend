@@ -2,17 +2,14 @@
 
 import { type Ref, useMemo, useState } from 'react';
 
-import { BottomSheet, Button, Chip, useToast } from '@plog/ui';
+import { BottomSheet, Button, Chip, Icon, useToast } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { PlaceTagValue } from '@/entities/place';
 import {
   PLACE_TAG_LABELS,
-  type PlaceTagValue,
   TAG_CATEGORIES,
-} from '@/entities/log';
-
-import CancelIcon from '@/shared/assets/icons/cancel.svg';
-import PlusIcon from '@/shared/assets/icons/plus.svg';
+} from '@/entities/place/model/place-tag';
 
 type ReviewTagsSelectBottomSheetProps = {
   value: PlaceTagValue[];
@@ -93,13 +90,12 @@ export default function ReviewTagsSelectBottomSheet({
               key={tag}
               size="small"
               variant="soft"
-              pressed
-              onClick={() => handleRemoveSelectedTag(tag)}
+              pressed={selectedTagSet.has(tag)}
               className="[&>svg]:size-2.5"
-              aria-label={`${PLACE_TAG_LABELS[tag]} 삭제`}
+              onClick={() => handleToggleDraftTag(tag)}
             >
               {PLACE_TAG_LABELS[tag]}
-              <CancelIcon />
+              <Icon name="close" boxed={false} />
             </Chip>
           ))}
         </div>
@@ -112,7 +108,7 @@ export default function ReviewTagsSelectBottomSheet({
               variant="outline"
               size="large"
               fullWidth
-              iconLeft={<PlusIcon />}
+              iconLeft={<Icon name="plus" />}
               className="text-semantic-object-normal [&>svg]:size-4!"
             >
               태그 추가하기
@@ -185,7 +181,7 @@ export default function ReviewTagsSelectBottomSheet({
                   onClick={() => handleToggleDraftTag(tag)}
                 >
                   {PLACE_TAG_LABELS[tag]}
-                  <CancelIcon />
+                  <Icon name="close" size={9} boxed={false} />
                 </Chip>
               ))}
             </div>
