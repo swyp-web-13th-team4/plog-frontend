@@ -31,12 +31,12 @@ function Content({
 }: DialogContentProps) {
   return (
     <BaseDialog.Portal>
-      <BaseDialog.Backdrop className="fixed inset-0 z-100 bg-semantic-system-black/60 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+      <BaseDialog.Backdrop className="fixed inset-0 z-200 bg-semantic-system-black/60 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
       <BaseDialog.Popup
         initialFocus={initialFocus}
         finalFocus={finalFocus}
         className={cn(
-          'fixed top-1/2 left-1/2 z-100 flex w-[calc(100%-40px)] max-w-90 translate-y-0 [transform:translate(-50%,-50%)] flex-col items-center gap-5 rounded-2xl bg-semantic-system-white p-6 text-center',
+          'fixed top-1/2 left-1/2 z-200 flex w-[calc(100%-40px)] max-w-90 translate-y-0 [transform:translate(-50%,-50%)] flex-col items-center gap-5 rounded-2xl bg-semantic-system-white p-6 text-center',
           'transition-[opacity,translate] duration-200 ease-out data-[ending-style]:translate-y-3 data-[ending-style]:opacity-0 data-[starting-style]:translate-y-3 data-[starting-style]:opacity-0',
           className,
         )}
