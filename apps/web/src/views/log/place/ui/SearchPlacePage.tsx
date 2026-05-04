@@ -105,17 +105,17 @@ function SearchStatusFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function SearchLoadingView() {
-  return (
-    <SearchStatusFrame>
-      <EmptyState
-        title="잠시만 기달려주세요"
-        description="검색한 키워드를 기반으로 장소를 찾고있어요"
-        graphic={<LoadingEmptyIcon />}
-      />
-    </SearchStatusFrame>
-  );
-}
+// function SearchLoadingView() {
+//   return (
+//     <SearchStatusFrame>
+//       <EmptyState
+//         title="잠시만 기달려주세요"
+//         description="검색한 키워드를 기반으로 장소를 찾고있어요"
+//         graphic={<LoadingEmptyIcon />}
+//       />
+//     </SearchStatusFrame>
+//   );
+// }
 
 function SearchEmptyView() {
   return (
@@ -293,7 +293,7 @@ function SearchContent({
   onRecentRemove: (id: string) => void;
   onRecentClear: () => void;
 }) {
-  if (searchState === 'loading') return <SearchLoadingView />;
+  // if (searchState === 'loading') return <SearchLoadingView />;
 
   if (searchState === 'success') {
     return (
