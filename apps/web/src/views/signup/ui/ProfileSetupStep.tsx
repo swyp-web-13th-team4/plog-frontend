@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { AppBar } from '@plog/ui';
+import { AppBar, useToast } from '@plog/ui';
 
 import { ProfileForm, type ProfileFormData } from '@/widgets/profile-form';
 
@@ -27,6 +27,7 @@ export default function ProfileSetupStep({
 }: ProfileSetupStepProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async ({
     nickname,
@@ -39,7 +40,13 @@ export default function ProfileSetupStep({
         { nickname, introduction: introduction || undefined, termsAgreements },
         imageOption,
       );
+      toast({ type: 'success', description: '회원가입이 완료되었어요.' });
       router.push('/');
+    } catch {
+      toast({
+        type: 'error',
+        description: '오류가 발생했어요. 다시 시도해 주세요.',
+      });
     } finally {
       setIsSubmitting(false);
     }
