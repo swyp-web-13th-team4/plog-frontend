@@ -5,11 +5,21 @@ import {
   type ProfileImageOption,
 } from '@/entities/user';
 
-export function useProfileImage(defaultImages: DefaultProfileImage[]) {
+type UseProfileImageOptions = {
+  initialAvatarSrc?: string;
+  initialImageOption?: ProfileImageOption;
+};
+
+export function useProfileImage(
+  defaultImages: DefaultProfileImage[],
+  { initialAvatarSrc, initialImageOption }: UseProfileImageOptions = {},
+) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [avatarSrc, setAvatarSrc] = useState<string>();
+  const [avatarSrc, setAvatarSrc] = useState<string | undefined>(
+    initialAvatarSrc,
+  );
   const [imageOption, setImageOption] = useState<ProfileImageOption | null>(
-    null,
+    initialImageOption ?? null,
   );
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
   const prevBlobUrlRef = useRef<string | undefined>(undefined);
