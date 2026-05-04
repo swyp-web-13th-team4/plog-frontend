@@ -78,6 +78,7 @@ export function useTermsAgreement() {
 
   const getAgreements = (): TermsAgreements => {
     sessionStorage.removeItem(STORAGE_KEY);
+    sessionStorage.removeItem(NAV_FLAG_KEY);
     return Object.fromEntries(
       TERM_LIST.map((t) => [t.id, agreed.has(t.id)]),
     ) as TermsAgreements;
