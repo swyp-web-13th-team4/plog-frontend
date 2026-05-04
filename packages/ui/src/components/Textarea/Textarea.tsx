@@ -13,6 +13,7 @@ type TextareaProps = Omit<
   invalid?: boolean;
   maxLength?: number;
   ref?: Ref<HTMLTextAreaElement>;
+  containerClassName?: string;
 } & (
     | { value?: undefined; defaultValue?: string }
     | { value: string; defaultValue?: never }
@@ -30,6 +31,7 @@ function Textarea({
   onFocus,
   onBlur,
   className,
+  containerClassName,
   ...props
 }: TextareaProps) {
   const { insideField, onCharCountChange } = useFieldContext();
@@ -67,7 +69,7 @@ function Textarea({
   }, [insideField, maxLength, onCharCountChange]);
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div className={cn('flex flex-col', containerClassName)}>
       <textarea
         ref={ref}
         aria-invalid={invalid}
@@ -79,8 +81,9 @@ function Textarea({
         onFocus={handleFocus}
         onBlur={handleBlur}
         className={cn(
-          'body-md w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
+          'body-md h-34 w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
           getFieldStateClass(effectiveDisabled, invalid, isFocused),
+          className,
         )}
         {...props}
       />
@@ -88,7 +91,7 @@ function Textarea({
       {!insideField && maxLength !== undefined && (
         <span
           className={cn(
-            'caption-md mt-1.5 mr-2 ml-auto',
+            'caption-md mt-1.5 ml-auto',
             invalid
               ? 'text-semantic-feedback-error-normal'
               : 'text-semantic-object-subtle',
