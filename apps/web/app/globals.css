@@ -14,4 +14,9 @@
   body {
     @apply bg-semantic-system-white text-semantic-object-boldest;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--color-semantic-accent-subtle);
+    outline-offset: 2px;
+  }
 }
