@@ -92,7 +92,7 @@ export default function ReviewTagsSelectBottomSheet({
               variant="soft"
               pressed={selectedTagSet.has(tag)}
               className="[&>svg]:size-2.5"
-              onClick={() => handleToggleDraftTag(tag)}
+              onClick={() => handleRemoveSelectedTag(tag)}
             >
               {PLACE_TAG_LABELS[tag]}
               <Icon name="close" boxed={false} />
