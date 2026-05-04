@@ -5,14 +5,12 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, EmptyState, Spinner, useToast } from '@plog/ui';
+import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
 import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
 import { ScrollToTopButton } from '@/features/scroll-to-top';
 
 import { type FeedPage } from '@/entities/feed';
-
-import CopyLinkIcon from '@/shared/assets/icons/copy-link.svg';
 
 import {
   FEED_QUERY_KEY,
@@ -153,7 +151,7 @@ export default function FeedPage() {
           onBookmark={(postId) => updatePostState(postId, 'isBookmarked')}
           onShare={() =>
             toast({
-              icon: <CopyLinkIcon />,
+              icon: <Icon name="link" />,
               description: '링크가 복사되었습니다.',
             })
           }
