@@ -92,9 +92,10 @@ export default function Avatar({
         {loading && (
           <span
             role="status"
+            aria-label="로딩 중"
             className="absolute inset-0 flex items-center justify-center rounded-full bg-semantic-system-black/40"
           >
-            <Spinner size={spinnerSize} color="white" />
+            <Spinner size={spinnerSize} color="white" aria-hidden />
           </span>
         )}
       </BaseAvatar.Root>
