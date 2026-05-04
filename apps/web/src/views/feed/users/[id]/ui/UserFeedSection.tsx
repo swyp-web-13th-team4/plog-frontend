@@ -8,12 +8,11 @@ import { useRouter } from 'next/navigation';
 import { Badge, IconButton, Select } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import {
-  type FeedPost,
-  FeedTag,
-  MOCK_FEED_DATA,
-} from '@/views/feed/model/query/useInfiniteScroll';
-import ScrollToTopButton from '@/views/feed/ui/ScrollToTopButton';
+import { MOCK_FEED_DATA } from '@/views/feed/model/mock-data';
+
+import { ScrollToTopButton } from '@/features/scroll-to-top';
+
+import { FeedPost, FeedTag } from '@/entities/feed';
 
 import ClockIcon from '@/shared/assets/icons/clock.svg';
 import ConcentrateIcon from '@/shared/assets/icons/concentrate.svg';
@@ -132,7 +131,7 @@ function SelectFeedType({
     <div className="flex justify-between px-6">
       <Select
         value={recordType}
-        options={RECORD_OPTION_ITEMS}
+        items={RECORD_OPTION_ITEMS}
         placeholder={RECORD_OPTION_ITEMS[0].label}
         onValueChange={(value) => {
           if (typeof value === 'string' && isRecordTypeValue(value)) {
