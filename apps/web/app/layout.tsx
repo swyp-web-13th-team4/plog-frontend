@@ -7,8 +7,24 @@ import type { Metadata } from 'next';
 import Providers from '@/shared/ui/Providers';
 
 export const metadata: Metadata = {
-  title: 'plog',
-  description: 'plog',
+  title: '플로그',
+  description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
+  icons: {
+    icon: '/favicon.svg',
+  },
+  openGraph: {
+    type: 'website',
+    title: '플로그',
+    description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: '플로그',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
