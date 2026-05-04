@@ -81,6 +81,7 @@ function Field({
             ) : success ? (
               <span
                 id={messageId}
+                role="status"
                 className="text-semantic-feedback-success-normal"
               >
                 {success}
