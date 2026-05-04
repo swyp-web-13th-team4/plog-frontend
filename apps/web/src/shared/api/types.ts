@@ -1,4 +1,4 @@
-import { type ApiErrorCode } from './constants';
+import { API_ERROR_CODE } from './constants';
 
 export type ApiError = {
   errorCode: ApiErrorCode;
@@ -11,3 +11,5 @@ export type ApiResponse<T> = {
   data: T | null;
   error: ApiError | null;
 };
+
+export type ApiErrorCode = (typeof API_ERROR_CODE)[keyof typeof API_ERROR_CODE];

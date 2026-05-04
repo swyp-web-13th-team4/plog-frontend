@@ -41,5 +41,3 @@ export const API_ERROR_CODE = {
   PLACE_NOT_FOUND: 'E404',
   CATEGORY_NOT_FOUND: 'E404',
 } as const;
-
-export type ApiErrorCode = (typeof API_ERROR_CODE)[keyof typeof API_ERROR_CODE];
