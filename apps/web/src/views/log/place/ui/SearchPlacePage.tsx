@@ -13,7 +13,7 @@ import {
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 
-import { Button, EmptyState, Icon, Input, Spinner } from '@plog/ui';
+import { Button, EmptyState, Icon, Input } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import {
@@ -105,25 +105,15 @@ function SearchStatusFrame({ children }: { children: ReactNode }) {
   );
 }
 
-function SearchLoadingOverlay() {
+function SearchLoadingView() {
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      className="fixed inset-y-0 left-1/2 z-200 flex w-full max-w-layout -translate-x-1/2 items-center justify-center bg-semantic-system-black/60 px-6 text-center backdrop-blur-[1px]"
-    >
-      <div className="flex flex-col items-center gap-5">
-        <Spinner color="white" size="large" />
-        <div className="flex flex-col gap-1">
-          <span className="label-xl text-semantic-system-white">
-            데이터를 입력하는 중이에요
-          </span>
-          <p className="label-sm text-semantic-system-white/70">
-            잠시만 기다려주세요
-          </p>
-        </div>
-      </div>
-    </div>
+    <SearchStatusFrame>
+      <EmptyState
+        title="잠시만 기달려주세요"
+        description="검색한 키워드를 기반으로 장소를 찾고있어요"
+        graphic={<LoadingEmptyIcon />}
+      />
+    </SearchStatusFrame>
   );
 }
 
@@ -299,18 +289,9 @@ function SearchContent({
   onRecentRemove: (id: string) => void;
   onRecentClear: () => void;
 }) {
-  if (searchState === 'success' || searchState === 'loading') {
-    if (places.length === 0) {
-      return (
-        <RecentPlaceList
-          places={recentPlaces}
-          onSelect={onRecentSelect}
-          onRemove={onRecentRemove}
-          onClear={onRecentClear}
-        />
-      );
-    }
+  if (searchState === 'loading') return <SearchLoadingView />;
 
+  if (searchState === 'success') {
     return (
       <SearchResultList places={places} query={query} onSelect={onSelect} />
     );
@@ -470,7 +451,6 @@ export default function SearchPlacePage() {
           onRecentClear={handleClearRecentPlaces}
         />
       </section>
-      {searchState === 'loading' && <SearchLoadingOverlay />}
     </>
   );
 }

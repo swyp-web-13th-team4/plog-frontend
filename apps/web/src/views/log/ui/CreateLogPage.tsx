@@ -35,7 +35,7 @@ import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
 
-type FocusScore = 1 | 2 | 3 | 4 | 5;
+type FocusLevel = 1 | 2 | 3 | 4 | 5;
 
 type PhotoPreview = {
   id: string;
@@ -196,8 +196,8 @@ function RatingPicker({
   value,
   onChange,
 }: {
-  value: FocusScore | null;
-  onChange: (score: FocusScore) => void;
+  value: FocusLevel | null;
+  onChange: (score: FocusLevel) => void;
 }) {
   return (
     <div className="grid w-full grid-cols-5 gap-2">
@@ -278,7 +278,7 @@ export default function CreateLogPage({
   const [title, setTitle] = useState('');
   const [placeName, setPlaceName] = useState(initialPlaceName);
   const [photos, setPhotos] = useState<PhotoPreview[]>([]);
-  const [focusScore, setFocusScore] = useState<FocusScore | null>(null);
+  const [focusScore, setFocusScore] = useState<FocusLevel | null>(null);
   const [placeCategory, setPlaceCategory] = useState<PlaceCategoryValue | null>(
     null,
   );
