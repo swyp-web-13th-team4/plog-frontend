@@ -13,7 +13,7 @@ export default function CreateFeedLayout({
   const router = useRouter();
   const pathname = usePathname();
 
-  const isPlaceSearchPage = pathname.startsWith('/log/place');
+  const isPlaceSearchPage = pathname.startsWith('/log/place-search');
   return (
     <>
       <AppBar

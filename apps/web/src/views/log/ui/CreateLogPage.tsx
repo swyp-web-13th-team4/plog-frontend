@@ -378,7 +378,7 @@ export default function CreateLogPage({
               placeholder="위치를 입력해 주세요."
               readOnly
               onClear={handleClearPlaceName}
-              onClick={() => router.push('/log/place')}
+              onClick={() => router.push('/log/place-search')}
             />
           </Field>
 
