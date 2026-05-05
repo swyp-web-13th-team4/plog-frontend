@@ -1,0 +1,104 @@
+'use client';
+
+import { type ChangeEvent, useEffect, useRef } from 'react';
+
+import Image from 'next/image';
+
+import { Icon } from '@plog/ui';
+
+import { MAX_PHOTO_COUNT, type PhotoPreview } from '../model/use-photo-upload';
+
+type PhotoUploaderProps = {
+  photos: PhotoPreview[];
+  onAdd: (files: File[]) => void;
+  onRemove: (id: string) => void;
+};
+
+export default function PhotoUploader({
+  photos,
+  onAdd,
+  onRemove,
+}: PhotoUploaderProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const canAddMore = photos.length < MAX_PHOTO_COUNT;
+
+  useEffect(() => {
+    if (!fileInputRef.current) return;
+
+    const dataTransfer = new DataTransfer();
+    photos.forEach(({ file }) => dataTransfer.items.add(file));
+    fileInputRef.current.files = dataTransfer.files;
+  }, [photos]);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const ACCEPTED_TYPES = new Set([
+      'image/jpeg',
+      'image/png',
+      'image/heic',
+      'image/heif',
+    ]);
+    const selectedFiles = Array.from(event.target.files ?? []).filter((file) =>
+      ACCEPTED_TYPES.has(file.type),
+    );
+
+    if (selectedFiles.length === 0) return;
+    onAdd(selectedFiles);
+  };
+
+  return (
+    <div className="flex gap-4 pt-1 pb-1">
+      <input
+        ref={fileInputRef}
+        type="file"
+        name="photos"
+        accept=".jpg, .png, .heic"
+        multiple
+        className="sr-only"
+        onChange={handleFileChange}
+      />
+      <button
+        type="button"
+        disabled={!canAddMore}
+        className="flex size-25 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
+        aria-label="사진 등록"
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <Icon name="camera-filled" />
+        <span className="label-sm">
+          {photos.length}/{MAX_PHOTO_COUNT}
+        </span>
+      </button>
+      <div className="min-w-0 flex-1 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex w-max gap-4">
+          {photos.map((photo, index) => (
+            <div
+              key={photo.id}
+              className="relative size-25 shrink-0 overflow-hidden rounded-xl bg-semantic-object-subtler"
+            >
+              <Image
+                src={photo.url}
+                alt={`등록된 사진 ${index + 1}`}
+                fill
+                sizes="100px"
+                unoptimized
+                className="object-cover"
+              />
+              <button
+                type="button"
+                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-system-white bg-semantic-feedback-error-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
+                aria-label={`등록된 사진 ${index + 1} 삭제`}
+                onClick={() => onRemove(photo.id)}
+              >
+                <Icon
+                  name="close"
+                  className="text-semantic-system-white"
+                  size={16}
+                />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
