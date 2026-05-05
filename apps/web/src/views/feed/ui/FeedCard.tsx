@@ -1,18 +1,17 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 
-import { Avatar, Badge, Carousel, Icon } from '@plog/ui';
+import { Avatar, Carousel, Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { BookmarkButton } from '@/features/toggle-bookmark';
 
-import { type FeedPost, type FeedTag } from '@/entities/feed';
+import { type FeedPost, TagBadgeGroup } from '@/entities/feed';
 
 import { formatStudyDate, formatTimeAgo } from '../lib/time';
-
-const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
 type FeedCarouselController = {
   slidePrev: () => void;
@@ -28,101 +27,29 @@ type FeedCardProps = {
   onShare: () => void;
 };
 
-function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
-  const hiddenTagsId = useId();
+function ClampedContent({ content }: { content: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const visibleTags = tags.slice(0, DEFAULT_VISIBLE_TAG_COUNT);
-  const hiddenTags = tags.slice(DEFAULT_VISIBLE_TAG_COUNT);
-  const hasHiddenTags = hiddenTags.length > 0;
-
-  return (
-    <div className="flex gap-2">
-      {visibleTags.map((tag) => (
-        <Badge
-          color="gray"
-          variant="soft"
-          className="caption-md flex items-center text-semantic-object-normal"
-          key={tag.id}
-        >
-          {tag.name}
-        </Badge>
-      ))}
-      {hasHiddenTags && (
-        <div className="relative">
-          <button
-            type="button"
-            aria-expanded={isExpanded}
-            aria-controls={hiddenTagsId}
-            aria-label={
-              isExpanded
-                ? '숨겨진 태그 접기'
-                : `숨겨진 태그 ${hiddenTags.length}개 보기`
-            }
-            onClick={() => setIsExpanded((prev) => !prev)}
-          >
-            <Badge
-              color="gray"
-              variant="outline"
-              className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
-            >
-              {`+${hiddenTags.length}`}
-            </Badge>
-          </button>
-          {isExpanded && (
-            <div
-              id={hiddenTagsId}
-              className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2"
-            >
-              <div className="flex flex-col gap-2">
-                {hiddenTags.map((tag) => (
-                  <Badge
-                    color="gray"
-                    variant="soft"
-                    className="caption-md flex items-center text-semantic-object-normal"
-                    key={tag.id}
-                  >
-                    {tag.name}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function MaxContentLength({
-  content,
-  maxLength,
-}: {
-  content: string;
-  maxLength: number;
-}) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  if (content.length <= maxLength) {
-    return <p className="body-sm text-semantic-object-normal">{content}</p>;
-  }
 
   return (
     <div className="flex justify-between gap-3">
-      <p className="body-sm text-semantic-object-normal">
-        {isExpanded ? content : `${content.slice(0, maxLength)}...`}
+      <p
+        className={cn(
+          'body-sm text-semantic-object-normal',
+          !isExpanded && 'line-clamp-1',
+        )}
+      >
+        {content}
       </p>
-
-      {!isExpanded ? (
+      {!isExpanded && (
         <button
           type="button"
-          className="caption-md flex cursor-pointer items-center gap-2 text-semantic-object-subtle"
-          onClick={() => setIsExpanded((prev) => !prev)}
+          className="caption-md flex shrink-0 cursor-pointer items-center gap-2 text-semantic-object-subtle"
+          onClick={() => setIsExpanded(true)}
         >
           더보기
           <Icon name="chevron-right" size={9} />
         </button>
-      ) : null}
+      )}
     </div>
   );
 }
@@ -276,7 +203,7 @@ export default function FeedCard({
               <span className="title-xs text-semantic-object-boldest">
                 {POST_INFO.title}
               </span>
-              <MaxContentLength content={POST_INFO.content} maxLength={35} />
+              <ClampedContent content={POST_INFO.content} />
             </div>
             <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-4">
               <div className="flex flex-col gap-1.5">
