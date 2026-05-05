@@ -15,12 +15,15 @@ import { ScrollToTopButton } from '@/shared/ui';
 import {
   FEED_QUERY_KEY,
   useInfiniteFeedQuery,
-} from '../model/useInfiniteFeedQuery';
+} from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
 
 export default function FeedPage() {
-  const { toast } = useToast();
+  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
+    useState(false);
+
   const queryClient = useQueryClient();
+
   const {
     data,
     fetchNextPage,
@@ -31,16 +34,20 @@ export default function FeedPage() {
     isFetchNextPageError,
     refetch,
   } = useInfiniteFeedQuery();
+
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
   });
+
   const { ref: topRef, inView: isTopAreaVisible } = useInView({
     threshold: 0,
   });
-  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
-    useState(false);
-  const posts = data?.pages.flatMap((page) => page.items) ?? [];
+
+  const { toast } = useToast();
+
   const router = useRouter();
+
+  const posts = data?.pages.flatMap((page) => page.items) ?? [];
 
   const toggleLike = (postId: string) => {
     queryClient.setQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY, (prev) => {
