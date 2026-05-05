@@ -59,7 +59,7 @@ export default function PhotoUploader({
       <button
         type="button"
         disabled={!canAddMore}
-        className="flex size-25 shrink-0 flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
+        className="flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
         aria-label="사진 등록"
         onClick={() => fileInputRef.current?.click()}
       >
