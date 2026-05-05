@@ -102,7 +102,7 @@ function Field({
                   error
                     ? 'text-semantic-feedback-error-normal'
                     : success
-                      ? 'text-semantic-feedback-success-bold'
+                      ? 'text-semantic-feedback-success-normal'
                       : 'text-semantic-object-subtle',
                 )}
               >
