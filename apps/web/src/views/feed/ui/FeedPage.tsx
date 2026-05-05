@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
 import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
-import { ScrollToTopButton } from '@/features/scroll-to-top';
-
 import { type FeedPage } from '@/entities/feed';
+
+import { ScrollToTopButton } from '@/shared/ui';
 
 import {
   FEED_QUERY_KEY,
