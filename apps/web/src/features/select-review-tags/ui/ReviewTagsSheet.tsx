@@ -113,7 +113,7 @@ export default function ReviewTagsSheet({
           <div
             role="tablist"
             aria-label="후기 요약 태그 카테고리"
-            className="flex w-full justify-between gap-5 overflow-x-scroll"
+            className="scrollbar-hide flex w-full justify-between gap-5 overflow-x-scroll"
           >
             {TAG_CATEGORIES.map(({ title }) => {
               const selected = title === activeCategoryTitle;
