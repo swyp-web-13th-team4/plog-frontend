@@ -8,8 +8,6 @@
   --max-width-layout: 480px;
   --spacing-header: 64px;
   --spacing-bottom-tab: 76px;
-  --z-index-overlay: 200;
-  --z-index-toast: 300;
 }
 
 @layer base {
