@@ -69,7 +69,7 @@ export default function SearchPlacePage() {
         onError={() => setSdkLoadError(true)}
       />
       <section className="min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] bg-semantic-bg-standard">
-        <div className="sticky top-0 z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
+        <div className="sticky top-[var(--spacing-header)] z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
           <PlaceSearchInput
             value={query}
             onChange={handleQueryChange}
