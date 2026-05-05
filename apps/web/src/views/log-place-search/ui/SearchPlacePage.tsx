@@ -18,9 +18,9 @@ import {
   removeRecentPlace,
 } from '@/features/place-search';
 
-import LoadingEmptyIcon from '@/shared/assets/empty-graphics/loading-empty.svg';
-import PlaceEmptyIcon from '@/shared/assets/empty-graphics/place-empty.svg';
-import SearchEmptyIcon from '@/shared/assets/empty-graphics/search-empty.svg';
+import LoadingEmptyGraphic from '@/shared/assets/empty-graphics/loading-empty.svg';
+import PlaceEmptyGraphic from '@/shared/assets/empty-graphics/place-empty.svg';
+import SearchEmptyGraphic from '@/shared/assets/empty-graphics/search-empty.svg';
 
 import { useKakaoPlaceSearch } from '../lib/use-kakao-place-search';
 import SearchResultList from './SearchResultList';
@@ -103,7 +103,7 @@ export default function SearchPlacePage() {
                 <EmptyState
                   title="어디에서 작업하셨나요?"
                   description="오늘 몰입했던 그 장소를 검색해 보세요"
-                  graphic={<PlaceEmptyIcon />}
+                  graphic={<PlaceEmptyGraphic />}
                 />
               </CenteredView>
             }
@@ -112,7 +112,7 @@ export default function SearchPlacePage() {
                 <EmptyState
                   title="검색 결과가 없어요"
                   description="장소 이름이나 주소가 정확한지 확인해 주세요"
-                  graphic={<SearchEmptyIcon />}
+                  graphic={<SearchEmptyGraphic />}
                 />
               </CenteredView>
             }
@@ -121,7 +121,7 @@ export default function SearchPlacePage() {
                 <EmptyState
                   title="정보를 불러오지 못했어요"
                   description="인터넷 연결 상태를 확인하고 다시 시도해 주세요"
-                  graphic={<LoadingEmptyIcon />}
+                  graphic={<LoadingEmptyGraphic />}
                   actions={
                     <Button
                       type="button"
