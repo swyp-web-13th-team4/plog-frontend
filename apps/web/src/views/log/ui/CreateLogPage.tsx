@@ -77,9 +77,6 @@ export default function CreateLogPage({
             placeholder="제목을 입력해 주세요."
             maxLength={20}
           />
-          <span className="caption-md mt-1.5 mr-2 ml-auto text-semantic-object-subtle">
-            {title.length}/20자
-          </span>
         </Field>
         <Field label="환경 기록을 작성해 주세요" required>
           <Textarea
