@@ -1,3 +1,7 @@
+'use client';
+
+import { type KeyboardEvent, useRef } from 'react';
+
 import FocusLevelDefault1 from '@/shared/assets/focus-levels/focus-level-default-1.svg';
 import FocusLevelDefault2 from '@/shared/assets/focus-levels/focus-level-default-2.svg';
 import FocusLevelDefault3 from '@/shared/assets/focus-levels/focus-level-default-3.svg';
@@ -50,31 +54,59 @@ type RatingPickerProps = {
 };
 
 export default function RatingPicker({ value, onChange }: RatingPickerProps) {
+  const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const count = FOCUS_LEVEL_OPTIONS.length;
+    const currentIndex = value !== null ? value - 1 : -1;
+
+    let nextIndex: number | null = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % count;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      nextIndex =
+        currentIndex === -1 ? count - 1 : (currentIndex - 1 + count) % count;
+    }
+
+    if (nextIndex !== null) {
+      onChange(FOCUS_LEVEL_OPTIONS[nextIndex].value);
+      radioRefs.current[nextIndex]?.focus();
+    }
+  };
+
   return (
-    <div className="grid w-full grid-cols-5 gap-2">
+    <div
+      role="radiogroup"
+      aria-label="집중도"
+      className="grid w-full grid-cols-5 gap-2"
+      onKeyDown={handleKeyDown}
+    >
       {FOCUS_LEVEL_OPTIONS.map(
-        ({ value: score, label, DefaultIcon, SelectedIcon }) => {
+        ({ value: score, label, DefaultIcon, SelectedIcon }, index) => {
           const isSelected = value === score;
           const RatingIcon = isSelected ? SelectedIcon : DefaultIcon;
+
           return (
-            <label
+            <button
               key={score}
-              className="group relative flex aspect-square cursor-pointer items-center justify-center overflow-visible rounded-sm transition outline-none focus-within:ring-2 focus-within:ring-semantic-accent-normal focus-within:ring-offset-2 focus-within:ring-offset-semantic-bg-standard"
+              ref={(el) => {
+                radioRefs.current[index] = el;
+              }}
+              type="button"
+              role="radio"
+              aria-label={`집중도 ${score}점, ${label}`}
+              aria-checked={isSelected}
+              tabIndex={isSelected || (value === null && index === 0) ? 0 : -1}
+              className="relative flex aspect-square cursor-pointer items-center justify-center"
+              onClick={() => onChange(score)}
             >
-              <input
-                type="radio"
-                name="focusScore"
-                value={score}
-                checked={isSelected}
-                onChange={() => onChange(score)}
-                className="sr-only"
-                aria-label={`집중도 ${score}점, ${label}`}
-              />
               <RatingIcon
                 aria-hidden="true"
                 className="block size-full scale-140"
               />
-            </label>
+            </button>
           );
         },
       )}
