@@ -17,6 +17,14 @@ const meta: Meta<typeof Input> = {
     },
   },
   argTypes: {
+    className: {
+      description: '입력 요소에 적용할 클래스입니다.',
+      control: 'text',
+    },
+    containerClassName: {
+      description: '카운터를 포함한 외부 래퍼에 적용할 클래스입니다.',
+      control: 'text',
+    },
     placeholder: {
       description: '값이 없을 때 표시되는 안내 텍스트입니다.',
       control: 'text',
@@ -47,7 +55,6 @@ const meta: Meta<typeof Input> = {
     onClear: { table: { disable: true } },
     value: { table: { disable: true } },
     defaultValue: { table: { disable: true } },
-    className: { table: { disable: true } },
   },
   args: {
     placeholder: '내용을 입력하세요',
