@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 import { Avatar, Badge, Carousel, Icon } from '@plog/ui';
 
+import { BookmarkButton } from '@/features/toggle-bookmark';
+
 import { type FeedPost, type FeedTag } from '@/entities/feed';
 
 import { formatStudyDate, formatTimeAgo } from '../lib/time';
@@ -23,7 +25,6 @@ type FeedCardProps = {
   post: FeedPost;
   isLast: boolean;
   onLike: (postId: string) => void;
-  onBookmark: (postId: string) => void;
   onShare: () => void;
 };
 
@@ -130,7 +131,6 @@ export default function FeedCard({
   post,
   isLast,
   onLike,
-  onBookmark,
   onShare,
 }: FeedCardProps) {
   const { POST_INFO } = post;
@@ -257,25 +257,10 @@ export default function FeedCard({
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <button
-                aria-label={POST_INFO.isBookmarked ? '북마크 취소' : '북마크'}
-                aria-pressed={POST_INFO.isBookmarked}
-                type="button"
-                className="cursor-pointer"
-                onClick={() => onBookmark(POST_INFO.id)}
-              >
-                {POST_INFO.isBookmarked ? (
-                  <Icon
-                    name="bookmark-filled"
-                    className="text-semantic-accent-normal"
-                  />
-                ) : (
-                  <Icon
-                    name="bookmark"
-                    className="text-semantic-object-normal"
-                  />
-                )}
-              </button>
+              <BookmarkButton
+                postId={POST_INFO.id}
+                isBookmarked={POST_INFO.isBookmarked}
+              />
               <button
                 aria-label="공유하기"
                 type="button"

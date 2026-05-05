@@ -42,10 +42,7 @@ export default function FeedPage() {
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
   const router = useRouter();
 
-  const updatePostState = (
-    postId: string,
-    field: 'isLiked' | 'isBookmarked',
-  ) => {
+  const toggleLike = (postId: string) => {
     queryClient.setQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY, (prev) => {
       if (!prev) return prev;
 
@@ -59,7 +56,7 @@ export default function FeedPage() {
                   ...post,
                   POST_INFO: {
                     ...post.POST_INFO,
-                    [field]: !post.POST_INFO[field],
+                    isLiked: !post.POST_INFO.isLiked,
                   },
                 }
               : post,
@@ -147,8 +144,7 @@ export default function FeedPage() {
           key={data.POST_INFO.id}
           post={data}
           isLast={index === posts.length - 1}
-          onLike={(postId) => updatePostState(postId, 'isLiked')}
-          onBookmark={(postId) => updatePostState(postId, 'isBookmarked')}
+          onLike={toggleLike}
           onShare={() =>
             toast({
               icon: <Icon name="link" />,
