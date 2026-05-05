@@ -11,7 +11,7 @@ import {
   TAG_CATEGORIES,
 } from '@/entities/place';
 
-type ReviewTagsSelectBottomSheetProps = {
+type ReviewTagsSheetProps = {
   value: PlaceTagValue[];
   onChange: (value: PlaceTagValue[]) => void;
   name?: string;
@@ -28,12 +28,12 @@ function toggleTag(tags: PlaceTagValue[], tag: PlaceTagValue) {
   return [...tags, tag];
 }
 
-export default function ReviewTagsSelectBottomSheet({
+export default function ReviewTagsSheet({
   value,
   onChange,
   name = 'reviewTags',
   triggerRef,
-}: ReviewTagsSelectBottomSheetProps) {
+}: ReviewTagsSheetProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<PlaceTagValue[]>(value);
   const [activeCategoryTitle, setActiveCategoryTitle] = useState(
@@ -128,7 +128,7 @@ export default function ReviewTagsSelectBottomSheet({
           <div
             role="tablist"
             aria-label="후기 요약 태그 카테고리"
-            className="flex w-full justify-between"
+            className="flex w-full justify-between gap-5 overflow-x-scroll"
           >
             {TAG_CATEGORIES.map(({ title }) => {
               const selected = title === activeCategoryTitle;

@@ -16,7 +16,7 @@ type PlaceCategorySelectProps = {
 
 const DEFAULT_PLACE_CATEGORY_VALUE = PLACE_CATEGORIES[0].value;
 
-export default function PlaceCategorySelectBottomSheet({
+export default function PlaceCategorySheet({
   value,
   onChange,
   placeholder = '장소 카테고리를 선택해 주세요.',

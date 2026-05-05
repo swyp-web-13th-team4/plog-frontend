@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button, DatePicker, type DateValue, Dialog, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-type WorkDateSelectDialogProps = {
+type WorkDateDialogProps = {
   value: DateValue | null;
   onChange: (value: DateValue) => void;
   placeholder?: string;
@@ -34,12 +34,12 @@ function serializeDateValue(value: DateValue) {
   return `${value.year}-${padDatePart(value.month)}-${padDatePart(value.date)}`;
 }
 
-export default function WorkDateSelectDialog({
+export default function WorkDateDialog({
   value,
   onChange,
   placeholder = 'YYYY.MM.DD',
   name = 'workDate',
-}: WorkDateSelectDialogProps) {
+}: WorkDateDialogProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<DateValue>(
     value ?? getTodayValue(),

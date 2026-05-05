@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button, Dialog, Icon, TimePicker, type TimeValue } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-type WorkTimeSelectDialogProps = {
+type WorkTimeDialogProps = {
   value: TimeValue | null;
   onChange: (value: TimeValue) => void;
   label: string;
@@ -30,13 +30,13 @@ function getCurrentTimeValue(): TimeValue {
   };
 }
 
-export default function WorkTimeSelectDialog({
+export default function WorkTimeDialog({
   value,
   onChange,
   label,
   name,
   placeholder = '--:--',
-}: WorkTimeSelectDialogProps) {
+}: WorkTimeDialogProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<TimeValue>(
     value ?? getCurrentTimeValue(),

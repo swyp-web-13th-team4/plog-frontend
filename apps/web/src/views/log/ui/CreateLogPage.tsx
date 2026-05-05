@@ -17,10 +17,10 @@ import {
 } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { PlaceCategorySelectBottomSheet } from '@/features/place-category-select';
-import { ReviewTagsSelectBottomSheet } from '@/features/review-tags-select';
-import { WorkDateSelectDialog } from '@/features/work-date-select';
-import { WorkTimeSelectDialog } from '@/features/work-time-select';
+import { PlaceCategorySheet } from '@/features/select-place-category';
+import { ReviewTagsSheet } from '@/features/select-review-tags';
+import { WorkDateDialog } from '@/features/select-work-date';
+import { WorkTimeDialog } from '@/features/select-work-time';
 
 import { type PlaceCategoryValue, PlaceTagValue } from '@/entities/place';
 
@@ -382,7 +382,7 @@ export default function CreateLogPage({
             />
           </Field>
 
-          <PlaceCategorySelectBottomSheet
+          <PlaceCategorySheet
             value={placeCategory}
             onChange={setPlaceCategory}
           />
@@ -390,12 +390,12 @@ export default function CreateLogPage({
 
         <div className="flex flex-col gap-3">
           <Field label="작업 날짜" required>
-            <WorkDateSelectDialog value={workDate} onChange={setWorkDate} />
+            <WorkDateDialog value={workDate} onChange={setWorkDate} />
           </Field>
 
           <div className="grid grid-cols-2 gap-4">
             <Field label="시작 시간" required>
-              <WorkTimeSelectDialog
+              <WorkTimeDialog
                 value={startTime}
                 onChange={setStartTime}
                 label="시작 시간"
@@ -403,7 +403,7 @@ export default function CreateLogPage({
               />
             </Field>
             <Field label="종료 시간" required>
-              <WorkTimeSelectDialog
+              <WorkTimeDialog
                 value={endTime}
                 onChange={setEndTime}
                 label="종료 시간"
@@ -425,10 +425,7 @@ export default function CreateLogPage({
 
         <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6">
           <Field label="후기 요약 태그를 선택해주세요" required>
-            <ReviewTagsSelectBottomSheet
-              value={reviewTags}
-              onChange={setReviewTags}
-            />
+            <ReviewTagsSheet value={reviewTags} onChange={setReviewTags} />
           </Field>
         </div>
       </section>
