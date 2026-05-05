@@ -9,5 +9,5 @@ export function getFieldStateClass(
     return 'border-semantic-feedback-error-normal bg-semantic-feedback-error-subtler';
   if (focused)
     return 'border-semantic-accent-normal ring-1 ring-semantic-accent-normal';
-  return 'border-semantic-stroke-assistive bg-semantic-bg-standard hover:border-semantic-stroke-alternative';
+  return 'border-semantic-stroke-subtle bg-semantic-object-inverse hover:border-semantic-stroke-alternative';
 }
