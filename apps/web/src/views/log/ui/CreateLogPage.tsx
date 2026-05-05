@@ -1,6 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+  type Ref,
+  useState,
+} from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -8,18 +13,24 @@ import {
   Button,
   type DateValue,
   Field,
+  Icon,
   Input,
   Switch,
   Textarea,
   type TimeValue,
 } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { PlaceCategorySheet } from '@/features/select-place-category';
 import { ReviewTagsSheet } from '@/features/select-review-tags';
-import { WorkDateDialog } from '@/features/select-work-date';
-import { WorkTimeDialog } from '@/features/select-work-time';
+import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
+import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 
-import { type PlaceCategoryValue, PlaceTagValue } from '@/entities/place';
+import {
+  PLACE_CATEGORIES,
+  type PlaceCategoryValue,
+  PlaceTagValue,
+} from '@/entities/place';
 
 import { usePhotoUpload } from '../model/use-photo-upload';
 import PhotoUploader from './PhotoUploader';
@@ -28,6 +39,45 @@ import RatingPicker, { type FocusLevel } from './RatingPicker';
 
 function SectionDivider() {
   return <div className="h-2 bg-semantic-bg-deep" />;
+}
+
+type SelectTriggerButtonProps = Omit<
+  ComponentPropsWithoutRef<'button'>,
+  'value'
+> & {
+  ref?: Ref<HTMLButtonElement>;
+  value: string | null;
+  placeholder: string;
+  icon: ReactNode;
+};
+
+function SelectTriggerButton({
+  value,
+  placeholder,
+  icon,
+  ref,
+  ...props
+}: SelectTriggerButtonProps) {
+  return (
+    <button
+      ref={ref}
+      type="button"
+      {...props}
+      className="body-md flex w-full cursor-pointer items-center gap-3 rounded-xl border border-semantic-stroke-subtle bg-semantic-object-inverse px-4 py-3 text-left transition-colors outline-none hover:border-semantic-stroke-alternative focus-visible:border-semantic-accent-normal focus-visible:ring-1 focus-visible:ring-semantic-accent-normal"
+    >
+      <span
+        className={cn(
+          'min-w-0 flex-1 truncate',
+          value
+            ? 'text-semantic-object-boldest'
+            : 'text-semantic-object-subtle',
+        )}
+      >
+        {value ?? placeholder}
+      </span>
+      {icon}
+    </button>
+  );
 }
 
 type CreateFeedPageProps = {
@@ -86,7 +136,7 @@ export default function CreateLogPage({
             }}
             placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
             maxLength={300}
-            className="[&_textarea]:body-sm [&_textarea]:h-40"
+            className="[&_textarea]:body-sm"
           />
         </Field>
       </section>
@@ -102,14 +152,39 @@ export default function CreateLogPage({
               onClick={() => router.push('/log/place-search')}
             />
           </Field>
-          <PlaceCategorySheet
-            value={placeCategory}
-            onChange={setPlaceCategory}
-          />
+          <PlaceCategorySheet value={placeCategory} onChange={setPlaceCategory}>
+            <SelectTriggerButton
+              value={
+                PLACE_CATEGORIES.find((c) => c.value === placeCategory)
+                  ?.label ?? null
+              }
+              placeholder="장소 카테고리를 선택해 주세요."
+              icon={
+                <Icon
+                  name="chevron-right"
+                  size={20}
+                  className="text-semantic-object-subtle"
+                />
+              }
+            />
+          </PlaceCategorySheet>
         </div>
         <div className="flex flex-col gap-3">
           <Field label="작업 날짜" required>
-            <WorkDateDialog value={workDate} onChange={setWorkDate} />
+            <WorkDateDialog value={workDate} onChange={setWorkDate}>
+              <SelectTriggerButton
+                value={workDate ? formatDisplayDate(workDate) : null}
+                placeholder="YYYY.MM.DD"
+                icon={
+                  <Icon
+                    name="calendar"
+                    size={20}
+                    className="text-semantic-object-subtle"
+                  />
+                }
+                aria-label="작업 날짜 선택"
+              />
+            </WorkDateDialog>
           </Field>
           <div className="grid grid-cols-2 gap-4">
             <Field label="시작 시간" required>
@@ -118,7 +193,20 @@ export default function CreateLogPage({
                 onChange={setStartTime}
                 label="시작 시간"
                 name="startTime"
-              />
+              >
+                <SelectTriggerButton
+                  value={startTime ? formatTimeValue(startTime) : null}
+                  placeholder="--:--"
+                  icon={
+                    <Icon
+                      name="clock"
+                      size={20}
+                      className="text-semantic-object-subtle"
+                    />
+                  }
+                  aria-label="시작 시간 선택"
+                />
+              </WorkTimeDialog>
             </Field>
             <Field label="종료 시간" required>
               <WorkTimeDialog
@@ -126,7 +214,20 @@ export default function CreateLogPage({
                 onChange={setEndTime}
                 label="종료 시간"
                 name="endTime"
-              />
+              >
+                <SelectTriggerButton
+                  value={endTime ? formatTimeValue(endTime) : null}
+                  placeholder="--:--"
+                  icon={
+                    <Icon
+                      name="clock"
+                      size={20}
+                      className="text-semantic-object-subtle"
+                    />
+                  }
+                  aria-label="종료 시간 선택"
+                />
+              </WorkTimeDialog>
             </Field>
           </div>
         </div>
@@ -139,8 +240,18 @@ export default function CreateLogPage({
           </Field>
         </div>
         <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6">
-          <Field label="후기 요약 태그를 선택해주세요" required>
-            <ReviewTagsSheet value={reviewTags} onChange={setReviewTags} />
+          <Field label="후기 요약 태그를 선택해 주세요" required>
+            <ReviewTagsSheet value={reviewTags} onChange={setReviewTags}>
+              <Button
+                variant="outline"
+                size="large"
+                fullWidth
+                iconLeft={<Icon name="plus" />}
+                className="text-semantic-object-normal [&>svg]:size-4!"
+              >
+                태그 추가하기
+              </Button>
+            </ReviewTagsSheet>
           </Field>
         </div>
       </section>
