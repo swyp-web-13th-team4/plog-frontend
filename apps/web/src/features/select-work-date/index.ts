@@ -1,1 +1,4 @@
-export { default as WorkDateDialog } from './ui/WorkDateDialog';
+export {
+  formatDisplayDate,
+  default as WorkDateDialog,
+} from './ui/WorkDateDialog';

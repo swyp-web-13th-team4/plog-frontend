@@ -1,23 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { type ReactElement, useState } from 'react';
 
-import { Button, Dialog, Icon, TimePicker, type TimeValue } from '@plog/ui';
-import { cn } from '@plog/utils';
+import { Button, Dialog, TimePicker, type TimeValue } from '@plog/ui';
 
 type WorkTimeDialogProps = {
   value: TimeValue | null;
   onChange: (value: TimeValue) => void;
+  children: ReactElement;
   label: string;
   name: string;
-  placeholder?: string;
 };
 
 function padTimePart(value: number) {
   return String(value).padStart(2, '0');
 }
 
-function formatTimeValue(value: TimeValue) {
+export function formatTimeValue(value: TimeValue) {
   return `${padTimePart(value.hour)}:${padTimePart(value.minute)}`;
 }
 
@@ -33,9 +32,9 @@ function getCurrentTimeValue(): TimeValue {
 export default function WorkTimeDialog({
   value,
   onChange,
+  children,
   label,
   name,
-  placeholder = '--:--',
 }: WorkTimeDialogProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<TimeValue>(
@@ -63,36 +62,14 @@ export default function WorkTimeDialog({
         value={value ? formatTimeValue(value) : ''}
       />
       <Dialog open={open} onOpenChange={handleOpenChange}>
-        <Dialog.Trigger
-          render={
-            <button
-              type="button"
-              className="body-md relative flex w-full items-center gap-3 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white py-3 pr-4 pl-4 text-left text-semantic-object-boldest transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle"
-              aria-label={`${label} 선택`}
-            >
-              <span
-                className={cn(
-                  'min-w-0 flex-1 truncate',
-                  value
-                    ? 'text-semantic-object-boldest'
-                    : 'text-semantic-object-subtle',
-                )}
-              >
-                {value ? formatTimeValue(value) : placeholder}
-              </span>
-              <Icon name="clock" className="text-semantic-object-subtle" />
-            </button>
-          }
-        />
-
+        <Dialog.Trigger render={children} />
         <Dialog.Content className="max-w-90 gap-6 p-5">
-          <Dialog.Header className="gap-3">
+          <Dialog.Header className="gap-1">
             <Dialog.Title>시간 선택</Dialog.Title>
             <Dialog.Description>
               방문한 시간을 선택해 주세요.
             </Dialog.Description>
           </Dialog.Header>
-
           <Dialog.Body className="flex justify-center">
             <TimePicker
               value={draftValue}
@@ -100,7 +77,6 @@ export default function WorkTimeDialog({
               aria-label={label}
             />
           </Dialog.Body>
-
           <Dialog.Actions>
             <Button size="medium" fullWidth onClick={handleConfirm}>
               확인

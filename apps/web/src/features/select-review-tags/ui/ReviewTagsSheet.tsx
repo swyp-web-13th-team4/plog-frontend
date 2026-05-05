@@ -1,6 +1,6 @@
 'use client';
 
-import { type Ref, useMemo, useState } from 'react';
+import { type ReactElement, useMemo, useState } from 'react';
 
 import { BottomSheet, Button, Chip, Icon, useToast } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -14,8 +14,8 @@ import {
 type ReviewTagsSheetProps = {
   value: PlaceTagValue[];
   onChange: (value: PlaceTagValue[]) => void;
+  children: ReactElement;
   name?: string;
-  triggerRef?: Ref<HTMLButtonElement>;
 };
 
 const MAX_REVIEW_TAG_COUNT = 5;
@@ -31,8 +31,8 @@ function toggleTag(tags: PlaceTagValue[], tag: PlaceTagValue) {
 export default function ReviewTagsSheet({
   value,
   onChange,
+  children,
   name = 'reviewTags',
-  triggerRef,
 }: ReviewTagsSheetProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<PlaceTagValue[]>(value);
@@ -101,21 +101,7 @@ export default function ReviewTagsSheet({
         </div>
       )}
       <BottomSheet open={open} onOpenChange={handleOpenChange}>
-        <BottomSheet.Trigger
-          render={
-            <Button
-              ref={triggerRef}
-              variant="outline"
-              size="large"
-              fullWidth
-              iconLeft={<Icon name="plus" />}
-              className="text-semantic-object-normal [&>svg]:size-4!"
-            >
-              태그 추가하기
-            </Button>
-          }
-        />
-
+        <BottomSheet.Trigger render={children} />
         <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-5 pb-6">
           <div className="flex w-full flex-col items-center gap-3">
             <BottomSheet.Handle />
@@ -124,7 +110,6 @@ export default function ReviewTagsSheet({
               <BottomSheet.CloseButton />
             </BottomSheet.Header>
           </div>
-
           <div
             role="tablist"
             aria-label="후기 요약 태그 카테고리"
@@ -156,7 +141,6 @@ export default function ReviewTagsSheet({
               );
             })}
           </div>
-
           <BottomSheet.Body className="flex min-h-55 flex-1 flex-col">
             <div className="flex flex-wrap gap-2">
               {activeCategory.tags.map((tag) => (
@@ -172,7 +156,6 @@ export default function ReviewTagsSheet({
               ))}
             </div>
           </BottomSheet.Body>
-
           {draftValue.length > 0 && (
             <div className="flex w-full flex-wrap gap-2">
               {draftValue.map((tag) => (
@@ -190,7 +173,6 @@ export default function ReviewTagsSheet({
               ))}
             </div>
           )}
-
           <div className="grid w-full grid-cols-2 gap-3">
             <Button
               variant="secondary"
