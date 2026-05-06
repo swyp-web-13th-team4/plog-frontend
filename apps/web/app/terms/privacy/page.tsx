@@ -1,5 +1,6 @@
-import { getSanitizedTerm } from '@/entities/user/api/server';
 import { TermsPage } from '@/views/terms';
+
+import { getSanitizedTerm } from '@/entities/user/api/server';
 
 export const dynamic = 'force-static';
 export const metadata = { title: '개인정보 처리방침' };
