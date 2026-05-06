@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -67,7 +68,7 @@ export default function FeedCard({
     isEnd: POST_INFO.image.length <= 1,
   });
   const hasMultipleImages = POST_INFO.image.length > 1;
-
+  const router = useRouter();
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
@@ -205,7 +206,10 @@ export default function FeedCard({
               </span>
               <ClampedContent content={POST_INFO.content} />
             </div>
-            <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-4">
+            <div
+              className="flex cursor-pointer justify-between rounded-xl border border-semantic-stroke-subtle p-4"
+              onClick={() => router.push(`/feed/${POST_INFO.id}`)}
+            >
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
                   {POST_INFO.PLACE_INFO.placeName}
