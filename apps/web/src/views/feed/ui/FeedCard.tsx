@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -56,7 +56,7 @@ function ClampedContent({ content }: { content: string }) {
   );
 }
 
-export default function FeedCard({ post, isLast, onShare }: FeedCardProps) {
+export default function FeedCard({ post, isLast }: FeedCardProps) {
   const { POST_INFO } = post;
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
@@ -64,7 +64,6 @@ export default function FeedCard({ post, isLast, onShare }: FeedCardProps) {
     isEnd: POST_INFO.image.length <= 1,
   });
   const hasMultipleImages = POST_INFO.image.length > 1;
-  const router = useRouter();
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
@@ -180,9 +179,9 @@ export default function FeedCard({ post, isLast, onShare }: FeedCardProps) {
               </span>
               <ClampedContent content={POST_INFO.content} />
             </div>
-            <div
+            <Link
               className="flex cursor-pointer justify-between rounded-xl border border-semantic-stroke-subtle p-4"
-              onClick={() => router.push(`/feed/${POST_INFO.id}`)}
+              href={`/feed/${POST_INFO.id}`}
             >
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
@@ -214,7 +213,7 @@ export default function FeedCard({ post, isLast, onShare }: FeedCardProps) {
               <span className="caption-md text-semantic-object-subtle">
                 {formatStudyDate(POST_INFO.PLACE_INFO.studyDate)}
               </span>
-            </div>
+            </Link>
             <TagBadgeGroup tags={POST_INFO.tags} />
           </div>
         </div>
