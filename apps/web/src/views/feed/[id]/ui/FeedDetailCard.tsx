@@ -17,7 +17,11 @@ import {
 } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { FeedPost, FeedTag } from '@/entities/feed';
+import { CopyLinkButton } from '@/features/copy-link';
+import { BookmarkButton } from '@/features/toggle-bookmark';
+import { LikeButton } from '@/features/toggle-like';
+
+import { FeedPost, FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
 
 import {
   formatStudyDate,
@@ -26,66 +30,12 @@ import {
 } from '../../lib/time';
 import { MOCK_FEED_DATA } from '../../model/mock-data';
 
-const DEFAULT_VISIBLE_TAG_COUNT = 3;
-
 type FeedCarouselController = {
   slidePrev: () => void;
   slideNext: () => void;
   isBeginning: boolean;
   isEnd: boolean;
 };
-
-function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const visibleTags = tags.slice(0, DEFAULT_VISIBLE_TAG_COUNT);
-  const hiddenTags = tags.slice(DEFAULT_VISIBLE_TAG_COUNT);
-  const hasHiddenTags = hiddenTags.length > 0;
-
-  return (
-    <div className="flex gap-2">
-      {visibleTags.map((tag) => (
-        <Badge
-          key={tag.id}
-          color="gray"
-          variant="soft"
-          className="caption-md flex items-center text-semantic-object-normal"
-        >
-          {tag.name}
-        </Badge>
-      ))}
-      {hasHiddenTags && (
-        <div className="relative">
-          <Badge
-            color="gray"
-            variant="outline"
-            className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
-            onClick={() => setIsExpanded((prev) => !prev)}
-          >
-            {`+${hiddenTags.length}`}
-          </Badge>
-
-          {isExpanded && (
-            <div className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2">
-              <div className="flex flex-col gap-2">
-                {hiddenTags.map((tag) => (
-                  <Badge
-                    key={tag.id}
-                    color="gray"
-                    variant="soft"
-                    className="caption-md flex items-center text-semantic-object-normal"
-                  >
-                    {tag.name}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 function ShowOutlineAboutFeed({
   value,
@@ -122,20 +72,6 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     isBeginning: true,
     isEnd: feed ? feed.POST_INFO.image.length <= 1 : true,
   });
-
-  const updatePostState = (field: 'isLiked' | 'isBookmarked') => {
-    setPost((prev) => {
-      if (!prev) return prev;
-
-      return {
-        ...prev,
-        POST_INFO: {
-          ...prev.POST_INFO,
-          [field]: !prev.POST_INFO[field],
-        },
-      };
-    });
-  };
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
@@ -256,57 +192,17 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           {!isSeungMinPost && (
             <div className="flex justify-between">
               <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  className="flex cursor-pointer items-center"
-                  onClick={() => updatePostState('isLiked')}
-                >
-                  {POST_INFO.isLiked ? (
-                    <Icon
-                      name="heart-filled"
-                      className="text-semantic-feedback-error-neutral"
-                    />
-                  ) : (
-                    <Icon
-                      name="heart"
-                      className="text-semantic-object-normal"
-                    />
-                  )}
-                </button>
+                <LikeButton postId={POST_INFO.id} isLiked={POST_INFO.isLiked} />
                 <span className="caption-md text-semantic-object-normal">
                   {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
                 </span>
               </div>
               <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  className="cursor-pointer"
-                  onClick={() => updatePostState('isBookmarked')}
-                >
-                  {POST_INFO.isBookmarked ? (
-                    <Icon
-                      name="bookmark-filled"
-                      className="text-semantic-accent-normal"
-                    />
-                  ) : (
-                    <Icon
-                      name="bookmark"
-                      className="text-semantic-object-normal"
-                    />
-                  )}
-                </button>
-                <button
-                  type="button"
-                  className="cursor-pointer"
-                  onClick={() =>
-                    toast({
-                      icon: <Icon name="link" />,
-                      description: '링크가 복사되었습니다.',
-                    })
-                  }
-                >
-                  <Icon name="share" className="text-semantic-object-normal" />
-                </button>
+                <BookmarkButton
+                  postId={POST_INFO.id}
+                  isBookmarked={POST_INFO.isBookmarked}
+                />
+                <CopyLinkButton />
               </div>
             </div>
           )}
@@ -339,53 +235,15 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               {post.POST_INFO.PLACE_INFO.roadAddress}
             </p>
           </div>
-          <div
-            className={cn(
-              'rounded-xl border p-4',
-              isSeungMinPost
-                ? 'border-semantic-accent-subtle bg-semantic-feedback-success-subtler'
-                : 'border-semantic-theme-sky-assistive bg-semantic-theme-sky-subtler',
+          <FeedStatsSummary
+            isUserOwnFeed={isSeungMinPost}
+            primaryLabel="좋아요"
+            primaryValue={post.POST_INFO.heartCount}
+            totalWorkTime={formatStudyDuration(
+              post.POST_INFO.PLACE_INFO.studyTime,
             )}
-          >
-            <div className="flex justify-between">
-              <ShowOutlineAboutFeed
-                value={post.POST_INFO.heartCount}
-                label="좋아요"
-                isUserOwnFeed={isSeungMinPost}
-              />
-
-              <Divider
-                orientation="vertical"
-                className={cn(
-                  'h-13',
-                  isSeungMinPost
-                    ? 'border-semantic-accent-subtle'
-                    : 'border-semantic-theme-sky-assistive',
-                )}
-              />
-
-              <ShowOutlineAboutFeed
-                value={formatStudyDuration(post.POST_INFO.PLACE_INFO.studyTime)}
-                label="총 작업시간"
-                isUserOwnFeed={isSeungMinPost}
-              />
-              <Divider
-                orientation="vertical"
-                className={cn(
-                  'h-13',
-                  isSeungMinPost
-                    ? 'border-semantic-accent-subtle'
-                    : 'border-semantic-theme-sky-assistive',
-                )}
-              />
-
-              <ShowOutlineAboutFeed
-                value={post.POST_INFO.PLACE_INFO.concentrateCount}
-                label="작업 집중도"
-                isUserOwnFeed={isSeungMinPost}
-              />
-            </div>
-          </div>
+            focusLevel={post.POST_INFO.PLACE_INFO.concentrateCount}
+          />
           <TagBadgeGroup tags={post.POST_INFO.tags} />
         </div>
         <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">

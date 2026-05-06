@@ -6,23 +6,17 @@ import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/navigation';
 
 import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
-import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
 import { type FeedPage } from '@/entities/feed';
 
 import { ScrollToTopButton } from '@/shared/ui';
 
-import {
-  FEED_QUERY_KEY,
-  useInfiniteFeedQuery,
-} from '../model/use-infinite-feed-query';
+import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
 
 export default function FeedPage() {
   const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
     useState(false);
-
-  const queryClient = useQueryClient();
 
   const {
     data,
@@ -48,30 +42,6 @@ export default function FeedPage() {
   const router = useRouter();
 
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
-
-  const toggleLike = (postId: string) => {
-    queryClient.setQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY, (prev) => {
-      if (!prev) return prev;
-
-      return {
-        ...prev,
-        pages: prev.pages.map((page) => ({
-          ...page,
-          items: page.items.map((post) =>
-            post.POST_INFO.id === postId
-              ? {
-                  ...post,
-                  POST_INFO: {
-                    ...post.POST_INFO,
-                    isLiked: !post.POST_INFO.isLiked,
-                  },
-                }
-              : post,
-          ),
-        })),
-      };
-    });
-  };
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -151,7 +121,6 @@ export default function FeedPage() {
           key={data.POST_INFO.id}
           post={data}
           isLast={index === posts.length - 1}
-          onLike={toggleLike}
           onShare={() =>
             toast({
               icon: <Icon name="link" />,

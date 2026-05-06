@@ -8,7 +8,9 @@ import { useRouter } from 'next/navigation';
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { CopyLinkButton } from '@/features/copy-link';
 import { BookmarkButton } from '@/features/toggle-bookmark';
+import { LikeButton } from '@/features/toggle-like';
 
 import { type FeedPost, TagBadgeGroup } from '@/entities/feed';
 
@@ -24,7 +26,6 @@ type FeedCarouselController = {
 type FeedCardProps = {
   post: FeedPost;
   isLast: boolean;
-  onLike: (postId: string) => void;
   onShare: () => void;
 };
 
@@ -55,12 +56,7 @@ function ClampedContent({ content }: { content: string }) {
   );
 }
 
-export default function FeedCard({
-  post,
-  isLast,
-  onLike,
-  onShare,
-}: FeedCardProps) {
+export default function FeedCard({ post, isLast, onShare }: FeedCardProps) {
   const { POST_INFO } = post;
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
@@ -164,22 +160,7 @@ export default function FeedCard({
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">
-              <button
-                aria-label={POST_INFO.isLiked ? '좋아요 취소' : '좋아요'}
-                aria-pressed={POST_INFO.isLiked}
-                type="button"
-                className="flex cursor-pointer items-center"
-                onClick={() => onLike(POST_INFO.id)}
-              >
-                {POST_INFO.isLiked ? (
-                  <Icon
-                    name="heart-filled"
-                    className="text-semantic-feedback-error-neutral"
-                  />
-                ) : (
-                  <Icon name="heart" className="text-semantic-object-normal" />
-                )}
-              </button>
+              <LikeButton postId={POST_INFO.id} isLiked={POST_INFO.isLiked} />
               <span className="caption-md text-semantic-object-normal">
                 {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
               </span>
@@ -189,14 +170,7 @@ export default function FeedCard({
                 postId={POST_INFO.id}
                 isBookmarked={POST_INFO.isBookmarked}
               />
-              <button
-                aria-label="공유하기"
-                type="button"
-                className="cursor-pointer"
-                onClick={onShare}
-              >
-                <Icon name="share" className="text-semantic-object-normal" />
-              </button>
+              <CopyLinkButton />
             </div>
           </div>
           <div className="flex flex-col gap-3">
