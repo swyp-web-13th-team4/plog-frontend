@@ -121,6 +121,54 @@ declare namespace kakao.maps {
       handler: (...args: unknown[]) => void,
     ): void;
   }
+
+  namespace services {
+    type Status = 'OK' | 'ZERO_RESULT' | 'ERROR';
+
+    interface PlacesSearchResultItem {
+      id: string;
+      place_name: string;
+      category_name: string;
+      category_group_code: string;
+      category_group_name: string;
+      phone: string;
+      address_name: string;
+      road_address_name: string;
+      x: string;
+      y: string;
+      place_url: string;
+      distance: string;
+    }
+
+    interface Pagination {
+      current: number;
+      first: number;
+      gotoPage(page: number): void;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+      last: number;
+      nextPage(): void;
+      perPage: number;
+      prevPage(): void;
+      totalCount: number;
+    }
+
+    type PlacesSearchCallback = (
+      data: PlacesSearchResultItem[],
+      status: Status,
+      pagination: Pagination,
+    ) => void;
+
+    class Places {
+      keywordSearch(keyword: string, callback: PlacesSearchCallback): void;
+    }
+
+    const Status: {
+      OK: 'OK';
+      ZERO_RESULT: 'ZERO_RESULT';
+      ERROR: 'ERROR';
+    };
+  }
 }
 
 interface Window {

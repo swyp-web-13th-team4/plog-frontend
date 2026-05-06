@@ -26,6 +26,9 @@ const nextConfig: NextConfig = {
                       },
                     },
                   },
+                  {
+                    name: 'prefixIds',
+                  },
                 ],
               },
             },

@@ -18,6 +18,16 @@ const meta: Meta<typeof Avatar> = {
     },
   },
   argTypes: {
+    className: {
+      description:
+        '아바타 요소에 적용할 클래스입니다. 테두리, 배경 등 스타일을 조정합니다.',
+      control: 'text',
+    },
+    containerClassName: {
+      description:
+        '외부 컨테이너에 적용할 클래스입니다. 크기, 레이아웃 등을 조정합니다.',
+      control: 'text',
+    },
     size: {
       description: '아바타 크기를 설정합니다.',
       control: 'select',
@@ -65,7 +75,6 @@ const meta: Meta<typeof Avatar> = {
         defaultValue: { summary: 'false' },
       },
     },
-    className: { table: { disable: true } },
   },
   args: {
     size: 'medium',

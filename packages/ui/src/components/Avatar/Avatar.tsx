@@ -36,6 +36,7 @@ type AvatarProps = {
   selected?: boolean;
   loading?: boolean;
   className?: string;
+  containerClassName?: string;
 } & Omit<
   ComponentPropsWithoutRef<typeof BaseAvatar.Root>,
   'className' | 'render' | 'children'
@@ -49,12 +50,19 @@ export default function Avatar({
   selected = false,
   loading = false,
   className,
+  containerClassName,
   ...props
 }: AvatarProps) {
   const spinnerSize = size === 'xsmall' ? 'small' : 'large';
 
   return (
-    <span className={cn('relative inline-flex shrink-0', sizeClass[size])}>
+    <span
+      className={cn(
+        'relative inline-flex shrink-0',
+        sizeClass[size],
+        containerClassName,
+      )}
+    >
       <BaseAvatar.Root
         className={cn(
           'inline-flex size-full items-center justify-center overflow-hidden rounded-full bg-semantic-bg-deeper',
@@ -82,8 +90,12 @@ export default function Avatar({
         </BaseAvatar.Fallback>
 
         {loading && (
-          <span className="absolute inset-0 flex items-center justify-center rounded-full bg-semantic-system-black/40">
-            <Spinner size={spinnerSize} color="white" />
+          <span
+            role="status"
+            aria-label="로딩 중"
+            className="absolute inset-0 flex items-center justify-center rounded-full bg-semantic-system-black/40"
+          >
+            <Spinner size={spinnerSize} color="white" aria-hidden />
           </span>
         )}
       </BaseAvatar.Root>

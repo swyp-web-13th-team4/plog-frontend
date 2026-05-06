@@ -8,19 +8,22 @@ import { useRouter } from 'next/navigation';
 import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
 import { type InfiniteData, useQueryClient } from '@tanstack/react-query';
 
-import { ScrollToTopButton } from '@/features/scroll-to-top';
-
 import { type FeedPage } from '@/entities/feed';
+
+import { ScrollToTopButton } from '@/shared/ui';
 
 import {
   FEED_QUERY_KEY,
   useInfiniteFeedQuery,
-} from '../model/useInfiniteFeedQuery';
+} from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
 
 export default function FeedPage() {
-  const { toast } = useToast();
+  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
+    useState(false);
+
   const queryClient = useQueryClient();
+
   const {
     data,
     fetchNextPage,
@@ -31,21 +34,22 @@ export default function FeedPage() {
     isFetchNextPageError,
     refetch,
   } = useInfiniteFeedQuery();
+
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
   });
+
   const { ref: topRef, inView: isTopAreaVisible } = useInView({
     threshold: 0,
   });
-  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
-    useState(false);
-  const posts = data?.pages.flatMap((page) => page.items) ?? [];
+
+  const { toast } = useToast();
+
   const router = useRouter();
 
-  const updatePostState = (
-    postId: string,
-    field: 'isLiked' | 'isBookmarked',
-  ) => {
+  const posts = data?.pages.flatMap((page) => page.items) ?? [];
+
+  const toggleLike = (postId: string) => {
     queryClient.setQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY, (prev) => {
       if (!prev) return prev;
 
@@ -59,7 +63,7 @@ export default function FeedPage() {
                   ...post,
                   POST_INFO: {
                     ...post.POST_INFO,
-                    [field]: !post.POST_INFO[field],
+                    isLiked: !post.POST_INFO.isLiked,
                   },
                 }
               : post,
@@ -147,8 +151,7 @@ export default function FeedPage() {
           key={data.POST_INFO.id}
           post={data}
           isLast={index === posts.length - 1}
-          onLike={(postId) => updatePostState(postId, 'isLiked')}
-          onBookmark={(postId) => updatePostState(postId, 'isBookmarked')}
+          onLike={toggleLike}
           onShare={() =>
             toast({
               icon: <Icon name="link" />,

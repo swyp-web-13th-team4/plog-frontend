@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD
 import { useId, useRef, useState } from 'react';
 
 import Image from 'next/image';
@@ -13,6 +14,21 @@ import { formatStudyDate, formatTimeAgo } from '../lib/time';
 
 const DEFAULT_VISIBLE_TAG_COUNT = 3;
 
+=======
+import { useRef, useState } from 'react';
+
+import Image from 'next/image';
+
+import { Avatar, Carousel, Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
+
+import { BookmarkButton } from '@/features/toggle-bookmark';
+
+import { type FeedPost, TagBadgeGroup } from '@/entities/feed';
+
+import { formatStudyDate, formatTimeAgo } from '../lib/time';
+
+>>>>>>> dev
 type FeedCarouselController = {
   slidePrev: () => void;
   slideNext: () => void;
@@ -24,6 +40,7 @@ type FeedCardProps = {
   post: FeedPost;
   isLast: boolean;
   onLike: (postId: string) => void;
+<<<<<<< HEAD
   onBookmark: (postId: string) => void;
   onShare: () => void;
 };
@@ -118,11 +135,38 @@ function MaxContentLength({
           type="button"
           className="caption-md flex cursor-pointer items-center gap-2 text-semantic-object-subtle"
           onClick={() => setIsExpanded((prev) => !prev)}
+=======
+  onShare: () => void;
+};
+
+function ClampedContent({ content }: { content: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="flex justify-between gap-3">
+      <p
+        className={cn(
+          'body-sm text-semantic-object-normal',
+          !isExpanded && 'line-clamp-1',
+        )}
+      >
+        {content}
+      </p>
+      {!isExpanded && (
+        <button
+          type="button"
+          className="caption-md flex shrink-0 cursor-pointer items-center gap-2 text-semantic-object-subtle"
+          onClick={() => setIsExpanded(true)}
+>>>>>>> dev
         >
           더보기
           <Icon name="chevron-right" size={9} />
         </button>
+<<<<<<< HEAD
       ) : null}
+=======
+      )}
+>>>>>>> dev
     </div>
   );
 }
@@ -131,7 +175,10 @@ export default function FeedCard({
   post,
   isLast,
   onLike,
+<<<<<<< HEAD
   onBookmark,
+=======
+>>>>>>> dev
   onShare,
 }: FeedCardProps) {
   const { POST_INFO } = post;
@@ -141,7 +188,11 @@ export default function FeedCard({
     isEnd: POST_INFO.image.length <= 1,
   });
   const hasMultipleImages = POST_INFO.image.length > 1;
+<<<<<<< HEAD
   const router = useRouter();
+=======
+
+>>>>>>> dev
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
@@ -258,6 +309,7 @@ export default function FeedCard({
               </span>
             </div>
             <div className="flex items-center gap-3">
+<<<<<<< HEAD
               <button
                 aria-label={POST_INFO.isBookmarked ? '북마크 취소' : '북마크'}
                 aria-pressed={POST_INFO.isBookmarked}
@@ -277,6 +329,12 @@ export default function FeedCard({
                   />
                 )}
               </button>
+=======
+              <BookmarkButton
+                postId={POST_INFO.id}
+                isBookmarked={POST_INFO.isBookmarked}
+              />
+>>>>>>> dev
               <button
                 aria-label="공유하기"
                 type="button"
@@ -292,6 +350,7 @@ export default function FeedCard({
               <span className="title-xs text-semantic-object-boldest">
                 {POST_INFO.title}
               </span>
+<<<<<<< HEAD
               <MaxContentLength content={POST_INFO.content} maxLength={35} />
             </div>
             <div
@@ -300,6 +359,11 @@ export default function FeedCard({
                 router.push(`/feed/${POST_INFO.id}`);
               }}
             >
+=======
+              <ClampedContent content={POST_INFO.content} />
+            </div>
+            <div className="flex justify-between rounded-xl border border-semantic-stroke-subtle p-4">
+>>>>>>> dev
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
                   {POST_INFO.PLACE_INFO.placeName}

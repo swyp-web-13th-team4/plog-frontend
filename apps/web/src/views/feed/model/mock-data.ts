@@ -1,4 +1,5 @@
 import { type FeedPost } from '@/entities/feed';
+import { type FeedPost } from '@/entities/feed';
 
 import profileImage from '@/shared/assets/images/profileImage.png';
 const FEED_CAROUSEL_IMAGES = [
@@ -6,8 +7,15 @@ const FEED_CAROUSEL_IMAGES = [
   'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=800&fit=crop',
   'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=800&fit=crop',
 ];
+const FEED_CAROUSEL_IMAGES = [
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&h=800&fit=crop',
+  'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=800&fit=crop',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=800&fit=crop',
+];
 
 const profileImageSrc = profileImage.src;
+
+export const MOCK_FEED_DATA: FeedPost[] = [
 
 export const MOCK_FEED_DATA: FeedPost[] = [
   {
