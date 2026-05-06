@@ -10,7 +10,6 @@ import {
   Badge,
   Button,
   Carousel,
-  Divider,
   EmptyState,
   Icon,
   useToast,
@@ -23,11 +22,7 @@ import { LikeButton } from '@/features/toggle-like';
 
 import { FeedPost, FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
 
-import {
-  formatStudyDate,
-  formatStudyDuration,
-  formatTimeAgo,
-} from '../../lib/time';
+import { formatStudyDate, formatTimeAgo } from '../../lib/time';
 import { MOCK_FEED_DATA } from '../../model/mock-data';
 
 type FeedCarouselController = {
@@ -37,31 +32,6 @@ type FeedCarouselController = {
   isEnd: boolean;
 };
 
-function ShowOutlineAboutFeed({
-  value,
-  label,
-  isUserOwnFeed,
-}: {
-  value: number | string;
-  label: string;
-  isUserOwnFeed: boolean;
-}) {
-  return (
-    <div className="flex flex-1 flex-col items-center justify-center text-center">
-      <span
-        className={cn(
-          'title-lg',
-          isUserOwnFeed
-            ? 'text-semantic-feedback-success-normal'
-            : 'text-semantic-theme-sky-normal',
-        )}
-      >
-        {value}
-      </span>
-      <p className="caption-md text-semantic-object-bold">{label}</p>
-    </div>
-  );
-}
 export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
@@ -239,9 +209,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
             isUserOwnFeed={isSeungMinPost}
             primaryLabel="좋아요"
             primaryValue={post.POST_INFO.heartCount}
-            totalWorkTime={formatStudyDuration(
-              post.POST_INFO.PLACE_INFO.studyTime,
-            )}
+            totalWorkTime={post.POST_INFO.PLACE_INFO.studyTime}
             focusLevel={post.POST_INFO.PLACE_INFO.concentrateCount}
           />
           <TagBadgeGroup tags={post.POST_INFO.tags} />

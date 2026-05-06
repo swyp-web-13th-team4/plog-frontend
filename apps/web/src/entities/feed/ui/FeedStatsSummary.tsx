@@ -3,12 +3,14 @@ import { Fragment } from 'react/jsx-runtime';
 import { Divider } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { formatLikeCount, formatStudyDuration } from '../lib/format';
+
 type FeedStatsSummaryProps = {
   isUserOwnFeed: boolean;
   primaryLabel: '좋아요' | '북마크';
-  primaryValue: string | number;
-  totalWorkTime: string;
-  focusLevel: string | number;
+  primaryValue: number;
+  totalWorkTime: number;
+  focusLevel: number;
 };
 
 function ShowOutlineAboutFeed({
@@ -24,7 +26,7 @@ function ShowOutlineAboutFeed({
     <div className="flex flex-1 flex-col items-center justify-center text-center">
       <span
         className={cn(
-          'title-lg',
+          'title-sm',
           isUserOwnFeed
             ? 'text-semantic-feedback-success-normal'
             : 'text-semantic-theme-sky-normal',
@@ -45,8 +47,8 @@ export default function FeedStatsSummary({
   focusLevel,
 }: FeedStatsSummaryProps) {
   const stats = [
-    { label: primaryLabel, value: primaryValue },
-    { label: '총 작업시간', value: totalWorkTime },
+    { label: primaryLabel, value: formatLikeCount(primaryValue) },
+    { label: '총 작업시간', value: formatStudyDuration(totalWorkTime) },
     { label: '작업 집중도', value: focusLevel },
   ];
 
@@ -57,7 +59,7 @@ export default function FeedStatsSummary({
   return (
     <div
       className={cn(
-        'rounded-xl border p-4',
+        'rounded-xl border py-4',
         isUserOwnFeed
           ? 'border-semantic-accent-subtle bg-semantic-feedback-success-subtler'
           : 'border-semantic-theme-sky-assistive bg-semantic-theme-sky-subtler',
@@ -72,7 +74,6 @@ export default function FeedStatsSummary({
                 className={cn('h-13', dividerClassName)}
               />
             )}
-
             <ShowOutlineAboutFeed
               value={stat.value}
               label={stat.label}

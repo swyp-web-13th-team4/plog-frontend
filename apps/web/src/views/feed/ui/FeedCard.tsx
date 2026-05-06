@@ -12,7 +12,11 @@ import { CopyLinkButton } from '@/features/copy-link';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
-import { type FeedPost, TagBadgeGroup } from '@/entities/feed';
+import {
+  type FeedPost,
+  formatStudyDuration,
+  TagBadgeGroup,
+} from '@/entities/feed';
 
 import { formatStudyDate, formatTimeAgo } from '../lib/time';
 
@@ -195,7 +199,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                       className="text-semantic-object-normal"
                     />
                     <p className="caption-md text-semantic-object-normal">
-                      {POST_INFO.PLACE_INFO.studyTime}
+                      {formatStudyDuration(POST_INFO.PLACE_INFO.studyTime)}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">

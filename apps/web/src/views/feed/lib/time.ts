@@ -35,25 +35,3 @@ export function formatStudyDate(time: Date | string | number) {
 
   return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
-
-export function formatStudyDuration(duration: string) {
-  const hourMatch = duration.match(/(\d+)\s*시간/);
-  const minuteMatch = duration.match(/(\d+)\s*분/);
-
-  const hours = hourMatch ? Number(hourMatch[1]) : 0;
-  const minutes = minuteMatch ? Number(minuteMatch[1]) : 0;
-
-  if (hours === 0 && minutes === 0) {
-    return duration;
-  }
-
-  if (hours === 0) {
-    return `${minutes} m`;
-  }
-
-  if (minutes === 0) {
-    return `${hours} h`;
-  }
-
-  return `${hours} h ${minutes} m`;
-}
