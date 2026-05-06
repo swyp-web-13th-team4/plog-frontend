@@ -77,6 +77,7 @@ function TabGroup({
                 {...props}
                 label={item.label}
                 icon={item.icon}
+                activeIcon={item.activeIcon}
                 selected={state.active}
               />
             )}
