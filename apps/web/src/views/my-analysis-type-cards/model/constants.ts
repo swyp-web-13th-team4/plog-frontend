@@ -5,7 +5,6 @@ import NaoImage from '@/shared/assets/card-illustration/nao.jpg';
 import PopoImage from '@/shared/assets/card-illustration/popo.jpg';
 import ToriImage from '@/shared/assets/card-illustration/tori.jpg';
 
-export type { TypeCardData, TypeCardStat, TypeCardTheme } from './types';
 import { type TypeCardData } from './types';
 
 export const TYPE_CARDS: TypeCardData[] = [

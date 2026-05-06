@@ -1,5 +1,7 @@
 import { type StaticImageData } from 'next/image';
 
+export type TypeCardId = 'logi' | 'chichi' | 'tori' | 'haru' | 'popo' | 'nao';
+
 export type TypeCardTheme =
   | 'green'
   | 'yellow'
@@ -14,7 +16,7 @@ export type TypeCardStat = {
 };
 
 export type TypeCardData = {
-  id: string;
+  id: TypeCardId;
   name: string;
   fullName: string;
   image: StaticImageData;

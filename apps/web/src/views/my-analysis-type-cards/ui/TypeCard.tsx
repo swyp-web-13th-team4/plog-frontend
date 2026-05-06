@@ -9,10 +9,10 @@ import { cn } from '@plog/utils';
 import { cva } from 'class-variance-authority';
 
 import { TYPE_CARDS } from '../model/constants';
-import { type TypeCardTheme } from '../model/types';
+import { type TypeCardTheme, type TypeCardId } from '../model/types';
 
 type TypeCardProps = {
-  id: string;
+  id: TypeCardId;
 };
 
 const STAT_SEGMENTS = 4;

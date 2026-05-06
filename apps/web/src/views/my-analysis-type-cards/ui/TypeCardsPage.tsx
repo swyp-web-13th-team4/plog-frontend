@@ -8,11 +8,11 @@ import { AppBar, Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { TYPE_CARDS } from '../model/constants';
-import type { TypeCardTheme } from '../model/types';
+import type { TypeCardTheme, TypeCardId } from '../model/types';
 import CoachMark from '../ui/CoachMark';
 import TypeCard from '../ui/TypeCard';
 
-const USER_TYPE_ID = 'haru';
+const USER_TYPE_ID: TypeCardId = 'haru';
 const USER_NAME = '플로그';
 
 type View = 'my' | 'all';
