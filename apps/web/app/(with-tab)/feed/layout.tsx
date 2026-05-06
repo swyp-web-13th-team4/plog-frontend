@@ -11,17 +11,15 @@ type FeedLayoutProps = {
 export default function FeedLayout({ children }: FeedLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const isFeedDetailPage =
-    pathname.startsWith('/feed/') &&
-    pathname.split('/').filter(Boolean).length >= 2;
-
+  const segments = pathname.split('/').filter(Boolean);
+  const isFeedDetailPage = segments[0] === 'feed' && segments.length === 2;
   return (
     <>
       <header>
         <AppBar
           variant="navigation"
           title="피드"
-          onBack={isFeedDetailPage ? () => router.push('/feed') : undefined}
+          onBack={isFeedDetailPage ? () => router.replace('/feed') : undefined}
         />
       </header>
       {children}
