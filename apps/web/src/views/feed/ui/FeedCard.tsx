@@ -14,11 +14,11 @@ import { LikeButton } from '@/features/toggle-like';
 
 import {
   type FeedPost,
+  formatStudyDate,
   formatStudyDuration,
+  formatTimeAgo,
   TagBadgeGroup,
 } from '@/entities/feed';
-
-import { formatStudyDate, formatTimeAgo } from '../lib/time';
 
 type FeedCarouselController = {
   slidePrev: () => void;

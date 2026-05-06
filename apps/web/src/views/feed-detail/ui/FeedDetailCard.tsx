@@ -21,9 +21,8 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import { FeedPost, FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
-
-import { formatStudyDate, formatTimeAgo } from '../../lib/time';
-import { MOCK_FEED_DATA } from '../../model/mock-data';
+import { formatStudyDate, formatTimeAgo } from '@/entities/feed';
+import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
 
 type FeedCarouselController = {
   slidePrev: () => void;
