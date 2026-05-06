@@ -25,11 +25,8 @@ export type FeedPost = {
       studyDate: string;
       studyTime: string;
       concentrateCount: number;
-<<<<<<< HEAD
       roadAddress?: string;
       category?: string;
-=======
->>>>>>> dev
     };
   };
 };
