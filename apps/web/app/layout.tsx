@@ -4,12 +4,27 @@ import { type ReactNode } from 'react';
 
 import type { Metadata } from 'next';
 
-import { BottomTab } from '@/shared/ui';
-import { Providers } from '@/shared/ui';
+import Providers from '@/shared/ui/Providers';
 
 export const metadata: Metadata = {
-  title: 'plog',
-  description: 'plog',
+  title: '플로그',
+  description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
+  icons: {
+    icon: '/favicon.svg',
+  },
+  openGraph: {
+    type: 'website',
+    title: '플로그',
+    description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: '플로그',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -21,10 +36,9 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Providers>
-          <main className="mx-auto min-h-dvh w-full max-w-layout pb-bottom-tab shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]">
+          <main className="mx-auto min-h-dvh w-full max-w-layout shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]">
             {children}
           </main>
-          <BottomTab />
         </Providers>
       </body>
     </html>

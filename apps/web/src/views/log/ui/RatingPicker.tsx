@@ -1,0 +1,115 @@
+'use client';
+
+import { type KeyboardEvent, useRef } from 'react';
+
+import FocusLevelDefault1 from '@/shared/assets/focus-levels/focus-level-default-1.svg';
+import FocusLevelDefault2 from '@/shared/assets/focus-levels/focus-level-default-2.svg';
+import FocusLevelDefault3 from '@/shared/assets/focus-levels/focus-level-default-3.svg';
+import FocusLevelDefault4 from '@/shared/assets/focus-levels/focus-level-default-4.svg';
+import FocusLevelDefault5 from '@/shared/assets/focus-levels/focus-level-default-5.svg';
+import FocusLevelSelect1 from '@/shared/assets/focus-levels/focus-level-select-1.svg';
+import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2.svg';
+import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
+import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
+import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
+
+export type FocusLevel = 1 | 2 | 3 | 4 | 5;
+
+const FOCUS_LEVEL_OPTIONS = [
+  {
+    value: 1,
+    label: '매우 낮음',
+    DefaultIcon: FocusLevelDefault1,
+    SelectedIcon: FocusLevelSelect1,
+  },
+  {
+    value: 2,
+    label: '낮음',
+    DefaultIcon: FocusLevelDefault2,
+    SelectedIcon: FocusLevelSelect2,
+  },
+  {
+    value: 3,
+    label: '보통',
+    DefaultIcon: FocusLevelDefault3,
+    SelectedIcon: FocusLevelSelect3,
+  },
+  {
+    value: 4,
+    label: '높음',
+    DefaultIcon: FocusLevelDefault4,
+    SelectedIcon: FocusLevelSelect4,
+  },
+  {
+    value: 5,
+    label: '매우 높음',
+    DefaultIcon: FocusLevelDefault5,
+    SelectedIcon: FocusLevelSelect5,
+  },
+] as const;
+
+type RatingPickerProps = {
+  value: FocusLevel | null;
+  onChange: (score: FocusLevel) => void;
+};
+
+export default function RatingPicker({ value, onChange }: RatingPickerProps) {
+  const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const count = FOCUS_LEVEL_OPTIONS.length;
+    const currentIndex = value !== null ? value - 1 : -1;
+
+    let nextIndex: number | null = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % count;
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      nextIndex =
+        currentIndex === -1 ? count - 1 : (currentIndex - 1 + count) % count;
+    }
+
+    if (nextIndex !== null) {
+      onChange(FOCUS_LEVEL_OPTIONS[nextIndex].value);
+      radioRefs.current[nextIndex]?.focus();
+    }
+  };
+
+  return (
+    <div
+      role="radiogroup"
+      aria-label="집중도"
+      className="grid w-full grid-cols-5 gap-2"
+      onKeyDown={handleKeyDown}
+    >
+      {FOCUS_LEVEL_OPTIONS.map(
+        ({ value: score, label, DefaultIcon, SelectedIcon }, index) => {
+          const isSelected = value === score;
+          const RatingIcon = isSelected ? SelectedIcon : DefaultIcon;
+
+          return (
+            <button
+              key={score}
+              ref={(el) => {
+                radioRefs.current[index] = el;
+              }}
+              type="button"
+              role="radio"
+              aria-label={`집중도 ${score}점, ${label}`}
+              aria-checked={isSelected}
+              tabIndex={isSelected || (value === null && index === 0) ? 0 : -1}
+              className="relative flex aspect-square cursor-pointer items-center justify-center"
+              onClick={() => onChange(score)}
+            >
+              <RatingIcon
+                aria-hidden="true"
+                className="block size-full scale-140"
+              />
+            </button>
+          );
+        },
+      )}
+    </div>
+  );
+}

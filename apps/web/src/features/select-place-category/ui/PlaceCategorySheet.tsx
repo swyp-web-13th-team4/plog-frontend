@@ -1,0 +1,106 @@
+'use client';
+
+import { type ReactElement, useState } from 'react';
+
+import { BottomSheet, Button, Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
+
+import { PLACE_CATEGORIES, type PlaceCategoryValue } from '@/entities/place';
+
+type PlaceCategorySelectProps = {
+  value: PlaceCategoryValue | null;
+  onChange: (value: PlaceCategoryValue) => void;
+  children: ReactElement;
+  name?: string;
+};
+
+const DEFAULT_PLACE_CATEGORY_VALUE = PLACE_CATEGORIES[0].value;
+
+export default function PlaceCategorySheet({
+  value,
+  onChange,
+  children,
+  name = 'placeCategory',
+}: PlaceCategorySelectProps) {
+  const [open, setOpen] = useState(false);
+  const [draftValue, setDraftValue] = useState<PlaceCategoryValue>(
+    value ?? DEFAULT_PLACE_CATEGORY_VALUE,
+  );
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen) {
+      setDraftValue(value ?? DEFAULT_PLACE_CATEGORY_VALUE);
+    }
+    setOpen(nextOpen);
+  };
+
+  const handleCancel = () => {
+    setDraftValue(value ?? DEFAULT_PLACE_CATEGORY_VALUE);
+    setOpen(false);
+  };
+
+  const handleConfirm = () => {
+    onChange(draftValue);
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <input type="hidden" name={name} value={value ?? ''} />
+      <BottomSheet open={open} onOpenChange={handleOpenChange}>
+        <BottomSheet.Trigger render={children} />
+        <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-5 pb-6">
+          <BottomSheet.Handle />
+          <BottomSheet.Header className="items-center">
+            <BottomSheet.Title className="title-sm text-semantic-object-boldest">
+              장소 카테고리
+            </BottomSheet.Title>
+            <BottomSheet.CloseButton />
+          </BottomSheet.Header>
+          <BottomSheet.Body className="flex flex-col gap-7">
+            <div className="flex flex-col gap-3">
+              {PLACE_CATEGORIES.map(({ label, value: categoryValue }) => {
+                const selected = draftValue === categoryValue;
+
+                return (
+                  <button
+                    key={categoryValue}
+                    type="button"
+                    className={cn(
+                      'body-lg flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
+                      selected
+                        ? 'border-semantic-accent-alternative bg-semantic-accent-subtlest text-semantic-accent-normal focus-visible:outline-semantic-accent-normal'
+                        : 'border-semantic-stroke-subtle bg-semantic-system-white text-semantic-object-bold hover:bg-semantic-bg-deep focus-visible:outline-semantic-stroke-subtle',
+                    )}
+                    onClick={() => setDraftValue(categoryValue)}
+                  >
+                    <span className="min-w-0 flex-1 truncate">{label}</span>
+                    {selected && (
+                      <Icon
+                        name="check-thick"
+                        className="text-semantic-feedback-success-normal"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                variant="secondary"
+                size="large"
+                fullWidth
+                onClick={handleCancel}
+              >
+                취소
+              </Button>
+              <Button size="large" fullWidth onClick={handleConfirm}>
+                완료
+              </Button>
+            </div>
+          </BottomSheet.Body>
+        </BottomSheet.Content>
+      </BottomSheet>
+    </>
+  );
+}

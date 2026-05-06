@@ -1,17 +1,24 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-import { Avatar, Badge, Carousel, Icon } from '@plog/ui';
+import { Avatar, Carousel, Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
-import { type FeedPost, type FeedTag } from '@/entities/feed';
+import { CopyLinkButton } from '@/features/copy-link';
+import { BookmarkButton } from '@/features/toggle-bookmark';
+import { LikeButton } from '@/features/toggle-like';
 
-import { formatStudyDate, formatTimeAgo } from '../lib/time';
-
-const DEFAULT_VISIBLE_TAG_COUNT = 3;
+import {
+  type FeedPost,
+  formatStudyDate,
+  formatStudyDuration,
+  formatTimeAgo,
+  TagBadgeGroup,
+} from '@/entities/feed';
 
 type FeedCarouselController = {
   slidePrev: () => void;
@@ -23,117 +30,37 @@ type FeedCarouselController = {
 type FeedCardProps = {
   post: FeedPost;
   isLast: boolean;
-  onLike: (postId: string) => void;
-  onBookmark: (postId: string) => void;
   onShare: () => void;
 };
 
-function TagBadgeGroup({ tags }: { tags: FeedTag[] }) {
-  const hiddenTagsId = useId();
+function ClampedContent({ content }: { content: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const visibleTags = tags.slice(0, DEFAULT_VISIBLE_TAG_COUNT);
-  const hiddenTags = tags.slice(DEFAULT_VISIBLE_TAG_COUNT);
-  const hasHiddenTags = hiddenTags.length > 0;
-
   return (
-    <div className="flex gap-2">
-      {visibleTags.map((tag) => (
-        <Badge
-          color="gray"
-          variant="soft"
-          className="caption-md flex items-center text-semantic-object-normal"
-          key={tag.id}
+    <div className="flex justify-between gap-3">
+      <p
+        className={cn(
+          'body-sm text-semantic-object-normal',
+          !isExpanded && 'line-clamp-1',
+        )}
+      >
+        {content}
+      </p>
+      {!isExpanded && (
+        <button
+          type="button"
+          className="caption-md flex shrink-0 cursor-pointer items-center gap-2 text-semantic-object-subtle"
+          onClick={() => setIsExpanded(true)}
         >
-          {tag.name}
-        </Badge>
-      ))}
-      {hasHiddenTags && (
-        <div className="relative">
-          <button
-            type="button"
-            aria-expanded={isExpanded}
-            aria-controls={hiddenTagsId}
-            aria-label={
-              isExpanded
-                ? '숨겨진 태그 접기'
-                : `숨겨진 태그 ${hiddenTags.length}개 보기`
-            }
-            onClick={() => setIsExpanded((prev) => !prev)}
-          >
-            <Badge
-              color="gray"
-              variant="outline"
-              className="caption-md flex cursor-pointer items-center text-semantic-object-normal"
-            >
-              {`+${hiddenTags.length}`}
-            </Badge>
-          </button>
-          {isExpanded && (
-            <div
-              id={hiddenTagsId}
-              className="absolute left-0 z-10 mt-2 min-w-max rounded-lg border border-semantic-stroke-subtle bg-semantic-system-white p-2"
-            >
-              <div className="flex flex-col gap-2">
-                {hiddenTags.map((tag) => (
-                  <Badge
-                    color="gray"
-                    variant="soft"
-                    className="caption-md flex items-center text-semantic-object-normal"
-                    key={tag.id}
-                  >
-                    {tag.name}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+          더보기
+          <Icon name="chevron-right" size={9} />
+        </button>
       )}
     </div>
   );
 }
 
-function MaxContentLength({
-  content,
-  maxLength,
-}: {
-  content: string;
-  maxLength: number;
-}) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  if (content.length <= maxLength) {
-    return <p className="body-sm text-semantic-object-normal">{content}</p>;
-  }
-
-  return (
-    <div className="flex justify-between gap-3">
-      <p className="body-sm text-semantic-object-normal">
-        {isExpanded ? content : `${content.slice(0, maxLength)}...`}
-      </p>
-
-      {!isExpanded ? (
-        <button
-          type="button"
-          className="caption-md flex cursor-pointer items-center gap-2 text-semantic-object-subtle"
-          onClick={() => setIsExpanded((prev) => !prev)}
-        >
-          더보기
-          <Icon name="chevron-right" size={9} />
-        </button>
-      ) : null}
-    </div>
-  );
-}
-
-export default function FeedCard({
-  post,
-  isLast,
-  onLike,
-  onBookmark,
-  onShare,
-}: FeedCardProps) {
+export default function FeedCard({ post, isLast }: FeedCardProps) {
   const { POST_INFO } = post;
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
@@ -141,14 +68,12 @@ export default function FeedCard({
     isEnd: POST_INFO.image.length <= 1,
   });
   const hasMultipleImages = POST_INFO.image.length > 1;
-  const router = useRouter();
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
       isEnd: swiper.isEnd,
     });
   };
-  const isSeungminPost = POST_INFO.USER_INFO.nickname === '승민';
 
   return (
     <div className={isLast ? '' : 'mb-13.5'}>
@@ -157,11 +82,6 @@ export default function FeedCard({
           size="xsmall"
           src={POST_INFO.USER_INFO.profileImage}
           alt={`${POST_INFO.USER_INFO.nickname}의 프로필 이미지`}
-          className="cursor-pointer"
-          onClick={(e) => {
-            if (isSeungminPost) return e.stopPropagation();
-            router.push(`/feed/users/${POST_INFO.USER_INFO.id}`);
-          }}
         />
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
@@ -243,54 +163,17 @@ export default function FeedCard({
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">
-              <button
-                aria-label={POST_INFO.isLiked ? '좋아요 취소' : '좋아요'}
-                aria-pressed={POST_INFO.isLiked}
-                type="button"
-                className="flex cursor-pointer items-center"
-                onClick={() => onLike(POST_INFO.id)}
-              >
-                {POST_INFO.isLiked ? (
-                  <Icon
-                    name="heart-filled"
-                    className="text-semantic-feedback-error-neutral"
-                  />
-                ) : (
-                  <Icon name="heart" className="text-semantic-object-normal" />
-                )}
-              </button>
+              <LikeButton postId={POST_INFO.id} isLiked={POST_INFO.isLiked} />
               <span className="caption-md text-semantic-object-normal">
                 {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <button
-                aria-label={POST_INFO.isBookmarked ? '북마크 취소' : '북마크'}
-                aria-pressed={POST_INFO.isBookmarked}
-                type="button"
-                className="cursor-pointer"
-                onClick={() => onBookmark(POST_INFO.id)}
-              >
-                {POST_INFO.isBookmarked ? (
-                  <Icon
-                    name="bookmark-filled"
-                    className="text-semantic-accent-normal"
-                  />
-                ) : (
-                  <Icon
-                    name="bookmark"
-                    className="text-semantic-object-normal"
-                  />
-                )}
-              </button>
-              <button
-                aria-label="공유하기"
-                type="button"
-                className="cursor-pointer"
-                onClick={onShare}
-              >
-                <Icon name="share" className="text-semantic-object-normal" />
-              </button>
+              <BookmarkButton
+                postId={POST_INFO.id}
+                isBookmarked={POST_INFO.isBookmarked}
+              />
+              <CopyLinkButton />
             </div>
           </div>
           <div className="flex flex-col gap-3">
@@ -298,13 +181,11 @@ export default function FeedCard({
               <span className="title-xs text-semantic-object-boldest">
                 {POST_INFO.title}
               </span>
-              <MaxContentLength content={POST_INFO.content} maxLength={35} />
+              <ClampedContent content={POST_INFO.content} />
             </div>
-            <div
+            <Link
               className="flex cursor-pointer justify-between rounded-xl border border-semantic-stroke-subtle p-4"
-              onClick={() => {
-                router.push(`/feed/${POST_INFO.id}`);
-              }}
+              href={`/feed/${POST_INFO.id}`}
             >
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
@@ -318,7 +199,7 @@ export default function FeedCard({
                       className="text-semantic-object-normal"
                     />
                     <p className="caption-md text-semantic-object-normal">
-                      {POST_INFO.PLACE_INFO.studyTime}
+                      {formatStudyDuration(POST_INFO.PLACE_INFO.studyTime)}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -336,7 +217,7 @@ export default function FeedCard({
               <span className="caption-md text-semantic-object-subtle">
                 {formatStudyDate(POST_INFO.PLACE_INFO.studyDate)}
               </span>
-            </div>
+            </Link>
             <TagBadgeGroup tags={POST_INFO.tags} />
           </div>
         </div>

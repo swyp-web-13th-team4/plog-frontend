@@ -34,6 +34,11 @@ const meta: Meta<typeof Field> = {
       description: '에러 메시지입니다. 값이 있으면 에러 스타일이 적용됩니다.',
       control: 'text',
     },
+    success: {
+      description:
+        '성공 메시지입니다. 에러가 없을 때 표시되며, 성공 스타일이 적용됩니다.',
+      control: 'text',
+    },
     description: {
       description: '하단에 표시되는 보조 설명입니다. 에러가 있으면 대체됩니다.',
       control: 'text',
@@ -118,6 +123,40 @@ export const WithError: Story = {
     },
   },
   render: (args) => <WithErrorStory {...args} />,
+};
+
+function WithSuccessStory(args: React.ComponentProps<typeof Field>) {
+  const [value, setValue] = useState('사용 가능한 닉네임');
+  return (
+    <Field {...args} success="사용 가능한 닉네임입니다.">
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onClear={() => setValue('')}
+      />
+    </Field>
+  );
+}
+
+export const WithSuccess: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`success`를 `Field`에 전달합니다. 에러가 없을 때 하단에 성공 메시지가 표시됩니다.',
+      },
+      source: {
+        code: `<Field label="레이블" success="사용 가능한 닉네임입니다.">
+  <Input
+    value={value}
+    onChange={(e) => setValue(e.target.value)}
+    onClear={() => setValue('')}
+  />
+</Field>`,
+      },
+    },
+  },
+  render: (args) => <WithSuccessStory {...args} />,
 };
 
 export const Disabled: Story = {

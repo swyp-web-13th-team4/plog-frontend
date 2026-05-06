@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useId, useMemo, useState } from 'react';
 
 import { Field as BaseField } from '@base-ui/react/field';
 import { cn } from '@plog/utils';
@@ -9,6 +9,7 @@ type FieldProps = {
   label?: string;
   required?: boolean;
   error?: string;
+  success?: string;
   description?: string;
   disabled?: boolean;
   className?: string;
@@ -19,14 +20,17 @@ function Field({
   label,
   required,
   error,
+  success,
   description,
   disabled,
   className,
   children,
 }: FieldProps) {
   const [charCount, setCharCount] = useState<CharCountInfo | null>(null);
+  const id = useId();
+  const messageId = `${id}-message`;
 
-  const hasFooter = !!error || !!description || charCount !== null;
+  const hasFooter = !!error || !!success || !!description || charCount !== null;
 
   const contextValue = useMemo(
     () => ({
@@ -35,8 +39,9 @@ function Field({
       disabled: !!disabled,
       required: !!required,
       onCharCountChange: setCharCount,
+      messageId: hasFooter ? messageId : undefined,
     }),
-    [error, disabled, required],
+    [error, disabled, required, messageId, hasFooter],
   );
 
   return (
@@ -64,22 +69,43 @@ function Field({
         {children}
 
         {hasFooter && (
-          <div
-            className={cn(
-              'caption-md mx-2 mt-1.5 flex items-center justify-between',
-              error
-                ? 'text-semantic-feedback-error-normal'
-                : 'text-semantic-object-subtle',
-            )}
-          >
+          <div className="caption-md mt-1.5 flex items-center justify-between">
             {error ? (
-              <span role="alert">{error}</span>
+              <span
+                id={messageId}
+                role="alert"
+                className="text-semantic-feedback-error-normal"
+              >
+                {error}
+              </span>
+            ) : success ? (
+              <span
+                id={messageId}
+                role="status"
+                className="text-semantic-feedback-success-normal"
+              >
+                {success}
+              </span>
             ) : description ? (
-              <BaseField.Description>{description}</BaseField.Description>
+              <BaseField.Description
+                id={messageId}
+                className="text-semantic-object-subtle"
+              >
+                {description}
+              </BaseField.Description>
             ) : null}
 
             {charCount !== null && (
-              <span>
+              <span
+                className={cn(
+                  'ml-auto',
+                  error
+                    ? 'text-semantic-feedback-error-normal'
+                    : success
+                      ? 'text-semantic-feedback-success-normal'
+                      : 'text-semantic-object-subtle',
+                )}
+              >
                 {charCount.count}/{charCount.max}자
               </span>
             )}

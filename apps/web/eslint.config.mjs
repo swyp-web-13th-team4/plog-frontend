@@ -20,6 +20,24 @@ const config = [
     ...nextVitals,
     ...nextTs,
     {
+      files: ['**/*.{ts,tsx}'],
+      rules: {
+        'simple-import-sort/imports': [
+          'error',
+          {
+            groups: [
+              ['^\\u0000'],
+              ['^react'],
+              ['^next'],
+              ['^@?\\w'],
+              ...FSD_LAYERS.map(({ type }) => [`^@/${type}`]),
+              ['^\\.'],
+            ],
+          },
+        ],
+      },
+    },
+    {
       files: ['src/**/*.{ts,tsx}'],
       plugins: { boundaries },
       settings: {
@@ -43,19 +61,6 @@ const config = [
                 type === 'shared' || type === 'app' ? index : index + 1,
               ).map((l) => l.type),
             })),
-          },
-        ],
-        'simple-import-sort/imports': [
-          'error',
-          {
-            groups: [
-              ['^\\u0000'],
-              ['^react'],
-              ['^next'],
-              ['^@?\\w'],
-              ...FSD_LAYERS.map(({ type }) => [`^@/${type}`]),
-              ['^\\.'],
-            ],
           },
         ],
       },
