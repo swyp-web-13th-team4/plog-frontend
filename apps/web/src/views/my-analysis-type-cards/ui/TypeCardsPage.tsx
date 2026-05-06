@@ -9,6 +9,7 @@ import { cn } from '@plog/utils';
 
 import { TYPE_CARDS } from '../model/constants';
 import type { TypeCardTheme } from '../model/types';
+import CoachMark from '../ui/CoachMark';
 import TypeCard from '../ui/TypeCard';
 
 const USER_TYPE_ID = 'haru';
@@ -65,9 +66,11 @@ function NavigationButton({
 }
 
 export default function TypeCardsPage() {
-  const router = useRouter();
   const [view, setView] = useState<View>('my');
+  const [showCoachMark, setShowCoachMark] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const router = useRouter();
 
   const userCard = TYPE_CARDS.find((c) => c.id === USER_TYPE_ID)!;
   const currentCard = TYPE_CARDS[currentIndex];
@@ -79,33 +82,36 @@ export default function TypeCardsPage() {
 
   if (view === 'my') {
     return (
-      <PageLayout title="내 유형 카드" onBack={() => router.back()}>
-        <div className="flex flex-col items-center gap-1.5 text-center">
-          <p className="title-md text-semantic-object-bold max-[440px]:text-semantic-label-lg max-[440px]:leading-semantic-label-lg max-[440px]:font-semantic-label-lg">
-            <span className="title-lg text-semantic-object-boldest max-[440px]:text-semantic-title-sm max-[440px]:leading-semantic-title-sm max-[440px]:font-semantic-title-sm">
-              {`${USER_NAME} `}
-            </span>
-            님의 작업 유형은
-          </p>
-          <h2
-            className={cn(
-              'hero-md max-[440px]:text-semantic-title-lg max-[440px]:leading-semantic-title-lg max-[440px]:font-semantic-title-lg',
-              themeTextClass[userCard.theme],
-            )}
+      <>
+        <PageLayout title="내 유형 카드" onBack={() => router.back()}>
+          <div className="flex flex-col items-center gap-1.5 text-center">
+            <p className="title-md text-semantic-object-bold max-[440px]:text-semantic-label-lg max-[440px]:leading-semantic-label-lg max-[440px]:font-semantic-label-lg">
+              <span className="title-lg text-semantic-object-boldest max-[440px]:text-semantic-title-sm max-[440px]:leading-semantic-title-sm max-[440px]:font-semantic-title-sm">
+                {`${USER_NAME} `}
+              </span>
+              님의 작업 유형은
+            </p>
+            <h2
+              className={cn(
+                'hero-md max-[440px]:text-semantic-title-lg max-[440px]:leading-semantic-title-lg max-[440px]:font-semantic-title-lg',
+                themeTextClass[userCard.theme],
+              )}
+            >
+              {userCard.fullName}
+            </h2>
+          </div>
+          <TypeCard id={USER_TYPE_ID} />
+          <Button
+            variant="primary"
+            size="large"
+            onClick={handleShowAll}
+            className="w-full max-w-90"
           >
-            {userCard.fullName}
-          </h2>
-        </div>
-        <TypeCard id={USER_TYPE_ID} />
-        <Button
-          variant="primary"
-          size="large"
-          onClick={handleShowAll}
-          className="w-full max-w-90"
-        >
-          모든 유형 보러가기
-        </Button>
-      </PageLayout>
+            모든 유형 보러가기
+          </Button>
+        </PageLayout>
+        {showCoachMark && <CoachMark onClick={() => setShowCoachMark(false)} />}
+      </>
     );
   }
 
