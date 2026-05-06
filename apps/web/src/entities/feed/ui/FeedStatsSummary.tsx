@@ -3,7 +3,7 @@ import { Fragment } from 'react/jsx-runtime';
 import { Divider } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { formatLikeCount, formatStudyDuration } from '../lib/format';
+import { formatLikeCount, formatStudyDurationShort } from '../lib/format';
 
 type FeedStatsSummaryProps = {
   isUserOwnFeed: boolean;
@@ -48,7 +48,7 @@ export default function FeedStatsSummary({
 }: FeedStatsSummaryProps) {
   const stats = [
     { label: primaryLabel, value: formatLikeCount(primaryValue) },
-    { label: '총 작업시간', value: formatStudyDuration(totalWorkTime) },
+    { label: '총 작업시간', value: formatStudyDurationShort(totalWorkTime) },
     { label: '작업 집중도', value: focusLevel },
   ];
 

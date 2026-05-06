@@ -2,6 +2,7 @@ export {
   formatLikeCount,
   formatStudyDate,
   formatStudyDuration,
+  formatStudyDurationShort,
   formatTimeAgo,
 } from './lib/format';
 export { FEED_QUERY_KEY } from './model/query-keys';

@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 import { Avatar, Icon } from '@plog/ui';
 
-import { MOCK_FEED_DATA } from '@/views/feed/model/mock-data';
+import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
 
 const BIO_COLLAPSED_LINE_COUNT = 1;
 const BIO_OVERFLOW_THRESHOLD = 1;

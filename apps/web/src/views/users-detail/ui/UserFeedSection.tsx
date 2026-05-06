@@ -8,11 +8,14 @@ import { useRouter } from 'next/navigation';
 import { Badge, Icon, IconButton, Select } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { MOCK_FEED_DATA } from '@/views/feed/model/mock-data';
+import {
+  type FeedPost,
+  type FeedTag,
+  formatStudyDuration,
+} from '@/entities/feed';
+import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
 
-import { ScrollToTopButton } from '@/features/scroll-to-top';
-
-import { FeedPost, FeedTag } from '@/entities/feed';
+import { ScrollToTopButton } from '@/shared/ui';
 
 type RecordTypeValue = 'latest' | 'like' | 'concentrate';
 type FeedType = 'list' | 'grid';
@@ -245,7 +248,7 @@ function ListTypeFeed({
                   className="text-semantic-object-subtle"
                 />
                 <span className="caption-md text-semantic-object-bold">
-                  {feed.POST_INFO.PLACE_INFO.studyTime}
+                  {formatStudyDuration(feed.POST_INFO.PLACE_INFO.studyTime)}
                 </span>
               </div>
               <div className="flex items-center gap-1">
@@ -302,7 +305,7 @@ function GridTypeFeed({
               <div className="flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
                 <Icon name="clock" />
                 <span className="caption-md">
-                  {feed.POST_INFO.PLACE_INFO.studyTime}
+                  {formatStudyDuration(feed.POST_INFO.PLACE_INFO.studyTime)}
                 </span>
               </div>
               <div>
@@ -390,10 +393,6 @@ export default function UserFeedSection({ userId }: { userId: string }) {
     };
   }, [sortedUserFeeds.length]);
 
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <section className="pt-3">
       <SelectFeedType
@@ -415,10 +414,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
           onBookmark={handleBookmark}
         />
       )}
-      <ScrollToTopButton
-        visible={canShowScrollToTopButton}
-        onClick={handleScrollToTop}
-      />
+      <ScrollToTopButton visible={canShowScrollToTopButton} />
     </section>
   );
 }

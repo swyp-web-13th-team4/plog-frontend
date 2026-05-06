@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -67,6 +68,10 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
     isBeginning: true,
     isEnd: POST_INFO.image.length <= 1,
   });
+  const router = useRouter();
+  // Todo :API연동 시 isAuthor과 같은 실제 사용자의 게시글인지 판단하는 변수로 변경
+  const isSeungminPost = POST_INFO.USER_INFO.nickname === '승민';
+
   const hasMultipleImages = POST_INFO.image.length > 1;
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
@@ -82,6 +87,13 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
           size="xsmall"
           src={POST_INFO.USER_INFO.profileImage}
           alt={`${POST_INFO.USER_INFO.nickname}의 프로필 이미지`}
+          className="cursor-pointer"
+          onClick={(e) => {
+            if (isSeungminPost) {
+              e.stopPropagation();
+            }
+            router.push(`/feed/users/${POST_INFO.USER_INFO.id}`);
+          }}
         />
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
