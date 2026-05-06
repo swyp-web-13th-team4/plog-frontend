@@ -9,7 +9,7 @@ import { cn } from '@plog/utils';
 import { cva } from 'class-variance-authority';
 
 import { TYPE_CARDS } from '../model/constants';
-import { type TypeCardTheme, type TypeCardId } from '../model/types';
+import { type TypeCardId, type TypeCardTheme } from '../model/types';
 
 type TypeCardProps = {
   id: TypeCardId;

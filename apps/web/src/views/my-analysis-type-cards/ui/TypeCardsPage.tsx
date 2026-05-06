@@ -8,7 +8,7 @@ import { AppBar, Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { TYPE_CARDS } from '../model/constants';
-import type { TypeCardTheme, TypeCardId } from '../model/types';
+import type { TypeCardId, TypeCardTheme } from '../model/types';
 import CoachMark from '../ui/CoachMark';
 import TypeCard from '../ui/TypeCard';
 
