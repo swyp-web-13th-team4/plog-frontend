@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useState } from 'react';
+import { type ComponentPropsWithoutRef, type ReactNode, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -43,6 +43,24 @@ function PageLayout({
         {children}
       </div>
     </>
+  );
+}
+
+function NavigationButton({
+  className,
+  disabled,
+  ...props
+}: ComponentPropsWithoutRef<'button'>) {
+  return (
+    <button
+      className={cn(
+        'flex size-12 cursor-pointer items-center justify-center rounded-full bg-semantic-bg-deeper transition-opacity disabled:cursor-not-allowed',
+        disabled && 'opacity-30',
+        className,
+      )}
+      disabled={disabled}
+      {...props}
+    />
   );
 }
 
@@ -111,13 +129,9 @@ export default function TypeCardsPage() {
       </div>
       <TypeCard key={currentCard.id} id={currentCard.id} />
       <div className="flex w-full max-w-90 items-center justify-between">
-        <button
-          className={cn(
-            'flex size-12 items-center justify-center rounded-full bg-semantic-bg-deeper transition-opacity',
-            !canPrev && 'opacity-30',
-          )}
-          onClick={() => setCurrentIndex((i) => i - 1)}
+        <NavigationButton
           disabled={!canPrev}
+          onClick={() => setCurrentIndex((i) => i - 1)}
           aria-label="이전 유형"
         >
           <Icon
@@ -125,7 +139,7 @@ export default function TypeCardsPage() {
             size={24}
             className="text-semantic-object-bold"
           />
-        </button>
+        </NavigationButton>
         <div className="flex items-center gap-3">
           {TYPE_CARDS.map((_, i) => (
             <button
@@ -142,13 +156,9 @@ export default function TypeCardsPage() {
             />
           ))}
         </div>
-        <button
-          className={cn(
-            'flex size-12 items-center justify-center rounded-full bg-semantic-bg-deeper transition-opacity',
-            !canNext && 'opacity-30',
-          )}
-          onClick={() => setCurrentIndex((i) => i + 1)}
+        <NavigationButton
           disabled={!canNext}
+          onClick={() => setCurrentIndex((i) => i + 1)}
           aria-label="다음 유형"
         >
           <Icon
@@ -156,7 +166,7 @@ export default function TypeCardsPage() {
             size={24}
             className="text-semantic-object-bold"
           />
-        </button>
+        </NavigationButton>
       </div>
     </PageLayout>
   );
