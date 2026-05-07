@@ -5,7 +5,7 @@ import {
   type PlaceTagValue,
   SeatingAndSpace,
   WorkConvenience,
-} from '@/entities/place';
+} from '@/entities/feed';
 
 const PLACE_TAG_SENTENCE_LABELS: Record<PlaceTagValue, string> = {
   // 집중/분위기

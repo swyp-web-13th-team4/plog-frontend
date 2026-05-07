@@ -1,5 +1,12 @@
-import { BadgeDto } from '@/shared/api/dto/badge';
 import { type StaticImageData } from 'next/image';
+
+export type UserBadge = {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  isAcquired: boolean;
+};
 
 export type TypeCardId = 'LOGI' | 'CHICHI' | 'TORI' | 'HARU' | 'POPO' | 'NAO';
 
@@ -32,8 +39,6 @@ export type TermId = 'isOver14' | 'service' | 'privacy' | 'geolocation';
 
 export type TermsAgreements = Record<TermId, boolean>;
 
-type UserMainBadge = BadgeDto;
-
 export type SetupProfileRequest = {
   nickname: string;
   introduction?: string;
@@ -50,26 +55,18 @@ export type DefaultProfileImage = {
 };
 
 export type UserProfileType = {
-  id: string;
+  id?: number;
   nickname: string;
-  profileImage?: string;
-  introduction?: string;
-  mainBadge?: UserMainBadge;
-};
-
-export type MypageMainBadge = {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-  isAcquired: boolean;
+  profileImageUrl?: string;
+  introduction: string | null;
+  mainBadge: UserBadge | null;
 };
 
 export type MypageData = {
   nickname: string;
   profileImageUrl: string;
   introduction: string | null;
-  mainBadge: MypageMainBadge | null;
+  mainBadge: UserBadge | null;
 };
 
 export type AnalyticsFocusEnvironment = {

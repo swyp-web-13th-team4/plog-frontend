@@ -1,15 +1,13 @@
 import Image from 'next/image';
 
-import { BadgeDto } from '@/shared/api/dto/badge';
+import { type UserBadge } from '../model/types';
 
-type UserMainBadgeType = {
-  badge: BadgeDto;
+type Props = {
+  badge: UserBadge;
   size?: number;
 };
-export default function UserProfileMainBadge({
-  badge,
-  size = 24,
-}: UserMainBadgeType) {
+
+export default function UserProfileMainBadge({ badge, size = 24 }: Props) {
   return (
     <Image
       src={badge.imageUrl}

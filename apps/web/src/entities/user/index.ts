@@ -18,7 +18,6 @@ export type {
   AnalyticsSpaceRanking,
   DefaultProfileImage,
   MypageData,
-  MypageMainBadge,
   ProfileImageOption,
   SetupProfileRequest,
   TermId,
@@ -27,7 +26,7 @@ export type {
   TypeCardId,
   TypeCardStat,
   TypeCardTheme,
+  UserBadge,
   UserProfileType,
 } from './model/types';
 export { default as UserProfile } from './ui/UserProfile';
-export { default as UserProfileMainBadge } from './ui/UserProfileMainBadge';

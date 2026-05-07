@@ -7,8 +7,6 @@ import { useRouter } from 'next/navigation';
 
 import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
 
-import { type FeedPage } from '@/entities/feed';
-
 import { ScrollToTopButton } from '@/shared/ui';
 
 import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';

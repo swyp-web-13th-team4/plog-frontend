@@ -5,144 +5,73 @@ import { type ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import { Avatar, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { UserProfileType } from '../model/types';
+import { type UserProfileType } from '../model/types';
 import UserProfileMainBadge from './UserProfileMainBadge';
 
-const INTRODUCTION_COLLAPSED_LINE_COUNT = 1;
-const INTRODUCTION_OVERFLOW_THRESHOLD = 1;
-
-type UserProfileSectionProps = {
+type UserProfileProps = {
   profile: UserProfileType;
   className?: string;
-  renderAction?: (profile: UserProfileType) => ReactNode;
+  children?: ReactNode;
 };
 
 export default function UserProfile({
   profile,
   className,
-  renderAction,
-}: UserProfileSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  children,
+}: UserProfileProps) {
+  const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
+  const introRef = useRef<HTMLParagraphElement>(null);
 
-  const introductionRef = useRef<HTMLParagraphElement>(null);
-  const introductionMeasureRef = useRef<HTMLParagraphElement>(null);
-  const introduction = profile.introduction ?? '';
-  const hasIntroduction = introduction.length > 0;
+  const { nickname, profileImageUrl, introduction, mainBadge } = profile;
 
   useLayoutEffect(() => {
-    if (!hasIntroduction) {
-      return;
-    }
-
-    const introductionEl = introductionRef.current;
-    const introductionMeasureEl = introductionMeasureRef.current;
-
-    if (!introductionEl || !introductionMeasureEl) return;
-
-    const updateIsClamped = () => {
-      const lineHeight = parseFloat(
-        getComputedStyle(introductionEl).lineHeight,
-      );
-
-      if (Number.isNaN(lineHeight)) {
-        setIsClamped(false);
-        return;
-      }
-
-      const collapsedHeight = lineHeight * INTRODUCTION_COLLAPSED_LINE_COUNT;
-
-      setIsClamped(
-        introductionMeasureEl.scrollHeight >
-          collapsedHeight + INTRODUCTION_OVERFLOW_THRESHOLD,
-      );
-    };
-
-    updateIsClamped();
-
-    if (typeof ResizeObserver === 'undefined') {
-      window.addEventListener('resize', updateIsClamped);
-
-      return () => {
-        window.removeEventListener('resize', updateIsClamped);
-      };
-    }
-
-    const resizeObserver = new ResizeObserver(updateIsClamped);
-    resizeObserver.observe(introductionEl);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, [introduction, hasIntroduction]);
+    const el = introRef.current;
+    if (!el) return;
+    setIsClamped(el.scrollHeight > el.clientHeight);
+  }, [introduction]);
 
   return (
-    <section
-      className={cn(
-        'border-b border-b-semantic-object-subtler px-6 pt-2 pb-4',
-        className,
-      )}
-    >
-      <div className="flex flex-col items-center justify-center gap-2 px-4 py-8">
-        <Avatar
-          size="small"
-          src={profile.profileImage}
-          alt={`${profile.nickname}의 프로필 이미지`}
-        />
-
-        <div className="flex max-w-70 flex-col items-center gap-1">
-          <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center">
-            <span className="title-md col-start-2 text-semantic-object-boldest">
-              {profile.nickname}
-            </span>
-
-            {profile.mainBadge && (
-              <span className="col-start-3 ml-2 flex items-center justify-self-start">
-                <UserProfileMainBadge badge={profile.mainBadge} />
-              </span>
+    <div className={cn('flex flex-col items-center gap-4 p-6', className)}>
+      <Avatar size="small" src={profileImageUrl} alt={`${nickname} 프로필`} />
+      <div className="flex flex-col items-center gap-1 text-center">
+        <div className="flex items-center gap-2">
+          <span className="title-md text-semantic-object-boldest">
+            {nickname}
+          </span>
+          {mainBadge && <UserProfileMainBadge badge={mainBadge} />}
+        </div>
+        {introduction && (
+          <div className="flex flex-col items-center">
+            <p
+              ref={introRef}
+              id="introduction"
+              className={cn(
+                'body-sm text-semantic-object-boldest',
+                !expanded && 'line-clamp-1',
+              )}
+            >
+              {introduction}
+            </p>
+            {isClamped && (
+              <button
+                type="button"
+                aria-expanded={expanded}
+                aria-controls="introduction"
+                onClick={() => setExpanded((prev) => !prev)}
+                className="caption-md mt-2 flex cursor-pointer items-center gap-1 text-semantic-object-normal"
+              >
+                {expanded ? '접기' : '더보기'}
+                <Icon
+                  name={expanded ? 'chevron-up' : 'chevron-down'}
+                  size={16}
+                />
+              </button>
             )}
           </div>
-          {hasIntroduction && (
-            <div className="relative w-full">
-              <p
-                ref={introductionRef}
-                className={`body-sm wrap-break-word text-semantic-object-boldest ${
-                  isExpanded ? 'line-clamp-none' : 'line-clamp-1'
-                }`}
-              >
-                {introduction}
-              </p>
-
-              <p
-                ref={introductionMeasureRef}
-                aria-hidden="true"
-                className="body-sm pointer-events-none invisible absolute top-0 left-0 w-full wrap-break-word text-semantic-object-boldest"
-              >
-                {introduction}
-              </p>
-            </div>
-          )}
-
-          {isClamped && (
-            <button
-              type="button"
-              aria-label={isExpanded ? '소개 접기' : '소개 더보기'}
-              className="body-sm flex cursor-pointer items-center gap-1 text-semantic-object-subtle"
-              onClick={() => {
-                setIsExpanded((prev) => !prev);
-              }}
-            >
-              {isExpanded ? '접기' : '더보기'}
-              <Icon
-                size={16}
-                name={isExpanded ? 'chevron-up' : 'chevron-down'}
-              />
-            </button>
-          )}
-
-          {renderAction?.(profile)}
-        </div>
+        )}
       </div>
-    </section>
+      {children}
+    </div>
   );
 }
