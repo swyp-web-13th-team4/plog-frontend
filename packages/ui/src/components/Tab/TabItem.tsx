@@ -59,7 +59,7 @@ function TabItem({
           {resolvedIcon}
         </span>
       ) : null}
-      <span className="truncate">{label}</span>
+      <span>{label}</span>
     </button>
   );
 }
