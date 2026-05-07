@@ -89,7 +89,7 @@ export default function FeedList({
               key={feed.postId}
               feed={feed}
               onClick={onFeedClick ? () => onFeedClick(feed) : undefined}
-              renderAction={renderAction?.(feed, viewType)}
+              action={renderAction?.(feed, viewType)}
             />
           ))}
         </div>
@@ -100,7 +100,7 @@ export default function FeedList({
               key={feed.postId}
               feed={feed}
               onClick={onFeedClick ? () => onFeedClick(feed) : undefined}
-              renderAction={renderAction?.(feed, viewType)}
+              action={renderAction?.(feed, viewType)}
             />
           ))}
         </div>

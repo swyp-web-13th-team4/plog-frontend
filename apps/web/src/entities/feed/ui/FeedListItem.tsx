@@ -14,13 +14,13 @@ import TagBadgeGroup from './TagBadgeGroup';
 type FeedListItemProps = {
   feed: FeedPost;
   onClick?: () => void;
-  renderAction?: ReactNode;
+  action?: ReactNode;
 };
 
 export default function FeedListItem({
   feed,
   onClick,
-  renderAction,
+  action,
 }: FeedListItemProps) {
   return (
     <div
@@ -51,7 +51,7 @@ export default function FeedListItem({
           <div onClick={(event) => event.stopPropagation()}>
             <TagBadgeGroup tags={feed.tags} maxVisible={2} />
           </div>
-          {renderAction}
+          {action}
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">

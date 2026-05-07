@@ -14,13 +14,13 @@ import TagBadgeGroup from './TagBadgeGroup';
 type FeedGridItemProps = {
   feed: FeedPost;
   onClick?: () => void;
-  renderAction?: ReactNode;
+  action?: ReactNode;
 };
 
 export default function FeedGridItem({
   feed,
   onClick,
-  renderAction,
+  action,
 }: FeedGridItemProps) {
   return (
     <div
@@ -52,7 +52,7 @@ export default function FeedGridItem({
               {formatStudyDuration(feed.studyTime)}
             </span>
           </div>
-          {renderAction}
+          {action}
         </div>
       </div>
       <div className="flex flex-col gap-1">
