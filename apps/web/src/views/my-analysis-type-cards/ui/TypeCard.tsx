@@ -8,8 +8,11 @@ import { Divider } from '@plog/ui';
 import { cn } from '@plog/utils';
 import { cva } from 'class-variance-authority';
 
-import { TYPE_CARDS } from '@/entities/user';
-import { type TypeCardId, type TypeCardTheme } from '@/entities/user';
+import {
+  TYPE_CARDS,
+  type TypeCardId,
+  type TypeCardTheme,
+} from '@/entities/user';
 
 type TypeCardProps = {
   id: TypeCardId;
