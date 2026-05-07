@@ -137,7 +137,7 @@ export function getWorstTagSentence(
 ): SentenceResult {
   const label = getTagLabel(tag);
 
-  if (avgFocus >= 3 && avgFocus < 4) {
+  if (avgFocus >= 3) {
     return {
       sentence: `${label} 환경에서도 큰 영향 없이 일정한 몰입도를 보여요.`,
       highlight: label,
