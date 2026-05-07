@@ -1,3 +1,5 @@
+import { BadgeDto } from '@/shared/api/dto/badge';
+
 export type FeedTag = {
   id: string;
   name: string;
@@ -12,6 +14,7 @@ export type FeedPost = {
       id: string;
       nickname: string;
       profileImage: string;
+      mainBadge?: BadgeDto;
     };
     createdAt: string;
     heartCount: number;

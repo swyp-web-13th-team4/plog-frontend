@@ -5,4 +5,7 @@ export type {
   SetupProfileRequest,
   TermId,
   TermsAgreements,
+  UserProfileType,
 } from './model/types';
+export { default as UserProfile } from './ui/UserProfile';
+export { default as UserProfileMainBadge } from './ui/UserProfileMainBadge';

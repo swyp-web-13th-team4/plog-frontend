@@ -51,8 +51,15 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       isBookmarked: false,
       USER_INFO: {
         id: '2',
-        nickname: '민서',
+        nickname: '감자쿵야',
         profileImage: profileImageSrc,
+        mainBadge: {
+          id: 1,
+          name: '플로깅 마스터',
+          description: '플로깅 10회 참여 시 획득',
+          imageUrl: profileImageSrc,
+          isAcquired: true,
+        },
       },
       createdAt: '2026-04-26T16:52:00.000Z',
       heartCount: 24,
@@ -115,7 +122,7 @@ export const MOCK_FEED_DATA: FeedPost[] = [
       isBookmarked: false,
       USER_INFO: {
         id: '4',
-        nickname: '하린',
+        nickname: 'zl존하민ㅋ',
         profileImage: profileImageSrc,
       },
       createdAt: '2026-04-26T15:56:00.000Z',
