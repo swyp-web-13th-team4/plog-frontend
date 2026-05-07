@@ -64,7 +64,12 @@ function Content({
       {backdrop && (
         <BaseDrawer.Backdrop className="fixed inset-0 z-100 bg-semantic-system-black/60 transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
       )}
-      <BaseDrawer.Viewport className="pointer-events-none fixed inset-0 z-100 flex items-end justify-center">
+      <BaseDrawer.Viewport
+        className={cn(
+          'pointer-events-none fixed inset-0 flex items-end justify-center',
+          backdrop ? 'z-100' : 'z-0',
+        )}
+      >
         <BaseDrawer.Popup
           initialFocus={initialFocus}
           finalFocus={finalFocus}
