@@ -12,9 +12,12 @@ import { useRouter } from 'next/navigation';
 import { AppBar, Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import type { TypeCardTheme } from '@/entities/user';
-import { useAnalyticsQuery, useMypageQuery } from '@/entities/user';
-import { TYPE_CARDS } from '@/entities/user';
+import {
+  TYPE_CARDS,
+  type TypeCardTheme,
+  useAnalyticsQuery,
+  useMypageQuery,
+} from '@/entities/user';
 
 import CoachMark from '../ui/CoachMark';
 import TypeCard from '../ui/TypeCard';
@@ -87,10 +90,8 @@ export default function TypeCardsPage() {
 
   if (!analytics || analytics.workType === null) return null;
 
-  const userTypeId = analytics?.workType ?? null;
-  const userCard = userTypeId
-    ? TYPE_CARDS.find((c) => c.id === userTypeId)
-    : null;
+  const userTypeId = analytics.workType;
+  const userCard = TYPE_CARDS.find((c) => c.id === userTypeId);
   const currentCard = TYPE_CARDS[currentIndex];
 
   const handleShowAll = () => {
