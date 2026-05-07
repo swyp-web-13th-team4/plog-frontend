@@ -5,10 +5,10 @@ import { useId, useState } from 'react';
 import { Badge } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { type FeedTag } from '../model/types';
+import { PLACE_TAG_LABELS, type PlaceTagValue } from '../model/place-tag';
 
 type TagBadgeGroupProps = {
-  tags: FeedTag[];
+  tags: PlaceTagValue[];
   maxVisible?: number;
   popoverSide?: 'bottom' | 'right';
 };
@@ -37,9 +37,9 @@ export default function TagBadgeGroup({
           color="gray"
           variant="soft"
           className="caption-md flex items-center text-semantic-object-normal"
-          key={tag.id}
+          key={tag}
         >
-          {tag.name}
+          {PLACE_TAG_LABELS[tag]}
         </Badge>
       ))}
       {hasHiddenTags && (
@@ -77,9 +77,9 @@ export default function TagBadgeGroup({
                     color="gray"
                     variant="soft"
                     className="caption-md flex items-center text-semantic-object-normal"
-                    key={tag.id}
+                    key={tag}
                   >
-                    {tag.name}
+                    {PLACE_TAG_LABELS[tag]}
                   </Badge>
                 ))}
               </div>

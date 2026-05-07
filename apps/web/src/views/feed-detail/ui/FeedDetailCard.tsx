@@ -14,7 +14,6 @@ import {
   Icon,
   useToast,
 } from '@plog/ui';
-import { cn } from '@plog/utils';
 
 import { CopyLinkButton } from '@/features/copy-link';
 import { BookmarkButton } from '@/features/toggle-bookmark';
@@ -34,12 +33,12 @@ type FeedCarouselController = {
 export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
-  const feed = MOCK_FEED_DATA.find((item) => item.POST_INFO.id === postId);
+  const feed = MOCK_FEED_DATA.find((item) => item.postId === Number(postId));
   const [post, setPost] = useState<FeedPost | null>(feed ?? null);
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
-    isEnd: feed ? feed.POST_INFO.image.length <= 1 : true,
+    isEnd: feed ? feed.postImages.length <= 1 : true,
   });
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
@@ -69,31 +68,30 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     );
   }
 
-  const { POST_INFO } = post;
-  const hasMultipleImages = POST_INFO.image.length > 1;
-  const isSeungMinPost = POST_INFO.USER_INFO.nickname === '승민';
+  const hasMultipleImages = post.postImages.length > 1;
+  const isMyPost = post.name === '승민';
 
   return (
     <section className="relative">
       <div className="flex items-center gap-3 px-6 py-3">
         <Avatar
           size="xsmall"
-          src={POST_INFO.USER_INFO.profileImage}
-          alt={`${POST_INFO.USER_INFO.nickname}의 프로필 이미지`}
+          src={post.profileImage}
+          alt={`${post.name}의 프로필 이미지`}
         />
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
-            {POST_INFO.USER_INFO.nickname}
+            {post.name}
           </span>
           <span className="caption-md text-semantic-object-normal">
-            {formatTimeAgo(POST_INFO.createdAt)}
+            {formatTimeAgo(post.createAt)}
           </span>
         </div>
       </div>
       <div className="flex flex-col">
         <div className="group relative">
           <Carousel
-            aria-label={`${POST_INFO.title} 이미지 캐러셀`}
+            aria-label={`${post.title} 이미지 캐러셀`}
             onSwiper={(swiper) => {
               carouselRef.current = swiper;
               updateCarouselEdgeState(swiper);
@@ -104,12 +102,12 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               }
             }}
           >
-            {POST_INFO.image.map((imageSrc, index) => (
-              <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
+            {post.postImages.map((imageSrc, index) => (
+              <Carousel.Slide key={`${post.postId}-image-${index}`}>
                 <Image
                   src={imageSrc}
                   loading="eager"
-                  alt={`${POST_INFO.title} 이미지 ${index + 1}`}
+                  alt={`${post.title} 이미지 ${index + 1}`}
                   width={480}
                   height={480}
                 />
@@ -158,34 +156,36 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           )}
         </div>
         <div className="flex flex-col gap-2.5 px-6 pt-3">
-          {!isSeungMinPost && (
+          {!isMyPost && (
             <div className="flex justify-between">
               <div className="flex items-center gap-1.5">
-                <LikeButton postId={POST_INFO.id} isLiked={POST_INFO.isLiked} />
+                <LikeButton postId={post.postId} isLiked={post.like} />
                 <span className="caption-md text-semantic-object-normal">
-                  {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
+                  {post.likes < 1000 ? post.likes : '999+'}
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <BookmarkButton
-                  postId={POST_INFO.id}
-                  isBookmarked={POST_INFO.isBookmarked}
+                  postId={post.postId}
+                  isBookmarked={post.bookMark}
                 />
                 <CopyLinkButton />
               </div>
             </div>
           )}
           <div className="flex flex-col gap-0.5">
-            <div className={cn('flex', isSeungMinPost && 'justify-between')}>
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="title-xs text-semantic-object-boldest">
-                  {post.POST_INFO.PLACE_INFO.placeName}
+                  {post.placeName}
                 </span>
-                <Badge color="skyblue" variant="soft">
-                  {post.POST_INFO.PLACE_INFO.category}
-                </Badge>
+                {post.placeCategory && (
+                  <Badge color="skyblue" variant="soft">
+                    {post.placeCategory}
+                  </Badge>
+                )}
               </div>
-              {isSeungMinPost && (
+              {isMyPost && (
                 <button
                   type="button"
                   className="cursor-pointer"
@@ -200,30 +200,27 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                 </button>
               )}
             </div>
-            <p className="body-sm text-semantic-object-normal">
-              {post.POST_INFO.PLACE_INFO.roadAddress}
-            </p>
           </div>
           <FeedStatsSummary
-            isUserOwnFeed={isSeungMinPost}
+            isUserOwnFeed={isMyPost}
             primaryLabel="좋아요"
-            primaryValue={post.POST_INFO.heartCount}
-            totalWorkTime={post.POST_INFO.PLACE_INFO.studyTime}
-            focusLevel={post.POST_INFO.PLACE_INFO.concentrateCount}
+            primaryValue={post.likes}
+            totalWorkTime={post.studyTime}
+            focusLevel={post.focus}
           />
-          <TagBadgeGroup tags={post.POST_INFO.tags} />
+          <TagBadgeGroup tags={post.tags} />
         </div>
         <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">
           <div className="flex items-center justify-between">
             <span className="title-xs text-semantic-object-boldest">
-              {post.POST_INFO.title}
+              {post.title}
             </span>
             <p className="caption-md text-semantic-object-subtle">
-              {formatStudyDate(post.POST_INFO.createdAt)}
+              {formatStudyDate(post.createAt)}
             </p>
           </div>
           <span className="body-sm text-semantic-object-normal">
-            {post.POST_INFO.content}
+            {post.contents}
           </span>
         </div>
       </div>

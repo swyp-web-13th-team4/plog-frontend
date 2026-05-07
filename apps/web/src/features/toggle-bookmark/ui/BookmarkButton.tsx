@@ -8,10 +8,10 @@ import { cn } from '@plog/utils';
 import { useToggleBookmark } from '../model/use-toggle-bookmark';
 
 type BookmarkButtonProps = {
-  postId: string;
+  postId: number;
   isBookmarked: boolean;
   className?: string;
-  onToggle?: (postId: string) => void;
+  onToggle?: (postId: number) => void;
 };
 
 export default function BookmarkButton({

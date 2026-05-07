@@ -1,37 +1,21 @@
-import { BadgeDto } from '@/shared/api/dto/badge';
-
-export type FeedTag = {
-  id: string;
-  name: string;
-};
+import { type PlaceTagValue } from './place-tag';
 
 export type FeedPost = {
-  POST_INFO: {
-    id: string;
-    isLiked: boolean;
-    isBookmarked: boolean;
-    USER_INFO: {
-      id: string;
-      nickname: string;
-      profileImage: string;
-      mainBadge?: BadgeDto;
-    };
-    createdAt: string;
-    heartCount: number;
-    title: string;
-    content: string;
-    image: string[];
-    tags: FeedTag[];
-    PLACE_INFO: {
-      id: string;
-      placeName: string;
-      studyDate: string;
-      studyTime: number;
-      concentrateCount: number;
-      roadAddress?: string;
-      category?: string;
-    };
-  };
+  postId: number;
+  name: string;
+  profileImage: string;
+  createAt: string;
+  postImages: string[];
+  likes: number;
+  title: string;
+  contents: string;
+  placeName: string;
+  studyTime: number;
+  focus: number;
+  tags: PlaceTagValue[];
+  like: boolean;
+  bookMark: boolean;
+  placeCategory?: string;
 };
 
 export type FeedPage = {

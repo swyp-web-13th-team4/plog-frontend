@@ -26,11 +26,8 @@ import { ReviewTagsSheet } from '@/features/select-review-tags';
 import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
 import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 
-import {
-  PLACE_CATEGORIES,
-  type PlaceCategoryValue,
-  PlaceTagValue,
-} from '@/entities/place';
+import { PlaceTagValue } from '@/entities/feed';
+import { PLACE_CATEGORIES, type PlaceCategoryValue } from '@/entities/place';
 
 import { usePhotoUpload } from '../model/use-photo-upload';
 import PhotoUploader from './PhotoUploader';

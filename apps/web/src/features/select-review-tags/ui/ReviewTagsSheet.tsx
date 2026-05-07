@@ -9,7 +9,7 @@ import {
   PLACE_TAG_LABELS,
   PlaceTagValue,
   TAG_CATEGORIES,
-} from '@/entities/place';
+} from '@/entities/feed';
 
 type ReviewTagsSheetProps = {
   value: PlaceTagValue[];

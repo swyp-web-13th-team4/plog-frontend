@@ -86,7 +86,7 @@ export default function FeedList({
         <div>
           {feeds.map((feed) => (
             <FeedListItem
-              key={feed.POST_INFO.id}
+              key={feed.postId}
               feed={feed}
               onClick={onFeedClick ? () => onFeedClick(feed) : undefined}
               renderAction={renderAction?.(feed, viewType)}
@@ -97,7 +97,7 @@ export default function FeedList({
         <div className="grid grid-cols-2 gap-6 px-5 py-6">
           {feeds.map((feed) => (
             <FeedGridItem
-              key={feed.POST_INFO.id}
+              key={feed.postId}
               feed={feed}
               onClick={onFeedClick ? () => onFeedClick(feed) : undefined}
               renderAction={renderAction?.(feed, viewType)}

@@ -4,7 +4,6 @@ import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -15,7 +14,6 @@ import { LikeButton } from '@/features/toggle-like';
 
 import {
   type FeedPost,
-  formatStudyDate,
   formatStudyDuration,
   formatTimeAgo,
   TagBadgeGroup,
@@ -62,17 +60,13 @@ function ClampedContent({ content }: { content: string }) {
 }
 
 export default function FeedCard({ post, isLast }: FeedCardProps) {
-  const { POST_INFO } = post;
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
-    isEnd: POST_INFO.image.length <= 1,
+    isEnd: post.postImages.length <= 1,
   });
-  const router = useRouter();
-  // Todo :API연동 시 isAuthor과 같은 실제 사용자의 게시글인지 판단하는 변수로 변경
-  const isSeungminPost = POST_INFO.USER_INFO.nickname === '승민';
 
-  const hasMultipleImages = POST_INFO.image.length > 1;
+  const hasMultipleImages = post.postImages.length > 1;
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
@@ -85,30 +79,22 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
       <div className="flex items-center gap-3 px-6 py-3">
         <Avatar
           size="xsmall"
-          src={POST_INFO.USER_INFO.profileImage}
-          alt={`${POST_INFO.USER_INFO.nickname}의 프로필 이미지`}
-          className={cn(!isSeungminPost && 'cursor-pointer')}
-          onClick={(e) => {
-            if (isSeungminPost) {
-              e.stopPropagation();
-              return;
-            }
-            router.push(`/feed/users/${POST_INFO.USER_INFO.id}`);
-          }}
+          src={post.profileImage}
+          alt={`${post.name}의 프로필 이미지`}
         />
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
-            {POST_INFO.USER_INFO.nickname}
+            {post.name}
           </span>
           <span className="caption-md text-semantic-object-normal">
-            {formatTimeAgo(POST_INFO.createdAt)}
+            {formatTimeAgo(post.createAt)}
           </span>
         </div>
       </div>
       <div className="flex flex-col">
         <div className="group relative">
           <Carousel
-            aria-label={`${POST_INFO.title} 이미지 캐러셀`}
+            aria-label={`${post.title} 이미지 캐러셀`}
             onSwiper={(swiper) => {
               carouselRef.current = swiper;
               updateCarouselEdgeState(swiper);
@@ -119,19 +105,18 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
               }
             }}
           >
-            {POST_INFO.image.map((imageSrc, index) => (
-              <Carousel.Slide key={`${POST_INFO.id}-image-${index}`}>
+            {post.postImages.map((imageSrc, index) => (
+              <Carousel.Slide key={`${post.postId}-image-${index}`}>
                 <Image
                   src={imageSrc}
                   loading={index === 0 ? 'eager' : 'lazy'}
-                  alt={`${POST_INFO.title} 이미지 ${index + 1}`}
+                  alt={`${post.title} 이미지 ${index + 1}`}
                   width={480}
                   height={480}
                 />
               </Carousel.Slide>
             ))}
           </Carousel>
-
           {hasMultipleImages && (
             <div className="pointer-events-none absolute inset-y-0 z-10 flex w-full items-center justify-between px-3 opacity-0 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
               {!carouselState.isBeginning ? (
@@ -176,15 +161,15 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex justify-between">
             <div className="flex items-center gap-1.5">
-              <LikeButton postId={POST_INFO.id} isLiked={POST_INFO.isLiked} />
+              <LikeButton postId={post.postId} isLiked={post.like} />
               <span className="caption-md text-semantic-object-normal">
-                {POST_INFO.heartCount < 1000 ? POST_INFO.heartCount : '999+'}
+                {post.likes < 1000 ? post.likes : '999+'}
               </span>
             </div>
             <div className="flex items-center gap-3">
               <BookmarkButton
-                postId={POST_INFO.id}
-                isBookmarked={POST_INFO.isBookmarked}
+                postId={post.postId}
+                isBookmarked={post.bookMark}
               />
               <CopyLinkButton />
             </div>
@@ -192,17 +177,17 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
           <div className="flex flex-col gap-3">
             <div>
               <span className="title-xs text-semantic-object-boldest">
-                {POST_INFO.title}
+                {post.title}
               </span>
-              <ClampedContent content={POST_INFO.content} />
+              <ClampedContent content={post.contents} />
             </div>
             <Link
               className="flex cursor-pointer justify-between rounded-xl border border-semantic-stroke-subtle p-4"
-              href={`/feed/${POST_INFO.id}`}
+              href={`/feed/${post.postId}`}
             >
               <div className="flex flex-col gap-1.5">
                 <span className="label-md text-semantic-object-bold">
-                  {POST_INFO.PLACE_INFO.placeName}
+                  {post.placeName}
                 </span>
                 <div className="flex gap-3">
                   <div className="flex items-center gap-1.5">
@@ -212,7 +197,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                       className="text-semantic-object-normal"
                     />
                     <p className="caption-md text-semantic-object-normal">
-                      {formatStudyDuration(POST_INFO.PLACE_INFO.studyTime)}
+                      {formatStudyDuration(post.studyTime)}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -222,16 +207,13 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                       className="text-semantic-object-normal"
                     />
                     <p className="caption-md text-semantic-object-normal">
-                      {POST_INFO.PLACE_INFO.concentrateCount}/5
+                      {post.focus}/5
                     </p>
                   </div>
                 </div>
               </div>
-              <span className="caption-md text-semantic-object-subtle">
-                {formatStudyDate(POST_INFO.PLACE_INFO.studyDate)}
-              </span>
             </Link>
-            <TagBadgeGroup tags={POST_INFO.tags} />
+            <TagBadgeGroup tags={post.tags} />
           </div>
         </div>
       </div>

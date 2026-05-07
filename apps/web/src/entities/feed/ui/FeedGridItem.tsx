@@ -38,8 +38,8 @@ export default function FeedGridItem({
     >
       <div className="relative overflow-hidden rounded-lg">
         <Image
-          src={feed.POST_INFO.image[0]}
-          alt={`${feed.POST_INFO.id}의 대표 이미지`}
+          src={feed.postImages[0]}
+          alt={`${feed.title}의 대표 이미지`}
           width={204}
           height={204}
           className="w-full object-cover"
@@ -48,7 +48,7 @@ export default function FeedGridItem({
           <div className="flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
             <Icon name="clock" />
             <span className="caption-md">
-              {formatStudyDuration(feed.POST_INFO.PLACE_INFO.studyTime)}
+              {formatStudyDuration(feed.studyTime)}
             </span>
           </div>
           {renderAction}
@@ -56,10 +56,10 @@ export default function FeedGridItem({
       </div>
       <div className="flex flex-col gap-1">
         <span className="label-lg text-semantic-object-boldest">
-          {feed.POST_INFO.title}
+          {feed.title}
         </span>
         <div onClick={(event) => event.stopPropagation()}>
-          <TagBadgeGroup tags={feed.POST_INFO.tags} maxVisible={2} />
+          <TagBadgeGroup tags={feed.tags} maxVisible={2} />
         </div>
       </div>
     </div>

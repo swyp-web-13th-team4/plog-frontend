@@ -4,12 +4,12 @@ import { Icon } from '@plog/ui';
 
 import { useToggleLike } from '../model/use-toggle-like';
 
-type BookmarkButtonProps = {
-  postId: string;
+type LikeButtonProps = {
+  postId: number;
   isLiked: boolean;
 };
 
-export default function LikeButton({ postId, isLiked }: BookmarkButtonProps) {
+export default function LikeButton({ postId, isLiked }: LikeButtonProps) {
   const { toggleLike } = useToggleLike();
 
   return (

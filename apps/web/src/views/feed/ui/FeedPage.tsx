@@ -118,7 +118,7 @@ export default function FeedPage() {
       <div ref={topRef} aria-hidden="true" className="h-px w-full" />
       {posts.map((data, index) => (
         <FeedCard
-          key={data.POST_INFO.id}
+          key={data.postId ?? index}
           post={data}
           isLast={index === posts.length - 1}
           onShare={() =>
@@ -129,7 +129,6 @@ export default function FeedPage() {
           }
         />
       ))}
-
       {hasNextPage && (
         <div className="flex flex-col items-center justify-center gap-3 py-12">
           {isFetchingNextPage ? (
