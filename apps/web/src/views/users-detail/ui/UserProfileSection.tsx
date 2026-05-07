@@ -11,6 +11,7 @@ const MOCK_PROFILE: UserProfileType = {
   mainBadge: null,
 };
 
-export default function UserProfileSection() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function UserProfileSection({ userId }: { userId: string }) {
   return <UserProfile profile={MOCK_PROFILE} />;
 }
