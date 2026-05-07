@@ -22,16 +22,13 @@ export default function UserProfile({
   className,
   renderAction,
 }: UserProfileSectionProps) {
-  const [expandedProfileId, setExpandedProfileId] = useState<string | null>(
-    null,
-  );
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
 
   const introductionRef = useRef<HTMLParagraphElement>(null);
   const introductionMeasureRef = useRef<HTMLParagraphElement>(null);
   const introduction = profile.introduction ?? '';
   const hasIntroduction = introduction.length > 0;
-  const isExpanded = expandedProfileId === profile.id;
 
   useLayoutEffect(() => {
     if (!hasIntroduction) {
@@ -129,15 +126,11 @@ export default function UserProfile({
           {isClamped && (
             <button
               type="button"
-              aria-label={
-                isExpanded ? 'introduction 접기' : 'introduction 더보기'
-              }
+              aria-label={isExpanded ? '소개 접기' : '소개 더보기'}
               className="body-sm flex cursor-pointer items-center gap-1 text-semantic-object-subtle"
-              onClick={() =>
-                setExpandedProfileId((prev) =>
-                  prev === profile.id ? null : profile.id,
-                )
-              }
+              onClick={() => {
+                setIsExpanded((prev) => !prev);
+              }}
             >
               {isExpanded ? '접기' : '더보기'}
               <Icon
