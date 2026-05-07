@@ -64,17 +64,21 @@ function SpaceRankingItem({ ranking, rank, isLocked }: SpaceRankingItemProps) {
         className={cn(
           'label-lg mt-4 mb-1',
           isEmpty
-            ? 'text-semantic-object-subtle'
+            ? 'text-semantic-object-bold'
             : 'text-semantic-object-boldest',
         )}
       >
-        {isEmpty ? '---' : getCategoryLabel(ranking!.placeCategoryName)}
+        {getCategoryLabel(
+          !isEmpty
+            ? ranking!.placeCategoryName
+            : ['cafe', 'library', 'shared-office'][rank - 1],
+        )}
       </p>
       <p className="label-sm text-semantic-object-normal">
-        집중도 {isEmpty ? '--' : ranking!.averageFocus}
+        집중도 {isEmpty ? '-' : ranking!.averageFocus}
       </p>
       <p className="caption-md text-semantic-object-subtle">
-        ({isEmpty ? '--' : ranking!.postCount}회)
+        ({isEmpty ? '-' : ranking!.postCount}회)
       </p>
     </div>
   );
