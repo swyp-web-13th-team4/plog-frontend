@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -17,11 +17,10 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { type FeedPost } from '@/entities/feed';
 import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
 
+import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import { ScrollToTopButton } from '@/shared/ui';
 
 type BookmarkByPostId = Record<number, boolean>;
-
-const SCROLL_TO_TOP_VISIBLE_OFFSET = 80;
 
 function sortFeeds(feeds: FeedPost[], sort: RecordTypeValue): FeedPost[] {
   return [...feeds].sort((a, b) => {
@@ -34,14 +33,13 @@ function sortFeeds(feeds: FeedPost[], sort: RecordTypeValue): FeedPost[] {
 
 export default function UserFeedSection({ userId }: { userId: string }) {
   const router = useRouter();
+  const { topRef, visible: scrollToTopVisible } = useScrollToTop();
 
   // TODO: API 연동 시 userId로 서버 필터링
   const userFeeds = MOCK_FEED_DATA;
 
   const [sort, setSort] = useState<RecordTypeValue>('latest');
   const [bookmarks, setBookmarks] = useState<BookmarkByPostId>({});
-  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
-    useState(false);
 
   const sortedFeeds = useMemo(
     () => sortFeeds(userFeeds, sort),
@@ -62,26 +60,9 @@ export default function UserFeedSection({ userId }: { userId: string }) {
     );
   };
 
-  useEffect(() => {
-    const updateScrollState = () => {
-      setCanShowScrollToTopButton(
-        document.documentElement.scrollHeight > window.innerHeight &&
-          window.scrollY > SCROLL_TO_TOP_VISIBLE_OFFSET,
-      );
-    };
-
-    updateScrollState();
-    window.addEventListener('scroll', updateScrollState);
-    window.addEventListener('resize', updateScrollState);
-
-    return () => {
-      window.removeEventListener('scroll', updateScrollState);
-      window.removeEventListener('resize', updateScrollState);
-    };
-  }, [userId]);
-
   return (
     <section className="pt-3">
+      <div ref={topRef} aria-hidden="true" className="h-px w-full" />
       <FeedList
         feeds={sortedFeeds}
         sort={sort}
@@ -105,7 +86,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
           );
         }}
       />
-      <ScrollToTopButton visible={canShowScrollToTopButton} />
+      <ScrollToTopButton visible={scrollToTopVisible} />
     </section>
   );
 }

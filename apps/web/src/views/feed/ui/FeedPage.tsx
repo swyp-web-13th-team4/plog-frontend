@@ -1,20 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
 import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
 
+import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import { ScrollToTopButton } from '@/shared/ui';
 
 import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
 
 export default function FeedPage() {
-  const [canShowScrollToTopButton, setCanShowScrollToTopButton] =
-    useState(false);
+  const { topRef, visible: scrollToTopVisible } = useScrollToTop();
 
   const {
     data,
@@ -31,10 +31,6 @@ export default function FeedPage() {
     rootMargin: '0px 0px 200px 0px',
   });
 
-  const { ref: topRef, inView: isTopAreaVisible } = useInView({
-    threshold: 0,
-  });
-
   const { toast } = useToast();
 
   const router = useRouter();
@@ -46,21 +42,6 @@ export default function FeedPage() {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  useEffect(() => {
-    const updateScrollableState = () => {
-      setCanShowScrollToTopButton(
-        document.documentElement.scrollHeight > window.innerHeight,
-      );
-    };
-
-    updateScrollableState();
-    window.addEventListener('resize', updateScrollableState);
-
-    return () => {
-      window.removeEventListener('resize', updateScrollableState);
-    };
-  }, [posts.length]);
 
   if (isPending) {
     return (
@@ -161,9 +142,7 @@ export default function FeedPage() {
           마지막 기록까지 확인했어요
         </p>
       )}
-      <ScrollToTopButton
-        visible={canShowScrollToTopButton && !isTopAreaVisible}
-      />
+      <ScrollToTopButton visible={scrollToTopVisible} />
     </section>
   );
 }
