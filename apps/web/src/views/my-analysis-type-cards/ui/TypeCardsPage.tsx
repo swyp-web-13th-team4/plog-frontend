@@ -1,20 +1,23 @@
 'use client';
 
-import { type ComponentPropsWithoutRef, type ReactNode, useState } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import { AppBar, Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import type { TypeCardId, TypeCardTheme } from '@/entities/user';
+import type { TypeCardTheme } from '@/entities/user';
+import { useAnalyticsQuery, useMypageQuery } from '@/entities/user';
 import { TYPE_CARDS } from '@/entities/user';
 
 import CoachMark from '../ui/CoachMark';
 import TypeCard from '../ui/TypeCard';
-
-const USER_TYPE_ID: TypeCardId = 'HARU';
-const USER_NAME = '플로그';
 
 type View = 'my' | 'all';
 
@@ -73,7 +76,21 @@ export default function TypeCardsPage() {
 
   const router = useRouter();
 
-  const userCard = TYPE_CARDS.find((c) => c.id === USER_TYPE_ID)!;
+  const { data: mypage } = useMypageQuery();
+  const { data: analytics } = useAnalyticsQuery();
+
+  useEffect(() => {
+    if (analytics?.workType === null) {
+      router.replace('/my');
+    }
+  }, [analytics, router]);
+
+  if (!analytics || analytics.workType === null) return null;
+
+  const userTypeId = analytics?.workType ?? null;
+  const userCard = userTypeId
+    ? TYPE_CARDS.find((c) => c.id === userTypeId)
+    : null;
   const currentCard = TYPE_CARDS[currentIndex];
 
   const handleShowAll = () => {
@@ -88,20 +105,20 @@ export default function TypeCardsPage() {
           <div className="flex flex-col items-center gap-1.5 text-center">
             <p className="title-md text-semantic-object-bold max-[440px]:text-semantic-label-lg max-[440px]:leading-semantic-label-lg max-[440px]:font-semantic-label-lg">
               <span className="title-lg text-semantic-object-boldest max-[440px]:text-semantic-title-sm max-[440px]:leading-semantic-title-sm max-[440px]:font-semantic-title-sm">
-                {`${USER_NAME} `}
+                {`${mypage?.nickname ?? ''} `}
               </span>
               님의 작업 유형은
             </p>
             <h2
               className={cn(
                 'hero-md max-[440px]:text-semantic-title-lg max-[440px]:leading-semantic-title-lg max-[440px]:font-semantic-title-lg',
-                themeTextClass[userCard.theme],
+                userCard ? themeTextClass[userCard.theme] : '',
               )}
             >
-              {userCard.fullName}
+              {userCard?.fullName ?? ''}
             </h2>
           </div>
-          <TypeCard id={USER_TYPE_ID} />
+          {userTypeId && <TypeCard id={userTypeId} />}
           <Button
             variant="primary"
             size="large"
