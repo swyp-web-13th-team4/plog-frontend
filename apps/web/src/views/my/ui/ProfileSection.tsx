@@ -41,6 +41,7 @@ export default function ProfileSection() {
         {introduction && (
           <div className="flex flex-col items-center">
             <p
+              id="introduction"
               className={cn(
                 'body-sm text-semantic-object-boldest',
                 shouldTruncate && 'line-clamp-2',
@@ -51,6 +52,8 @@ export default function ProfileSection() {
             {introduction.length > 50 && (
               <button
                 type="button"
+                aria-expanded={expanded}
+                aria-controls="introduction"
                 onClick={() => setExpanded((prev) => !prev)}
                 className="caption-md mt-2 flex items-center gap-1 text-semantic-object-normal"
               >
