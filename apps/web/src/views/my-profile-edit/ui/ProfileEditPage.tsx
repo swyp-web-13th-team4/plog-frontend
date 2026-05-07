@@ -42,6 +42,7 @@ export default function ProfileEditPage({
         initialIntroduction={mypageData?.introduction ?? undefined}
         submitLabel="저장"
         isSubmitting={isPending}
+        hasBottomTab
         onSubmit={submit}
       />
     </>
