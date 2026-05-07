@@ -6,7 +6,6 @@ import { Avatar, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { type UserProfileType } from '../model/types';
-import UserProfileMainBadge from './UserProfileMainBadge';
 
 type UserProfileProps = {
   profile: UserProfileType;
@@ -39,7 +38,18 @@ export default function UserProfile({
           <span className="title-md text-semantic-object-boldest">
             {nickname}
           </span>
-          {mainBadge && <UserProfileMainBadge badge={mainBadge} />}
+          {mainBadge && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={mainBadge.imageUrl}
+              width={24}
+              height={24}
+              alt={mainBadge.name}
+              aria-label={`${mainBadge.name}. ${mainBadge.description}`}
+              title={mainBadge.description}
+              className="shrink-0"
+            />
+          )}
         </div>
         {introduction && (
           <div className="flex flex-col items-center">
