@@ -75,6 +75,7 @@ export default function WorkTypeSection({ workType }: WorkTypeSectionProps) {
                 src={cardData.image}
                 alt={cardData.name}
                 fill
+                sizes="120px"
                 className="object-cover"
               />
             </div>
