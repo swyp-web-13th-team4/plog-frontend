@@ -16,6 +16,7 @@ export default function UserProfileMainBadge({
       width={size}
       height={size}
       alt={badge.name}
+      aria-label={`${badge.name}. ${badge.description}`}
       title={badge.description}
       className="shrink-0"
     />

@@ -29,7 +29,15 @@ export default function ListFeed({
       {feeds.map((feed) => (
         <div
           key={feed.POST_INFO.id}
+          role={onFeedClick ? 'button' : undefined}
           onClick={() => onFeedClick?.(feed)}
+          onKeyDown={(e) => {
+            if (!onFeedClick) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onFeedClick(feed);
+            }
+          }}
           className={cn(
             'flex gap-4 border-b border-b-semantic-object-subtler bg-semantic-system-white px-6 py-5',
             onFeedClick && 'cursor-pointer',

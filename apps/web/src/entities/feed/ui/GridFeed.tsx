@@ -29,7 +29,15 @@ export default function GridFeed({
       {feeds.map((feed) => (
         <div
           key={feed.POST_INFO.id}
+          role={onFeedClick ? 'button' : undefined}
           onClick={() => onFeedClick?.(feed)}
+          onKeyDown={(e) => {
+            if (!onFeedClick) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onFeedClick(feed);
+            }
+          }}
           className={cn('flex flex-col gap-4', onFeedClick && 'cursor-pointer')}
         >
           <div className="relative overflow-hidden rounded-lg">

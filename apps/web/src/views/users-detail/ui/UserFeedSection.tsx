@@ -166,7 +166,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
       window.removeEventListener('scroll', updateScrollToTopButtonState);
       window.removeEventListener('resize', updateScrollToTopButtonState);
     };
-  }, [sortedUserFeeds.length]);
+  }, [userId]);
 
   return (
     <section className="pt-3">
