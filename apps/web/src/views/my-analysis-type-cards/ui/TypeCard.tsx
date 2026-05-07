@@ -161,9 +161,18 @@ export default function TypeCard({ id }: TypeCardProps) {
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className="w-90 cursor-pointer drop-shadow-[1.5px_1.5px_7.5px_rgba(0,0,0,0.2)] select-none perspective-distant mobile:w-64"
       onClick={() => setFlipped((prev) => !prev)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setFlipped((prev) => !prev);
+        }
+      }}
       aria-label={`${data.name} 카드`}
+      aria-pressed={flipped}
     >
       <article
         className="relative transition-transform duration-500 transform-3d"
