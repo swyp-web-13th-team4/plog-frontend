@@ -25,5 +25,5 @@ export type UserProfileType = {
   nickname: string;
   profileImage?: string;
   introduction?: string;
-  mainBadge?: UserMainBadge | null;
+  mainBadge?: UserMainBadge;
 };
