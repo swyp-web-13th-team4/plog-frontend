@@ -87,10 +87,11 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
           size="xsmall"
           src={POST_INFO.USER_INFO.profileImage}
           alt={`${POST_INFO.USER_INFO.nickname}의 프로필 이미지`}
-          className="cursor-pointer"
+          className={cn(!isSeungminPost && 'cursor-pointer')}
           onClick={(e) => {
             if (isSeungminPost) {
               e.stopPropagation();
+              return;
             }
             router.push(`/feed/users/${POST_INFO.USER_INFO.id}`);
           }}
