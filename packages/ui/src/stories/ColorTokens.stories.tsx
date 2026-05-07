@@ -474,6 +474,51 @@ const groups: Group[] = [
     ],
   },
   {
+    label: 'Theme / Purple',
+    rows: [
+      {
+        token: '.theme.purple.bolder',
+        bg: 'bg-semantic-theme-purple-bolder',
+        hex: semantic.theme.purple.bolder,
+      },
+      {
+        token: '.theme.purple.bold',
+        bg: 'bg-semantic-theme-purple-bold',
+        hex: semantic.theme.purple.bold,
+      },
+      {
+        token: '.theme.purple.normal',
+        bg: 'bg-semantic-theme-purple-normal',
+        hex: semantic.theme.purple.normal,
+      },
+      {
+        token: '.theme.purple.neutral',
+        bg: 'bg-semantic-theme-purple-neutral',
+        hex: semantic.theme.purple.neutral,
+      },
+      {
+        token: '.theme.purple.alternative',
+        bg: 'bg-semantic-theme-purple-alternative',
+        hex: semantic.theme.purple.alternative,
+      },
+      {
+        token: '.theme.purple.assistive',
+        bg: 'bg-semantic-theme-purple-assistive',
+        hex: semantic.theme.purple.assistive,
+      },
+      {
+        token: '.theme.purple.subtle',
+        bg: 'bg-semantic-theme-purple-subtle',
+        hex: semantic.theme.purple.subtle,
+      },
+      {
+        token: '.theme.purple.subtler',
+        bg: 'bg-semantic-theme-purple-subtler',
+        hex: semantic.theme.purple.subtler,
+      },
+    ],
+  },
+  {
     label: 'System',
     rows: [
       {

@@ -8,6 +8,30 @@
   --max-width-layout: 480px;
   --spacing-header: 64px;
   --spacing-bottom-tab: 76px;
+
+  --animate-fade-in: fade-in 0.25s ease-out;
+  --animate-float: float 3s ease-in-out infinite;
+}
+
+@custom-variant mobile (@media (max-width: 440px));
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @layer base {

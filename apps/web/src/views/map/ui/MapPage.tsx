@@ -92,7 +92,7 @@ export default function MapPage() {
       <Script
         src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=clusterer&autoload=false`}
         strategy="afterInteractive"
-        onLoad={handleLoad}
+        onReady={handleLoad}
       />
       <div className="relative z-0 h-[calc(100dvh-var(--spacing-bottom-tab))] w-full max-w-layout">
         <div ref={containerRef} className="absolute inset-0" />

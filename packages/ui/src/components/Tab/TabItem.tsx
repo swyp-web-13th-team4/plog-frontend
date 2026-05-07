@@ -3,6 +3,8 @@ import { type ComponentPropsWithoutRef, type ReactNode, type Ref } from 'react';
 import { cn } from '@plog/utils';
 import { cva } from 'class-variance-authority';
 
+import { type TabIconProps } from './Tab.types';
+
 const tabItemVariants = cva(
   'label-lg box-border inline-flex shrink-0 items-center justify-start gap-1.5 whitespace-nowrap bg-transparent px-4 py-3 outline-none transition-colors focus-visible:outline-2 focus-visible:outline-semantic-accent-subtle focus-visible:outline-offset-[-2px]',
   {
@@ -27,14 +29,14 @@ const tabItemVariants = cva(
 type TabItemProps = Omit<ComponentPropsWithoutRef<'button'>, 'children'> & {
   selected?: boolean | null;
   disabled?: boolean | null;
-  icon?: ReactNode;
   label: ReactNode;
   ref?: Ref<HTMLButtonElement>;
-};
+} & TabIconProps;
 
 function TabItem({
   ref,
   icon,
+  activeIcon,
   label,
   selected,
   disabled,
@@ -42,6 +44,8 @@ function TabItem({
   type = 'button',
   ...props
 }: TabItemProps) {
+  const resolvedIcon = selected && activeIcon ? activeIcon : icon;
+
   return (
     <button
       ref={ref}
@@ -50,10 +54,12 @@ function TabItem({
       className={cn(tabItemVariants({ selected, disabled }), className)}
       {...props}
     >
-      {icon ? (
-        <span className="shrink-0 [&>svg]:block [&>svg]:size-6">{icon}</span>
+      {resolvedIcon ? (
+        <span className="flex shrink-0 items-center justify-center [&>svg]:block [&>svg]:size-6">
+          {resolvedIcon}
+        </span>
       ) : null}
-      <span className="truncate">{label}</span>
+      <span>{label}</span>
     </button>
   );
 }

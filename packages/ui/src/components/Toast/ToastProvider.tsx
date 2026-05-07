@@ -101,7 +101,7 @@ function ToastProvider({
     <BaseToast.Provider timeout={timeout} limit={limit}>
       {children}
       <BaseToast.Portal>
-        <BaseToast.Viewport className="fixed bottom-4 left-1/2 z-300 flex -translate-x-1/2 flex-col gap-2">
+        <BaseToast.Viewport className="fixed bottom-23 left-1/2 z-300 flex -translate-x-1/2 flex-col gap-2">
           <ToastList />
         </BaseToast.Viewport>
       </BaseToast.Portal>

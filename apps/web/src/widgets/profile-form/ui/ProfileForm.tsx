@@ -3,6 +3,7 @@
 import { type SubmitEvent } from 'react';
 
 import { Avatar, Button, Field, Icon, Input, Textarea } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import {
   ProfileImageSheet,
@@ -30,6 +31,7 @@ type ProfileFormProps = {
   initialIntroduction?: string;
   submitLabel: string;
   isSubmitting?: boolean;
+  hasBottomTab?: boolean;
   onSubmit: (data: ProfileFormData) => void;
 };
 
@@ -41,6 +43,7 @@ export default function ProfileForm({
   initialIntroduction,
   submitLabel,
   isSubmitting = false,
+  hasBottomTab = false,
   onSubmit,
 }: ProfileFormProps) {
   const {
@@ -91,7 +94,12 @@ export default function ProfileForm({
   return (
     <>
       <form
-        className="flex min-h-dvh w-full flex-col gap-8 p-6 pt-[calc(40px+var(--spacing-header))]"
+        className={cn(
+          'flex w-full flex-col gap-8 p-6 pt-[calc(40px+var(--spacing-header))]',
+          hasBottomTab
+            ? 'min-h-[calc(100dvh-var(--spacing-bottom-tab))]'
+            : 'min-h-dvh',
+        )}
         onSubmit={handleSubmit}
       >
         <button
