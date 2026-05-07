@@ -43,21 +43,17 @@ export const updateProfile = (
   data: SetupProfileRequest,
   imageOption: ProfileImageOption | null,
 ) => {
-  const formData = new FormData();
-  formData.append('nickname', data.nickname);
-  if (data.introduction) formData.append('introduction', data.introduction);
+  const endpoint =
+    imageOption?.type === 'default'
+      ? `/members/me/profile?defaultImageId=${imageOption.imageId}`
+      : '/members/me/profile';
 
-  if (imageOption?.type === 'upload') {
-    formData.append('image', imageOption.file);
-    return clientApi.patch<string>('/members/me/profile', formData);
-  }
+  const formData = createMultipartRequest(
+    data,
+    imageOption?.type === 'upload'
+      ? { profileImage: imageOption.file }
+      : undefined,
+  );
 
-  if (imageOption?.type === 'default') {
-    return clientApi.patch<string>(
-      `/members/me/profile?defaultImageId=${imageOption.imageId}`,
-      formData,
-    );
-  }
-
-  return clientApi.patch<string>('/members/me/profile', formData);
+  return clientApi.patch<string>(endpoint, formData);
 };
