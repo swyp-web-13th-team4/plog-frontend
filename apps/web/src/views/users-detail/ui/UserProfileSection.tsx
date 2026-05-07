@@ -10,6 +10,6 @@ const MOCK_PROFILE: UserProfileType = {
     '글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자',
 };
 
-export default function UserProfileSection({ userId }: { userId: string }) {
+export default function UserProfileSection() {
   return <UserProfile profile={MOCK_PROFILE} />;
 }

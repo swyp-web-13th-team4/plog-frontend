@@ -40,13 +40,14 @@ export default function FeedGridItem({
         <Image
           src={feed.postImages[0]}
           alt={`${feed.title}의 대표 이미지`}
-          width={204}
-          height={204}
+          width={208}
+          height={208}
           className="w-full object-cover"
         />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0)_100%)]" />
         <div className="absolute inset-x-3 top-3 flex items-center justify-between">
           <div className="flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
-            <Icon name="clock" />
+            <Icon name="clock" size={16} />
             <span className="caption-md">
               {formatStudyDuration(feed.studyTime)}
             </span>
@@ -55,11 +56,11 @@ export default function FeedGridItem({
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <span className="label-lg text-semantic-object-boldest">
+        <span className="label-lg truncate text-semantic-object-boldest">
           {feed.title}
         </span>
         <div onClick={(event) => event.stopPropagation()}>
-          <TagBadgeGroup tags={feed.tags} maxVisible={2} />
+          <TagBadgeGroup tags={feed.tags} maxVisible={1} />
         </div>
       </div>
     </div>

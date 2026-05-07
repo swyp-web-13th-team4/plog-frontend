@@ -42,18 +42,18 @@ export default function FeedListItem({
       <Image
         src={feed.postImages[0]}
         alt={`${feed.title}의 대표 이미지`}
-        width={116}
-        height={116}
+        width={120}
+        height={120}
         className="rounded-xl"
       />
-      <div className="flex min-w-0 flex-1 flex-col justify-between">
+      <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex justify-between gap-3">
           <div onClick={(event) => event.stopPropagation()}>
             <TagBadgeGroup tags={feed.tags} maxVisible={2} />
           </div>
           {renderAction}
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-1 flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
             {feed.title}
           </span>
