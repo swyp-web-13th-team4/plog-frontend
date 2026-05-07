@@ -19,6 +19,12 @@ function getCategoryLabel(value: string) {
 
 const EMPTY_SLOTS: null[] = [null, null, null];
 
+const EMPTY_SLOT_CATEGORIES: Record<number, string> = {
+  1: 'cafe',
+  2: 'library',
+  3: 'shared-office',
+};
+
 type SpaceRankingItemProps = {
   ranking: AnalyticsSpaceRanking | null;
   rank: number;
@@ -29,6 +35,16 @@ function SpaceRankingItem({ ranking, rank, isLocked }: SpaceRankingItemProps) {
   const isFirst = rank === 1;
   const isEmpty = ranking === null;
   const showQuestion = isLocked || isEmpty;
+
+  let categoryLabel: string;
+
+  if (!isEmpty) {
+    categoryLabel = getCategoryLabel(ranking.placeCategoryName);
+  } else if (isLocked) {
+    categoryLabel = getCategoryLabel(EMPTY_SLOT_CATEGORIES[rank] ?? 'etc');
+  } else {
+    categoryLabel = '---';
+  }
 
   const circleClassName = cn(
     'flex items-center justify-center rounded-full',
@@ -63,16 +79,12 @@ function SpaceRankingItem({ ranking, rank, isLocked }: SpaceRankingItemProps) {
       <p
         className={cn(
           'label-lg mt-4 mb-1',
-          isEmpty
+          isLocked
             ? 'text-semantic-object-bold'
             : 'text-semantic-object-boldest',
         )}
       >
-        {getCategoryLabel(
-          !isEmpty
-            ? ranking!.placeCategoryName
-            : ['cafe', 'library', 'shared-office'][rank - 1],
-        )}
+        {categoryLabel}
       </p>
       <p className="label-sm text-semantic-object-normal">
         집중도 {isEmpty ? '-' : ranking!.averageFocus}
