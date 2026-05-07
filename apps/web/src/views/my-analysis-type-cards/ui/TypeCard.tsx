@@ -36,7 +36,7 @@ const cardCva = cva('rounded-[20px] border-[3px]', {
 });
 
 const badgeCva = cva(
-  'title-xs inline-block rounded-full px-4 py-2 max-[440px]:text-semantic-label-lg max-[440px]:leading-semantic-label-lg max-[440px]:font-semantic-label-lg',
+  'title-xs inline-block rounded-full px-4 py-2 mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg',
   {
     variants: {
       theme: {
@@ -99,7 +99,7 @@ function StatBar({
 
 function CardFront({ data }: { data: (typeof TYPE_CARDS)[number] }) {
   return (
-    <div className="flex flex-col items-center p-6 max-[440px]:p-5">
+    <div className="flex flex-col items-center p-6 mobile:p-5">
       <div className="relative mb-5 aspect-square w-full overflow-hidden rounded-xl">
         <Image
           src={data.image}
@@ -110,7 +110,7 @@ function CardFront({ data }: { data: (typeof TYPE_CARDS)[number] }) {
         />
       </div>
       <NameBadge name={data.name} theme={data.theme} />
-      <p className="body-sm mt-3 text-center tracking-tight whitespace-pre-line text-semantic-object-bold max-[440px]:text-semantic-caption-md max-[440px]:leading-semantic-caption-md max-[440px]:font-semantic-caption-md">
+      <p className="body-sm mt-3 text-center tracking-tight whitespace-pre-line text-semantic-object-bold mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
         {data.description}
       </p>
     </div>
@@ -119,9 +119,9 @@ function CardFront({ data }: { data: (typeof TYPE_CARDS)[number] }) {
 
 function CardBack({ data }: { data: (typeof TYPE_CARDS)[number] }) {
   return (
-    <div className="flex flex-col items-center p-6 max-[440px]:p-5">
+    <div className="flex flex-col items-center p-6 mobile:p-5">
       <NameBadge name={data.name} theme={data.theme} />
-      <div className="mt-5 flex w-full flex-col gap-7 rounded-xl bg-semantic-system-white px-5 py-7 max-[440px]:gap-4 max-[440px]:px-3 max-[440px]:py-4">
+      <div className="mt-5 flex w-full flex-col gap-7 rounded-xl bg-semantic-system-white px-5 py-7 mobile:gap-4 mobile:px-3 mobile:py-4">
         <ul className="flex flex-col gap-3" aria-label={`${data.name} 능력치`}>
           {data.stats.map((stat) => (
             <li key={stat.label}>
@@ -141,7 +141,7 @@ function CardBack({ data }: { data: (typeof TYPE_CARDS)[number] }) {
           {data.traits.map((trait) => (
             <li
               key={trait}
-              className="label-sm flex items-start gap-2 pl-1 tracking-tight max-[440px]:text-semantic-caption-md max-[440px]:leading-semantic-caption-md max-[440px]:font-semantic-caption-md"
+              className="label-sm flex items-start gap-2 pl-1 tracking-tight mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md"
             >
               <span aria-hidden="true">•</span>
               <span className="break-keep">{trait}</span>
@@ -161,7 +161,7 @@ export default function TypeCard({ id }: TypeCardProps) {
 
   return (
     <div
-      className="w-90 cursor-pointer drop-shadow-[1.5px_1.5px_7.5px_rgba(0,0,0,0.2)] select-none perspective-distant max-[440px]:w-64"
+      className="w-90 cursor-pointer drop-shadow-[1.5px_1.5px_7.5px_rgba(0,0,0,0.2)] select-none perspective-distant mobile:w-64"
       onClick={() => setFlipped((prev) => !prev)}
       aria-label={`${data.name} 카드`}
     >

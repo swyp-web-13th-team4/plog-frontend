@@ -44,7 +44,7 @@ function PageLayout({
       <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
         <AppBar variant="navigation" title={title} onBack={onBack} />
       </header>
-      <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col items-center justify-center gap-10 p-6 pt-[calc(24px+var(--spacing-header))] max-[440px]:gap-5">
+      <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col items-center justify-center gap-10 p-6 pt-[calc(24px+var(--spacing-header))] mobile:gap-5">
         {children}
       </div>
     </>
@@ -103,15 +103,15 @@ export default function TypeCardsPage() {
       <>
         <PageLayout title="내 유형 카드" onBack={() => router.back()}>
           <div className="flex flex-col items-center gap-1.5 text-center">
-            <p className="title-md text-semantic-object-bold max-[440px]:text-semantic-label-lg max-[440px]:leading-semantic-label-lg max-[440px]:font-semantic-label-lg">
-              <span className="title-lg text-semantic-object-boldest max-[440px]:text-semantic-title-sm max-[440px]:leading-semantic-title-sm max-[440px]:font-semantic-title-sm">
+            <p className="title-md text-semantic-object-bold mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
+              <span className="title-lg text-semantic-object-boldest mobile:text-semantic-title-sm mobile:leading-semantic-title-sm mobile:font-semantic-title-sm">
                 {`${mypage?.nickname ?? ''} `}
               </span>
               님의 작업 유형은
             </p>
             <h2
               className={cn(
-                'hero-md max-[440px]:text-semantic-title-lg max-[440px]:leading-semantic-title-lg max-[440px]:font-semantic-title-lg',
+                'hero-md mobile:text-semantic-title-lg mobile:leading-semantic-title-lg mobile:font-semantic-title-lg',
                 userCard ? themeTextClass[userCard.theme] : '',
               )}
             >
@@ -139,12 +139,12 @@ export default function TypeCardsPage() {
   return (
     <PageLayout title="모든 유형 보기" onBack={() => setView('my')}>
       <div className="flex flex-col items-center gap-1.5 text-center">
-        <p className="title-md text-semantic-object-bold max-[440px]:text-semantic-label-lg max-[440px]:leading-semantic-label-lg max-[440px]:font-semantic-label-lg">
+        <p className="title-md text-semantic-object-bold mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
           유형은 총 6개로 구성되어 있어요
         </p>
         <h2
           className={cn(
-            'hero-md max-[440px]:text-semantic-title-lg max-[440px]:leading-semantic-title-lg max-[440px]:font-semantic-title-lg',
+            'hero-md mobile:text-semantic-title-lg mobile:leading-semantic-title-lg mobile:font-semantic-title-lg',
             themeTextClass[currentCard.theme],
           )}
         >

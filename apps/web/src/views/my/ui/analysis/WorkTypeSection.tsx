@@ -6,7 +6,7 @@ import { cva } from 'class-variance-authority';
 
 import { TYPE_CARDS, type TypeCardId } from '@/entities/user';
 
-const containerCva = cva('rounded-xl border-3 p-4', {
+const containerCva = cva('rounded-xl border-3 p-5', {
   variants: {
     theme: {
       green: 'bg-semantic-accent-subtler border-semantic-accent-normal',
@@ -22,7 +22,7 @@ const containerCva = cva('rounded-xl border-3 p-4', {
 });
 
 const badgeCva = cva(
-  'self-start label-md inline-block rounded-full px-3 py-1.5',
+  'self-start label-lg inline-block rounded-full px-4 py-2 mobile:text-semantic-label-md mobile:leading-semantic-label-md mobile:font-semantic-label-md mobile:px-3 mobile:py-1.5',
   {
     variants: {
       theme: {
@@ -41,12 +41,12 @@ function LockedTypeCard() {
   return (
     <div className="rounded-xl border-3 border-semantic-stroke-assistive bg-semantic-bg-deeper p-4">
       <div className="flex gap-6">
-        <div className="size-30 shrink-0 rounded-xl bg-semantic-object-subtle" />
+        <div className="size-36 shrink-0 rounded-xl bg-semantic-object-subtle mobile:size-30" />
         <div className="flex flex-1 flex-col gap-2">
-          <span className="label-md inline-block self-start rounded-full bg-semantic-object-subtle px-3 py-1.5 text-semantic-object-inverse">
+          <span className="label-lg inline-block self-start rounded-full bg-semantic-object-subtle px-4 py-2 text-semantic-object-inverse mobile:px-3 mobile:py-1.5 mobile:text-semantic-label-md mobile:leading-semantic-label-md mobile:font-semantic-label-md">
             ??? 유형
           </span>
-          <p className="caption-md break-keep text-semantic-object-bold">
+          <p className="body-sm break-keep text-semantic-object-bold mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
             작업 기록을 분석해 나의 작업 유형을 찾아드려요.
           </p>
         </div>
@@ -70,12 +70,12 @@ export default function WorkTypeSection({ workType }: WorkTypeSectionProps) {
       {cardData ? (
         <div className={containerCva({ theme: cardData.theme })}>
           <div className="flex gap-6">
-            <div className="relative size-30 shrink-0 overflow-hidden rounded-xl">
+            <div className="relative size-36 shrink-0 overflow-hidden rounded-xl mobile:size-30">
               <Image
                 src={cardData.image}
                 alt={cardData.name}
                 fill
-                sizes="120px"
+                sizes="(max-width: 440px) 120px, 144px"
                 className="object-cover"
               />
             </div>
@@ -83,9 +83,11 @@ export default function WorkTypeSection({ workType }: WorkTypeSectionProps) {
               <span className={badgeCva({ theme: cardData.theme })}>
                 {cardData.name}
               </span>
-              <p className="caption-md mt-2 flex-1 break-keep text-semantic-object-bold">
-                {cardData.summary}
-              </p>
+              <div className="flex-1">
+                <p className="body-sm mt-2 line-clamp-3 break-keep text-semantic-object-bold mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+                  {cardData.summary}
+                </p>
+              </div>
               <Link
                 href="/my/analysis/type-cards"
                 className="caption-md inline-flex items-center justify-end gap-2 text-semantic-object-normal"
