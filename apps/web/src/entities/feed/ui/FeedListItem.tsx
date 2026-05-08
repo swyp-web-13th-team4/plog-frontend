@@ -7,8 +7,6 @@ import Image from 'next/image';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { getCategoryLabel } from '@/entities/place';
-
 import { formatStudyDuration } from '../lib/format';
 import { type FeedPost } from '../model/types';
 import TagBadgeGroup from './TagBadgeGroup';
@@ -41,17 +39,23 @@ export default function FeedListItem({
         onClick && 'cursor-pointer',
       )}
     >
-      <Image
-        src={feed.postImages[0]}
-        alt={`${feed.title}의 대표 이미지`}
-        width={120}
-        height={120}
-        className="aspect-square rounded-xl"
-      />
+      <div className="relative size-30 overflow-hidden rounded-xl mobile:size-27">
+        <Image
+          src={feed.postImages[0]}
+          alt={`${feed.title}의 대표 이미지`}
+          fill
+          sizes="(max-width: 440px) 108px, 120px"
+          className="object-cover"
+        />
+      </div>
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="relative">
           <div onClick={(event) => event.stopPropagation()}>
-            <TagBadgeGroup tags={feed.tags} maxVisible={2} />
+            <TagBadgeGroup
+              tags={feed.tags}
+              maxVisible={1}
+              popoverSide="right"
+            />
           </div>
           <div className="absolute top-0 right-0">{action}</div>
         </div>
@@ -64,16 +68,6 @@ export default function FeedListItem({
           </span>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-1">
-            <Icon
-              name="pin"
-              size={16}
-              className="text-semantic-object-subtle"
-            />
-            <span className="caption-md text-semantic-object-bold">
-              {feed.placeCategory ? getCategoryLabel(feed.placeCategory) : ''}
-            </span>
-          </div>
           <div className="flex items-center gap-1">
             <Icon
               name="clock"
