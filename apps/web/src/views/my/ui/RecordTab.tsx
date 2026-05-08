@@ -51,8 +51,14 @@ export default function RecordTab() {
       tags={tags}
       onTagsChange={setTags}
       toolbarConfig={{ viewToggle: true, tagFilter: true }}
-      renderAction={(feed) => (
-        <BookmarkButton postId={feed.postId} isBookmarked={feed.bookMark} />
+      renderAction={(feed, viewType) => (
+        <BookmarkButton
+          postId={feed.postId}
+          isBookmarked={feed.bookMark}
+          className={
+            viewType === 'grid' ? 'text-semantic-object-subtle' : undefined
+          }
+        />
       )}
     />
   );

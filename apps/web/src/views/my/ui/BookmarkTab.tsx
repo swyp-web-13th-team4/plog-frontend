@@ -54,8 +54,14 @@ export default function BookmarkTab() {
       tags={tags}
       onTagsChange={setTags}
       toolbarConfig={{ viewToggle: true, tagFilter: true }}
-      renderAction={(feed) => (
-        <BookmarkButton postId={feed.postId} isBookmarked={feed.bookMark} />
+      renderAction={(feed, viewType) => (
+        <BookmarkButton
+          className={
+            viewType === 'grid' ? 'text-semantic-object-subtle' : undefined
+          }
+          postId={feed.postId}
+          isBookmarked={feed.bookMark}
+        />
       )}
     />
   );

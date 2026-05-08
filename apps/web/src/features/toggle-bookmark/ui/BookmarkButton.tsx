@@ -38,13 +38,13 @@ export default function BookmarkButton({
       type="button"
       aria-label={optimisticBookmarked ? '북마크 취소' : '북마크'}
       aria-pressed={optimisticBookmarked}
-      className={cn('cursor-pointer', className)}
+      className={cn('cursor-pointer text-semantic-object-normal', className)}
       onClick={handleClick}
     >
       {optimisticBookmarked ? (
         <Icon name="bookmark-filled" className="text-semantic-accent-normal" />
       ) : (
-        <Icon name="bookmark" className="text-semantic-object-normal" />
+        <Icon name="bookmark" className="text-current" />
       )}
     </button>
   );
