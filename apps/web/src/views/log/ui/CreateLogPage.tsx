@@ -284,22 +284,16 @@ export default function CreateLogPage({
 
     if (fieldErrors.startedAt || fieldErrors.endedAt) {
       const { startedAt, endedAt } = getValues();
-      const hasStartTime = !!startedAt;
-      const hasEndTime = !!endedAt;
       const message =
-        !hasStartTime && !hasEndTime
-          ? '작업 시간을 입력해 주세요.'
-          : !hasStartTime || !hasEndTime
-            ? '시작 시간과 종료 시간을 모두 입력해 주세요.'
-            : '시작 시간보다 빠른 시간은 선택할 수 없어요.';
+        fieldErrors.startedAt?.message ?? fieldErrors.endedAt?.message;
 
-      triggerWorkTimeFeedback(
-        hasStartTime && !hasEndTime ? 'secondary' : 'primary',
-      );
-      toast({
-        type: 'error',
-        description: message,
-      });
+      triggerWorkTimeFeedback(startedAt && !endedAt ? 'secondary' : 'primary');
+      if (message) {
+        toast({
+          type: 'error',
+          description: message,
+        });
+      }
       return;
     }
 

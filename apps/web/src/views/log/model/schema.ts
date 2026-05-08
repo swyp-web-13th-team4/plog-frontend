@@ -126,12 +126,8 @@ export const createLogSchema = z
     studyDate: dateSchema.nullable().refine((value) => value !== null, {
       message: '작업 날짜를 선택해 주세요.',
     }),
-    startedAt: timeSchema.nullable().refine((value) => value !== null, {
-      message: '작업 시간을 입력해 주세요.',
-    }),
-    endedAt: timeSchema.nullable().refine((value) => value !== null, {
-      message: '작업 시간을 입력해 주세요.',
-    }),
+    startedAt: timeSchema.nullable(),
+    endedAt: timeSchema.nullable(),
     focus: z
       .number()
       .int()
@@ -147,7 +143,23 @@ export const createLogSchema = z
     isPublic: z.boolean(),
   })
   .superRefine(({ startedAt, endedAt }, ctx) => {
-    if (!startedAt || !endedAt) return;
+    if (!startedAt && !endedAt) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['startedAt'],
+        message: '작업 시간을 입력해 주세요.',
+      });
+      return;
+    }
+
+    if (!startedAt || !endedAt) {
+      ctx.addIssue({
+        code: 'custom',
+        path: startedAt ? ['endedAt'] : ['startedAt'],
+        message: '시작 시간과 종료 시간을 모두 입력해 주세요.',
+      });
+      return;
+    }
 
     if (getMinutes(endedAt) <= getMinutes(startedAt)) {
       ctx.addIssue({
