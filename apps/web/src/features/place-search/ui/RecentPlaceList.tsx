@@ -1,13 +1,14 @@
 import { type ReactNode } from 'react';
 
-import { type RecentPlace } from '../model/recent-places';
+import { type RecentPlace } from '@/entities/place';
+
 import RecentPlaceItem from './RecentPlaceItem';
 
 type RecentPlaceListProps = {
   places: RecentPlace[];
   idleView: ReactNode;
   onSelect: (place: RecentPlace) => void;
-  onRemove: (id: string) => void;
+  onRemove: (id: number) => void;
   onClear: () => void;
 };
 

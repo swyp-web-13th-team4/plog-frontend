@@ -1,3 +1,4 @@
+export { createPost } from './api/client';
 export {
   formatLikeCount,
   formatStudyDate,
@@ -17,7 +18,14 @@ export {
   WorkConvenience,
 } from './model/place-tag';
 export { FEED_QUERY_KEY } from './model/query-keys';
-export type { FeedPage, FeedPost } from './model/types';
+export type {
+  FeedPage,
+  FeedPost,
+  PostCreateRequest,
+  PostPlace,
+  PostScope,
+  PostTime,
+} from './model/types';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';
 export { default as FeedStatsSummary } from './ui/FeedStatsSummary';

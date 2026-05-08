@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useCallback, useEffect, useState } from 'react';
+import { type ReactNode, useCallback, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
@@ -10,12 +10,14 @@ import { Button, EmptyState } from '@plog/ui';
 import { PlaceSearchContent } from '@/widgets/place-search';
 
 import {
-  addRecentPlace,
-  clearRecentPlaces,
-  getRecentPlaces,
+  buildSelectedPlaceSearchParams,
+  createSelectedPlace,
   PlaceSearchInput,
   type RecentPlace,
-  removeRecentPlace,
+  useDeleteRecentPlaceMutation,
+  useDeleteRecentPlacesMutation,
+  useRecentPlacesQuery,
+  useSaveRecentPlaceMutation,
 } from '@/features/place-search';
 
 import LoadingEmptyGraphic from '@/shared/assets/empty-graphics/loading-empty.svg';
@@ -37,10 +39,13 @@ export default function SearchPlacePage() {
   const router = useRouter();
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
-  const [recentPlaces, setRecentPlaces] = useState<RecentPlace[]>([]);
 
   const { query, places, searchState, handleQueryChange, handleClearQuery } =
     useKakaoPlaceSearch(sdkLoaded);
+  const { data: recentPlaces = [] } = useRecentPlacesQuery();
+  const saveRecentPlaceMutation = useSaveRecentPlaceMutation();
+  const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
+  const deleteRecentPlacesMutation = useDeleteRecentPlacesMutation();
 
   const displayState = sdkLoadError ? 'error' : searchState;
 
@@ -48,24 +53,52 @@ export default function SearchPlacePage() {
     window.kakao?.maps.load(() => setSdkLoaded(true));
   }, []);
 
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setRecentPlaces(getRecentPlaces());
-  }, []);
-
-  const handleSelectPlace = (
+  const handleSelectPlace = async (
     place: kakao.maps.services.PlacesSearchResultItem,
   ) => {
-    setRecentPlaces(
-      addRecentPlace({ id: place.id, placeName: place.place_name }),
-    );
-    const params = new URLSearchParams({ placeName: place.place_name });
-    router.push(`/log?${params.toString()}`);
+    const selectedPlace = createSelectedPlace(place);
+    const params = buildSelectedPlaceSearchParams(selectedPlace);
+
+    try {
+      await saveRecentPlaceMutation.mutateAsync({
+        placeName: selectedPlace.name,
+        address: selectedPlace.address,
+        latitude: selectedPlace.latitude,
+        longitude: selectedPlace.longitude,
+      });
+    } finally {
+      router.push(`/log?${params.toString()}`);
+    }
   };
 
-  const handleSelectRecentPlace = (place: RecentPlace) => {
-    const params = new URLSearchParams({ placeName: place.placeName });
-    router.push(`/log?${params.toString()}`);
+  const handleSelectRecentPlace = async (place: RecentPlace) => {
+    const selectedPlace = {
+      id: String(place.id),
+      name: place.placeName,
+      address: place.address,
+      latitude: place.latitude,
+      longitude: place.longitude,
+    };
+    const params = buildSelectedPlaceSearchParams(selectedPlace);
+
+    try {
+      await saveRecentPlaceMutation.mutateAsync({
+        placeName: selectedPlace.name,
+        address: selectedPlace.address,
+        latitude: selectedPlace.latitude,
+        longitude: selectedPlace.longitude,
+      });
+    } finally {
+      router.push(`/log?${params.toString()}`);
+    }
+  };
+
+  const handleRemoveRecentPlace = (id: number) => {
+    deleteRecentPlaceMutation.mutate(id);
+  };
+
+  const handleClearRecentPlaces = () => {
+    deleteRecentPlacesMutation.mutate();
   };
 
   return (
@@ -96,8 +129,8 @@ export default function SearchPlacePage() {
             }
             recentPlaces={recentPlaces}
             onRecentSelect={handleSelectRecentPlace}
-            onRecentRemove={(id) => setRecentPlaces(removeRecentPlace(id))}
-            onRecentClear={() => setRecentPlaces(clearRecentPlaces())}
+            onRecentRemove={handleRemoveRecentPlace}
+            onRecentClear={handleClearRecentPlaces}
             idleView={
               <CenteredView>
                 <EmptyState

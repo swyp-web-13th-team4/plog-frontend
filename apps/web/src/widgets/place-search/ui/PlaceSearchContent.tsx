@@ -9,7 +9,7 @@ type PlaceSearchContentProps = {
   resultList: ReactNode;
   recentPlaces: RecentPlace[];
   onRecentSelect: (place: RecentPlace) => void;
-  onRecentRemove: (id: string) => void;
+  onRecentRemove: (id: number) => void;
   onRecentClear: () => void;
   idleView: ReactNode;
   emptyView: ReactNode;

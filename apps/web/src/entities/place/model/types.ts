@@ -13,3 +13,32 @@ export type Place = {
   totalWorkHours: number;
   averageFocus: number;
 };
+
+export type RecentPlace = {
+  id: number;
+  placeName: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  searchedAt: string;
+};
+
+export type RecentPlacesResponse = {
+  places: RecentPlace[];
+  totalCount: number;
+};
+
+export type SaveRecentPlaceRequest = {
+  placeName: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+};
+
+export type RecentPlaceSaveResponse = {
+  totalCount: number;
+};
+
+export type RecentPlaceDeleteResponse = {
+  deletedCount: number;
+};

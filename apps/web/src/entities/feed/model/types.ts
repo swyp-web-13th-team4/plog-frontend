@@ -1,5 +1,32 @@
 import { type PlaceTagValue } from './place-tag';
 
+export type PostTime = {
+  hour: number;
+  minute: number;
+};
+
+export type PostScope = 'PUBLIC' | 'PRIVATE';
+
+export type PostPlace = {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+};
+
+export type PostCreateRequest = {
+  title: string;
+  contents: string;
+  startedAt: PostTime;
+  endedAt: PostTime;
+  studyDate: string;
+  focus: number;
+  scope: PostScope;
+  place: PostPlace;
+  placeTags: PlaceTagValue[];
+  categoryCode: string;
+};
+
 export type FeedPost = {
   postId: number;
   name: string;

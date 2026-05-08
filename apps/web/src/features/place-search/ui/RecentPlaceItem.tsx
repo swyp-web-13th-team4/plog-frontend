@@ -1,14 +1,13 @@
 import { Icon } from '@plog/ui';
 
-import {
-  formatRecentPlaceDate,
-  type RecentPlace,
-} from '../model/recent-places';
+import { type RecentPlace } from '@/entities/place';
+
+import { formatRecentPlaceDate } from '../model/recent-place-date';
 
 type RecentPlaceItemProps = {
   place: RecentPlace;
   onSelect: (place: RecentPlace) => void;
-  onRemove: (id: string) => void;
+  onRemove: (id: number) => void;
 };
 
 export default function RecentPlaceItem({
@@ -35,7 +34,7 @@ export default function RecentPlaceItem({
             </span>
           </span>
           <span className="label-md shrink-0 text-semantic-object-subtle">
-            {formatRecentPlaceDate(place.searchedDate)}
+            {formatRecentPlaceDate(place.searchedAt)}
           </span>
         </button>
         <button
