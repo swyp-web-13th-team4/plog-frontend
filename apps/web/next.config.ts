@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'storage.googleapis.com',
+        pathname: '/plog-imgstorage-bucket/**',
       },
     ],
   },
