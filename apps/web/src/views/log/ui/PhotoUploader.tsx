@@ -1,6 +1,6 @@
 'use client';
 
-import { type ChangeEvent, useEffect, useRef } from 'react';
+import { type ChangeEvent, type Ref, useEffect, useRef } from 'react';
 
 import Image from 'next/image';
 
@@ -12,12 +12,18 @@ type PhotoUploaderProps = {
   photos: PhotoPreview[];
   onAdd: (files: File[]) => void;
   onRemove: (id: string) => void;
+  onFileSizeExceeded?: () => void;
+  uploadButtonRef?: Ref<HTMLButtonElement>;
 };
+
+const MAX_PHOTO_FILE_SIZE = 10 * 1024 * 1024;
 
 export default function PhotoUploader({
   photos,
   onAdd,
   onRemove,
+  onFileSizeExceeded,
+  uploadButtonRef,
 }: PhotoUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canAddMore = photos.length < MAX_PHOTO_COUNT;
@@ -37,9 +43,18 @@ export default function PhotoUploader({
       'image/heic',
       'image/heif',
     ]);
-    const selectedFiles = Array.from(event.target.files ?? []).filter((file) =>
+    const acceptedFiles = Array.from(event.target.files ?? []).filter((file) =>
       ACCEPTED_TYPES.has(file.type),
     );
+    const selectedFiles = acceptedFiles.filter(
+      (file) => file.size <= MAX_PHOTO_FILE_SIZE,
+    );
+
+    if (acceptedFiles.length !== selectedFiles.length) {
+      onFileSizeExceeded?.();
+    }
+
+    event.target.value = '';
 
     if (selectedFiles.length === 0) return;
     onAdd(selectedFiles);
@@ -57,6 +72,7 @@ export default function PhotoUploader({
         onChange={handleFileChange}
       />
       <button
+        ref={uploadButtonRef}
         type="button"
         disabled={!canAddMore}
         className="flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"

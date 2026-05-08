@@ -7,6 +7,7 @@ import {
   useEffect,
 } from 'react';
 import {
+  type FieldErrors,
   type FieldPath,
   type FieldPathValue,
   useForm,
@@ -15,7 +16,15 @@ import {
 
 import { useRouter } from 'next/navigation';
 
-import { Button, Field, Icon, Input, Switch, Textarea } from '@plog/ui';
+import {
+  Button,
+  Field,
+  Icon,
+  Input,
+  Switch,
+  Textarea,
+  useToast,
+} from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { type SelectedPlace } from '@/features/place-search/model/selected-place';
@@ -30,6 +39,7 @@ import { createLogResolver } from '../model/resolver';
 import { type CreateLogFormValues } from '../model/types';
 import { useCreateLogMutation } from '../model/use-create-log-mutation';
 import { usePhotoUpload } from '../model/use-photo-upload';
+import { useScrollFocusFeedback } from '../model/use-scroll-focus-feedback';
 import PhotoUploader from './PhotoUploader';
 import PrivacySettingSection from './PrivacySettingSection';
 import RatingPicker from './RatingPicker';
@@ -85,14 +95,62 @@ export default function CreateLogPage({
   initialPlace = null,
 }: CreateFeedPageProps) {
   const router = useRouter();
+  const {
+    fieldRef: photoFieldRef,
+    focusRef: photoUploadButtonRef,
+    trigger: triggerPhotoFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
+  const {
+    fieldRef: titleFieldRef,
+    focusRef: titleInputRef,
+    trigger: triggerTitleFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLElement>();
+  const {
+    fieldRef: contentsFieldRef,
+    focusRef: contentsInputRef,
+    trigger: triggerContentsFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLTextAreaElement>();
+  const {
+    fieldRef: placeFieldRef,
+    focusRef: placeInputRef,
+    trigger: triggerPlaceFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLElement>();
+  const {
+    fieldRef: placeCategoryFieldRef,
+    focusRef: placeCategoryButtonRef,
+    trigger: triggerPlaceCategoryFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
+  const {
+    fieldRef: workDateFieldRef,
+    focusRef: workDateButtonRef,
+    trigger: triggerWorkDateFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
+  const {
+    fieldRef: workTimeFieldRef,
+    focusRef: startTimeButtonRef,
+    secondaryFocusRef: endTimeButtonRef,
+    trigger: triggerWorkTimeFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
+  const {
+    fieldRef: focusFieldRef,
+    focusRef: focusFirstButtonRef,
+    trigger: triggerFocusFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
+  const {
+    fieldRef: reviewTagsFieldRef,
+    focusRef: reviewTagsButtonRef,
+    trigger: triggerReviewTagsFeedback,
+  } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
 
   const { photos, handleAddPhotos, handleRemovePhoto } = usePhotoUpload();
-  const createLogMutation = useCreateLogMutation();
+  const { toast } = useToast();
 
   const {
     register,
     handleSubmit,
     setValue,
+    setError,
+    getValues,
     trigger,
     control,
     formState: { errors, isSubmitted },
@@ -110,6 +168,25 @@ export default function CreateLogPage({
       focus: null,
       placeTags: [],
       isPublic: false,
+    },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const createLogMutation = useCreateLogMutation({
+    onTitleForbidden: () => {
+      setError('title', {
+        type: 'server',
+        message: '사용할 수 없는 단어가 포함되어 있어요.',
+      });
+      triggerTitleFeedback();
+    },
+    onContentsForbidden: () => {
+      setError('contents', {
+        type: 'server',
+        message: '사용할 수 없는 단어가 포함되어 있어요.',
+      });
+      triggerContentsFeedback();
     },
   });
 
@@ -148,113 +225,246 @@ export default function CreateLogPage({
     router.replace('/log', { scroll: false });
   };
 
+  const handleInvalidSubmit = (
+    fieldErrors: FieldErrors<CreateLogFormValues>,
+  ) => {
+    const photoErrorMessage = fieldErrors.photos?.message;
+
+    if (photoErrorMessage) {
+      triggerPhotoFeedback();
+      toast({
+        type: 'error',
+        description: photoErrorMessage,
+      });
+      return;
+    }
+
+    if (fieldErrors.title) {
+      triggerTitleFeedback();
+      return;
+    }
+
+    if (fieldErrors.contents) {
+      triggerContentsFeedback();
+      return;
+    }
+
+    const placeErrorMessage = fieldErrors.place?.message;
+
+    if (placeErrorMessage) {
+      triggerPlaceFeedback();
+      toast({
+        type: 'error',
+        description: placeErrorMessage,
+      });
+      return;
+    }
+
+    const placeCategoryErrorMessage = fieldErrors.categoryCode?.message;
+
+    if (placeCategoryErrorMessage) {
+      triggerPlaceCategoryFeedback();
+      toast({
+        type: 'error',
+        description: placeCategoryErrorMessage,
+      });
+      return;
+    }
+
+    const workDateErrorMessage = fieldErrors.studyDate?.message;
+
+    if (workDateErrorMessage) {
+      triggerWorkDateFeedback();
+      toast({
+        type: 'error',
+        description: workDateErrorMessage,
+      });
+      return;
+    }
+
+    if (fieldErrors.startedAt || fieldErrors.endedAt) {
+      const { startedAt, endedAt } = getValues();
+      const hasStartTime = !!startedAt;
+      const hasEndTime = !!endedAt;
+      const message =
+        !hasStartTime && !hasEndTime
+          ? '작업 시간을 입력해 주세요.'
+          : !hasStartTime || !hasEndTime
+            ? '시작 시간과 종료 시간을 모두 입력해 주세요.'
+            : '시작 시간보다 빠른 시간은 선택할 수 없어요.';
+
+      triggerWorkTimeFeedback(
+        hasStartTime && !hasEndTime ? 'secondary' : 'primary',
+      );
+      toast({
+        type: 'error',
+        description: message,
+      });
+      return;
+    }
+
+    const focusErrorMessage = fieldErrors.focus?.message;
+
+    if (focusErrorMessage) {
+      triggerFocusFeedback();
+      toast({
+        type: 'error',
+        description: focusErrorMessage,
+      });
+      return;
+    }
+
+    const reviewTagsErrorMessage = fieldErrors.placeTags?.message;
+
+    if (reviewTagsErrorMessage) {
+      triggerReviewTagsFeedback();
+      toast({
+        type: 'error',
+        description: reviewTagsErrorMessage,
+      });
+    }
+  };
+
   return (
     <form
       className="bg-semantic-bg-standard"
       noValidate
-      onSubmit={handleSubmit((values) => createLogMutation.mutate(values))}
+      onSubmit={handleSubmit(
+        (values) => createLogMutation.mutate(values),
+        handleInvalidSubmit,
+      )}
     >
       <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
-        <Field label="사진 등록" required error={errors.photos?.message}>
-          <PhotoUploader
-            photos={photos}
-            onAdd={(files) => {
-              handleAddPhotos(files);
-            }}
-            onRemove={(id) => {
-              handleRemovePhoto(id);
-            }}
-          />
-        </Field>
-        <Field label="제목" required error={errors.title?.message}>
-          <Input
-            {...titleField}
-            onChange={(event) => {
-              titleField.onChange(event);
-            }}
-            onClear={() => {
-              setFormValue('title', '');
-            }}
-            placeholder="제목을 입력해 주세요."
-            maxLength={20}
-          />
-        </Field>
-        <Field
-          label="환경 기록을 작성해 주세요"
-          required
-          error={errors.contents?.message}
-        >
-          <Textarea
-            {...contentsField}
-            onChange={(event) => {
-              contentsField.onChange(event);
-            }}
-            placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
-            maxLength={300}
-            className="[&_textarea]:body-sm"
-          />
-        </Field>
+        <div ref={photoFieldRef}>
+          <Field label="사진 등록" required>
+            <PhotoUploader
+              photos={photos}
+              uploadButtonRef={photoUploadButtonRef}
+              onAdd={(files) => {
+                handleAddPhotos(files);
+              }}
+              onRemove={(id) => {
+                handleRemovePhoto(id);
+              }}
+              onFileSizeExceeded={() => {
+                toast({
+                  type: 'error',
+                  description: '10MB 이하의 이미지 파일만 등록 가능해요.',
+                });
+              }}
+            />
+          </Field>
+        </div>
+        <div ref={titleFieldRef}>
+          <Field label="제목" required error={errors.title?.message}>
+            <Input
+              {...titleField}
+              ref={(element) => {
+                titleField.ref(element);
+                titleInputRef(element);
+              }}
+              onChange={(event) => {
+                titleField.onChange(event);
+              }}
+              onClear={() => {
+                setFormValue('title', '');
+              }}
+              placeholder="제목을 입력해 주세요."
+              maxLength={20}
+            />
+          </Field>
+        </div>
+        <div ref={contentsFieldRef}>
+          <Field
+            label="환경 기록을 작성해 주세요"
+            required
+            error={errors.contents?.message}
+          >
+            <Textarea
+              {...contentsField}
+              ref={(element) => {
+                contentsField.ref(element);
+                contentsInputRef(element);
+              }}
+              onChange={(event) => {
+                contentsField.onChange(event);
+              }}
+              placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
+              maxLength={300}
+              className="[&_textarea]:body-sm"
+            />
+          </Field>
+        </div>
       </section>
       <SectionDivider />
       <section className="flex flex-col gap-6 px-6 py-6">
         <div className="flex flex-col gap-3">
-          <Field label="작업 장소" required error={errors.place?.message}>
-            <Input
-              value={place?.name ?? ''}
-              placeholder="위치를 입력해 주세요."
-              readOnly
-              onClear={handleClearPlaceName}
-              onClick={() => router.push('/log/place-search')}
-            />
-          </Field>
-          <Field error={errors.categoryCode?.message}>
-            <PlaceCategorySheet
-              value={placeCategory}
-              onChange={(value) => {
-                setFormValue('categoryCode', value);
-              }}
-            >
-              <SelectTriggerButton
-                value={
-                  PLACE_CATEGORIES.find((c) => c.value === placeCategory)
-                    ?.label ?? null
-                }
-                placeholder="장소 카테고리를 선택해 주세요."
-                icon={
-                  <Icon
-                    name="chevron-right"
-                    size={20}
-                    className="text-semantic-object-subtle"
-                  />
-                }
+          <div ref={placeFieldRef}>
+            <Field label="작업 장소" required>
+              <Input
+                ref={placeInputRef}
+                value={place?.name ?? ''}
+                placeholder="위치를 입력해 주세요."
+                readOnly
+                onClear={handleClearPlaceName}
+                onClick={() => router.push('/log/place-search')}
               />
-            </PlaceCategorySheet>
-          </Field>
+            </Field>
+          </div>
+          <div ref={placeCategoryFieldRef}>
+            <Field>
+              <PlaceCategorySheet
+                value={placeCategory}
+                onChange={(value) => {
+                  setFormValue('categoryCode', value);
+                }}
+              >
+                <SelectTriggerButton
+                  ref={placeCategoryButtonRef}
+                  value={
+                    PLACE_CATEGORIES.find((c) => c.value === placeCategory)
+                      ?.label ?? null
+                  }
+                  placeholder="장소 카테고리를 선택해 주세요."
+                  icon={
+                    <Icon
+                      name="chevron-right"
+                      size={20}
+                      className="text-semantic-object-subtle"
+                    />
+                  }
+                />
+              </PlaceCategorySheet>
+            </Field>
+          </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Field label="작업 날짜" required error={errors.studyDate?.message}>
-            <WorkDateDialog
-              value={workDate}
-              onChange={(value) => {
-                setFormValue('studyDate', value);
-              }}
-            >
-              <SelectTriggerButton
-                value={workDate ? formatDisplayDate(workDate) : null}
-                placeholder="YYYY.MM.DD"
-                icon={
-                  <Icon
-                    name="calendar"
-                    size={20}
-                    className="text-semantic-object-subtle"
-                  />
-                }
-                aria-label="작업 날짜 선택"
-              />
-            </WorkDateDialog>
-          </Field>
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="시작 시간" required error={errors.startedAt?.message}>
+          <div ref={workDateFieldRef}>
+            <Field label="작업 날짜" required>
+              <WorkDateDialog
+                value={workDate}
+                onChange={(value) => {
+                  setFormValue('studyDate', value);
+                }}
+              >
+                <SelectTriggerButton
+                  ref={workDateButtonRef}
+                  value={workDate ? formatDisplayDate(workDate) : null}
+                  placeholder="YYYY.MM.DD"
+                  icon={
+                    <Icon
+                      name="calendar"
+                      size={20}
+                      className="text-semantic-object-subtle"
+                    />
+                  }
+                  aria-label="작업 날짜 선택"
+                />
+              </WorkDateDialog>
+            </Field>
+          </div>
+          <div ref={workTimeFieldRef} className="grid grid-cols-2 gap-4">
+            <Field label="시작 시간" required>
               <WorkTimeDialog
                 value={startTime}
                 onChange={(value) => {
@@ -265,6 +475,7 @@ export default function CreateLogPage({
                 name="startTime"
               >
                 <SelectTriggerButton
+                  ref={startTimeButtonRef}
                   value={startTime ? formatTimeValue(startTime) : null}
                   placeholder="--:--"
                   icon={
@@ -278,7 +489,7 @@ export default function CreateLogPage({
                 />
               </WorkTimeDialog>
             </Field>
-            <Field label="종료 시간" required error={errors.endedAt?.message}>
+            <Field label="종료 시간" required>
               <WorkTimeDialog
                 value={endTime}
                 onChange={(value) => {
@@ -288,6 +499,7 @@ export default function CreateLogPage({
                 name="endTime"
               >
                 <SelectTriggerButton
+                  ref={endTimeButtonRef}
                   value={endTime ? formatTimeValue(endTime) : null}
                   placeholder="--:--"
                   icon={
@@ -306,26 +518,22 @@ export default function CreateLogPage({
       </section>
       <SectionDivider />
       <section className="flex flex-col gap-6 px-6 py-6">
-        <div className="flex flex-col gap-4">
-          <Field
-            label="집중도를 평가해 주세요"
-            required
-            error={errors.focus?.message}
-          >
+        <div ref={focusFieldRef} className="flex flex-col gap-4">
+          <Field label="집중도를 평가해 주세요" required>
             <RatingPicker
               value={focusScore}
+              firstButtonRef={focusFirstButtonRef}
               onChange={(value) => {
                 setFormValue('focus', value);
               }}
             />
           </Field>
         </div>
-        <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6">
-          <Field
-            label="후기 요약 태그를 선택해 주세요"
-            required
-            error={errors.placeTags?.message}
-          >
+        <div
+          ref={reviewTagsFieldRef}
+          className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6"
+        >
+          <Field label="후기 요약 태그를 선택해 주세요" required>
             <ReviewTagsSheet
               value={reviewTags}
               onChange={(value) => {
@@ -336,6 +544,7 @@ export default function CreateLogPage({
                 variant="outline"
                 size="large"
                 fullWidth
+                ref={reviewTagsButtonRef}
                 iconLeft={<Icon name="plus" />}
                 className="text-semantic-object-normal [&>svg]:size-4!"
               >

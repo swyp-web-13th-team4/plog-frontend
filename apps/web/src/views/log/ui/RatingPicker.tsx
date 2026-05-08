@@ -1,6 +1,6 @@
 'use client';
 
-import { type KeyboardEvent, useRef } from 'react';
+import { type KeyboardEvent, type Ref, useRef } from 'react';
 
 import FocusLevelDefault1 from '@/shared/assets/focus-levels/focus-level-default-1.svg';
 import FocusLevelDefault2 from '@/shared/assets/focus-levels/focus-level-default-2.svg';
@@ -51,9 +51,26 @@ const FOCUS_LEVEL_OPTIONS = [
 type RatingPickerProps = {
   value: FocusLevel | null;
   onChange: (score: FocusLevel) => void;
+  firstButtonRef?: Ref<HTMLButtonElement>;
 };
 
-export default function RatingPicker({ value, onChange }: RatingPickerProps) {
+function assignRef<TElement>(
+  ref: Ref<TElement> | undefined,
+  value: TElement | null,
+) {
+  if (!ref) return;
+  if (typeof ref === 'function') {
+    ref(value);
+  } else {
+    ref.current = value;
+  }
+}
+
+export default function RatingPicker({
+  value,
+  onChange,
+  firstButtonRef,
+}: RatingPickerProps) {
   const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -93,6 +110,9 @@ export default function RatingPicker({ value, onChange }: RatingPickerProps) {
               key={score}
               ref={(el) => {
                 radioRefs.current[index] = el;
+                if (index === 0) {
+                  assignRef(firstButtonRef, el);
+                }
               }}
               type="button"
               role="radio"

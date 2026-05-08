@@ -32,39 +32,91 @@ const placeCategorySchema = z.enum([
   'etc',
 ]);
 
+const titleSchema = z
+  .string()
+  .trim()
+  .superRefine((value, ctx) => {
+    if (value.length === 0) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '필수 입력 항목이에요.',
+      });
+      return;
+    }
+
+    if (!/^[가-힣A-Za-z0-9]+$/.test(value)) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '한글, 영문, 숫자만 입력 가능해요.',
+      });
+      return;
+    }
+
+    if (value.length < 2) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '최소 2자 이상 입력해 주세요.',
+      });
+      return;
+    }
+
+    if (value.length > 20) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '제목은 20자 이내로 입력해 주세요.',
+      });
+    }
+  });
+
+const contentsSchema = z
+  .string()
+  .trim()
+  .superRefine((value, ctx) => {
+    if (value.length === 0) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '필수 입력 항목이에요.',
+      });
+      return;
+    }
+
+    if (value.length < 20) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '최소 20자 이상 입력해 주세요.',
+      });
+      return;
+    }
+
+    if (value.length > 300) {
+      ctx.addIssue({
+        code: 'custom',
+        message: '환경 기록은 300자 이내로 입력해 주세요.',
+      });
+    }
+  });
+
 function getMinutes(value: { hour: number; minute: number }) {
   return value.hour * 60 + value.minute;
 }
 
 export const createLogSchema = z
   .object({
-    title: z
-      .string()
-      .trim()
-      .min(1, '필수 입력 항목이에요.')
-      .max(20, '제목은 20자 이내로 입력해 주세요.'),
-    contents: z
-      .string()
-      .trim()
-      .min(1, '환경 기록을 입력해 주세요.')
-      .max(300, '환경 기록은 300자 이내로 입력해 주세요.'),
+    title: titleSchema,
+    contents: contentsSchema,
     photos: z
       .array(z.custom<PhotoPreview>())
-      .min(1, '사진을 최소 1장 이상 등록해 주세요.')
+      .min(1, '사진을 1장 이상 등록해 주세요.')
       .max(
         MAX_PHOTO_COUNT,
         `사진은 최대 ${MAX_PHOTO_COUNT}장까지 등록할 수 있어요.`,
       )
       .refine(
-        (file) => {
-          if (file instanceof File) {
-            file.size <= MAX_FILE_SIZE;
-          }
-        },
-        { error: '10MB 이하의 이미지 파일만 등록 가능해요.' },
+        (photos) => photos.every(({ file }) => file.size <= MAX_FILE_SIZE),
+        { message: '10MB 이하의 이미지 파일만 등록 가능해요.' },
       ),
     place: placeSchema.nullable().refine((value) => value !== null, {
-      message: '작업 장소를 선택해 주세요.',
+      message: '작업 장소를 입력해 주세요.',
     }),
     categoryCode: placeCategorySchema
       .nullable()
@@ -75,10 +127,10 @@ export const createLogSchema = z
       message: '작업 날짜를 선택해 주세요.',
     }),
     startedAt: timeSchema.nullable().refine((value) => value !== null, {
-      message: '시작 시간을 선택해 주세요.',
+      message: '작업 시간을 입력해 주세요.',
     }),
     endedAt: timeSchema.nullable().refine((value) => value !== null, {
-      message: '종료 시간을 선택해 주세요.',
+      message: '작업 시간을 입력해 주세요.',
     }),
     focus: z
       .number()
@@ -87,11 +139,11 @@ export const createLogSchema = z
       .max(5)
       .nullable()
       .refine((value) => value !== null, {
-        message: '집중도를 선택해 주세요.',
+        message: '오늘의 집중도를 선택해 주세요.',
       }),
     placeTags: z
       .array(z.string())
-      .min(1, '후기 요약 태그를 1개 이상 선택해 주세요.'),
+      .min(1, '최소 1개 이상의 태그를 선택해 주세요.'),
     isPublic: z.boolean(),
   })
   .superRefine(({ startedAt, endedAt }, ctx) => {
@@ -101,7 +153,7 @@ export const createLogSchema = z
       ctx.addIssue({
         code: 'custom',
         path: ['endedAt'],
-        message: '종료 시간은 시작 시간보다 늦어야 해요.',
+        message: '시작 시간보다 빠른 시간은 선택할 수 없어요.',
       });
     }
   });
