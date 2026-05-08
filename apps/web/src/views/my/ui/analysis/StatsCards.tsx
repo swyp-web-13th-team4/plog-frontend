@@ -42,7 +42,7 @@ export default function StatsCards({
       <StatCard
         icon="clock"
         label="작업 시간"
-        value={totalStudyTime}
+        value={Math.floor(totalStudyTime / 60)}
         unit="h"
       />
     </div>
