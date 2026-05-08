@@ -5,10 +5,14 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, EmptyState, Icon, Spinner, useToast } from '@plog/ui';
+import { Button, Icon, Spinner, useToast } from '@plog/ui';
 
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
-import { ScrollToTopButton } from '@/shared/ui';
+import {
+  FetchErrorEmptyState,
+  RecordEmptyState,
+  ScrollToTopButton,
+} from '@/shared/ui';
 
 import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
@@ -54,19 +58,9 @@ export default function FeedPage() {
   if (isError && posts.length === 0) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <EmptyState
-          title="데이터를 불러오지 못했습니다"
+        <FetchErrorEmptyState
           description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
-          actions={
-            <Button
-              type="button"
-              variant="outline"
-              size="small"
-              onClick={() => refetch()}
-            >
-              다시 시도
-            </Button>
-          }
+          onRetry={refetch}
         />
       </div>
     );
@@ -75,9 +69,7 @@ export default function FeedPage() {
   if (posts.length === 0) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <EmptyState
-          title="아직 올라온 기록이 없어요"
-          description="가장 먼저 기록을 남겨볼까요?"
+        <RecordEmptyState
           actions={
             <Button
               variant="outline"
