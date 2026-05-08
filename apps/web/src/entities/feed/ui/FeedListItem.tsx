@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { getCategoryLabel } from '@/entities/place';
+
 import { formatStudyDuration } from '../lib/format';
 import { type FeedPost } from '../model/types';
 import TagBadgeGroup from './TagBadgeGroup';
@@ -44,14 +46,14 @@ export default function FeedListItem({
         alt={`${feed.title}의 대표 이미지`}
         width={120}
         height={120}
-        className="rounded-xl"
+        className="aspect-square rounded-xl"
       />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex justify-between gap-3">
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <div className="relative">
           <div onClick={(event) => event.stopPropagation()}>
             <TagBadgeGroup tags={feed.tags} maxVisible={2} />
           </div>
-          {action}
+          <div className="absolute top-0 right-0">{action}</div>
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
@@ -69,7 +71,7 @@ export default function FeedListItem({
               className="text-semantic-object-subtle"
             />
             <span className="caption-md text-semantic-object-bold">
-              {feed.placeCategory ?? ''}
+              {feed.placeCategory ? getCategoryLabel(feed.placeCategory) : ''}
             </span>
           </div>
           <div className="flex items-center gap-1">
