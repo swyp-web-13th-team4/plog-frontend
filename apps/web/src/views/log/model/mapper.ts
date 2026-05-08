@@ -35,7 +35,7 @@ export function mapCreateLogForm(
     endedAt: values.endedAt,
     studyDate: formatStudyDate(values.studyDate),
     focus: values.focus,
-    scope: values.isPublic ? 'PUBLIC' : 'PRIVATE',
+    scope: values.scope,
     place: {
       name: values.place.name,
       address: values.place.address,

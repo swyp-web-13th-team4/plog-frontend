@@ -32,6 +32,8 @@ const placeCategorySchema = z.enum([
   'etc',
 ]);
 
+const scopeSchema = z.enum(['PUBLIC', 'PRIVATE']);
+
 const titleSchema = z
   .string()
   .trim()
@@ -140,7 +142,7 @@ export const createLogSchema = z
     placeTags: z
       .array(z.string())
       .min(1, '최소 1개 이상의 태그를 선택해 주세요.'),
-    isPublic: z.boolean(),
+    scope: scopeSchema,
   })
   .superRefine(({ startedAt, endedAt }, ctx) => {
     if (!startedAt && !endedAt) {

@@ -200,7 +200,8 @@ export default function CreateLogPage({
   const endTime = useWatch({ control, name: 'endedAt' });
   const focusScore = useWatch({ control, name: 'focus' });
   const reviewTags = useWatch({ control, name: 'placeTags' });
-  const isPublic = useWatch({ control, name: 'isPublic' });
+  const scope = useWatch({ control, name: 'scope' });
+  const isPublic = scope === 'PUBLIC';
 
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
     fieldName: TFieldName,
@@ -232,17 +233,17 @@ export default function CreateLogPage({
       endedAt: endTime,
       focus: focusScore,
       placeTags: reviewTags,
-      isPublic,
+      scope,
     });
   }, [
     contents,
     endTime,
     focusScore,
-    isPublic,
     place,
     placeCategory,
     reviewTags,
     setCreateLogValues,
+    scope,
     startTime,
     title,
     workDate,
@@ -584,7 +585,9 @@ export default function CreateLogPage({
         >
           <Switch
             checked={isPublic}
-            onCheckedChange={(value) => setFormValue('isPublic', value)}
+            onCheckedChange={(value) =>
+              setFormValue('scope', value ? 'PUBLIC' : 'PRIVATE')
+            }
             aria-label="공개 설정"
           />
         </Field>

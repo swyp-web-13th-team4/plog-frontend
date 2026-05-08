@@ -4,7 +4,7 @@ import { combine, persist } from 'zustand/middleware';
 
 import { type SelectedPlace } from '@/features/place-search/model/selected-place';
 
-import { type PlaceTagValue } from '@/entities/feed';
+import { type PlaceTagValue, type PostScope } from '@/entities/feed';
 import { type PlaceCategoryValue } from '@/entities/place';
 
 import { type FocusLevel } from '../ui/RatingPicker';
@@ -22,7 +22,7 @@ export const initialCreateLogValues = {
   endedAt: null as TimeValue | null,
   focus: null as FocusLevel | null,
   placeTags: [] as PlaceTagValue[],
-  isPublic: false,
+  scope: 'PRIVATE' as PostScope,
 };
 
 const initialState = {
@@ -41,7 +41,7 @@ export function hasCreateLogValues(values: CreateLogStoredValues) {
     values.endedAt !== null ||
     values.focus !== null ||
     values.placeTags.length > 0 ||
-    values.isPublic
+    values.scope === 'PUBLIC'
   );
 }
 
@@ -56,6 +56,18 @@ export const useCreateLogStore = create(
     {
       name: 'plog:create-log',
       partialize: (state) => ({ values: state.values }),
+      merge: (persistedState, currentState) => {
+        const persisted = persistedState as Partial<typeof initialState>;
+
+        return {
+          ...currentState,
+          ...persisted,
+          values: {
+            ...currentState.values,
+            ...persisted.values,
+          },
+        };
+      },
     },
   ),
 );

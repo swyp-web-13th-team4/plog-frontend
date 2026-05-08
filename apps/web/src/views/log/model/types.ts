@@ -2,7 +2,7 @@ import { type DateValue, type TimeValue } from '@plog/ui';
 
 import { type SelectedPlace } from '@/features/place-search/model/selected-place';
 
-import { type PlaceTagValue } from '@/entities/feed';
+import { type PlaceTagValue, type PostScope } from '@/entities/feed';
 import { type PlaceCategoryValue } from '@/entities/place';
 
 import { type FocusLevel } from '../ui/RatingPicker';
@@ -19,5 +19,5 @@ export type CreateLogFormValues = {
   endedAt: TimeValue | null;
   focus: FocusLevel | null;
   placeTags: PlaceTagValue[];
-  isPublic: boolean;
+  scope: PostScope;
 };
