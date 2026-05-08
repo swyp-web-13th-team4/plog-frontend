@@ -45,6 +45,7 @@ export default function TagBadgeGroup({
       {hasHiddenTags && (
         <div className="relative">
           <button
+            className="block"
             type="button"
             aria-expanded={isExpanded}
             aria-controls={hiddenTagsId}
