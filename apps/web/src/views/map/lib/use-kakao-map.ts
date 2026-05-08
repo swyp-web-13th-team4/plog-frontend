@@ -2,12 +2,10 @@
 
 import { useEffect, useRef } from 'react';
 
-import { type Place, type PlaceLayer } from '@/entities/place';
+import { type PlaceLayer } from '@/entities/place';
 
+import { type MapBounds, type MapPin } from '../model/types';
 import { buildPinHtml, getClusterStyles, WRAPPER_Y_ANCHOR } from './kakao-pin';
-
-const getPlaceCount = (place: Place, type: PlaceLayer) =>
-  type === 'record' ? (place.recordCount ?? 0) : (place.bookmarkCount ?? 0);
 
 const DEFAULT_CENTER = { lat: 37.5665, lng: 126.978 };
 const DEFAULT_LEVEL = 6;
@@ -21,16 +19,17 @@ const SELECTED_OVERLAY_Z_INDEX = 4;
 type SelectedInfo = {
   el: HTMLDivElement;
   overlay: kakao.maps.CustomOverlay;
-  place: Place;
+  pin: MapPin;
   placeType: PlaceLayer;
   markerSrc: string;
   selectedSrc: string;
 };
 
 type UseKakaoMapOptions = {
-  recordPlaces?: Place[];
-  bookmarkPlaces?: Place[];
-  onPlaceSelect?: (place: Place | null, type?: PlaceLayer) => void;
+  recordPins?: MapPin[];
+  bookmarkPins?: MapPin[];
+  onPlaceSelect?: (pin: MapPin | null, type?: PlaceLayer) => void;
+  onBoundsChange?: (bounds: MapBounds) => void;
 };
 
 function panToPosition(
@@ -49,9 +48,10 @@ function panToPosition(
 }
 
 export function useKakaoMap({
-  recordPlaces = [],
-  bookmarkPlaces = [],
+  recordPins = [],
+  bookmarkPins = [],
   onPlaceSelect,
+  onBoundsChange,
 }: UseKakaoMapOptions = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<kakao.maps.Map | null>(null);
@@ -59,6 +59,7 @@ export function useKakaoMap({
 
   const selectedRef = useRef<SelectedInfo | null>(null);
   const onPlaceSelectRef = useRef(onPlaceSelect);
+  const onBoundsChangeRef = useRef(onBoundsChange);
   const recordOverlaysRef = useRef<kakao.maps.CustomOverlay[]>([]);
   const bookmarkOverlaysRef = useRef<kakao.maps.CustomOverlay[]>([]);
   const recordMarkersRef = useRef<kakao.maps.Marker[]>([]);
@@ -78,15 +79,26 @@ export function useKakaoMap({
     onPlaceSelectRef.current = onPlaceSelect;
   });
 
+  useEffect(() => {
+    onBoundsChangeRef.current = onBoundsChange;
+  });
+
+  const updateBounds = (map: kakao.maps.Map) => {
+    const bounds = map.getBounds();
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    onBoundsChangeRef.current?.({
+      swLat: sw.getLat(),
+      swLng: sw.getLng(),
+      neLat: ne.getLat(),
+      neLng: ne.getLng(),
+    });
+  };
+
   const deselect = () => {
     if (!selectedRef.current) return;
-    const { el, overlay, place, placeType, markerSrc } = selectedRef.current;
-    el.innerHTML = buildPinHtml(
-      markerSrc,
-      place.imageUrl,
-      getPlaceCount(place, placeType),
-      false,
-    );
+    const { el, overlay, pin, markerSrc } = selectedRef.current;
+    el.innerHTML = buildPinHtml(markerSrc, pin.thumbnailUrl, pin.count, false);
     overlay.setZIndex(OVERLAY_Z_INDEX);
     selectedRef.current = null;
   };
@@ -127,7 +139,7 @@ export function useKakaoMap({
   const createPinClickHandler =
     (
       map: kakao.maps.Map,
-      place: Place,
+      pin: MapPin,
       position: kakao.maps.LatLng,
       el: HTMLDivElement,
       overlay: kakao.maps.CustomOverlay,
@@ -140,27 +152,27 @@ export function useKakaoMap({
       deselect();
       el.innerHTML = buildPinHtml(
         selectedSrc,
-        place.imageUrl,
-        getPlaceCount(place, placeType),
+        pin.thumbnailUrl,
+        pin.count,
         true,
       );
       overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
       selectedRef.current = {
         el,
         overlay,
-        place,
+        pin,
         placeType,
         markerSrc,
         selectedSrc,
       };
       if (map.getLevel() > SELECTED_LEVEL) map.setLevel(SELECTED_LEVEL);
       panToPosition(map, position, containerRef.current?.clientHeight ?? 0);
-      onPlaceSelectRef.current?.(place, placeType);
+      onPlaceSelectRef.current?.(pin, placeType);
     };
 
-  const buildPlaceLayer = (
+  const buildPinLayer = (
     map: kakao.maps.Map,
-    places: Place[],
+    pins: MapPin[],
     markerSrc: string,
     selectedSrc: string,
     placeType: PlaceLayer,
@@ -173,13 +185,16 @@ export function useKakaoMap({
     const markers: kakao.maps.Marker[] = [];
     const infos = new Map<string, SelectedInfo>();
 
-    places.forEach((place) => {
-      const position = new window.kakao.maps.LatLng(place.lat, place.lng);
+    pins.forEach((pin) => {
+      const position = new window.kakao.maps.LatLng(
+        pin.latitude,
+        pin.longitude,
+      );
       const el = document.createElement('div');
       el.innerHTML = buildPinHtml(
         markerSrc,
-        place.imageUrl,
-        getPlaceCount(place, placeType),
+        pin.thumbnailUrl,
+        pin.count,
         false,
       );
 
@@ -191,10 +206,10 @@ export function useKakaoMap({
         zIndex: OVERLAY_Z_INDEX,
       });
 
-      infos.set(`${placeType}:${place.id}`, {
+      infos.set(`${placeType}:${pin.placeId}`, {
         el,
         overlay,
-        place,
+        pin,
         placeType,
         markerSrc,
         selectedSrc,
@@ -203,7 +218,7 @@ export function useKakaoMap({
         'click',
         createPinClickHandler(
           map,
-          place,
+          pin,
           position,
           el,
           overlay,
@@ -215,7 +230,7 @@ export function useKakaoMap({
 
       overlays.push(overlay);
 
-      for (let i = 0; i < getPlaceCount(place, placeType); i++) {
+      for (let i = 0; i < pin.count; i++) {
         markers.push(
           new window.kakao.maps.Marker({ position, image: invisibleImage }),
         );
@@ -225,17 +240,54 @@ export function useKakaoMap({
     return { overlays, markers, infos };
   };
 
-  const initClusterer = (map: kakao.maps.Map, markers: kakao.maps.Marker[]) =>
-    new window.kakao.maps.MarkerClusterer({
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    recordOverlaysRef.current.forEach((o) => o.setMap(null));
+    bookmarkOverlaysRef.current.forEach((o) => o.setMap(null));
+
+    if (clustererRef.current) {
+      clustererRef.current.removeMarkers([
+        ...recordMarkersRef.current,
+        ...bookmarkMarkersRef.current,
+      ]);
+    }
+
+    const record = buildPinLayer(
       map,
-      markers,
-      averageCenter: true,
-      minLevel: MIN_CLUSTER_LEVEL,
-      minClusterSize: 1,
-      gridSize: 80,
-      calculator: [20, 50],
-      styles: getClusterStyles(),
-    });
+      recordPins,
+      '/record-marker.svg',
+      '/record-marker-selected.svg',
+      'record',
+    );
+    const bookmark = buildPinLayer(
+      map,
+      bookmarkPins,
+      '/bookmark-marker.svg',
+      '/bookmark-marker-selected.svg',
+      'bookmark',
+    );
+
+    recordOverlaysRef.current = record.overlays;
+    bookmarkOverlaysRef.current = bookmark.overlays;
+    recordMarkersRef.current = record.markers;
+    bookmarkMarkersRef.current = bookmark.markers;
+    overlayInfoMapRef.current = new Map([...record.infos, ...bookmark.infos]);
+
+    if (clustererRef.current) {
+      clustererRef.current.addMarkers([...record.markers, ...bookmark.markers]);
+    }
+
+    const show = map.getLevel() < MIN_CLUSTER_LEVEL;
+    record.overlays.forEach((o) =>
+      o.setMap(show && recordVisibleRef.current ? map : null),
+    );
+    bookmark.overlays.forEach((o) =>
+      o.setMap(show && bookmarkVisibleRef.current ? map : null),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recordPins, bookmarkPins]);
 
   const handleLoad = () => {
     window.kakao.maps.load(() => {
@@ -251,42 +303,27 @@ export function useKakaoMap({
       });
       mapRef.current = map;
 
-      const record = buildPlaceLayer(
+      clustererRef.current = new window.kakao.maps.MarkerClusterer({
         map,
-        recordPlaces,
-        '/record-marker.svg',
-        '/record-marker-selected.svg',
-        'record',
-      );
-      const bookmark = buildPlaceLayer(
-        map,
-        bookmarkPlaces,
-        '/bookmark-marker.svg',
-        '/bookmark-marker-selected.svg',
-        'bookmark',
-      );
+        averageCenter: true,
+        minLevel: MIN_CLUSTER_LEVEL,
+        minClusterSize: 1,
+        gridSize: 80,
+        calculator: [20, 50],
+        styles: getClusterStyles(),
+      });
 
-      recordOverlaysRef.current = record.overlays;
-      bookmarkOverlaysRef.current = bookmark.overlays;
-      recordMarkersRef.current = record.markers;
-      bookmarkMarkersRef.current = bookmark.markers;
-      overlayInfoMapRef.current = new Map([...record.infos, ...bookmark.infos]);
-      clustererRef.current = initClusterer(map, [
-        ...record.markers,
-        ...bookmark.markers,
-      ]);
-
-      const updateOverlays = () => {
+      const onZoomChanged = () => {
         const show = map.getLevel() < MIN_CLUSTER_LEVEL;
-        record.overlays.forEach((o) =>
+        recordOverlaysRef.current.forEach((o) =>
           o.setMap(show && recordVisibleRef.current ? map : null),
         );
-        bookmark.overlays.forEach((o) =>
+        bookmarkOverlaysRef.current.forEach((o) =>
           o.setMap(show && bookmarkVisibleRef.current ? map : null),
         );
+        updateBounds(map);
       };
-
-      const onZoomChanged = updateOverlays;
+      const onDragEnd = () => updateBounds(map);
       const onMapClick = () => {
         if (selectedRef.current) {
           deselect();
@@ -295,6 +332,7 @@ export function useKakaoMap({
       };
 
       window.kakao.maps.event.addListener(map, 'zoom_changed', onZoomChanged);
+      window.kakao.maps.event.addListener(map, 'dragend', onDragEnd);
       window.kakao.maps.event.addListener(map, 'click', onMapClick);
 
       cleanupListenersRef.current = () => {
@@ -303,22 +341,23 @@ export function useKakaoMap({
           'zoom_changed',
           onZoomChanged,
         );
+        window.kakao.maps.event.removeListener(map, 'dragend', onDragEnd);
         window.kakao.maps.event.removeListener(map, 'click', onMapClick);
       };
 
-      updateOverlays();
+      updateBounds(map);
     });
   };
 
-  const selectPlace = (place: Place, placeType: PlaceLayer) => {
-    const info = overlayInfoMapRef.current.get(`${placeType}:${place.id}`);
+  const selectPin = (placeId: number, placeType: PlaceLayer) => {
+    const info = overlayInfoMapRef.current.get(`${placeType}:${placeId}`);
     if (!info) return;
     if (selectedRef.current?.el === info.el) return;
     deselect();
     info.el.innerHTML = buildPinHtml(
       info.selectedSrc,
-      place.imageUrl,
-      getPlaceCount(place, info.placeType),
+      info.pin.thumbnailUrl,
+      info.pin.count,
       true,
     );
     info.overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
@@ -341,7 +380,7 @@ export function useKakaoMap({
     mapRef,
     handleLoad,
     deselect,
-    selectPlace,
+    selectPin,
     panToWithOffset,
     setRecordVisible,
     setBookmarkVisible,
