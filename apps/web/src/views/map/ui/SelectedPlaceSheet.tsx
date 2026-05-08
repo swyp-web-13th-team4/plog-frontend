@@ -1,14 +1,19 @@
 'use client';
 
-import { Badge, BottomSheet, Button, Icon } from '@plog/ui';
+import { Fragment } from 'react';
+
+import { Badge, BottomSheet, Button, Divider, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { type Place, type PlaceLayer } from '@/entities/place';
+import { formatStudyDurationShort } from '@/entities/feed';
+import { getCategoryLabel, type PlaceLayer } from '@/entities/place';
 
 import { ImageWithFallback } from '@/shared/ui';
 
+import { type MapPinDetail } from '../model/types';
+
 export type SelectedPlaceSheetProps = {
-  place: Place | null;
+  place: MapPinDetail | null;
   placeType: PlaceLayer;
   onClose: () => void;
   onBack?: () => void;
@@ -16,61 +21,65 @@ export type SelectedPlaceSheetProps = {
   onCreatePost?: () => void;
 };
 
-type StatItemProps = {
-  value: string;
-  label: string;
-  isRecord: boolean;
-};
-
-function StatItem({ value, label, isRecord }: StatItemProps) {
-  return (
-    <div className="flex flex-1 flex-col items-center gap-1">
-      <p
-        className={cn(
-          'title-md',
-          isRecord
-            ? 'text-semantic-accent-normal'
-            : 'text-semantic-theme-sky-normal',
-        )}
-      >
-        {value}
-      </p>
-      <p className="caption-md text-semantic-object-bold">{label}</p>
-    </div>
-  );
-}
-
 function PlaceStatBar({
   place,
   isRecord,
 }: {
-  place: Place;
+  place: MapPinDetail;
   isRecord: boolean;
 }) {
-  const stats = isRecord
-    ? [
-        { value: String(place.recordCount ?? 0), label: '내 기록' },
-        { value: `${place.totalWorkHours}h`, label: '총 작업시간' },
-        { value: String(place.averageFocus), label: '평균 집중도' },
-      ]
-    : [
-        { value: String(place.bookmarkCount ?? 0), label: '북마크 수' },
-        { value: `${place.totalWorkHours}h`, label: '평균 작업시간' },
-        { value: String(place.averageFocus), label: '평균 집중도' },
-      ];
+  const stats = [
+    {
+      value: place.count.toLocaleString(),
+      label: isRecord ? '내 기록' : '북마크 수',
+    },
+    {
+      value: formatStudyDurationShort(place.totalStudyTime),
+      label: '총 작업시간',
+    },
+    { value: String(place.avgFocus), label: '평균 집중도' },
+  ];
+
+  const dividerClassName = isRecord
+    ? 'border-semantic-accent-subtle'
+    : 'border-semantic-theme-sky-assistive';
 
   return (
     <div
       className={cn(
-        'flex items-center justify-around rounded-2xl border p-4',
+        'rounded-xl border py-4',
         isRecord
-          ? 'border-semantic-accent-subtle bg-semantic-accent-subtlest'
+          ? 'border-semantic-accent-subtle bg-semantic-feedback-success-subtler'
           : 'border-semantic-theme-sky-assistive bg-semantic-theme-sky-subtler',
       )}
     >
-      {stats.map((stat) => (
-        <StatItem key={stat.label} {...stat} isRecord={isRecord} />
-      ))}
+      <div className="flex justify-between">
+        {stats.map((stat, index) => (
+          <Fragment key={stat.label}>
+            {index > 0 && (
+              <Divider
+                orientation="vertical"
+                className={cn('h-13', dividerClassName)}
+              />
+            )}
+            <div className="flex flex-1 flex-col items-center justify-center text-center">
+              <span
+                className={cn(
+                  'title-sm',
+                  isRecord
+                    ? 'text-semantic-feedback-success-normal'
+                    : 'text-semantic-theme-sky-normal',
+                )}
+              >
+                {stat.value}
+              </span>
+              <p className="caption-md text-semantic-object-bold">
+                {stat.label}
+              </p>
+            </div>
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 }
@@ -103,8 +112,8 @@ export default function SelectedPlaceSheet({
             <>
               <div className="relative aspect-[432/192] w-full overflow-hidden rounded-2xl bg-semantic-object-subtler">
                 <ImageWithFallback
-                  src={place.imageUrl}
-                  alt={place.name}
+                  src={place.thumbnailUrl}
+                  alt={place.placeName}
                   fill
                   className="object-cover"
                 />
@@ -123,23 +132,20 @@ export default function SelectedPlaceSheet({
                   </button>
                 )}
               </div>
-
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                   <p className="title-sm text-semantic-object-boldest">
-                    {place.name}
+                    {place.placeName}
                   </p>
                   <Badge variant="soft" color="skyblue">
-                    {place.category}
+                    {getCategoryLabel(place.placeCategory)}
                   </Badge>
                 </div>
                 <p className="body-sm text-semantic-object-normal">
                   {place.address}
                 </p>
               </div>
-
               <PlaceStatBar place={place} isRecord={isRecord} />
-
               {isRecord ? (
                 <div className="flex gap-2">
                   <div className="flex-1">
