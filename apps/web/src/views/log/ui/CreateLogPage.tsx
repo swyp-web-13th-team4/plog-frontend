@@ -27,7 +27,10 @@ import {
 } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { type SelectedPlace } from '@/features/place-search/model/selected-place';
+import {
+  getCreateLogDefaultValues,
+  useCreateLogStore,
+} from '@/features/create-log';
 import { PlaceCategorySheet } from '@/features/select-place-category';
 import { ReviewTagsSheet } from '@/features/select-review-tags';
 import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
@@ -38,10 +41,6 @@ import { PLACE_CATEGORIES } from '@/entities/place';
 import { createLogResolver } from '../model/resolver';
 import { type CreateLogFormValues } from '../model/types';
 import { useCreateLogMutation } from '../model/use-create-log-mutation';
-import {
-  getCreateLogFormDefaultValues,
-  useCreateLogStore,
-} from '../model/use-create-log-store';
 import { usePhotoUpload } from '../model/use-photo-upload';
 import { useScrollFocusFeedback } from '../model/use-scroll-focus-feedback';
 import PhotoUploader from './PhotoUploader';
@@ -91,13 +90,7 @@ function SelectTriggerButton({
   );
 }
 
-type CreateFeedPageProps = {
-  initialPlace?: SelectedPlace | null;
-};
-
-export default function CreateLogPage({
-  initialPlace = null,
-}: CreateFeedPageProps) {
+export default function CreateLogPage() {
   const router = useRouter();
   const {
     fieldRef: photoFieldRef,
@@ -153,10 +146,12 @@ export default function CreateLogPage({
     (state) => state.setHasPhotos,
   );
   const resetCreateLog = useCreateLogStore((state) => state.reset);
+  const hasStoreHydrated = useCreateLogStore((state) => state.hasHydrated);
 
   const {
     register,
     handleSubmit,
+    reset,
     setValue,
     setError,
     getValues,
@@ -165,7 +160,10 @@ export default function CreateLogPage({
     formState: { errors, isSubmitted },
   } = useForm<CreateLogFormValues>({
     resolver: createLogResolver,
-    defaultValues: getCreateLogFormDefaultValues(initialPlace),
+    defaultValues: {
+      ...getCreateLogDefaultValues(),
+      photos: [],
+    },
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
@@ -215,14 +213,33 @@ export default function CreateLogPage({
   };
 
   useEffect(() => {
+    if (!hasStoreHydrated) return;
+
+    reset({
+      ...getCreateLogDefaultValues(),
+      photos,
+    });
+  }, [hasStoreHydrated, photos, reset]);
+
+  useEffect(() => {
+    if (!hasStoreHydrated) return;
+
     setValue('photos', photos, {
       shouldDirty: photos.length > 0,
       shouldValidate: isSubmitted,
     });
     setCreateLogHasPhotos(photos.length > 0);
-  }, [isSubmitted, photos, setCreateLogHasPhotos, setValue]);
+  }, [
+    hasStoreHydrated,
+    isSubmitted,
+    photos,
+    setCreateLogHasPhotos,
+    setValue,
+  ]);
 
   useEffect(() => {
+    if (!hasStoreHydrated) return;
+
     setCreateLogValues({
       title,
       contents,
@@ -239,6 +256,7 @@ export default function CreateLogPage({
     contents,
     endTime,
     focusScore,
+    hasStoreHydrated,
     place,
     placeCategory,
     reviewTags,
@@ -251,7 +269,6 @@ export default function CreateLogPage({
 
   const handleClearPlaceName = () => {
     setFormValue('place', null);
-    router.replace('/log', { scroll: false });
   };
 
   const handleInvalidSubmit = (

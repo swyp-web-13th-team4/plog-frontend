@@ -2,6 +2,8 @@
 
 import { type KeyboardEvent, type Ref, useRef } from 'react';
 
+import { type FocusLevel } from '@/features/create-log';
+
 import FocusLevelDefault1 from '@/shared/assets/focus-levels/focus-level-default-1.svg';
 import FocusLevelDefault2 from '@/shared/assets/focus-levels/focus-level-default-2.svg';
 import FocusLevelDefault3 from '@/shared/assets/focus-levels/focus-level-default-3.svg';
@@ -12,8 +14,6 @@ import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
-
-export type FocusLevel = 1 | 2 | 3 | 4 | 5;
 
 const FOCUS_LEVEL_OPTIONS = [
   {

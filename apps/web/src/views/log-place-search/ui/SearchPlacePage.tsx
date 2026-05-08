@@ -9,8 +9,8 @@ import { Button, EmptyState } from '@plog/ui';
 
 import { PlaceSearchContent } from '@/widgets/place-search';
 
+import { useCreateLogStore } from '@/features/create-log';
 import {
-  buildSelectedPlaceSearchParams,
   createSelectedPlace,
   PlaceSearchInput,
   type RecentPlace,
@@ -46,6 +46,7 @@ export default function SearchPlacePage() {
   const saveRecentPlaceMutation = useSaveRecentPlaceMutation();
   const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
   const deleteRecentPlacesMutation = useDeleteRecentPlacesMutation();
+  const setCreateLogValues = useCreateLogStore((state) => state.setValues);
 
   const displayState = sdkLoadError ? 'error' : searchState;
 
@@ -57,7 +58,6 @@ export default function SearchPlacePage() {
     place: kakao.maps.services.PlacesSearchResultItem,
   ) => {
     const selectedPlace = createSelectedPlace(place);
-    const params = buildSelectedPlaceSearchParams(selectedPlace);
 
     try {
       await saveRecentPlaceMutation.mutateAsync({
@@ -67,7 +67,8 @@ export default function SearchPlacePage() {
         longitude: selectedPlace.longitude,
       });
     } finally {
-      router.push(`/log?${params.toString()}`);
+      setCreateLogValues({ place: selectedPlace });
+      router.push('/log');
     }
   };
 
@@ -79,7 +80,6 @@ export default function SearchPlacePage() {
       latitude: place.latitude,
       longitude: place.longitude,
     };
-    const params = buildSelectedPlaceSearchParams(selectedPlace);
 
     try {
       await saveRecentPlaceMutation.mutateAsync({
@@ -89,7 +89,8 @@ export default function SearchPlacePage() {
         longitude: selectedPlace.longitude,
       });
     } finally {
-      router.push(`/log?${params.toString()}`);
+      setCreateLogValues({ place: selectedPlace });
+      router.push('/log');
     }
   };
 

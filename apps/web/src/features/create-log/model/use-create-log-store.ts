@@ -2,20 +2,19 @@ import { type DateValue, type TimeValue } from '@plog/ui';
 import { create } from 'zustand';
 import { combine, persist } from 'zustand/middleware';
 
-import { type SelectedPlace } from '@/features/place-search/model/selected-place';
-
 import { type PlaceTagValue, type PostScope } from '@/entities/feed';
 import { type PlaceCategoryValue } from '@/entities/place';
 
-import { type FocusLevel } from '../ui/RatingPicker';
-import { type CreateLogFormValues } from './types';
-
-type CreateLogStoredValues = Omit<CreateLogFormValues, 'photos'>;
+import {
+  type CreateLogPlace,
+  type CreateLogStoredValues,
+  type FocusLevel,
+} from './types';
 
 export const initialCreateLogValues = {
   title: '',
   contents: '',
-  place: null as SelectedPlace | null,
+  place: null as CreateLogPlace | null,
   categoryCode: null as PlaceCategoryValue | null,
   studyDate: null as DateValue | null,
   startedAt: null as TimeValue | null,
@@ -28,6 +27,7 @@ export const initialCreateLogValues = {
 const initialState = {
   values: initialCreateLogValues,
   hasPhotos: false,
+  hasHydrated: false,
 };
 
 export function hasCreateLogValues(values: CreateLogStoredValues) {
@@ -51,11 +51,19 @@ export const useCreateLogStore = create(
       setValues: (values: Partial<CreateLogStoredValues>) =>
         set((state) => ({ values: { ...state.values, ...values } })),
       setHasPhotos: (hasPhotos: boolean) => set({ hasPhotos }),
-      reset: () => set(initialState),
+      reset: () =>
+        set((state) => ({
+          ...initialState,
+          hasHydrated: state.hasHydrated,
+        })),
+      setHasHydrated: (hasHydrated: boolean) => set({ hasHydrated }),
     })),
     {
       name: 'plog:create-log',
       partialize: (state) => ({ values: state.values }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+      },
       merge: (persistedState, currentState) => {
         const persisted = persistedState as Partial<typeof initialState>;
 
@@ -72,14 +80,8 @@ export const useCreateLogStore = create(
   ),
 );
 
-export function getCreateLogFormDefaultValues(
-  initialPlace: SelectedPlace | null,
-): CreateLogFormValues {
+export function getCreateLogDefaultValues(): CreateLogStoredValues {
   const persistedValues = useCreateLogStore.getState().values;
 
-  return {
-    ...persistedValues,
-    place: initialPlace ?? persistedValues.place,
-    photos: [],
-  };
+  return persistedValues;
 }

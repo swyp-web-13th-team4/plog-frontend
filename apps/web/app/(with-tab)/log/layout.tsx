@@ -6,10 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import { AppBar } from '@plog/ui';
 
-import {
-  hasCreateLogValues,
-  useCreateLogStore,
-} from '@/views/log/model/use-create-log-store';
+import { hasCreateLogValues, useCreateLogStore } from '@/features/create-log';
 
 import { dialog } from '@/shared/lib/dialog';
 
