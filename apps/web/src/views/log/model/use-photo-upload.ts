@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
+import {
+  clearCreateLogPhotoFiles,
+  getCreateLogPhotoFiles,
+  setCreateLogPhotoFiles,
+} from '@/features/create-log';
+
 export type PhotoPreview = {
   id: string;
   file: File;
@@ -25,6 +31,27 @@ export function usePhotoUpload() {
   }, [photos]);
 
   useEffect(() => {
+    let ignore = false;
+
+    const restorePhotos = async () => {
+      const storedFiles = await getCreateLogPhotoFiles();
+      if (ignore || storedFiles.length === 0) return;
+
+      setPhotos(
+        storedFiles
+          .slice(0, MAX_PHOTO_COUNT)
+          .map((file, index) => createPhotoPreview(file, index)),
+      );
+    };
+
+    void restorePhotos();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  useEffect(() => {
     return () => {
       photoPreviewsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
     };
@@ -34,11 +61,13 @@ export function usePhotoUpload() {
     setPhotos((currentPhotos) => {
       const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
       const nextFiles = files.slice(0, availableCount);
-
-      return [
+      const nextPhotos = [
         ...currentPhotos,
         ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
       ];
+
+      void setCreateLogPhotoFiles(nextPhotos.map(({ file }) => file));
+      return nextPhotos;
     });
   };
 
@@ -46,10 +75,18 @@ export function usePhotoUpload() {
     setPhotos((currentPhotos) => {
       const targetPhoto = currentPhotos.find((photo) => photo.id === id);
       if (targetPhoto) URL.revokeObjectURL(targetPhoto.url);
+      const nextPhotos = currentPhotos.filter((photo) => photo.id !== id);
 
-      return currentPhotos.filter((photo) => photo.id !== id);
+      void setCreateLogPhotoFiles(nextPhotos.map(({ file }) => file));
+      return nextPhotos;
     });
   };
 
-  return { photos, handleAddPhotos, handleRemovePhoto };
+  const clearPhotos = () => {
+    photoPreviewsRef.current.forEach(({ url }) => URL.revokeObjectURL(url));
+    setPhotos([]);
+    void clearCreateLogPhotoFiles();
+  };
+
+  return { photos, handleAddPhotos, handleRemovePhoto, clearPhotos };
 }

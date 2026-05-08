@@ -5,6 +5,7 @@ import {
   type ReactNode,
   type Ref,
   useEffect,
+  useRef,
 } from 'react';
 import {
   type FieldErrors,
@@ -139,7 +140,8 @@ export default function CreateLogPage() {
     trigger: triggerReviewTagsFeedback,
   } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
 
-  const { photos, handleAddPhotos, handleRemovePhoto } = usePhotoUpload();
+  const { photos, handleAddPhotos, handleRemovePhoto, clearPhotos } =
+    usePhotoUpload();
   const { toast } = useToast();
   const setCreateLogValues = useCreateLogStore((state) => state.setValues);
   const setCreateLogHasPhotos = useCreateLogStore(
@@ -147,6 +149,7 @@ export default function CreateLogPage() {
   );
   const resetCreateLog = useCreateLogStore((state) => state.reset);
   const hasStoreHydrated = useCreateLogStore((state) => state.hasHydrated);
+  const hasRestoredFormRef = useRef(false);
 
   const {
     register,
@@ -169,7 +172,10 @@ export default function CreateLogPage() {
   });
 
   const createLogMutation = useCreateLogMutation({
-    onSuccess: resetCreateLog,
+    onSuccess: () => {
+      clearPhotos();
+      resetCreateLog();
+    },
     onTitleForbidden: () => {
       setError('title', {
         type: 'server',
@@ -213,32 +219,29 @@ export default function CreateLogPage() {
   };
 
   useEffect(() => {
-    if (!hasStoreHydrated) return;
+    if (!hasStoreHydrated || hasRestoredFormRef.current) return;
 
     reset({
       ...getCreateLogDefaultValues(),
-      photos,
+      photos: [],
     });
-  }, [hasStoreHydrated, photos, reset]);
+    queueMicrotask(() => {
+      hasRestoredFormRef.current = true;
+    });
+  }, [hasStoreHydrated, reset]);
 
   useEffect(() => {
-    if (!hasStoreHydrated) return;
+    if (!hasRestoredFormRef.current) return;
 
     setValue('photos', photos, {
       shouldDirty: photos.length > 0,
       shouldValidate: isSubmitted,
     });
     setCreateLogHasPhotos(photos.length > 0);
-  }, [
-    hasStoreHydrated,
-    isSubmitted,
-    photos,
-    setCreateLogHasPhotos,
-    setValue,
-  ]);
+  }, [isSubmitted, photos, setCreateLogHasPhotos, setValue]);
 
   useEffect(() => {
-    if (!hasStoreHydrated) return;
+    if (!hasRestoredFormRef.current) return;
 
     setCreateLogValues({
       title,
@@ -256,7 +259,6 @@ export default function CreateLogPage() {
     contents,
     endTime,
     focusScore,
-    hasStoreHydrated,
     place,
     placeCategory,
     reviewTags,
