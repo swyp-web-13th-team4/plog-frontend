@@ -66,7 +66,7 @@ export default function PhotoUploader({
         ref={fileInputRef}
         type="file"
         name="photos"
-        accept=".jpg, .png, .heic"
+        accept=".jpg, .jpeg, .png, .heic"
         multiple
         className="sr-only"
         onChange={handleFileChange}
