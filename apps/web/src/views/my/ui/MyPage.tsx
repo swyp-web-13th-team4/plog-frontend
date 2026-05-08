@@ -58,12 +58,14 @@ export default function MyPage() {
           }
         />
       </header>
-      <div className="pt-[var(--spacing-header)]">
+      <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col pt-[var(--spacing-header)]">
         <ProfileSection />
         <TabGroup
           items={TABS}
           defaultValue="record"
+          className="flex flex-1 flex-col"
           listClassName="sticky top-[var(--spacing-header)] z-10 border-b border-b-semantic-stroke-subtle bg-semantic-bg-standard"
+          panelClassName="flex flex-1"
         />
       </div>
     </>
