@@ -3,6 +3,7 @@
 import { type ReactNode } from 'react';
 
 import { Chip, Icon, IconButton, Select } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { ReviewTagsSheet } from '@/features/select-review-tags';
 
@@ -49,7 +50,7 @@ export default function FeedList({
   const { viewType, toggleViewType } = useFeedViewType();
 
   return (
-    <section className={className}>
+    <section className={cn('w-full', className)}>
       <div className="flex justify-between px-6">
         <Select
           value={sort}
