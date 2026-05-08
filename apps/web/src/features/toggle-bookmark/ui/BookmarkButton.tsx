@@ -24,8 +24,9 @@ export default function BookmarkButton({
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    toggleBookmark(postId);
-    onToggle?.(postId);
+    toggleBookmark(postId, isBookmarked).then((proceeded) => {
+      if (proceeded) onToggle?.(postId);
+    });
   };
 
   return (
