@@ -3,7 +3,9 @@
 import { AppBar, Icon, TabGroup } from '@plog/ui';
 
 import AnalysisTab from './analysis/AnalysisTab';
+import BookmarkTab from './BookmarkTab';
 import ProfileSection from './ProfileSection';
+import RecordTab from './RecordTab';
 
 const TABS = [
   {
@@ -11,24 +13,14 @@ const TABS = [
     label: '기록',
     icon: <Icon name="pencil" size={20} />,
     activeIcon: <Icon name="pencil-filled" size={20} />,
-    panel: (
-      <div className="flex items-center justify-center py-20 text-semantic-object-subtle">
-        <p className="body-sm">기록 탭은 준비 중이에요.</p>
-      </div>
-    ),
-    disabled: true,
+    panel: <RecordTab />,
   },
   {
     value: 'bookmark',
     label: '북마크',
     icon: <Icon name="bookmark" size={20} />,
     activeIcon: <Icon name="bookmark-filled" size={20} />,
-    panel: (
-      <div className="flex items-center justify-center py-20 text-semantic-object-subtle">
-        <p className="body-sm">북마크 탭은 준비 중이에요.</p>
-      </div>
-    ),
-    disabled: true,
+    panel: <BookmarkTab />,
   },
   {
     value: 'badge',
@@ -70,7 +62,7 @@ export default function MyPage() {
         <ProfileSection />
         <TabGroup
           items={TABS}
-          defaultValue="analysis"
+          defaultValue="record"
           listClassName="sticky top-[var(--spacing-header)] z-10 border-b border-b-semantic-stroke-subtle bg-semantic-bg-standard"
         />
       </div>
