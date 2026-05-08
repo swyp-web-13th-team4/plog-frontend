@@ -257,7 +257,7 @@ export default function CreateLogPage({
                     pressed
                     className="[&>svg]:size-2.5"
                     onClick={() =>
-                      setReviewTags(reviewTags.filter((t) => t !== tag))
+                      setReviewTags((prev) => prev.filter((t) => t !== tag))
                     }
                   >
                     {PLACE_TAG_LABELS[tag]}
