@@ -27,7 +27,7 @@ import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
 import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 
 import { PlaceTagValue } from '@/entities/feed';
-import { PLACE_CATEGORIES, type PlaceCategoryValue } from '@/entities/place';
+import { getCategoryLabel, type PlaceCategoryValue } from '@/entities/place';
 
 import { usePhotoUpload } from '../model/use-photo-upload';
 import PhotoUploader from './PhotoUploader';
@@ -151,10 +151,7 @@ export default function CreateLogPage({
           </Field>
           <PlaceCategorySheet value={placeCategory} onChange={setPlaceCategory}>
             <SelectTriggerButton
-              value={
-                PLACE_CATEGORIES.find((c) => c.value === placeCategory)
-                  ?.label ?? null
-              }
+              value={placeCategory ? getCategoryLabel(placeCategory) : null}
               placeholder="장소 카테고리를 선택해 주세요."
               icon={
                 <Icon

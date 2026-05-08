@@ -1,7 +1,7 @@
 import { Icon, type IconName } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { PLACE_CATEGORIES } from '@/entities/place/model/place-category';
+import { getCategoryLabel } from '@/entities/place';
 import { type AnalyticsSpaceRanking } from '@/entities/user';
 
 const CATEGORY_ICONS: Record<string, IconName> = {
@@ -12,10 +12,6 @@ const CATEGORY_ICONS: Record<string, IconName> = {
   'shared-office': 'company-filled',
   etc: 'inbox-filled',
 };
-
-function getCategoryLabel(value: string) {
-  return PLACE_CATEGORIES.find((c) => c.value === value)?.label ?? value;
-}
 
 const EMPTY_SLOTS: null[] = [null, null, null];
 
