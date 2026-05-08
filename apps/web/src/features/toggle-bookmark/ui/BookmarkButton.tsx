@@ -1,6 +1,6 @@
 'use client';
 
-import { type MouseEvent } from 'react';
+import { type MouseEvent, useEffect, useState } from 'react';
 
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -11,33 +11,37 @@ type BookmarkButtonProps = {
   postId: number;
   isBookmarked: boolean;
   className?: string;
-  onToggle?: (postId: number) => void;
 };
 
 export default function BookmarkButton({
   postId,
   isBookmarked,
   className,
-  onToggle,
 }: BookmarkButtonProps) {
+  const [optimisticBookmarked, setOptimisticBookmarked] =
+    useState(isBookmarked);
+
+  useEffect(() => {
+    setOptimisticBookmarked(isBookmarked);
+  }, [isBookmarked]);
+
   const { toggleBookmark } = useToggleBookmark();
 
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    toggleBookmark(postId, isBookmarked).then((proceeded) => {
-      if (proceeded) onToggle?.(postId);
-    });
+    const proceeded = await toggleBookmark(postId, optimisticBookmarked);
+    if (proceeded) setOptimisticBookmarked((prev) => !prev);
   };
 
   return (
     <button
       type="button"
-      aria-label={isBookmarked ? '북마크 취소' : '북마크'}
-      aria-pressed={isBookmarked}
+      aria-label={optimisticBookmarked ? '북마크 취소' : '북마크'}
+      aria-pressed={optimisticBookmarked}
       className={cn('cursor-pointer', className)}
       onClick={handleClick}
     >
-      {isBookmarked ? (
+      {optimisticBookmarked ? (
         <Icon name="bookmark-filled" className="text-semantic-accent-normal" />
       ) : (
         <Icon name="bookmark" className="text-semantic-object-normal" />

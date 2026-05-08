@@ -32,6 +32,7 @@ function updateBookmarkInFeedCache(
 
 export function useToggleBookmark() {
   const queryClient = useQueryClient();
+
   const { toast } = useToast();
 
   const mutation = useMutation({
