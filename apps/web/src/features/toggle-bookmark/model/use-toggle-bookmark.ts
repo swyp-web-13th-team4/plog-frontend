@@ -89,5 +89,5 @@ export function useToggleBookmark() {
     return true;
   };
 
-  return { toggleBookmark };
+  return { toggleBookmark, isPending: mutation.isPending };
 }

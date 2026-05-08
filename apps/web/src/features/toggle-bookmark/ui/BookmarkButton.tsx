@@ -25,7 +25,7 @@ export default function BookmarkButton({
     setOptimisticBookmarked(isBookmarked);
   }, [isBookmarked]);
 
-  const { toggleBookmark } = useToggleBookmark();
+  const { toggleBookmark, isPending } = useToggleBookmark();
 
   const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -38,7 +38,11 @@ export default function BookmarkButton({
       type="button"
       aria-label={optimisticBookmarked ? '북마크 취소' : '북마크'}
       aria-pressed={optimisticBookmarked}
-      className={cn('cursor-pointer text-semantic-object-normal', className)}
+      className={cn(
+        'cursor-pointer text-semantic-object-normal disabled:cursor-not-allowed disabled:opacity-40',
+        className,
+      )}
+      disabled={isPending}
       onClick={handleClick}
     >
       {optimisticBookmarked ? (
