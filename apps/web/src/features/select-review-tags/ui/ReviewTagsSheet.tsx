@@ -141,11 +141,10 @@ export default function ReviewTagsSheet({
                   size="small"
                   variant="soft"
                   pressed={selectedTagSet.has(tag)}
-                  className="[&>svg]:size-2.5"
                   onClick={() => handleToggleDraftTag(tag)}
                 >
                   {PLACE_TAG_LABELS[tag]}
-                  <Icon name="close" size={9} boxed={false} />
+                  <Icon name="close" size={16} />
                 </Chip>
               ))}
             </div>

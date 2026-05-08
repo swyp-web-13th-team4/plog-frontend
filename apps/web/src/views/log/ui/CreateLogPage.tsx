@@ -255,13 +255,12 @@ export default function CreateLogPage({
                     size="small"
                     variant="soft"
                     pressed
-                    className="[&>svg]:size-2.5"
                     onClick={() =>
                       setReviewTags((prev) => prev.filter((t) => t !== tag))
                     }
                   >
                     {PLACE_TAG_LABELS[tag]}
-                    <Icon name="close" boxed={false} />
+                    <Icon name="close" size={16} />
                   </Chip>
                 ))}
               </div>
