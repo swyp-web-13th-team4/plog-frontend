@@ -32,6 +32,7 @@ type FeedListProps = {
   renderAction?: (feed: FeedPost, viewType: FeedViewType) => ReactNode;
   onFeedClick?: (feed: FeedPost) => void;
   toolbarConfig?: ToolbarConfig;
+  emptyView?: ReactNode;
   className?: string;
 };
 
@@ -45,6 +46,7 @@ export default function FeedList({
   renderAction,
   onFeedClick,
   toolbarConfig,
+  emptyView,
   className,
 }: FeedListProps) {
   const { viewType, toggleViewType } = useFeedViewType();
@@ -116,7 +118,9 @@ export default function FeedList({
           ))}
         </div>
       )}
-      {viewType === 'list' ? (
+      {feeds.length === 0 ? (
+        emptyView
+      ) : viewType === 'list' ? (
         <div>
           {feeds.map((feed) => (
             <FeedListItem

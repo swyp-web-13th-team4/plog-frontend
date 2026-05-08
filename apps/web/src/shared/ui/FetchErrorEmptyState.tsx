@@ -3,19 +3,21 @@ import { Button, EmptyState } from '@plog/ui';
 import LoadingEmptyGraphic from '@/shared/assets/empty-graphics/loading-empty.svg';
 
 type FetchErrorEmptyStateProps = {
+  title?: string;
   description?: string;
   onRetry?: () => void;
   className?: string;
 };
 
 export default function FetchErrorEmptyState({
-  description = '인터넷 연결 상태를 확인하고 다시 시도해 주세요',
+  title = '정보를 불러오지 못했어요',
+  description = '인터넷 연결 상태를 확인하고 다시 시도해 주세요.',
   onRetry,
   className,
 }: FetchErrorEmptyStateProps) {
   return (
     <EmptyState
-      title="정보를 불러오지 못했어요"
+      title={title}
       description={description}
       graphic={<LoadingEmptyGraphic />}
       actions={

@@ -37,7 +37,7 @@ export default function BookmarkTab() {
     );
   }
 
-  if (feeds.length === 0) {
+  if (feeds.length === 0 && tags.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <BookmarkEmptyState />
@@ -55,6 +55,14 @@ export default function BookmarkTab() {
       tags={tags}
       onTagsChange={setTags}
       toolbarConfig={{ viewToggle: true, tagFilter: true }}
+      emptyView={
+        <div className="flex flex-1 items-center justify-center py-20">
+          <BookmarkEmptyState
+            title="일치하는 정보가 없어요"
+            description="다른 태그를 선택해 보세요."
+          />
+        </div>
+      }
       renderAction={(feed, viewType) => (
         <BookmarkButton
           className={

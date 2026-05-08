@@ -38,7 +38,7 @@ export default function RecordTab() {
     );
   }
 
-  if (feeds.length === 0) {
+  if (feeds.length === 0 && tags.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">
         <RecordEmptyState />
@@ -56,6 +56,14 @@ export default function RecordTab() {
       tags={tags}
       onTagsChange={setTags}
       toolbarConfig={{ viewToggle: true, tagFilter: true }}
+      emptyView={
+        <div className="flex flex-1 items-center justify-center py-20">
+          <RecordEmptyState
+            title="일치하는 정보가 없어요"
+            description="다른 태그를 선택해 보세요."
+          />
+        </div>
+      }
       renderAction={(feed, viewType) => (
         <BookmarkButton
           postId={feed.postId}
