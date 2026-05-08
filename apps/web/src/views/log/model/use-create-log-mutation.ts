@@ -14,11 +14,13 @@ import { mapCreateLogForm } from './mapper';
 import { type CreateLogFormValues } from './types';
 
 type UseCreateLogMutationOptions = {
+  onSuccess?: () => void;
   onTitleForbidden?: () => void;
   onContentsForbidden?: () => void;
 };
 
 export function useCreateLogMutation({
+  onSuccess,
   onTitleForbidden,
   onContentsForbidden,
 }: UseCreateLogMutationOptions = {}) {
@@ -33,6 +35,7 @@ export function useCreateLogMutation({
         values.photos.map(({ file }) => file),
       ),
     onSuccess: async () => {
+      onSuccess?.();
       await queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY });
       toast({ type: 'success', description: '기록이 등록되었어요.' });
       router.replace('/feed');

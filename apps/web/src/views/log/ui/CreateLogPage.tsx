@@ -38,6 +38,10 @@ import { PLACE_CATEGORIES } from '@/entities/place';
 import { createLogResolver } from '../model/resolver';
 import { type CreateLogFormValues } from '../model/types';
 import { useCreateLogMutation } from '../model/use-create-log-mutation';
+import {
+  getCreateLogFormDefaultValues,
+  useCreateLogStore,
+} from '../model/use-create-log-store';
 import { usePhotoUpload } from '../model/use-photo-upload';
 import { useScrollFocusFeedback } from '../model/use-scroll-focus-feedback';
 import PhotoUploader from './PhotoUploader';
@@ -144,6 +148,11 @@ export default function CreateLogPage({
 
   const { photos, handleAddPhotos, handleRemovePhoto } = usePhotoUpload();
   const { toast } = useToast();
+  const setCreateLogValues = useCreateLogStore((state) => state.setValues);
+  const setCreateLogHasPhotos = useCreateLogStore(
+    (state) => state.setHasPhotos,
+  );
+  const resetCreateLog = useCreateLogStore((state) => state.reset);
 
   const {
     register,
@@ -156,24 +165,13 @@ export default function CreateLogPage({
     formState: { errors, isSubmitted },
   } = useForm<CreateLogFormValues>({
     resolver: createLogResolver,
-    defaultValues: {
-      title: '',
-      contents: '',
-      photos: [],
-      place: initialPlace,
-      categoryCode: null,
-      studyDate: null,
-      startedAt: null,
-      endedAt: null,
-      focus: null,
-      placeTags: [],
-      isPublic: false,
-    },
+    defaultValues: getCreateLogFormDefaultValues(initialPlace),
     mode: 'onChange',
     reValidateMode: 'onChange',
   });
 
   const createLogMutation = useCreateLogMutation({
+    onSuccess: resetCreateLog,
     onTitleForbidden: () => {
       setError('title', {
         type: 'server',
@@ -193,6 +191,8 @@ export default function CreateLogPage({
   const titleField = register('title');
   const contentsField = register('contents');
 
+  const title = useWatch({ control, name: 'title' });
+  const contents = useWatch({ control, name: 'contents' });
   const place = useWatch({ control, name: 'place' });
   const placeCategory = useWatch({ control, name: 'categoryCode' });
   const workDate = useWatch({ control, name: 'studyDate' });
@@ -218,7 +218,35 @@ export default function CreateLogPage({
       shouldDirty: photos.length > 0,
       shouldValidate: isSubmitted,
     });
-  }, [isSubmitted, photos, setValue]);
+    setCreateLogHasPhotos(photos.length > 0);
+  }, [isSubmitted, photos, setCreateLogHasPhotos, setValue]);
+
+  useEffect(() => {
+    setCreateLogValues({
+      title,
+      contents,
+      place,
+      categoryCode: placeCategory,
+      studyDate: workDate,
+      startedAt: startTime,
+      endedAt: endTime,
+      focus: focusScore,
+      placeTags: reviewTags,
+      isPublic,
+    });
+  }, [
+    contents,
+    endTime,
+    focusScore,
+    isPublic,
+    place,
+    placeCategory,
+    reviewTags,
+    setCreateLogValues,
+    startTime,
+    title,
+    workDate,
+  ]);
 
   const handleClearPlaceName = () => {
     setFormValue('place', null);
