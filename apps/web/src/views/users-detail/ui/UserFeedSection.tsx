@@ -22,11 +22,17 @@ import { ScrollToTopButton } from '@/shared/ui';
 
 type BookmarkByPostId = Record<number, boolean>;
 
+const SORT_ITEMS: { value: RecordTypeValue; label: string }[] = [
+  { value: 'latest', label: '최신순' },
+  { value: 'likes', label: '좋아요순' },
+  { value: 'focus', label: '집중도순' },
+];
+
 function sortFeeds(feeds: FeedPost[], sort: RecordTypeValue): FeedPost[] {
   return [...feeds].sort((a, b) => {
     if (sort === 'latest') return b.createAt.localeCompare(a.createAt);
-    if (sort === 'like') return b.likes - a.likes;
-    if (sort === 'concentrate') return b.focus - a.focus;
+    if (sort === 'likes') return b.likes - a.likes;
+    if (sort === 'focus') return b.focus - a.focus;
     return 0;
   });
 }
@@ -67,6 +73,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
         feeds={sortedFeeds}
         sort={sort}
         onSortChange={setSort}
+        sortItems={SORT_ITEMS}
         onFeedClick={handleFeedClick}
         toolbarConfig={{ viewToggle: true }}
         renderAction={(feed, viewType: FeedViewType) => {
