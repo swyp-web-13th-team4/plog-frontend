@@ -54,9 +54,20 @@ export function useToggleBookmark() {
 
       return { snapshot };
     },
-    onError: (_err, _postId, context) => {
+    onError: (_err, postId, context) => {
       if (context?.snapshot) {
-        queryClient.setQueryData(FEED_QUERY_KEY, context.snapshot);
+        const original = context.snapshot.pages
+          .flatMap((p) => p.items)
+          .find((post) => post.postId === postId);
+        queryClient.setQueryData<InfiniteData<FeedPage>>(
+          FEED_QUERY_KEY,
+          (prev) =>
+            updateBookmarkInFeedCache(
+              prev,
+              postId,
+              original?.bookMark ?? false,
+            ),
+        );
       }
       toast({
         id: 'bookmark-error',
