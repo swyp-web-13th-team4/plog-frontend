@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 
 import {
   Button,
+  Chip,
   type DateValue,
   Field,
   Icon,
@@ -26,7 +27,7 @@ import { ReviewTagsSheet } from '@/features/select-review-tags';
 import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
 import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 
-import { PlaceTagValue } from '@/entities/feed';
+import { PLACE_TAG_LABELS, PlaceTagValue } from '@/entities/feed';
 import { getCategoryLabel, type PlaceCategoryValue } from '@/entities/place';
 
 import { usePhotoUpload } from '../model/use-photo-upload';
@@ -246,6 +247,25 @@ export default function CreateLogPage({
                 태그 추가하기
               </Button>
             </ReviewTagsSheet>
+            {reviewTags.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {reviewTags.map((tag) => (
+                  <Chip
+                    key={tag}
+                    size="small"
+                    variant="soft"
+                    pressed
+                    className="[&>svg]:size-2.5"
+                    onClick={() =>
+                      setReviewTags(reviewTags.filter((t) => t !== tag))
+                    }
+                  >
+                    {PLACE_TAG_LABELS[tag]}
+                    <Icon name="close" boxed={false} />
+                  </Chip>
+                ))}
+              </div>
+            )}
           </Field>
         </div>
       </section>
