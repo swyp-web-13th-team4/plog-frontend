@@ -24,6 +24,7 @@ export default function BookmarkTab() {
     data: feeds = [],
     isPending,
     isError,
+    refetch,
   } = useMyBookmarksQuery(sort, tags);
 
   if (isPending) return null;
@@ -31,7 +32,7 @@ export default function BookmarkTab() {
   if (isError) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <FetchErrorEmptyState />
+        <FetchErrorEmptyState onRetry={refetch} />
       </div>
     );
   }

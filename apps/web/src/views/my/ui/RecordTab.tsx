@@ -21,14 +21,19 @@ const SORT_ITEMS: { value: RecordTypeValue; label: string }[] = [
 export default function RecordTab() {
   const [sort, setSort] = useState<PostSortType>('latest');
   const [tags, setTags] = useState<PlaceTagValue[]>([]);
-  const { data: feeds = [], isPending, isError } = useMyPostsQuery(sort, tags);
+  const {
+    data: feeds = [],
+    isPending,
+    isError,
+    refetch,
+  } = useMyPostsQuery(sort, tags);
 
   if (isPending) return null;
 
   if (isError) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <FetchErrorEmptyState />
+        <FetchErrorEmptyState onRetry={refetch} />
       </div>
     );
   }
