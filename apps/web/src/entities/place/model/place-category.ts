@@ -1,4 +1,4 @@
-export type PlaceCategoryValue =
+export type Category =
   | 'cafe'
   | 'study-cafe'
   | 'library'
@@ -8,7 +8,7 @@ export type PlaceCategoryValue =
 
 export type PlaceCategory = {
   label: string;
-  value: PlaceCategoryValue;
+  value: Category;
 };
 
 export const PLACE_CATEGORIES = [

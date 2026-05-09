@@ -843,13 +843,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
       </section>
       <section className="px-6 pt-6 pb-10">
         <Button fullWidth size="large" type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? isEditMode
-              ? '수정 중...'
-              : '등록 중...'
-            : isEditMode
-              ? '수정하기'
-              : '기록하기'}
+          {isEditMode ? '저장' : '기록하기'}
         </Button>
       </section>
     </form>
