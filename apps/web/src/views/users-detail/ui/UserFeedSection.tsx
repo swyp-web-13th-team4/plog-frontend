@@ -20,8 +20,6 @@ import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import { ScrollToTopButton } from '@/shared/ui';
 
-type BookmarkByPostId = Record<number, boolean>;
-
 const SORT_ITEMS: { value: RecordTypeValue; label: string }[] = [
   { value: 'latest', label: '최신순' },
   { value: 'likes', label: '좋아요순' },
@@ -45,20 +43,11 @@ export default function UserFeedSection({ userId }: { userId: string }) {
   const userFeeds = MOCK_FEED_DATA;
 
   const [sort, setSort] = useState<RecordTypeValue>('latest');
-  const [bookmarks, setBookmarks] = useState<BookmarkByPostId>({});
 
   const sortedFeeds = useMemo(
     () => sortFeeds(userFeeds, sort),
     [userFeeds, sort],
   );
-
-  const handleBookmark = (postId: number) => {
-    setBookmarks((prev) => {
-      const feed = userFeeds.find((item) => item.postId === postId);
-      const currentValue = prev[postId] ?? feed?.bookMark ?? false;
-      return { ...prev, [postId]: !currentValue };
-    });
-  };
 
   const handleFeedClick = (feed: FeedPost) => {
     router.push(
@@ -77,12 +66,11 @@ export default function UserFeedSection({ userId }: { userId: string }) {
         onFeedClick={handleFeedClick}
         toolbarConfig={{ viewToggle: true }}
         renderAction={(feed, viewType: FeedViewType) => {
-          const isBookmarked = bookmarks[feed.postId] ?? feed.bookMark;
+          const isBookmarked = feed.bookMark;
           return (
             <BookmarkButton
               postId={feed.postId}
               isBookmarked={isBookmarked}
-              onToggle={handleBookmark}
               className={cn(
                 viewType === 'grid' &&
                   (isBookmarked

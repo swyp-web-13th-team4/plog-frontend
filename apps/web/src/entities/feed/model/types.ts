@@ -42,13 +42,21 @@ export type FeedPost = {
   tags: PlaceTagValue[];
   like: boolean;
   bookMark: boolean;
+  memberKey?: string;
   placeCategory?: string;
   isPublic?: boolean;
 };
 
+export type FeedListResponse = {
+  feedFindResponses: FeedPost[];
+  lastPostId: number | null;
+  createAt: string | null;
+};
+
 export type FeedPage = {
   items: FeedPost[];
-  nextPage: number | undefined;
+  lastPostId: number | null;
+  createAt: string | null;
 };
 
 export type PostSortType = 'latest' | 'focus' | 'studyTime';

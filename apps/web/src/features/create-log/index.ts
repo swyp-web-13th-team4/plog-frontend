@@ -11,5 +11,6 @@ export type {
 export {
   getCreateLogDefaultValues,
   hasCreateLogValues,
+  initialCreateLogValues,
   useCreateLogStore,
 } from './model/use-create-log-store';

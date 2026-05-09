@@ -1,4 +1,4 @@
-export { createPost } from './api/client';
+export { createPost, getFeedPage } from './api/client';
 export {
   formatLikeCount,
   formatStudyDate,
@@ -20,6 +20,7 @@ export {
 export { FEED_QUERY_KEY } from './model/query-keys';
 export type {
   BookmarkSortType,
+  FeedListResponse,
   FeedPage,
   FeedPost,
   PostCreateRequest,

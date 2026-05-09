@@ -31,6 +31,7 @@ import { cn } from '@plog/utils';
 
 import {
   getCreateLogDefaultValues,
+  initialCreateLogValues,
   useCreateLogStore,
 } from '@/features/create-log';
 import { PlaceCategorySheet } from '@/features/select-place-category';
@@ -166,7 +167,7 @@ export default function CreateLogPage() {
   } = useForm<CreateLogFormValues>({
     resolver: createLogResolver,
     defaultValues: {
-      ...getCreateLogDefaultValues(),
+      ...initialCreateLogValues,
       photos: [],
     },
     mode: 'onChange',
