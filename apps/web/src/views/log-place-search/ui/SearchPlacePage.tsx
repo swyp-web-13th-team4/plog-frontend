@@ -5,8 +5,6 @@ import { type ReactNode, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 
-import { Button, EmptyState } from '@plog/ui';
-
 import { PlaceSearchContent } from '@/widgets/place-search';
 
 import { useCreateLogStore } from '@/features/create-log';
@@ -20,9 +18,11 @@ import {
   useSaveRecentPlaceMutation,
 } from '@/features/place-search';
 
-import LoadingEmptyGraphic from '@/shared/assets/empty-graphics/loading-empty.svg';
-import PlaceEmptyGraphic from '@/shared/assets/empty-graphics/place-empty.svg';
-import SearchEmptyGraphic from '@/shared/assets/empty-graphics/search-empty.svg';
+import {
+  FetchErrorEmptyState,
+  PlaceSearchIdleState,
+  SearchEmptyState,
+} from '@/shared/ui';
 
 import { useKakaoPlaceSearch } from '../lib/use-kakao-place-search';
 import SearchResultList from './SearchResultList';
@@ -134,38 +134,18 @@ export default function SearchPlacePage() {
             onRecentClear={handleClearRecentPlaces}
             idleView={
               <CenteredView>
-                <EmptyState
-                  title="어디에서 작업하셨나요?"
-                  description="오늘 몰입했던 그 장소를 검색해 보세요"
-                  graphic={<PlaceEmptyGraphic />}
-                />
+                <PlaceSearchIdleState />
               </CenteredView>
             }
             emptyView={
               <CenteredView>
-                <EmptyState
-                  title="검색 결과가 없어요"
-                  description="장소 이름이나 주소가 정확한지 확인해 주세요"
-                  graphic={<SearchEmptyGraphic />}
-                />
+                <SearchEmptyState description="장소 이름이나 주소가 정확한지 확인해 주세요" />
               </CenteredView>
             }
             errorView={
               <CenteredView>
-                <EmptyState
-                  title="정보를 불러오지 못했어요"
-                  description="인터넷 연결 상태를 확인하고 다시 시도해 주세요"
-                  graphic={<LoadingEmptyGraphic />}
-                  actions={
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="small"
-                      onClick={() => window.location.reload()}
-                    >
-                      새로 고침
-                    </Button>
-                  }
+                <FetchErrorEmptyState
+                  onRetry={() => window.location.reload()}
                 />
               </CenteredView>
             }

@@ -43,9 +43,13 @@ export type FeedPost = {
   like: boolean;
   bookMark: boolean;
   placeCategory?: string;
+  isPublic?: boolean;
 };
 
 export type FeedPage = {
   items: FeedPost[];
   nextPage: number | undefined;
 };
+
+export type PostSortType = 'latest' | 'focus' | 'studyTime';
+export type BookmarkSortType = 'latest' | 'likes';

@@ -2,22 +2,13 @@
 
 import { type ReactNode, useMemo, useState } from 'react';
 
-import {
-  BottomSheet,
-  Button,
-  Divider,
-  EmptyState,
-  Icon,
-  Select,
-  Switch,
-} from '@plog/ui';
+import { BottomSheet, Button, Divider, Icon, Select, Switch } from '@plog/ui';
 
 import MapPlaceItem from '@/views/map/ui/MapPlaceItem';
 
 import { type Place, type PlaceLayer } from '@/entities/place';
 
-import BookmarkEmptyGraphic from '@/shared/assets/empty-graphics/bookmark-empty.svg';
-import RecordEmptyGraphic from '@/shared/assets/empty-graphics/record-empty.svg';
+import { BookmarkEmptyState, RecordEmptyState } from '@/shared/ui';
 
 type RecordSort = 'latest' | 'records' | 'worktime' | 'focus';
 type BookmarkSort = 'latest' | 'focus';
@@ -111,10 +102,7 @@ type PlaceListProps = {
   places: Place[];
   placeType: PlaceLayer;
   sortOptions: { value: string; label: string }[];
-  emptyGraphic?: ReactNode;
-  emptyTitle: string;
-  emptyDescription: string;
-  emptyActions?: ReactNode;
+  emptyView: ReactNode;
   onPlaceClick: (place: Place) => void;
 };
 
@@ -122,10 +110,7 @@ function PlaceList({
   places,
   placeType,
   sortOptions,
-  emptyGraphic,
-  emptyTitle,
-  emptyDescription,
-  emptyActions,
+  emptyView,
   onPlaceClick,
 }: PlaceListProps) {
   const [sort, setSort] = useState(sortOptions[0].value);
@@ -142,13 +127,7 @@ function PlaceList({
         />
       </div>
       {sorted.length === 0 ? (
-        <EmptyState
-          graphic={emptyGraphic}
-          title={emptyTitle}
-          description={emptyDescription}
-          actions={emptyActions}
-          className="flex-1 justify-center py-12"
-        />
+        emptyView
       ) : (
         <div className="relative min-h-0 flex-1">
           <div
@@ -285,13 +264,16 @@ export default function MapListSheet({
                 places={recordPlaces}
                 placeType="record"
                 sortOptions={RECORD_SORT_OPTIONS}
-                emptyTitle="아직 기록이 없어요"
-                emptyGraphic={<RecordEmptyGraphic />}
-                emptyDescription="오늘의 작업 일지나 기억하고 싶은 장소를\n첫 기록으로 남겨보세요."
-                emptyActions={
-                  <Button variant="outline" size="medium">
-                    기록 작성하기
-                  </Button>
+                emptyView={
+                  <RecordEmptyState
+                    description="오늘의 작업 일지나 기억하고 싶은 장소를\n첫 기록으로 남겨보세요."
+                    actions={
+                      <Button variant="outline" size="medium">
+                        기록 작성하기
+                      </Button>
+                    }
+                    className="flex-1 justify-center py-12"
+                  />
                 }
                 onPlaceClick={(place) => handlePlaceClick(place, 'record')}
               />
@@ -300,9 +282,12 @@ export default function MapListSheet({
                 places={bookmarkPlaces}
                 placeType="bookmark"
                 sortOptions={BOOKMARK_SORT_OPTIONS}
-                emptyGraphic={<BookmarkEmptyGraphic />}
-                emptyTitle="아직 북마크한 장소가 없어요"
-                emptyDescription="마음에 드는 장소를 발견하면\n북마크를 눌러 저장해 보세요."
+                emptyView={
+                  <BookmarkEmptyState
+                    description="마음에 드는 장소를 발견하면\n북마크를 눌러 저장해 보세요."
+                    className="flex-1 justify-center py-12"
+                  />
+                }
                 onPlaceClick={(place) => handlePlaceClick(place, 'bookmark')}
               />
             )}

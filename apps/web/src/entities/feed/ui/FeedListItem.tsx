@@ -39,19 +39,25 @@ export default function FeedListItem({
         onClick && 'cursor-pointer',
       )}
     >
-      <Image
-        src={feed.postImages[0]}
-        alt={`${feed.title}의 대표 이미지`}
-        width={120}
-        height={120}
-        className="rounded-xl"
-      />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex justify-between gap-3">
+      <div className="relative size-30 overflow-hidden rounded-xl mobile:size-27">
+        <Image
+          src={feed.postImages[0]}
+          alt={`${feed.title}의 대표 이미지`}
+          fill
+          sizes="(max-width: 440px) 108px, 120px"
+          className="object-cover"
+        />
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <div className="relative">
           <div onClick={(event) => event.stopPropagation()}>
-            <TagBadgeGroup tags={feed.tags} maxVisible={2} />
+            <TagBadgeGroup
+              tags={feed.tags}
+              maxVisible={1}
+              popoverSide="right"
+            />
           </div>
-          {action}
+          <div className="absolute top-0 right-0">{action}</div>
         </div>
         <div className="flex flex-1 flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
@@ -62,16 +68,6 @@ export default function FeedListItem({
           </span>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-center gap-1">
-            <Icon
-              name="pin"
-              size={16}
-              className="text-semantic-object-subtle"
-            />
-            <span className="caption-md text-semantic-object-bold">
-              {feed.placeCategory ?? ''}
-            </span>
-          </div>
           <div className="flex items-center gap-1">
             <Icon
               name="clock"

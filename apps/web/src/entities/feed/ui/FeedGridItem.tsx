@@ -42,11 +42,11 @@ export default function FeedGridItem({
           alt={`${feed.title}의 대표 이미지`}
           width={208}
           height={208}
-          className="w-full object-cover"
+          className="aspect-square w-full object-cover"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0)_100%)]" />
-        <div className="absolute inset-x-3 top-3 flex items-center justify-between">
-          <div className="flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
+        <div className="absolute inset-x-3 top-3 flex items-start justify-between">
+          <div className="mt-1 flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
             <Icon name="clock" size={16} />
             <span className="caption-md">
               {formatStudyDuration(feed.studyTime)}

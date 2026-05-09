@@ -45,8 +45,6 @@ export default function ReviewTagsSheet({
   const activeCategory =
     TAG_CATEGORIES.find(({ title }) => title === activeCategoryTitle) ??
     TAG_CATEGORIES[0];
-  const hasSelectedTags = value.length > 0;
-
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
       setDraftValue(value);
@@ -74,32 +72,11 @@ export default function ReviewTagsSheet({
     setDraftValue((current) => toggleTag(current, tag));
   };
 
-  const handleRemoveSelectedTag = (tag: PlaceTagValue) => {
-    onChange(value.filter((selectedTag) => selectedTag !== tag));
-  };
-
   return (
     <>
       {value.map((tag) => (
         <input key={tag} type="hidden" name={name} value={tag} />
       ))}
-      {hasSelectedTags && (
-        <div className="mb-4 flex flex-wrap gap-2">
-          {value.map((tag) => (
-            <Chip
-              key={tag}
-              size="small"
-              variant="soft"
-              pressed
-              className="[&>svg]:size-2.5"
-              onClick={() => handleRemoveSelectedTag(tag)}
-            >
-              {PLACE_TAG_LABELS[tag]}
-              <Icon name="close" boxed={false} />
-            </Chip>
-          ))}
-        </div>
-      )}
       <BottomSheet open={open} onOpenChange={handleOpenChange}>
         <BottomSheet.Trigger render={children} />
         <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-5 pb-6">
@@ -164,11 +141,10 @@ export default function ReviewTagsSheet({
                   size="small"
                   variant="soft"
                   pressed={selectedTagSet.has(tag)}
-                  className="[&>svg]:size-2.5"
                   onClick={() => handleToggleDraftTag(tag)}
                 >
                   {PLACE_TAG_LABELS[tag]}
-                  <Icon name="close" size={9} boxed={false} />
+                  <Icon name="close" size={16} />
                 </Chip>
               ))}
             </div>
