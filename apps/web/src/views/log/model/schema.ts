@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
-import {
-  isNewPhotoPreview,
-  MAX_PHOTO_COUNT,
-  type PhotoPreview,
-} from './use-photo-upload';
+import { isNewPhotoPreview, MAX_PHOTO_COUNT } from './use-photo-upload';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
