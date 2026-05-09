@@ -52,7 +52,7 @@ export default function FeedList({
   const { viewType, toggleViewType } = useFeedViewType();
 
   return (
-    <section className={cn('w-full', className)}>
+    <section className={cn('flex w-full flex-col', className)}>
       <div className="flex justify-between px-6">
         <Select
           value={sort}
