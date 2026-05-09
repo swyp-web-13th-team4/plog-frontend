@@ -156,6 +156,10 @@ export default function MapPage() {
     router.push(`/map/places/${selectedPlaceId}?${params}`);
   };
 
+  const handleCreatePost = () => {
+    router.push('/log');
+  };
+
   return (
     <>
       <Script
@@ -211,6 +215,7 @@ export default function MapPage() {
         onClose={handleSelectedClose}
         onBack={fromList ? handleSelectedBack : undefined}
         onViewPosts={handleViewPosts}
+        onCreatePost={handleCreatePost}
       />
     </>
   );
