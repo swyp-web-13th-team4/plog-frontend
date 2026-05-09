@@ -1,5 +1,4 @@
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
+import DOMPurify from 'isomorphic-dompurify';
 
 import { serverApi } from '@/shared/api/server-api';
 
@@ -12,8 +11,7 @@ const getTerm = (termId: TermId) =>
 
 export const getSanitizedTerm = async (termId: TermId) => {
   const html = await getTerm(termId);
-  const purify = DOMPurify(new JSDOM('').window);
-  return purify.sanitize(html);
+  return DOMPurify.sanitize(html);
 };
 
 export const getDefaultImages = () =>
