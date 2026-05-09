@@ -145,12 +145,14 @@ export default function MapPage() {
   };
 
   const handleSelectedClose = () => {
+    pendingRef.current = null;
     deselect();
     setSelectedPlaceId(null);
     setFromList(false);
   };
 
   const handleSelectedBack = () => {
+    pendingRef.current = null;
     setSelectedPlaceId(null);
     setFromList(false);
     listHandle.open(null);
