@@ -5,6 +5,8 @@ import { type ReactNode, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 
+import { useToast } from '@plog/ui';
+
 import { PlaceSearchContent } from '@/widgets/place-search';
 
 import { useCreateLogStore } from '@/features/create-log';
@@ -36,7 +38,6 @@ function CenteredView({ children }: { children: ReactNode }) {
 }
 
 export default function SearchPlacePage() {
-  const router = useRouter();
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
 
@@ -47,6 +48,10 @@ export default function SearchPlacePage() {
   const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
   const deleteRecentPlacesMutation = useDeleteRecentPlacesMutation();
   const setCreateLogValues = useCreateLogStore((state) => state.setValues);
+
+  const router = useRouter();
+
+  const { toast } = useToast();
 
   const displayState = sdkLoadError ? 'error' : searchState;
 
@@ -66,9 +71,13 @@ export default function SearchPlacePage() {
         latitude: selectedPlace.latitude,
         longitude: selectedPlace.longitude,
       });
-    } finally {
       setCreateLogValues({ place: selectedPlace });
       router.push('/log');
+    } catch {
+      toast({
+        type: 'error',
+        description: '장소 저장에 실패했어요. 다시 시도해 주세요.',
+      });
     }
   };
 
@@ -88,9 +97,13 @@ export default function SearchPlacePage() {
         latitude: selectedPlace.latitude,
         longitude: selectedPlace.longitude,
       });
-    } finally {
       setCreateLogValues({ place: selectedPlace });
       router.push('/log');
+    } catch {
+      toast({
+        type: 'error',
+        description: '장소 저장에 실패했어요. 다시 시도해 주세요.',
+      });
     }
   };
 
