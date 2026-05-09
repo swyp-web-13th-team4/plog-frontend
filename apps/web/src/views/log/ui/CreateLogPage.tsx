@@ -47,6 +47,7 @@ import { PLACE_CATEGORIES } from '@/entities/place';
 
 import { dialog } from '@/shared/lib/dialog';
 
+import { useLogBackHandlerRegistration } from '../model/log-back-context';
 import {
   createLogFormSnapshot,
   mapPostEditResponseToFormValues,
@@ -474,6 +475,55 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
       toast,
       updateLogMutation,
     ],
+  );
+
+  const handleEditLogBack = useCallback(async () => {
+    if (normalizedEditPostId === null) return;
+
+    const detailPath = `/feed/${normalizedEditPostId}`;
+
+    if (!initialEditSnapshot) {
+      router.push(detailPath);
+      return;
+    }
+
+    let isDirty = true;
+    try {
+      isDirty = createLogFormSnapshot(getValues()) !== initialEditSnapshot;
+    } catch {
+      isDirty = true;
+    }
+
+    if (!isDirty) {
+      router.push(detailPath);
+      return;
+    }
+
+    const confirmed = await dialog.confirm({
+      message: '수정을 취소하시겠어요?',
+      description: '취소 시 수정 중인 내용은 저장되지 않습니다.',
+      confirmLabel: '수정 취소',
+      cancelLabel: '계속 수정하기',
+    });
+
+    if (!confirmed) return;
+
+    resetCreateLog();
+    clearPhotos();
+    router.push(detailPath);
+  }, [
+    clearPhotos,
+    getValues,
+    initialEditSnapshot,
+    normalizedEditPostId,
+    resetCreateLog,
+    router,
+  ]);
+
+  useLogBackHandlerRegistration(
+    isEditMode && normalizedEditPostId !== null && !hasInvalidEditPostId
+      ? handleEditLogBack
+      : null,
   );
 
   const isSubmitting = isEditMode

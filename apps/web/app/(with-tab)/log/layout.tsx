@@ -1,10 +1,12 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useCallback, useRef } from 'react';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { AppBar } from '@plog/ui';
+
+import { LogBackProvider } from '@/views/log/model/log-back-context';
 
 import { hasCreateLogValues, useCreateLogStore } from '@/features/create-log';
 
@@ -17,16 +19,38 @@ export default function CreateFeedLayout({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const editPostId = searchParams.get('postId');
+  const logBackHandlerRef = useRef<(() => void | Promise<void>) | null>(null);
+  const registerLogBackHandler = useCallback(
+    (handler: (() => void | Promise<void>) | null) => {
+      logBackHandlerRef.current = handler;
+    },
+    [],
+  );
   const createLogValues = useCreateLogStore((state) => state.values);
   const hasPhotos = useCreateLogStore((state) => state.hasPhotos);
   const resetCreateLog = useCreateLogStore((state) => state.reset);
 
   const isPlaceSearchPage = pathname.startsWith('/log/place-search');
+  const isEditLogPage = Boolean(editPostId) && !isPlaceSearchPage;
   const hasCreateLogData = hasCreateLogValues(createLogValues) || hasPhotos;
 
   const handleBack = async () => {
     if (isPlaceSearchPage) {
       router.push('/log');
+      return;
+    }
+
+    if (isEditLogPage) {
+      const handler = logBackHandlerRef.current;
+      if (handler) {
+        await handler();
+        return;
+      }
+      if (editPostId) {
+        router.push(`/feed/${editPostId}`);
+      }
       return;
     }
 
@@ -49,7 +73,7 @@ export default function CreateFeedLayout({
   };
 
   return (
-    <>
+    <LogBackProvider registerHandler={registerLogBackHandler}>
       <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
         <AppBar
           variant="navigation"
@@ -58,6 +82,6 @@ export default function CreateFeedLayout({
         />
       </header>
       <div className="pt-[var(--spacing-header)]">{children}</div>
-    </>
+    </LogBackProvider>
   );
 }
