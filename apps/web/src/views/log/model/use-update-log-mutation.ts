@@ -7,24 +7,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { FEED_QUERY_KEY, updatePost } from '@/entities/feed';
 
-import { API_ERROR_CODE } from '@/shared/api/constants';
-import { ApiResponseError } from '@/shared/api/response.utils';
-
 import { getNewPhotoFiles, mapUpdateLogForm } from './mapper';
 import { type CreateLogFormValues } from './types';
 
 type UseUpdateLogMutationOptions = {
   postId: number | null;
   onSuccess?: () => void;
-  onTitleForbidden?: () => void;
-  onContentsForbidden?: () => void;
 };
 
 export function useUpdateLogMutation({
   postId,
   onSuccess,
-  onTitleForbidden,
-  onContentsForbidden,
 }: UseUpdateLogMutationOptions) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -48,20 +41,7 @@ export function useUpdateLogMutation({
       toast({ type: 'success', description: '기록이 수정되었어요.' });
       if (postId !== null) router.replace(`/feed/${postId}`);
     },
-    onError: (error) => {
-      if (
-        error instanceof ApiResponseError &&
-        error.errorCode === API_ERROR_CODE.CONTAINS_BAD_WORD
-      ) {
-        const errorMessage = error.message.toLowerCase();
-        if (errorMessage.includes('title') || error.message.includes('제목')) {
-          onTitleForbidden?.();
-        } else {
-          onContentsForbidden?.();
-        }
-        return;
-      }
-
+    onError: () => {
       toast({
         type: 'error',
         description: '기록을 수정하지 못했어요. 다시 시도해 주세요.',

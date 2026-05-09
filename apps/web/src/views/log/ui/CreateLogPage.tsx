@@ -187,7 +187,6 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     handleSubmit,
     reset,
     setValue,
-    setError,
     getValues,
     trigger,
     control,
@@ -207,38 +206,10 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
       clearPhotos();
       resetCreateLog();
     },
-    onTitleForbidden: () => {
-      setError('title', {
-        type: 'server',
-        message: '사용할 수 없는 단어가 포함되어 있어요.',
-      });
-      triggerTitleFeedback();
-    },
-    onContentsForbidden: () => {
-      setError('contents', {
-        type: 'server',
-        message: '사용할 수 없는 단어가 포함되어 있어요.',
-      });
-      triggerContentsFeedback();
-    },
   });
 
   const updateLogMutation = useUpdateLogMutation({
     postId: normalizedEditPostId,
-    onTitleForbidden: () => {
-      setError('title', {
-        type: 'server',
-        message: '사용할 수 없는 단어가 포함되어 있어요.',
-      });
-      triggerTitleFeedback();
-    },
-    onContentsForbidden: () => {
-      setError('contents', {
-        type: 'server',
-        message: '사용할 수 없는 단어가 포함되어 있어요.',
-      });
-      triggerContentsFeedback();
-    },
   });
   const editLogQuery = useEditLogQuery(normalizedEditPostId);
   const initialEditSnapshot = useMemo(() => {
