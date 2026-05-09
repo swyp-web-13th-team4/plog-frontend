@@ -25,17 +25,23 @@ export default function MapPage() {
 
   const searchParams = useSearchParams();
 
-  const initPlaceId = searchParams.get('placeId');
-  const initLat = searchParams.get('lat');
-  const initLng = searchParams.get('lng');
+  const initPlaceId = Number(searchParams.get('placeId'));
+  const initLat = Number(searchParams.get('lat'));
+  const initLng = Number(searchParams.get('lng'));
   const initType = searchParams.get('type');
   const initSelection =
-    initPlaceId && initLat && initLng
+    Number.isInteger(initPlaceId) &&
+    initPlaceId > 0 &&
+    Number.isFinite(initLat) &&
+    initLat !== 0 &&
+    Number.isFinite(initLng) &&
+    initLng !== 0 &&
+    (initType === 'record' || initType === 'bookmark')
       ? {
-          placeId: Number(initPlaceId),
-          type: (initType ?? 'record') as PlaceLayer,
-          lat: Number(initLat),
-          lng: Number(initLng),
+          placeId: initPlaceId,
+          type: initType as PlaceLayer,
+          lat: initLat,
+          lng: initLng,
         }
       : null;
 
