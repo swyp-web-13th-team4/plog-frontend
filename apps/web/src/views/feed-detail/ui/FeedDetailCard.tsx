@@ -14,7 +14,6 @@ import {
   Icon,
   Select,
   Spinner,
-  useToast,
 } from '@plog/ui';
 
 import { CopyLinkButton } from '@/features/copy-link';
@@ -43,7 +42,6 @@ const AUTHOR_ACTION_OPTIONS = [
 
 export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
-  const { toast } = useToast();
   const numericPostId = Number(postId);
   const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
   const {
@@ -261,7 +259,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   postId={post.postId}
                   isBookmarked={post.bookMark}
                 />
-                <CopyLinkButton />
+                <CopyLinkButton postId={post.postId} />
               </div>
             </div>
           )}
@@ -277,20 +275,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   </Badge>
                 )}
               </div>
-              {isMyPost && (
-                <button
-                  type="button"
-                  className="cursor-pointer"
-                  onClick={() =>
-                    toast({
-                      icon: <Icon name="link" />,
-                      description: '링크가 복사되었습니다.',
-                    })
-                  }
-                >
-                  <Icon name="share" className="text-semantic-object-normal" />
-                </button>
-              )}
+              {isMyPost && <CopyLinkButton postId={post.postId} />}
             </div>
             <p className="body-sm text-semantic-object-normal">
               {post.address}

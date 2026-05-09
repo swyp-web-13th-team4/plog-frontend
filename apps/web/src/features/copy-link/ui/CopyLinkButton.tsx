@@ -1,19 +1,32 @@
+'use client';
+
 import { Icon, useToast } from '@plog/ui';
 
-export default function CopyLinkButton() {
+type CopyLinkButtonProps = {
+  postId: number;
+};
+
+export default function CopyLinkButton({ postId }: CopyLinkButtonProps) {
   const { toast } = useToast();
-  //Todo: 해당 postId를 매개변수로 전달하여 링크 공유되는 로직 설계
+
+  const handleCopy = async () => {
+    const url = `${window.location.origin}/feed/${postId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast({
+        icon: <Icon name="link" />,
+        description: '링크가 복사되었습니다.',
+      });
+    } catch {
+      toast({
+        type: 'error',
+        description: '링크 복사에 실패했어요. 다시 시도해 주세요.',
+      });
+    }
+  };
+
   return (
-    <button
-      type="button"
-      className="cursor-pointer"
-      onClick={() =>
-        toast({
-          icon: <Icon name="link" />,
-          description: '링크가 복사되었습니다.',
-        })
-      }
-    >
+    <button type="button" className="cursor-pointer" onClick={handleCopy}>
       <Icon name="share" className="text-semantic-object-normal" />
     </button>
   );
