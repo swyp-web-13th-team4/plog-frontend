@@ -10,6 +10,7 @@ type MenuItemProps = {
   iconName: IconName;
   onClick: () => void;
   destructive?: boolean;
+  showChevron?: boolean;
   className?: string;
 };
 
@@ -18,13 +19,14 @@ function MenuItem({
   iconName,
   onClick,
   destructive = false,
+  showChevron = false,
   className,
 }: MenuItemProps) {
   return (
     <button
       type="button"
       className={cn(
-        'label-lg flex h-18 cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest',
+        'label-lg flex h-18 w-full cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest',
         destructive && 'text-semantic-feedback-error-normal',
         className,
       )}
@@ -38,7 +40,17 @@ function MenuItem({
           destructive && 'text-semantic-feedback-error-normal',
         )}
       />
-      {title}
+      <span className="flex-1 text-start">{title}</span>
+      {showChevron && (
+        <Icon
+          name="chevron-right"
+          size={24}
+          className={cn(
+            'text-semantic-object-subtle',
+            destructive && 'text-semantic-feedback-error-normal',
+          )}
+        />
+      )}
     </button>
   );
 }
@@ -56,7 +68,7 @@ export default function SettingsPage() {
         />
       </header>
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col divide-y divide-semantic-stroke-subtle pt-[var(--spacing-header)]">
-        <section>
+        <section aria-label="계정">
           <MenuItem title="로그아웃" iconName="logout" onClick={() => {}} />
           <MenuItem
             title="탈퇴하기"
