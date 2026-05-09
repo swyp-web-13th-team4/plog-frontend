@@ -120,15 +120,13 @@ function PlaceList({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const isRecord = layer === 'record';
-
   if (places.length === 0) {
     return emptyView;
   }
 
   return (
     <>
-      <div className="flex w-full shrink-0 items-center pb-3">
+      <div className="flex w-full shrink-0 items-center">
         <Select
           items={sortOptions}
           value={sort}
@@ -137,21 +135,17 @@ function PlaceList({
         />
       </div>
       <div className="relative min-h-0 flex-1">
-        <div
-          className={`absolute inset-0 divide-y overflow-y-auto overscroll-contain ${
-            isRecord
-              ? 'divide-semantic-object-subtler'
-              : 'divide-semantic-stroke-assistive'
-          }`}
-        >
-          {places.map((place) => (
-            <MapPlaceItem
-              key={place.placeId}
-              layer={layer}
-              place={place}
-              onClick={() => onPlaceClick(place)}
-            />
-          ))}
+        <div className="absolute inset-0 overflow-y-auto overscroll-contain">
+          <div className="divide-y divide-semantic-object-subtler">
+            {places.map((place) => (
+              <MapPlaceItem
+                key={place.placeId}
+                layer={layer}
+                place={place}
+                onClick={() => onPlaceClick(place)}
+              />
+            ))}
+          </div>
           <div ref={ref} aria-hidden="true" />
         </div>
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-4">
