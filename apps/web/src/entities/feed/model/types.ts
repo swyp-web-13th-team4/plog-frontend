@@ -79,7 +79,6 @@ export type FeedPost = {
 
 export type FeedDetailResponse = FeedPost & {
   isAuthor: boolean;
-  memerKey?: string;
 };
 
 export type FeedListResponse = {
