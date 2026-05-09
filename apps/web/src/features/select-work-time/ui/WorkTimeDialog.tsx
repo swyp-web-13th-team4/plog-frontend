@@ -75,6 +75,7 @@ export default function WorkTimeDialog({
               value={draftValue}
               onChange={setDraftValue}
               aria-label={label}
+              minuteStep={10}
             />
           </Dialog.Body>
           <Dialog.Actions>
