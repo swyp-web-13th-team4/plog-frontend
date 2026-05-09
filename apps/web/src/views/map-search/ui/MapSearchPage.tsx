@@ -64,6 +64,7 @@ export default function MapSearchPage() {
     data: places,
     isPending,
     isError,
+    refetch,
   } = useMapSearchQuery(debouncedKeyword);
 
   const hasQuery = debouncedKeyword.trim().length > 0;
@@ -102,7 +103,7 @@ export default function MapSearchPage() {
             </div>
           ) : isPending ? null : isError ? (
             <div className="flex flex-1 items-center justify-center bg-semantic-bg-deep p-6">
-              <FetchErrorEmptyState onRetry={() => window.location.reload()} />
+              <FetchErrorEmptyState onRetry={refetch} />
             </div>
           ) : !places?.length ? (
             <div className="flex flex-1 items-center justify-center bg-semantic-bg-deep p-6">
