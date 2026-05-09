@@ -36,10 +36,10 @@ export default function CreateFeedLayout({
     }
 
     const confirmed = await dialog.confirm({
-      message: '작성 중인 기록을 그만둘까요?',
-      description: '나가면 작성 중인 내용이 삭제돼요.',
-      confirmLabel: '나가기',
-      cancelLabel: '계속 작성',
+      message: '작성을 중단하시겠어요?',
+      description: '작성 중인 기록은 저장되지 않고 사라져요.',
+      confirmLabel: '확인',
+      cancelLabel: '취소',
     });
 
     if (!confirmed) return;
