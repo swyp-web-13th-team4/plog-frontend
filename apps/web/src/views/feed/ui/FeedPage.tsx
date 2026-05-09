@@ -140,7 +140,6 @@ export default function FeedPage() {
           )}
         </div>
       )}
-      <div ref={ref} aria-hidden="true"></div>
       {!hasNextPage && posts.length > 0 && (
         <p className="body-sm py-12 text-center text-semantic-object-subtle">
           마지막 기록까지 확인했어요
