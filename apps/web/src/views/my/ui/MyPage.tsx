@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { AppBar, Icon, TabGroup } from '@plog/ui';
 
 import AnalysisTab from './analysis/AnalysisTab';
@@ -44,6 +46,8 @@ const TABS = [
 ];
 
 export default function MyPage() {
+  const router = useRouter();
+
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
@@ -54,6 +58,7 @@ export default function MyPage() {
             <AppBar.Action
               icon={<Icon name="setting" size={28} />}
               aria-label="설정"
+              onClick={() => router.push('/my/settings')}
             />
           }
         />
