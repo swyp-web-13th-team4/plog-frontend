@@ -72,7 +72,8 @@ export type FeedPost = {
   like: boolean;
   bookMark: boolean;
   memberKey?: string;
-  placeCategory?: string;
+  category?: string;
+  address?: string;
   isPublic?: boolean;
 };
 

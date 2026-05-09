@@ -80,10 +80,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     }
 
     if (value === 'edit') {
-      toast({
-        type: 'default',
-        description: '게시글 수정 화면은 준비 중이에요.',
-      });
+      router.push(`/log?postId=${numericPostId}`);
     }
   };
 
@@ -204,6 +201,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   alt={`${post.title} 이미지 ${index + 1}`}
                   width={480}
                   height={480}
+                  unoptimized
                 />
               </Carousel.Slide>
             ))}
@@ -273,9 +271,9 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                 <span className="title-xs text-semantic-object-boldest">
                   {post.placeName}
                 </span>
-                {post.placeCategory && (
+                {post.category && (
                   <Badge color="skyblue" variant="soft">
-                    {post.placeCategory}
+                    {post.category}
                   </Badge>
                 )}
               </div>
@@ -294,6 +292,9 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                 </button>
               )}
             </div>
+            <p className="body-sm text-semantic-object-normal">
+              {post.address}
+            </p>
           </div>
           <FeedStatsSummary
             isUserOwnFeed={isMyPost}

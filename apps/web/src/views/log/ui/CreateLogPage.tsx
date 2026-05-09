@@ -4,7 +4,9 @@ import {
   type ComponentPropsWithoutRef,
   type ReactNode,
   type Ref,
+  useCallback,
   useEffect,
+  useMemo,
   useRef,
 } from 'react';
 import {
@@ -23,6 +25,7 @@ import {
   Field,
   Icon,
   Input,
+  Spinner,
   Switch,
   Textarea,
   useToast,
@@ -42,11 +45,19 @@ import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 import { PLACE_TAG_LABELS } from '@/entities/feed';
 import { PLACE_CATEGORIES } from '@/entities/place';
 
+import { dialog } from '@/shared/lib/dialog';
+
+import {
+  createLogFormSnapshot,
+  mapPostEditResponseToFormValues,
+} from '../model/mapper';
 import { createLogResolver } from '../model/resolver';
 import { type CreateLogFormValues } from '../model/types';
 import { useCreateLogMutation } from '../model/use-create-log-mutation';
+import { useEditLogQuery } from '../model/use-edit-log-query';
 import { usePhotoUpload } from '../model/use-photo-upload';
 import { useScrollFocusFeedback } from '../model/use-scroll-focus-feedback';
+import { useUpdateLogMutation } from '../model/use-update-log-mutation';
 import PhotoUploader from './PhotoUploader';
 import PrivacySettingSection from './PrivacySettingSection';
 import RatingPicker from './RatingPicker';
@@ -63,6 +74,10 @@ type SelectTriggerButtonProps = Omit<
   value: string | null;
   placeholder: string;
   icon: ReactNode;
+};
+
+type CreateLogPageProps = {
+  editPostId?: string;
 };
 
 function SelectTriggerButton({
@@ -94,8 +109,15 @@ function SelectTriggerButton({
   );
 }
 
-export default function CreateLogPage() {
+export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   const router = useRouter();
+  const numericEditPostId = editPostId ? Number(editPostId) : null;
+  const normalizedEditPostId =
+    numericEditPostId !== null && Number.isFinite(numericEditPostId)
+      ? numericEditPostId
+      : null;
+  const isEditMode = normalizedEditPostId !== null;
+  const hasInvalidEditPostId = editPostId !== undefined && !isEditMode;
   const {
     fieldRef: photoFieldRef,
     focusRef: photoUploadButtonRef,
@@ -143,8 +165,13 @@ export default function CreateLogPage() {
     trigger: triggerReviewTagsFeedback,
   } = useScrollFocusFeedback<HTMLDivElement, HTMLButtonElement>();
 
-  const { photos, handleAddPhotos, handleRemovePhoto, clearPhotos } =
-    usePhotoUpload();
+  const {
+    photos,
+    handleAddPhotos,
+    handleRemovePhoto,
+    setExistingPhotos,
+    clearPhotos,
+  } = usePhotoUpload({ restoreStoredPhotos: !isEditMode });
   const { toast } = useToast();
   const setCreateLogValues = useCreateLogStore((state) => state.setValues);
   const setCreateLogHasPhotos = useCreateLogStore(
@@ -195,6 +222,32 @@ export default function CreateLogPage() {
     },
   });
 
+  const updateLogMutation = useUpdateLogMutation({
+    postId: normalizedEditPostId,
+    onTitleForbidden: () => {
+      setError('title', {
+        type: 'server',
+        message: '사용할 수 없는 단어가 포함되어 있어요.',
+      });
+      triggerTitleFeedback();
+    },
+    onContentsForbidden: () => {
+      setError('contents', {
+        type: 'server',
+        message: '사용할 수 없는 단어가 포함되어 있어요.',
+      });
+      triggerContentsFeedback();
+    },
+  });
+  const editLogQuery = useEditLogQuery(normalizedEditPostId);
+  const initialEditSnapshot = useMemo(() => {
+    if (!editLogQuery.data) return null;
+
+    return createLogFormSnapshot(
+      mapPostEditResponseToFormValues(editLogQuery.data),
+    );
+  }, [editLogQuery.data]);
+
   const titleField = register('title');
   const contentsField = register('contents');
 
@@ -222,6 +275,18 @@ export default function CreateLogPage() {
   };
 
   useEffect(() => {
+    if (isEditMode) {
+      if (!editLogQuery.data || hasRestoredFormRef.current) return;
+
+      const editFormValues = mapPostEditResponseToFormValues(editLogQuery.data);
+      reset(editFormValues);
+      setExistingPhotos(editLogQuery.data.images.images);
+      queueMicrotask(() => {
+        hasRestoredFormRef.current = true;
+      });
+      return;
+    }
+
     if (!hasStoreHydrated || hasRestoredFormRef.current) return;
 
     reset({
@@ -231,7 +296,13 @@ export default function CreateLogPage() {
     queueMicrotask(() => {
       hasRestoredFormRef.current = true;
     });
-  }, [hasStoreHydrated, reset]);
+  }, [
+    editLogQuery.data,
+    hasStoreHydrated,
+    isEditMode,
+    reset,
+    setExistingPhotos,
+  ]);
 
   useEffect(() => {
     if (!hasRestoredFormRef.current) return;
@@ -240,11 +311,11 @@ export default function CreateLogPage() {
       shouldDirty: photos.length > 0,
       shouldValidate: isSubmitted,
     });
-    setCreateLogHasPhotos(photos.length > 0);
-  }, [isSubmitted, photos, setCreateLogHasPhotos, setValue]);
+    if (!isEditMode) setCreateLogHasPhotos(photos.length > 0);
+  }, [isEditMode, isSubmitted, photos, setCreateLogHasPhotos, setValue]);
 
   useEffect(() => {
-    if (!hasRestoredFormRef.current) return;
+    if (isEditMode || !hasRestoredFormRef.current) return;
 
     setCreateLogValues({
       title,
@@ -262,6 +333,7 @@ export default function CreateLogPage() {
     contents,
     endTime,
     focusScore,
+    isEditMode,
     place,
     placeCategory,
     reviewTags,
@@ -370,14 +442,91 @@ export default function CreateLogPage() {
     }
   };
 
+  const handleValidSubmit = useCallback(
+    async (values: CreateLogFormValues) => {
+      if (!isEditMode) {
+        createLogMutation.mutate(values);
+        return;
+      }
+
+      const currentSnapshot = createLogFormSnapshot(values);
+      if (currentSnapshot === initialEditSnapshot) {
+        toast({
+          type: 'default',
+          description: '변경된 내용이 없어요.',
+        });
+        return;
+      }
+
+      const confirmed = await dialog.confirm({
+        message: '기록을 수정하시겠어요?',
+        description: '변경한 내용으로 기록이 저장돼요.',
+        confirmLabel: '수정하기',
+        cancelLabel: '취소',
+      });
+
+      if (confirmed) updateLogMutation.mutate(values);
+    },
+    [
+      createLogMutation,
+      initialEditSnapshot,
+      isEditMode,
+      toast,
+      updateLogMutation,
+    ],
+  );
+
+  const isSubmitting = isEditMode
+    ? updateLogMutation.isPending
+    : createLogMutation.isPending;
+
+  if (hasInvalidEditPostId) {
+    return (
+      <section className="flex min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] items-center justify-center bg-semantic-bg-standard px-6">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <p className="body-md text-semantic-object-normal">
+            수정할 게시글을 찾을 수 없어요.
+          </p>
+          <Button variant="outline" size="small" onClick={() => router.back()}>
+            돌아가기
+          </Button>
+        </div>
+      </section>
+    );
+  }
+
+  if (isEditMode && editLogQuery.isPending) {
+    return (
+      <section className="flex min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] items-center justify-center bg-semantic-bg-standard">
+        <Spinner size="large" />
+      </section>
+    );
+  }
+
+  if (isEditMode && editLogQuery.isError) {
+    return (
+      <section className="flex min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] items-center justify-center bg-semantic-bg-standard px-6">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <p className="body-md text-semantic-object-normal">
+            수정할 기록을 불러오지 못했어요.
+          </p>
+          <Button
+            variant="outline"
+            size="small"
+            onClick={() => editLogQuery.refetch()}
+          >
+            다시 시도
+          </Button>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <form
       className="bg-semantic-bg-standard"
       noValidate
-      onSubmit={handleSubmit(
-        (values) => createLogMutation.mutate(values),
-        handleInvalidSubmit,
-      )}
+      onSubmit={handleSubmit(handleValidSubmit, handleInvalidSubmit)}
     >
       <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
         <div ref={photoFieldRef}>
@@ -643,13 +792,14 @@ export default function CreateLogPage() {
         <PrivacySettingSection isPublic={isPublic} />
       </section>
       <section className="px-6 pt-6 pb-10">
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          disabled={createLogMutation.isPending}
-        >
-          {createLogMutation.isPending ? '등록 중...' : '기록하기'}
+        <Button fullWidth size="large" type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? isEditMode
+              ? '수정 중...'
+              : '등록 중...'
+            : isEditMode
+              ? '수정하기'
+              : '기록하기'}
         </Button>
       </section>
     </form>

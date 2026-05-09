@@ -6,7 +6,11 @@ import Image from 'next/image';
 
 import { Icon } from '@plog/ui';
 
-import { MAX_PHOTO_COUNT, type PhotoPreview } from '../model/use-photo-upload';
+import {
+  isNewPhotoPreview,
+  MAX_PHOTO_COUNT,
+  type PhotoPreview,
+} from '../model/use-photo-upload';
 
 type PhotoUploaderProps = {
   photos: PhotoPreview[];
@@ -32,7 +36,9 @@ export default function PhotoUploader({
     if (!fileInputRef.current) return;
 
     const dataTransfer = new DataTransfer();
-    photos.forEach(({ file }) => dataTransfer.items.add(file));
+    photos
+      .filter(isNewPhotoPreview)
+      .forEach(({ file }) => dataTransfer.items.add(file));
     fileInputRef.current.files = dataTransfer.files;
   }, [photos]);
 

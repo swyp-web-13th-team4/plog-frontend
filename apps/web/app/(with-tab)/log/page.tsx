@@ -1,5 +1,13 @@
 import { CreateLogPage } from '@/views/log';
 
-export default function LogPage() {
-  return <CreateLogPage />;
+type LogPageProps = {
+  searchParams: Promise<{
+    postId?: string;
+  }>;
+};
+
+export default async function LogPage({ searchParams }: LogPageProps) {
+  const { postId } = await searchParams;
+
+  return <CreateLogPage editPostId={postId} />;
 }

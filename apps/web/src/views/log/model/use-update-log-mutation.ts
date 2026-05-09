@@ -5,37 +5,48 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { createPost, FEED_QUERY_KEY } from '@/entities/feed';
+import { FEED_QUERY_KEY, updatePost } from '@/entities/feed';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
 
-import { getNewPhotoFiles, mapCreateLogForm } from './mapper';
+import { getNewPhotoFiles, mapUpdateLogForm } from './mapper';
 import { type CreateLogFormValues } from './types';
 
-type UseCreateLogMutationOptions = {
+type UseUpdateLogMutationOptions = {
+  postId: number | null;
   onSuccess?: () => void;
   onTitleForbidden?: () => void;
   onContentsForbidden?: () => void;
 };
 
-export function useCreateLogMutation({
+export function useUpdateLogMutation({
+  postId,
   onSuccess,
   onTitleForbidden,
   onContentsForbidden,
-}: UseCreateLogMutationOptions = {}) {
+}: UseUpdateLogMutationOptions) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (values: CreateLogFormValues) =>
-      createPost(mapCreateLogForm(values), getNewPhotoFiles(values)),
+    mutationFn: (values: CreateLogFormValues) => {
+      if (postId === null || !Number.isFinite(postId)) {
+        throw new Error('수정할 게시글을 찾을 수 없습니다.');
+      }
+
+      return updatePost(
+        postId,
+        mapUpdateLogForm(values),
+        getNewPhotoFiles(values),
+      );
+    },
     onSuccess: async () => {
       onSuccess?.();
       await queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY });
-      toast({ type: 'success', description: '기록이 등록되었어요.' });
-      router.replace('/feed');
+      toast({ type: 'success', description: '기록이 수정되었어요.' });
+      if (postId !== null) router.replace(`/feed/${postId}`);
     },
     onError: (error) => {
       if (
@@ -53,7 +64,7 @@ export function useCreateLogMutation({
 
       toast({
         type: 'error',
-        description: '기록을 등록하지 못했어요. 다시 시도해 주세요.',
+        description: '기록을 수정하지 못했어요. 다시 시도해 주세요.',
       });
     },
   });

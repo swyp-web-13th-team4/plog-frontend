@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { MAX_PHOTO_COUNT, type PhotoPreview } from './use-photo-upload';
+import {
+  isNewPhotoPreview,
+  MAX_PHOTO_COUNT,
+  type PhotoPreview,
+} from './use-photo-upload';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -114,7 +118,11 @@ export const createLogSchema = z
         `사진은 최대 ${MAX_PHOTO_COUNT}장까지 등록할 수 있어요.`,
       )
       .refine(
-        (photos) => photos.every(({ file }) => file.size <= MAX_FILE_SIZE),
+        (photos) =>
+          photos.every(
+            (photo) =>
+              !isNewPhotoPreview(photo) || photo.file.size <= MAX_FILE_SIZE,
+          ),
         { message: '10MB 이하의 이미지 파일만 등록 가능해요.' },
       ),
     place: placeSchema.nullable().refine((value) => value !== null, {
