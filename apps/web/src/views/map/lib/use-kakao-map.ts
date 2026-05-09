@@ -412,7 +412,11 @@ export function useKakaoMap({
       new window.kakao.maps.LatLng(lat, lng),
       containerRef.current?.clientHeight ?? 0,
     );
-    setTimeout(() => updateBounds(map), 100);
+    const onIdle = () => {
+      updateBounds(map);
+      window.kakao.maps.event.removeListener(map, 'idle', onIdle);
+    };
+    window.kakao.maps.event.addListener(map, 'idle', onIdle);
   };
 
   return {
