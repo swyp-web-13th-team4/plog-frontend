@@ -2,7 +2,15 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY, getPostForEdit } from '@/entities/feed';
+import { FEED_QUERY_KEY } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
+
+import { type PostEditData } from './types';
+
+function getPostForEdit(postId: number) {
+  return clientApi.get<PostEditData>(`/post/${postId}/edit`);
+}
 
 export function useEditLogQuery(postId: number | null) {
   return useQuery({

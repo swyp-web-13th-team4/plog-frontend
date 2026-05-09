@@ -5,10 +5,28 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY, updatePost } from '@/entities/feed';
+import { FEED_QUERY_KEY } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
+import { createMultipartRequest } from '@/shared/api/create-multipart-request';
 
 import { getNewPhotoFiles, mapUpdateLogForm } from './mapper';
-import { type CreateLogFormValues } from './types';
+import {
+  type CreateLogFormValues,
+  type PostEditData,
+  type PostUpdateRequest,
+} from './types';
+
+function updatePost(
+  postId: number,
+  data: PostUpdateRequest,
+  images: File[] = [],
+) {
+  return clientApi.put<PostEditData>(
+    `/post/${postId}`,
+    createMultipartRequest(data, { images }),
+  );
+}
 
 type UseUpdateLogMutationOptions = {
   postId: number | null;

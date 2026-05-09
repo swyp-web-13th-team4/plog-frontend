@@ -9,7 +9,13 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { deletePost, FEED_QUERY_KEY, type FeedPage } from '@/entities/feed';
+import { FEED_QUERY_KEY, type FeedPage } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
+
+function deletePost(postId: number) {
+  return clientApi.delete<unknown>(`/post/${postId}`);
+}
 
 function removePostFromFeedCache(
   prev: InfiniteData<FeedPage> | undefined,

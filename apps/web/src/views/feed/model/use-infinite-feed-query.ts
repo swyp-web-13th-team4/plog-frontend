@@ -2,7 +2,9 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY, type FeedPage, getFeedPage } from '@/entities/feed';
+import { FEED_QUERY_KEY, type FeedPage, type FeedPost } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
 
 export { FEED_QUERY_KEY };
 
@@ -10,6 +12,35 @@ type FeedCursor = {
   lastPostId: number | null;
   createAt: string | null;
 };
+
+type FeedListResponse = {
+  feedFindResponses: FeedPost[];
+  lastPostId: number | null;
+  createAt: string | null;
+};
+
+async function getFeedPage(
+  { lastPostId, createAt }: FeedCursor = { lastPostId: null, createAt: null },
+): Promise<FeedPage> {
+  const params = new URLSearchParams();
+  if (lastPostId !== null && lastPostId !== undefined) {
+    params.set('lastPostId', String(lastPostId));
+  }
+  if (createAt) {
+    params.set('createAt', createAt);
+  }
+
+  const query = params.toString();
+  const data = await clientApi.get<FeedListResponse>(
+    `/feed/list${query ? `?${query}` : ''}`,
+  );
+
+  return {
+    items: data.feedFindResponses,
+    lastPostId: data.lastPostId,
+    createAt: data.createAt,
+  };
+}
 
 export function useInfiniteFeedQuery() {
   return useInfiniteQuery<

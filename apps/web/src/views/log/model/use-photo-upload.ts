@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { type PostEditImage } from '@/entities/feed';
+import { type PostImage } from './types';
 
 export type NewPhotoPreview = {
   type: 'new';
@@ -29,9 +29,7 @@ function createPhotoPreview(file: File, index: number): NewPhotoPreview {
   };
 }
 
-function createExistingPhotoPreview(
-  image: PostEditImage,
-): ExistingPhotoPreview {
+function createExistingPhotoPreview(image: PostImage): ExistingPhotoPreview {
   return {
     type: 'existing',
     id: `existing-${image.id}`,
@@ -88,7 +86,7 @@ export function usePhotoUpload() {
     });
   };
 
-  const setExistingPhotos = (images: PostEditImage[]) => {
+  const setExistingPhotos = (images: PostImage[]) => {
     photos.forEach(revokePhotoUrl);
     setPhotos(images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview));
   };

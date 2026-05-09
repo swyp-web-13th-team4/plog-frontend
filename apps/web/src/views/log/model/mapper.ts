@@ -1,12 +1,12 @@
-import {
-  type PostCreateRequest,
-  type PostEditImage,
-  type PostEditResponse,
-  type PostUpdateRequest,
-} from '@/entities/feed';
 import { type PlaceCategoryValue } from '@/entities/place';
 
-import { type CreateLogFormValues } from './types';
+import {
+  type CreateLogFormValues,
+  type PostCreateRequest,
+  type PostEditData,
+  type PostImage,
+  type PostUpdateRequest,
+} from './types';
 import {
   type ExistingPhotoPreview,
   isNewPhotoPreview,
@@ -33,7 +33,7 @@ function parseStudyDate(value: string) {
   return { year, month, date };
 }
 
-function mapExistingPhoto(image: PostEditImage): ExistingPhotoPreview {
+function mapExistingPhoto(image: PostImage): ExistingPhotoPreview {
   return {
     type: 'existing',
     id: `existing-${image.id}`,
@@ -95,7 +95,7 @@ export function getNewPhotoFiles(values: CreateLogFormValues) {
 export function mapPostEditResponseToFormValues({
   images,
   post,
-}: PostEditResponse): CreateLogFormValues {
+}: PostEditData): CreateLogFormValues {
   return {
     title: post.title,
     contents: post.contents,

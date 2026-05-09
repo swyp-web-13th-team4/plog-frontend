@@ -2,7 +2,15 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY, getFeedDetail } from '@/entities/feed';
+import { FEED_QUERY_KEY } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
+
+import { type FeedDetail } from './types';
+
+function getFeedDetail(postId: number) {
+  return clientApi.get<FeedDetail>(`/feed/${postId}`);
+}
 
 export function useFeedDetailQuery(postId: number) {
   return useQuery({

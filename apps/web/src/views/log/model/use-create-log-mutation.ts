@@ -5,10 +5,20 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { createPost, FEED_QUERY_KEY } from '@/entities/feed';
+import { FEED_QUERY_KEY } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
+import { createMultipartRequest } from '@/shared/api/create-multipart-request';
 
 import { getNewPhotoFiles, mapCreateLogForm } from './mapper';
-import { type CreateLogFormValues } from './types';
+import { type CreateLogFormValues, type PostCreateRequest } from './types';
+
+function createPost(data: PostCreateRequest, images: File[]) {
+  return clientApi.post<unknown>(
+    '/post',
+    createMultipartRequest(data, { images }),
+  );
+}
 
 type UseCreateLogMutationOptions = {
   onSuccess?: () => void;

@@ -1,12 +1,4 @@
 export {
-  createPost,
-  deletePost,
-  getFeedDetail,
-  getFeedPage,
-  getPostForEdit,
-  updatePost,
-} from './api/client';
-export {
   formatLikeCount,
   formatStudyDate,
   formatStudyDuration,
@@ -27,21 +19,10 @@ export {
 export { FEED_QUERY_KEY } from './model/query-keys';
 export type {
   BookmarkSortType,
-  FeedDetailResponse,
-  FeedListResponse,
   FeedPage,
   FeedPost,
-  PostCreateRequest,
-  PostEditImage,
-  PostEditImages,
-  PostEditPost,
-  PostEditResponse,
-  PostPlace,
   PostScope,
   PostSortType,
-  PostTime,
-  PostUpdateRequest,
-  PostUpdateResponse,
 } from './model/types';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';
