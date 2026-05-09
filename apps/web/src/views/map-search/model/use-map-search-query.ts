@@ -20,9 +20,10 @@ function fetchMapSearchPlaces(keyword: string) {
 }
 
 export function useMapSearchQuery(keyword: string) {
+  const normalized = keyword.trim();
   return useQuery({
-    queryKey: ['map', 'search', keyword],
-    queryFn: () => fetchMapSearchPlaces(keyword),
-    enabled: keyword.trim().length > 0,
+    queryKey: ['map', 'search', normalized],
+    queryFn: () => fetchMapSearchPlaces(normalized),
+    enabled: normalized.length > 0,
   });
 }
