@@ -5,7 +5,6 @@ import { combine, persist } from 'zustand/middleware';
 import { type PlaceTagValue, type PostScope } from '@/entities/feed';
 import { type PlaceCategoryValue } from '@/entities/place';
 
-import { clearCreateLogPhotoFiles } from './photo-storage';
 import {
   type CreateLogPlace,
   type CreateLogStoredValues,
@@ -53,7 +52,6 @@ export const useCreateLogStore = create(
         set((state) => ({ values: { ...state.values, ...values } })),
       setHasPhotos: (hasPhotos: boolean) => set({ hasPhotos }),
       reset: () => {
-        void clearCreateLogPhotoFiles();
         set((state) => ({
           ...initialState,
           hasHydrated: state.hasHydrated,

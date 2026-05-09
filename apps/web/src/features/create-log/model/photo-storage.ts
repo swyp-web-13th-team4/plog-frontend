@@ -1,3 +1,5 @@
+// TODO: 사진 임시 저장 기능 현재 비활성화 상태, 고도화 시점에 UX 필요성 검토 후 use-photo-upload.ts와 연동
+
 const DB_NAME = 'plog:create-log';
 const DB_VERSION = 1;
 const PHOTO_STORE_NAME = 'photos';
@@ -38,9 +40,15 @@ function readPhotoFiles(database: IDBDatabase) {
 
     request.onsuccess = () =>
       resolve((request.result as StoredPhotoFiles) ?? []);
-    request.onerror = () => reject(request.error);
+    request.onerror = () => {
+      database.close();
+      reject(request.error);
+    };
     transaction.oncomplete = () => database.close();
-    transaction.onerror = () => reject(transaction.error);
+    transaction.onerror = () => {
+      database.close();
+      reject(transaction.error);
+    };
   });
 }
 
@@ -54,7 +62,10 @@ function writePhotoFiles(database: IDBDatabase, files: StoredPhotoFiles) {
       database.close();
       resolve();
     };
-    transaction.onerror = () => reject(transaction.error);
+    transaction.onerror = () => {
+      database.close();
+      reject(transaction.error);
+    };
   });
 }
 
@@ -68,7 +79,10 @@ function deletePhotoFiles(database: IDBDatabase) {
       database.close();
       resolve();
     };
-    transaction.onerror = () => reject(transaction.error);
+    transaction.onerror = () => {
+      database.close();
+      reject(transaction.error);
+    };
   });
 }
 

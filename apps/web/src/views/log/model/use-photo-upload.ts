@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  clearCreateLogPhotoFiles,
-  getCreateLogPhotoFiles,
-  setCreateLogPhotoFiles,
-} from '@/features/create-log';
-
 import { type PostEditImage } from '@/entities/feed';
 
 export type NewPhotoPreview = {
@@ -56,46 +50,13 @@ function revokePhotoUrl(photo: PhotoPreview) {
   if (isNewPhotoPreview(photo)) URL.revokeObjectURL(photo.url);
 }
 
-function getPhotoFiles(photos: PhotoPreview[]) {
-  return photos.filter(isNewPhotoPreview).map(({ file }) => file);
-}
-
-type UsePhotoUploadOptions = {
-  restoreStoredPhotos?: boolean;
-};
-
-export function usePhotoUpload({
-  restoreStoredPhotos = true,
-}: UsePhotoUploadOptions = {}) {
+export function usePhotoUpload() {
   const photoPreviewsRef = useRef<PhotoPreview[]>([]);
   const [photos, setPhotos] = useState<PhotoPreview[]>([]);
 
   useEffect(() => {
     photoPreviewsRef.current = photos;
   }, [photos]);
-
-  useEffect(() => {
-    if (!restoreStoredPhotos) return;
-
-    let ignore = false;
-
-    const restorePhotos = async () => {
-      const storedFiles = await getCreateLogPhotoFiles();
-      if (ignore || storedFiles.length === 0) return;
-
-      setPhotos(
-        storedFiles
-          .slice(0, MAX_PHOTO_COUNT)
-          .map((file, index) => createPhotoPreview(file, index)),
-      );
-    };
-
-    void restorePhotos();
-
-    return () => {
-      ignore = true;
-    };
-  }, [restoreStoredPhotos]);
 
   useEffect(() => {
     return () => {
@@ -107,15 +68,10 @@ export function usePhotoUpload({
     setPhotos((currentPhotos) => {
       const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
       const nextFiles = files.slice(0, availableCount);
-      const nextPhotos = [
+      return [
         ...currentPhotos,
         ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
       ];
-
-      if (restoreStoredPhotos) {
-        void setCreateLogPhotoFiles(getPhotoFiles(nextPhotos));
-      }
-      return nextPhotos;
     });
   };
 
@@ -123,12 +79,7 @@ export function usePhotoUpload({
     setPhotos((currentPhotos) => {
       const targetPhoto = currentPhotos.find((photo) => photo.id === id);
       if (targetPhoto) revokePhotoUrl(targetPhoto);
-      const nextPhotos = currentPhotos.filter((photo) => photo.id !== id);
-
-      if (restoreStoredPhotos) {
-        void setCreateLogPhotoFiles(getPhotoFiles(nextPhotos));
-      }
-      return nextPhotos;
+      return currentPhotos.filter((photo) => photo.id !== id);
     });
   };
 
@@ -140,7 +91,6 @@ export function usePhotoUpload({
   const clearPhotos = () => {
     photoPreviewsRef.current.forEach(revokePhotoUrl);
     setPhotos([]);
-    void clearCreateLogPhotoFiles();
   };
 
   return {

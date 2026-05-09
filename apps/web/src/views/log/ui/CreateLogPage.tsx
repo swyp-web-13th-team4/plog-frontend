@@ -172,7 +172,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     handleRemovePhoto,
     setExistingPhotos,
     clearPhotos,
-  } = usePhotoUpload({ restoreStoredPhotos: !isEditMode });
+  } = usePhotoUpload();
   const { toast } = useToast();
   const setCreateLogValues = useCreateLogStore((state) => state.setValues);
   const setCreateLogHasPhotos = useCreateLogStore(
