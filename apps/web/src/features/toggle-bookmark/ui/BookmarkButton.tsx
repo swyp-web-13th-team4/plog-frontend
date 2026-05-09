@@ -39,7 +39,7 @@ export default function BookmarkButton({
       aria-label={optimisticBookmarked ? '북마크 취소' : '북마크'}
       aria-pressed={optimisticBookmarked}
       className={cn(
-        'cursor-pointer text-semantic-object-normal disabled:cursor-not-allowed disabled:opacity-40',
+        'flex cursor-pointer items-center text-semantic-object-normal disabled:cursor-not-allowed disabled:opacity-40',
         className,
       )}
       disabled={isPending}

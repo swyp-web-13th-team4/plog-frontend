@@ -26,7 +26,11 @@ export default function CopyLinkButton({ postId }: CopyLinkButtonProps) {
   };
 
   return (
-    <button type="button" className="cursor-pointer" onClick={handleCopy}>
+    <button
+      type="button"
+      className="flex cursor-pointer items-center"
+      onClick={handleCopy}
+    >
       <Icon name="share" className="text-semantic-object-normal" />
     </button>
   );
