@@ -182,6 +182,10 @@ export default function MapPage() {
             placeholder="기록했던 장소를 입력해 주세요"
             readOnly
             onClick={() => router.push('/map/search')}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ')
+                router.push('/map/search');
+            }}
             trailing={
               <Icon
                 name="search"
