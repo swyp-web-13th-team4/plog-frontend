@@ -92,7 +92,7 @@ function Input({
     <div className={cn('flex flex-col', containerClassName)}>
       <div
         className={cn(
-          'relative rounded-xl border transition-colors',
+          'relative overflow-hidden rounded-xl border transition-colors',
           getFieldStateClass(effectiveDisabled, invalid, isFocused),
         )}
       >
