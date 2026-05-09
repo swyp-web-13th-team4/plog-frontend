@@ -16,10 +16,6 @@ type GetFeedPageParams = {
   createAt?: string | null;
 };
 
-type FeedListApiResponse = FeedListResponse & {
-  createdAt?: string | null;
-};
-
 export const createPost = (data: PostCreateRequest, images: File[]) => {
   const formData = createMultipartRequest(data, { images });
 
@@ -58,13 +54,13 @@ export const getFeedPage = async ({
   }
 
   const queryString = searchParams.toString();
-  const data = await clientApi.get<FeedListApiResponse>(
+  const data = await clientApi.get<FeedListResponse>(
     `/feed/list${queryString ? `?${queryString}` : ''}`,
   );
 
   return {
     items: data.feedFindResponses,
     lastPostId: data.lastPostId,
-    createAt: data.createAt ?? data.createdAt ?? null,
+    createAt: data.createAt,
   };
 };

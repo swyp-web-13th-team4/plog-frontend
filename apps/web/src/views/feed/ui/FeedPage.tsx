@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
@@ -39,7 +39,19 @@ export default function FeedPage() {
 
   const router = useRouter();
 
-  const posts = data?.pages.flatMap((page) => page.items) ?? [];
+  const posts = useMemo(() => {
+    const seenPostIds = new Set<number>();
+
+    return (
+      data?.pages
+        .flatMap((page) => page.items)
+        .filter((post) => {
+          if (seenPostIds.has(post.postId)) return false;
+          seenPostIds.add(post.postId);
+          return true;
+        }) ?? []
+    );
+  }, [data?.pages]);
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
@@ -89,7 +101,7 @@ export default function FeedPage() {
       <div ref={topRef} aria-hidden="true" className="h-px w-full" />
       {posts.map((data, index) => (
         <FeedCard
-          key={data.postId ?? index}
+          key={data.postId}
           post={data}
           isLast={index === posts.length - 1}
           onShare={() =>
