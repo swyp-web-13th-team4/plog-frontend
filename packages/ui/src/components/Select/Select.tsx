@@ -24,6 +24,7 @@ type SelectProps = Omit<
   items: SelectOption[];
   placeholder?: string;
   className?: string;
+  positionerClassName?: string;
   contentClassName?: string;
   optionClassName?: string;
   ref?: Ref<ComponentRef<typeof BaseSelect.Trigger>>;
@@ -49,6 +50,7 @@ function Select({
   items,
   placeholder = '선택하세요',
   className,
+  positionerClassName,
   contentClassName,
   optionClassName,
   'aria-label': ariaLabel,
@@ -94,7 +96,11 @@ function Select({
       </BaseSelect.Trigger>
 
       <BaseSelect.Portal>
-        <BaseSelect.Positioner sideOffset={8} alignItemWithTrigger={false}>
+        <BaseSelect.Positioner
+          sideOffset={8}
+          alignItemWithTrigger={false}
+          className={cn('z-30', positionerClassName)}
+        >
           <BaseSelect.Popup className={cn(popupClassName, contentClassName)}>
             <BaseSelect.List className="flex flex-col gap-2">
               {items.map((item) => (

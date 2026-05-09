@@ -12,6 +12,7 @@ import {
   Carousel,
   EmptyState,
   Icon,
+  Select,
   Spinner,
   useToast,
 } from '@plog/ui';
@@ -23,6 +24,9 @@ import { LikeButton } from '@/features/toggle-like';
 import { FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
 import { formatStudyDate, formatTimeAgo } from '@/entities/feed';
 
+import { dialog } from '@/shared/lib/dialog';
+
+import { useDeletePostMutation } from '../model/use-delete-post-mutation';
 import { useFeedDetailQuery } from '../model/use-feed-detail-query';
 
 type FeedCarouselController = {
@@ -31,6 +35,11 @@ type FeedCarouselController = {
   isBeginning: boolean;
   isEnd: boolean;
 };
+
+const AUTHOR_ACTION_OPTIONS = [
+  { label: '삭제하기', value: 'delete' },
+  { label: '수정하기', value: 'edit' },
+];
 
 export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
@@ -48,12 +57,34 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     isBeginning: true,
     isEnd: true,
   });
+  const deletePostMutation = useDeletePostMutation();
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
       isEnd: swiper.isEnd,
     });
+  };
+
+  const handleAuthorAction = async (value: unknown) => {
+    if (value === 'delete') {
+      const confirmed = await dialog.confirm({
+        message: '기록을 삭제하시겠습니까?',
+        description: '삭제한 게시글은 복구할 수 없습니다.',
+        confirmLabel: '확인',
+        cancelLabel: '취소',
+      });
+
+      if (confirmed) deletePostMutation.mutate(numericPostId);
+      return;
+    }
+
+    if (value === 'edit') {
+      toast({
+        type: 'default',
+        description: '게시글 수정 화면은 준비 중이에요.',
+      });
+    }
   };
 
   if (!isValidPostId) {
@@ -114,20 +145,42 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
 
   return (
     <section className="relative">
-      <div className="flex items-center gap-3 px-6 py-3">
-        <Avatar
-          size="xsmall"
-          src={post.profileImage}
-          alt={`${post.name}의 프로필 이미지`}
-        />
-        <div className="flex flex-col gap-1">
-          <span className="label-lg text-semantic-object-boldest">
-            {post.name}
-          </span>
-          <span className="caption-md text-semantic-object-normal">
-            {formatTimeAgo(post.createAt)}
-          </span>
+      <div className="flex items-center justify-between px-6 py-3">
+        <div className="flex items-center gap-3">
+          <Avatar
+            size="xsmall"
+            src={post.profileImage}
+            alt={`${post.name}의 프로필 이미지`}
+          />
+          <div className="flex flex-col gap-1">
+            <span className="label-lg text-semantic-object-boldest">
+              {post.name}
+            </span>
+            <span className="caption-md text-semantic-object-normal">
+              {formatTimeAgo(post.createAt)}
+            </span>
+          </div>
         </div>
+        {isMyPost && (
+          <div className="relative size-8">
+            <Select
+              items={AUTHOR_ACTION_OPTIONS}
+              value=""
+              placeholder=""
+              aria-label="게시글 관리 메뉴"
+              className="h-8 w-8 rounded-full border-none bg-transparent p-0 text-transparent hover:bg-semantic-bg-deep focus-visible:outline-semantic-stroke-subtle [&_svg]:opacity-0"
+              positionerClassName="z-30"
+              contentClassName="w-28 rounded-xl border border-semantic-stroke-subtler bg-semantic-system-white p-1 shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+              optionClassName="body-sm h-10 w-full justify-start rounded-lg px-3 py-0 text-semantic-object-normal hover:bg-semantic-bg-deep"
+              disabled={deletePostMutation.isPending}
+              onValueChange={handleAuthorAction}
+            />
+            <Icon
+              name="more-vertical"
+              className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-semantic-object-normal"
+            />
+          </div>
+        )}
       </div>
       <div className="flex flex-col">
         <div className="group relative">
