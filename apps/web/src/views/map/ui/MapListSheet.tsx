@@ -107,7 +107,7 @@ function PlaceList({
 }: PlaceListProps) {
   const [sort, setSort] = useState<MapSortType>(sortOptions[0].value);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { data, isPending, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useMapSheetQuery(layer, sort);
 
   const { ref, inView } = useInView({ rootMargin: '0px 0px 200px 0px' });
@@ -119,6 +119,8 @@ function PlaceList({
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isPending) return null;
 
   if (places.length === 0) {
     return emptyView;

@@ -62,8 +62,8 @@ export default function MapSearchPage() {
 
   const {
     data: places,
+    isPending,
     isError,
-    isLoading,
   } = useMapSearchQuery(debouncedKeyword);
 
   const hasQuery = debouncedKeyword.trim().length > 0;
@@ -96,11 +96,11 @@ export default function MapSearchPage() {
           />
         </div>
         <div className="flex flex-1 flex-col">
-          {!hasQuery || isLoading ? (
+          {!hasQuery ? (
             <div className="flex flex-1 items-center justify-center bg-semantic-bg-deep p-6">
               <PlaceSearchIdleState description="기록한 장소의 이름이나 주소로 검색해 보세요" />
             </div>
-          ) : isError ? (
+          ) : isPending ? null : isError ? (
             <div className="flex flex-1 items-center justify-center bg-semantic-bg-deep p-6">
               <FetchErrorEmptyState onRetry={() => window.location.reload()} />
             </div>
