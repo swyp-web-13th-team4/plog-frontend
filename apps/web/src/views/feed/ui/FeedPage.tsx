@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, Icon, Spinner, useToast } from '@plog/ui';
+import { Button, Spinner } from '@plog/ui';
 
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import {
@@ -34,8 +34,6 @@ export default function FeedPage() {
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
   });
-
-  const { toast } = useToast();
 
   const router = useRouter();
 
@@ -104,12 +102,6 @@ export default function FeedPage() {
           key={data.postId}
           post={data}
           isLast={index === posts.length - 1}
-          onShare={() =>
-            toast({
-              icon: <Icon name="link" />,
-              description: '링크가 복사되었습니다.',
-            })
-          }
         />
       ))}
       {hasNextPage && (

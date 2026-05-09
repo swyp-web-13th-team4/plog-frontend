@@ -29,7 +29,6 @@ type FeedCarouselController = {
 type FeedCardProps = {
   post: FeedPost;
   isLast: boolean;
-  onShare: () => void;
 };
 
 function ClampedContent({ content }: { content: string }) {
@@ -48,11 +47,11 @@ function ClampedContent({ content }: { content: string }) {
       {!isExpanded && (
         <button
           type="button"
-          className="caption-md flex shrink-0 cursor-pointer items-center gap-2 text-semantic-object-subtle"
+          className="caption-md flex shrink-0 cursor-pointer items-center gap-0.5 text-semantic-object-subtle"
           onClick={() => setIsExpanded(true)}
         >
           더보기
-          <Icon name="chevron-right" size={9} />
+          <Icon name="chevron-right" size={16} />
         </button>
       )}
     </div>
@@ -159,7 +158,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
           )}
         </div>
         <div className="flex flex-col gap-2.5 px-6 pt-3">
-          <div className="flex justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <LikeButton postId={post.postId} isLiked={post.like} />
               <span className="caption-md text-semantic-object-normal">
@@ -171,14 +170,14 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 postId={post.postId}
                 isBookmarked={post.bookMark}
               />
-              <CopyLinkButton />
+              <CopyLinkButton postId={post.postId} />
             </div>
           </div>
           <div className="flex flex-col gap-3">
             <div>
-              <span className="title-xs text-semantic-object-boldest">
+              <div className="title-xs mb-1 text-semantic-object-boldest">
                 {post.title}
-              </span>
+              </div>
               <ClampedContent content={post.contents} />
             </div>
             <Link
