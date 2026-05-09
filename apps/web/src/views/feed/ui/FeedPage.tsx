@@ -97,10 +97,10 @@ export default function FeedPage() {
   return (
     <section className="relative">
       <div ref={topRef} aria-hidden="true" className="h-px w-full" />
-      {posts.map((data, index) => (
+      {posts.map((post, index) => (
         <FeedCard
-          key={data.postId}
-          post={data}
+          key={post.postId}
+          post={post}
           isLast={index === posts.length - 1}
         />
       ))}
