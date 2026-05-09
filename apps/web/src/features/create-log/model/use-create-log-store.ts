@@ -82,7 +82,5 @@ export const useCreateLogStore = create(
 );
 
 export function getCreateLogDefaultValues(): CreateLogStoredValues {
-  const persistedValues = useCreateLogStore.getState().values;
-
-  return persistedValues;
+  return structuredClone(useCreateLogStore.getState().values);
 }
