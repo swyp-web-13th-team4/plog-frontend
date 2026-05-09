@@ -1,53 +1,113 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 
 import { BottomSheet, Icon, Input } from '@plog/ui';
 
-import { type Place, type PlaceLayer } from '@/entities/place';
+import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
 import { useUserLocation } from '@/shared/lib/geolocation';
 
 import { useKakaoMap } from '../lib/use-kakao-map';
-import { MOCK_BOOKMARK_PLACES, MOCK_PLACES } from '../model/mock-data';
+import { type MapBounds } from '../model/types';
+import { useMapPinDetailQuery } from '../model/use-map-pin-detail-query';
+import { useMapPinsQuery } from '../model/use-map-pins-query';
 import MapListSheet from './MapListSheet';
 import SelectedPlaceSheet from './SelectedPlaceSheet';
 
+const DEFAULT_SORT: MapSortType = 'LATEST';
+
 export default function MapPage() {
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-  const [selectedType, setSelectedType] = useState<PlaceLayer>('record');
-  const [fromList, setFromList] = useState<PlaceLayer | null>(null);
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const initPlaceId = searchParams.get('placeId');
+  const initLat = searchParams.get('lat');
+  const initLng = searchParams.get('lng');
+  const initType = searchParams.get('type');
+  const initSelection =
+    initPlaceId && initLat && initLng
+      ? {
+          placeId: Number(initPlaceId),
+          type: (initType ?? 'record') as PlaceLayer,
+          lat: Number(initLat),
+          lng: Number(initLng),
+        }
+      : null;
+
+  const pendingRef = useRef(initSelection);
+
+  const [bounds, setBounds] = useState<MapBounds | null>(null);
+  const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(
+    initSelection?.placeId ?? null,
+  );
+  const [selectedType, setSelectedType] = useState<PlaceLayer>(
+    initSelection?.type ?? 'record',
+  );
+  const [fromList, setFromList] = useState(false);
   const [recordVisible, setRecordVisible] = useState(true);
   const [bookmarkVisible, setBookmarkVisible] = useState(true);
 
   const handle = useMemo(() => BottomSheet.createHandle(), []);
   const listHandle = useMemo(() => BottomSheet.createHandle(), []);
 
+  const { data: recordPins } = useMapPinsQuery('record', bounds, DEFAULT_SORT);
+  const { data: bookmarkPins } = useMapPinsQuery(
+    'bookmark',
+    bounds,
+    DEFAULT_SORT,
+  );
+  const { data: selectedPlace } = useMapPinDetailQuery(
+    selectedPlaceId,
+    selectedType,
+  );
+
   const {
     containerRef,
     mapRef,
     handleLoad,
     deselect,
-    selectPlace,
+    selectPin,
     panToWithOffset,
     setRecordVisible: setMapRecordVisible,
     setBookmarkVisible: setMapBookmarkVisible,
   } = useKakaoMap({
-    recordPlaces: MOCK_PLACES,
-    bookmarkPlaces: MOCK_BOOKMARK_PLACES,
-    onPlaceSelect: (place, type) => {
-      setSelectedPlace(place);
-      if (type) setSelectedType(type);
-      setFromList(null);
+    recordPins: recordPins ?? [],
+    bookmarkPins: bookmarkPins ?? [],
+    onPlaceSelect: (pin, type) => {
+      if (!pin || !type) {
+        setSelectedPlaceId(null);
+        return;
+      }
+      setSelectedPlaceId(pin.placeId);
+      setSelectedType(type);
+      setFromList(false);
       handle.close();
       listHandle.close();
     },
+    onBoundsChange: (b) => setBounds(b),
+    onReady: () => {
+      if (!pendingRef.current) return;
+      panToWithOffset(pendingRef.current.lat, pendingRef.current.lng);
+    },
   });
 
+  useEffect(() => {
+    if (!pendingRef.current) return;
+    const { placeId, type } = pendingRef.current;
+    const pins = type === 'record' ? recordPins : bookmarkPins;
+    if (pins?.some((p) => p.placeId === placeId)) {
+      selectPin(placeId, type);
+      pendingRef.current = null;
+    }
+  }, [recordPins, bookmarkPins, selectPin]);
+
   useUserLocation((coords) => {
-    if (!mapRef.current || !window.kakao) return;
+    if (!mapRef.current || !window.kakao || pendingRef.current) return;
     mapRef.current.setCenter(
       new window.kakao.maps.LatLng(coords.latitude, coords.longitude),
     );
@@ -63,28 +123,36 @@ export default function MapPage() {
     setMapBookmarkVisible(v);
   };
 
-  const handlePlaceSelect = (place: Place, type: PlaceLayer) => {
-    setSelectedPlace(place);
+  const handlePlaceSelect = (
+    placeId: number,
+    type: PlaceLayer,
+    latitude: number,
+    longitude: number,
+  ) => {
+    setSelectedPlaceId(placeId);
     setSelectedType(type);
-    setFromList(type);
-    selectPlace(place, type);
-    panToWithOffset(place.lat, place.lng);
+    setFromList(true);
+    selectPin(placeId, type);
+    panToWithOffset(latitude, longitude);
   };
 
   const handleSelectedClose = () => {
     deselect();
-    setSelectedPlace(null);
-    setFromList(null);
+    setSelectedPlaceId(null);
+    setFromList(false);
   };
 
   const handleSelectedBack = () => {
-    setSelectedPlace(null);
-    setFromList(null);
+    setSelectedPlaceId(null);
+    setFromList(false);
     listHandle.open(null);
   };
 
   const handleViewPosts = () => {
-    if (!selectedPlace) return;
+    if (!selectedPlaceId) return;
+    const params = new URLSearchParams({ type: selectedType });
+    if (selectedPlace?.placeName) params.set('name', selectedPlace.placeName);
+    router.push(`/map/places/${selectedPlaceId}?${params}`);
   };
 
   return (
@@ -98,20 +166,16 @@ export default function MapPage() {
         <div ref={containerRef} className="absolute inset-0" />
         <div className="absolute top-0 right-0 left-0 z-10 p-6">
           <Input
-            className="shadow-[0px_2px_12px_0px_rgba(0,0,0,0.15)]"
+            className="cursor-pointer shadow-[0px_2px_12px_0px_rgba(0,0,0,0.15)]"
             placeholder="기록했던 장소를 입력해 주세요"
+            readOnly
+            onClick={() => router.push('/map/search')}
             trailing={
-              <button
-                type="button"
-                aria-label="검색"
-                className="flex items-center justify-center"
-              >
-                <Icon
-                  name="search"
-                  size={20}
-                  className="text-semantic-object-subtle"
-                />
-              </button>
+              <Icon
+                name="search"
+                size={20}
+                className="text-semantic-object-subtle"
+              />
             }
           />
         </div>
@@ -134,8 +198,6 @@ export default function MapPage() {
       <MapListSheet
         handle={handle}
         listHandle={listHandle}
-        recordPlaces={MOCK_PLACES}
-        bookmarkPlaces={MOCK_BOOKMARK_PLACES}
         recordVisible={recordVisible}
         bookmarkVisible={bookmarkVisible}
         onToggleRecord={handleToggleRecord}
@@ -143,7 +205,7 @@ export default function MapPage() {
         onPlaceSelect={handlePlaceSelect}
       />
       <SelectedPlaceSheet
-        place={selectedPlace}
+        place={selectedPlace ?? null}
         placeType={selectedType}
         onClose={handleSelectedClose}
         onBack={fromList ? handleSelectedBack : undefined}

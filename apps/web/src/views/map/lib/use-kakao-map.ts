@@ -30,6 +30,7 @@ type UseKakaoMapOptions = {
   bookmarkPins?: MapPin[];
   onPlaceSelect?: (pin: MapPin | null, type?: PlaceLayer) => void;
   onBoundsChange?: (bounds: MapBounds) => void;
+  onReady?: () => void;
 };
 
 function panToPosition(
@@ -52,6 +53,7 @@ export function useKakaoMap({
   bookmarkPins = [],
   onPlaceSelect,
   onBoundsChange,
+  onReady,
 }: UseKakaoMapOptions = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<kakao.maps.Map | null>(null);
@@ -60,6 +62,7 @@ export function useKakaoMap({
   const selectedRef = useRef<SelectedInfo | null>(null);
   const onPlaceSelectRef = useRef(onPlaceSelect);
   const onBoundsChangeRef = useRef(onBoundsChange);
+  const onReadyRef = useRef(onReady);
   const recordOverlaysRef = useRef<kakao.maps.CustomOverlay[]>([]);
   const bookmarkOverlaysRef = useRef<kakao.maps.CustomOverlay[]>([]);
   const recordMarkersRef = useRef<kakao.maps.Marker[]>([]);
@@ -81,6 +84,10 @@ export function useKakaoMap({
 
   useEffect(() => {
     onBoundsChangeRef.current = onBoundsChange;
+  });
+
+  useEffect(() => {
+    onReadyRef.current = onReady;
   });
 
   const updateBounds = (map: kakao.maps.Map) => {
@@ -346,6 +353,7 @@ export function useKakaoMap({
       };
 
       updateBounds(map);
+      onReadyRef.current?.();
     });
   };
 
