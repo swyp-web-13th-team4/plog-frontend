@@ -137,7 +137,9 @@ export default function PlaceFeedPage({ placeId }: { placeId: number }) {
   const searchParams = useSearchParams();
 
   const placeName = searchParams.get('name') || '장소 상세';
-  const initialType = (searchParams.get('type') ?? 'record') as PlaceLayer;
+  const rawType = searchParams.get('type');
+  const initType: PlaceLayer =
+    rawType === 'record' || rawType === 'bookmark' ? rawType : 'record';
 
   const tabs = [
     {
@@ -164,7 +166,7 @@ export default function PlaceFeedPage({ placeId }: { placeId: number }) {
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col pt-[var(--spacing-header)]">
         <TabGroup
           items={tabs}
-          defaultValue={initialType}
+          defaultValue={initType}
           className="flex flex-1 flex-col"
           listClassName="sticky top-[var(--spacing-header)] z-10 border-b border-b-semantic-stroke-subtle bg-semantic-bg-standard"
           panelClassName="flex flex-1 py-5"
