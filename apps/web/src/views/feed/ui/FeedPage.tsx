@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { Button, Spinner } from '@plog/ui';
+import { AppBar, Button, Spinner } from '@plog/ui';
 
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import {
@@ -16,6 +16,12 @@ import {
 
 import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
+
+const header = (
+  <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
+    <AppBar variant="navigation" title="피드" />
+  </header>
+);
 
 export default function FeedPage() {
   const { topRef, visible: scrollToTopVisible } = useScrollToTop();
@@ -59,85 +65,97 @@ export default function FeedPage() {
 
   if (isPending) {
     return (
-      <section className="flex min-h-screen items-center justify-center">
-        <Spinner size="large" />
-      </section>
+      <>
+        {header}
+        <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
+          <Spinner size="large" />
+        </section>
+      </>
     );
   }
 
   if (isError && posts.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <FetchErrorEmptyState
-          description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
-          onRetry={refetch}
-        />
-      </div>
+      <>
+        {header}
+        <div className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
+          <FetchErrorEmptyState
+            description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
+            onRetry={refetch}
+          />
+        </div>
+      </>
     );
   }
 
   if (posts.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <RecordEmptyState
-          actions={
-            <Button
-              variant="outline"
-              size="small"
-              onClick={() => router.push('/log')}
-            >
-              기록하기
-            </Button>
-          }
-        />
-      </div>
+      <>
+        {header}
+        <div className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
+          <RecordEmptyState
+            actions={
+              <Button
+                variant="outline"
+                size="small"
+                onClick={() => router.push('/log')}
+              >
+                기록하기
+              </Button>
+            }
+          />
+        </div>
+      </>
     );
   }
 
   return (
-    <section className="relative">
-      <div ref={topRef} aria-hidden="true" className="h-px w-full" />
-      {posts.map((post, index) => (
-        <FeedCard
-          key={post.postId}
-          post={post}
-          isLast={index === posts.length - 1}
-        />
-      ))}
-      {hasNextPage && (
-        <div className="flex flex-col items-center justify-center gap-3 py-12">
-          {isFetchingNextPage ? (
-            <Spinner size="large" />
-          ) : isFetchNextPageError ? (
-            <>
-              <div className="flex flex-col items-center gap-1 text-center">
-                <p className="label-md text-semantic-object-bold">
-                  데이터를 불러오지 못했습니다
-                </p>
-                <p className="body-sm text-semantic-object-subtle">
-                  네트워크 연결 상태를 확인해 주세요.
-                </p>
-              </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="small"
-                onClick={() => fetchNextPage()}
-              >
-                다시 시도
-              </Button>
-            </>
-          ) : (
-            <div ref={ref} aria-hidden="true" />
-          )}
-        </div>
-      )}
-      {!hasNextPage && posts.length > 0 && (
-        <p className="body-sm py-12 text-center text-semantic-object-subtle">
-          마지막 기록까지 확인했어요
-        </p>
-      )}
-      <ScrollToTopButton visible={scrollToTopVisible} />
-    </section>
+    <>
+      {header}
+      <section className="relative pt-[var(--spacing-header)]">
+        <div ref={topRef} aria-hidden="true" className="h-px w-full" />
+        {posts.map((post, index) => (
+          <FeedCard
+            key={post.postId}
+            post={post}
+            isLast={index === posts.length - 1}
+          />
+        ))}
+        {hasNextPage && (
+          <div className="flex flex-col items-center justify-center gap-3 py-12">
+            {isFetchingNextPage ? (
+              <Spinner size="large" />
+            ) : isFetchNextPageError ? (
+              <>
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <p className="label-md text-semantic-object-bold">
+                    데이터를 불러오지 못했습니다
+                  </p>
+                  <p className="body-sm text-semantic-object-subtle">
+                    네트워크 연결 상태를 확인해 주세요.
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="small"
+                  onClick={() => fetchNextPage()}
+                >
+                  다시 시도
+                </Button>
+              </>
+            ) : (
+              <div ref={ref} aria-hidden="true" />
+            )}
+          </div>
+        )}
+        {!hasNextPage && posts.length > 0 && (
+          <p className="body-sm py-12 text-center text-semantic-object-subtle">
+            마지막 기록까지 확인했어요
+          </p>
+        )}
+        <ScrollToTopButton visible={scrollToTopVisible} />
+      </section>
+    </>
   );
 }

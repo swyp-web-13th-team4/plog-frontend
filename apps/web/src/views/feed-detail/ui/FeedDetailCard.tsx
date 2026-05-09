@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import {
+  AppBar,
   Avatar,
   Badge,
   Button,
@@ -106,21 +107,32 @@ const AUTHOR_ACTION_OPTIONS = [
   { label: '수정하기', value: 'edit' },
 ];
 
-export default function FeedDetailCard({ postId }: { postId: string }) {
+export default function FeedDetailCard({
+  postId,
+  backTo,
+}: {
+  postId: string;
+  backTo?: string;
+}) {
+  const [carouselState, setCarouselState] = useState({
+    isBeginning: true,
+    isEnd: true,
+  });
+
+  const carouselRef = useRef<FeedCarouselController | null>(null);
+
   const router = useRouter();
+
   const numericPostId = Number(postId);
   const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
+
   const {
     data: post,
     isError,
     isPending,
     refetch,
   } = useFeedDetailQuery(numericPostId);
-  const carouselRef = useRef<FeedCarouselController | null>(null);
-  const [carouselState, setCarouselState] = useState({
-    isBeginning: true,
-    isEnd: true,
-  });
+
   const deletePostMutation = useDeletePostMutation();
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
@@ -148,45 +160,25 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     }
   };
 
+  const feedHeader = (
+    <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
+      <AppBar
+        variant="navigation"
+        title="피드"
+        onBack={() => router.push(backTo ?? '/feed')}
+      />
+    </header>
+  );
+
   if (!isValidPostId) {
     return (
-      <div className="flex min-h-screen items-center justify-center px-6">
-        <EmptyState
-          title="피드를 찾을 수 없어요"
-          description="목록으로 돌아가서 다른 기록을 확인해 보세요."
-          actions={
-            <Button
-              variant="outline"
-              size="small"
-              onClick={() => router.push('/feed')}
-            >
-              피드로 돌아가기
-            </Button>
-          }
-        />
-      </div>
-    );
-  }
-
-  if (isPending) {
-    return (
-      <section className="flex min-h-screen items-center justify-center">
-        <Spinner size="large" />
-      </section>
-    );
-  }
-
-  if (isError || !post) {
-    return (
-      <div className="flex min-h-screen items-center justify-center px-6">
-        <EmptyState
-          title="피드를 불러오지 못했어요"
-          description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
-          actions={
-            <div className="flex gap-2">
-              <Button variant="outline" size="small" onClick={() => refetch()}>
-                다시 시도
-              </Button>
+      <>
+        {feedHeader}
+        <div className="flex min-h-screen items-center justify-center px-6 pt-[var(--spacing-header)]">
+          <EmptyState
+            title="피드를 찾을 수 없어요"
+            description="목록으로 돌아가서 다른 기록을 확인해 보세요."
+            actions={
               <Button
                 variant="outline"
                 size="small"
@@ -194,10 +186,53 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               >
                 피드로 돌아가기
               </Button>
-            </div>
-          }
-        />
-      </div>
+            }
+          />
+        </div>
+      </>
+    );
+  }
+
+  if (isPending) {
+    return (
+      <>
+        {feedHeader}
+        <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
+          <Spinner size="large" />
+        </section>
+      </>
+    );
+  }
+
+  if (isError || !post) {
+    return (
+      <>
+        {feedHeader}
+        <div className="flex min-h-screen items-center justify-center px-6 pt-[var(--spacing-header)]">
+          <EmptyState
+            title="피드를 불러오지 못했어요"
+            description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
+            actions={
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="small"
+                  onClick={() => refetch()}
+                >
+                  다시 시도
+                </Button>
+                <Button
+                  variant="outline"
+                  size="small"
+                  onClick={() => router.push('/feed')}
+                >
+                  피드로 돌아가기
+                </Button>
+              </div>
+            }
+          />
+        </div>
+      </>
     );
   }
 
@@ -205,158 +240,161 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   const isMyPost = post.isAuthor;
 
   return (
-    <section className="relative">
-      <div className="flex items-center justify-between px-6 py-3">
-        <div className="flex items-center gap-3">
-          <Avatar
-            size="xsmall"
-            src={post.profileImage}
-            alt={`${post.name}의 프로필 이미지`}
-          />
-          <div className="flex flex-col gap-1">
-            <span className="label-lg text-semantic-object-boldest">
-              {post.name}
-            </span>
-            <span className="caption-md text-semantic-object-normal">
-              {formatTimeAgo(post.createAt)}
-            </span>
+    <>
+      {feedHeader}
+      <section className="relative pt-[var(--spacing-header)]">
+        <div className="flex items-center justify-between px-6 py-3">
+          <div className="flex items-center gap-3">
+            <Avatar
+              size="xsmall"
+              src={post.profileImage}
+              alt={`${post.name}의 프로필 이미지`}
+            />
+            <div className="flex flex-col gap-1">
+              <span className="label-lg text-semantic-object-boldest">
+                {post.name}
+              </span>
+              <span className="caption-md text-semantic-object-normal">
+                {formatTimeAgo(post.createAt)}
+              </span>
+            </div>
           </div>
-        </div>
-        {isMyPost && (
-          <Dropdown
-            options={AUTHOR_ACTION_OPTIONS}
-            disabled={deletePostMutation.isPending}
-            onSelect={handleAuthorAction}
-          />
-        )}
-      </div>
-      <div className="flex flex-col">
-        <div className="group relative">
-          <Carousel
-            aria-label={`${post.title} 이미지 캐러셀`}
-            onSwiper={(swiper) => {
-              carouselRef.current = swiper;
-              updateCarouselEdgeState(swiper);
-            }}
-            onChange={() => {
-              if (carouselRef.current) {
-                updateCarouselEdgeState(carouselRef.current);
-              }
-            }}
-          >
-            {post.postImages.map((imageSrc, index) => (
-              <Carousel.Slide key={`${post.postId}-image-${index}`}>
-                <Image
-                  src={imageSrc}
-                  loading="eager"
-                  alt={`${post.title} 이미지 ${index + 1}`}
-                  width={480}
-                  height={480}
-                  unoptimized
-                />
-              </Carousel.Slide>
-            ))}
-          </Carousel>
-          {hasMultipleImages && (
-            <div className="pointer-events-none absolute inset-y-0 z-10 flex w-full items-center justify-between px-3 opacity-0 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
-              {!carouselState.isBeginning ? (
-                <button
-                  type="button"
-                  aria-label="이전 이미지 보기"
-                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    carouselRef.current?.slidePrev();
-                  }}
-                >
-                  <Icon
-                    name="chevron-left"
-                    className="text-semantic-system-white"
-                  />
-                </button>
-              ) : (
-                <div aria-hidden="true" className="size-11" />
-              )}
-              {!carouselState.isEnd ? (
-                <button
-                  type="button"
-                  aria-label="다음 이미지 보기"
-                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    carouselRef.current?.slideNext();
-                  }}
-                >
-                  <Icon
-                    name="chevron-right"
-                    className="text-semantic-system-white"
-                  />
-                </button>
-              ) : (
-                <div aria-hidden="true" className="size-11" />
-              )}
-            </div>
+          {isMyPost && (
+            <Dropdown
+              options={AUTHOR_ACTION_OPTIONS}
+              disabled={deletePostMutation.isPending}
+              onSelect={handleAuthorAction}
+            />
           )}
         </div>
-        <div className="flex flex-col gap-2.5 px-6 pt-3">
-          {!isMyPost && (
-            <div className="flex justify-between">
-              <div className="flex items-center gap-1.5">
-                <LikeButton postId={post.postId} isLiked={post.like} />
-                <span className="caption-md text-semantic-object-normal">
-                  {post.likes < 1000 ? post.likes : '999+'}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <BookmarkButton
-                  postId={post.postId}
-                  isBookmarked={post.bookMark}
-                />
-                <CopyLinkButton postId={post.postId} />
-              </div>
-            </div>
-          )}
-          <div className="flex flex-col gap-0.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="title-xs text-semantic-object-boldest">
-                  {post.placeName}
-                </span>
-                {post.category && (
-                  <Badge color="skyblue" variant="soft">
-                    {post.category}
-                  </Badge>
+        <div className="flex flex-col">
+          <div className="group relative">
+            <Carousel
+              aria-label={`${post.title} 이미지 캐러셀`}
+              onSwiper={(swiper) => {
+                carouselRef.current = swiper;
+                updateCarouselEdgeState(swiper);
+              }}
+              onChange={() => {
+                if (carouselRef.current) {
+                  updateCarouselEdgeState(carouselRef.current);
+                }
+              }}
+            >
+              {post.postImages.map((imageSrc, index) => (
+                <Carousel.Slide key={`${post.postId}-image-${index}`}>
+                  <Image
+                    src={imageSrc}
+                    loading="eager"
+                    alt={`${post.title} 이미지 ${index + 1}`}
+                    width={480}
+                    height={480}
+                    unoptimized
+                  />
+                </Carousel.Slide>
+              ))}
+            </Carousel>
+            {hasMultipleImages && (
+              <div className="pointer-events-none absolute inset-y-0 z-10 flex w-full items-center justify-between px-3 opacity-0 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
+                {!carouselState.isBeginning ? (
+                  <button
+                    type="button"
+                    aria-label="이전 이미지 보기"
+                    className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      carouselRef.current?.slidePrev();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-left"
+                      className="text-semantic-system-white"
+                    />
+                  </button>
+                ) : (
+                  <div aria-hidden="true" className="size-11" />
+                )}
+                {!carouselState.isEnd ? (
+                  <button
+                    type="button"
+                    aria-label="다음 이미지 보기"
+                    className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      carouselRef.current?.slideNext();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-right"
+                      className="text-semantic-system-white"
+                    />
+                  </button>
+                ) : (
+                  <div aria-hidden="true" className="size-11" />
                 )}
               </div>
-              {isMyPost && <CopyLinkButton postId={post.postId} />}
+            )}
+          </div>
+          <div className="flex flex-col gap-2.5 px-6 pt-3">
+            {!isMyPost && (
+              <div className="flex justify-between">
+                <div className="flex items-center gap-1.5">
+                  <LikeButton postId={post.postId} isLiked={post.like} />
+                  <span className="caption-md text-semantic-object-normal">
+                    {post.likes < 1000 ? post.likes : '999+'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <BookmarkButton
+                    postId={post.postId}
+                    isBookmarked={post.bookMark}
+                  />
+                  <CopyLinkButton postId={post.postId} />
+                </div>
+              </div>
+            )}
+            <div className="flex flex-col gap-0.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="title-xs text-semantic-object-boldest">
+                    {post.placeName}
+                  </span>
+                  {post.category && (
+                    <Badge color="skyblue" variant="soft">
+                      {post.category}
+                    </Badge>
+                  )}
+                </div>
+                {isMyPost && <CopyLinkButton postId={post.postId} />}
+              </div>
+              <p className="body-sm text-semantic-object-normal">
+                {post.address}
+              </p>
             </div>
-            <p className="body-sm text-semantic-object-normal">
-              {post.address}
-            </p>
+            <FeedStatsSummary
+              isUserOwnFeed={isMyPost}
+              primaryLabel="좋아요"
+              primaryValue={post.likes}
+              totalWorkTime={post.studyTime}
+              focusLevel={post.focus}
+            />
+            <TagBadgeGroup tags={post.tags} />
           </div>
-          <FeedStatsSummary
-            isUserOwnFeed={isMyPost}
-            primaryLabel="좋아요"
-            primaryValue={post.likes}
-            totalWorkTime={post.studyTime}
-            focusLevel={post.focus}
-          />
-          <TagBadgeGroup tags={post.tags} />
-        </div>
-        <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">
-          <div className="flex items-center justify-between">
-            <span className="title-xs text-semantic-object-boldest">
-              {post.title}
+          <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">
+            <div className="flex items-center justify-between">
+              <span className="title-xs text-semantic-object-boldest">
+                {post.title}
+              </span>
+              <p className="caption-md text-semantic-object-subtle">
+                {formatStudyDate(post.createAt)}
+              </p>
+            </div>
+            <span className="body-sm text-semantic-object-normal">
+              {post.contents}
             </span>
-            <p className="caption-md text-semantic-object-subtle">
-              {formatStudyDate(post.createAt)}
-            </p>
           </div>
-          <span className="body-sm text-semantic-object-normal">
-            {post.contents}
-          </span>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

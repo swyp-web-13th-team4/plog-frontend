@@ -5,7 +5,7 @@ import { type ReactNode, useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 
-import { useToast } from '@plog/ui';
+import { AppBar, useToast } from '@plog/ui';
 
 import { PlaceSearchContent } from '@/widgets/place-search';
 
@@ -117,13 +117,20 @@ export default function SearchPlacePage() {
 
   return (
     <>
+      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
+        <AppBar
+          variant="navigation"
+          title="장소 검색"
+          onBack={() => router.push('/log')}
+        />
+      </header>
       <Script
         src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services&autoload=false`}
         strategy="afterInteractive"
         onReady={handleKakaoReady}
         onError={() => setSdkLoadError(true)}
       />
-      <section className="flex min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] flex-col bg-semantic-bg-standard">
+      <section className="flex min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
         <div className="sticky top-[var(--spacing-header)] z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
           <PlaceSearchInput
             value={query}
