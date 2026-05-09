@@ -3,6 +3,8 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import { useRouter } from 'next/navigation';
+
 import { BottomSheet, Button, Divider, Icon, Select, Switch } from '@plog/ui';
 
 import MapPlaceItem from '@/views/map/ui/MapPlaceItem';
@@ -186,6 +188,8 @@ export default function MapListSheet({
 
   const { data: countData } = useMapCountQuery();
 
+  const router = useRouter();
+
   const recordCount = countData?.recordCount ?? 0;
   const bookmarkCount = countData?.bookmarkCount ?? 0;
 
@@ -275,7 +279,11 @@ export default function MapListSheet({
                       '오늘의 작업 일지나 기억하고 싶은 장소를\n첫 기록으로 남겨보세요.'
                     }
                     actions={
-                      <Button variant="outline" size="medium">
+                      <Button
+                        variant="outline"
+                        size="medium"
+                        onClick={() => router.push('/log')}
+                      >
                         기록 작성하기
                       </Button>
                     }
