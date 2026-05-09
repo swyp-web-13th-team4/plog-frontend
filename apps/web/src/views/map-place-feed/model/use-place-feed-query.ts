@@ -55,8 +55,6 @@ function buildCursor(sortType: MapSortType, last: PlacePost): string {
   }
 }
 
-export type { PlacePost };
-
 export function usePlaceFeedQuery(
   placeId: number,
   layer: PlaceLayer,
