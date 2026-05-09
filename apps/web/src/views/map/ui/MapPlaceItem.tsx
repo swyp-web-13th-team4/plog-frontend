@@ -3,34 +3,43 @@
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { type Place } from '@/entities/place/model/types';
+import { getCategoryLabel, type PlaceLayer } from '@/entities/place';
 
 import { ImageWithFallback } from '@/shared/ui';
 
+import { type MapSheetPlace } from '../model/types';
+
 type MapPlaceItemProps = {
-  place: Place;
+  layer: PlaceLayer;
+  place: MapSheetPlace;
   onClick?: () => void;
 };
 
-export default function MapPlaceItem({ place, onClick }: MapPlaceItemProps) {
+export default function MapPlaceItem({
+  layer,
+  place,
+  onClick,
+}: MapPlaceItemProps) {
   return (
     <div
-      className={cn('flex gap-4 py-4', onClick && 'cursor-pointer')}
+      className={cn('flex gap-4 py-5', onClick && 'cursor-pointer')}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
       onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
     >
-      <ImageWithFallback
-        src={place.imageUrl}
-        alt={place.name}
-        width={72}
-        height={72}
-        className="size-18 shrink-0 rounded-lg object-cover"
-      />
+      <div className="relative size-30 overflow-hidden rounded-xl mobile:size-27">
+        <ImageWithFallback
+          src={place.thumbnailUrl}
+          alt={place.placeName}
+          fill
+          sizes="(max-width: 440px) 108px, 120px"
+          className="object-cover"
+        />
+      </div>
       <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
         <p className="label-lg truncate text-semantic-object-boldest">
-          {place.name}
+          {place.placeName}
         </p>
         <p className="caption-md flex-1 truncate text-semantic-object-normal">
           {place.address}
@@ -42,23 +51,15 @@ export default function MapPlaceItem({ place, onClick }: MapPlaceItemProps) {
               size={16}
               className="text-semantic-object-subtle"
             />
-            {place.category}
+            {getCategoryLabel(place.placeCategory)}
           </span>
           <span className="body-xs flex items-center gap-1">
             <Icon
-              name="clock"
+              name={layer === 'record' ? 'pencil' : 'bookmark'}
               size={16}
               className="text-semantic-object-subtle"
             />
-            {place.totalWorkHours}h
-          </span>
-          <span className="body-xs flex items-center gap-1">
-            <Icon
-              name="fire"
-              size={16}
-              className="text-semantic-object-subtle"
-            />
-            집중도 {place.averageFocus}
+            {place.count}개
           </span>
         </div>
       </div>

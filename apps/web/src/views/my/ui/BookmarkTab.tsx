@@ -56,7 +56,7 @@ export default function BookmarkTab() {
       onTagsChange={setTags}
       toolbarConfig={{ viewToggle: true, tagFilter: true }}
       emptyView={
-        <div className="flex flex-1 items-center justify-center py-20">
+        <div className="flex flex-1 items-center justify-center">
           <BookmarkEmptyState
             title="일치하는 정보가 없어요"
             description="다른 태그를 선택해 보세요."

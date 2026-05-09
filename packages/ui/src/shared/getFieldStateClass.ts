@@ -8,6 +8,6 @@ export function getFieldStateClass(
   if (invalid)
     return 'border-semantic-feedback-error-normal bg-semantic-feedback-error-subtler';
   if (focused)
-    return 'border-semantic-accent-normal ring-1 ring-semantic-accent-normal';
+    return 'border-semantic-accent-normal ring-1 ring-semantic-accent-normal bg-semantic-object-inverse';
   return 'border-semantic-stroke-subtle bg-semantic-object-inverse hover:border-semantic-stroke-alternative';
 }
