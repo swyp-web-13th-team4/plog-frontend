@@ -132,6 +132,7 @@ export default function MapPage() {
     setSelectedPlaceId(placeId);
     setSelectedType(type);
     setFromList(true);
+    pendingRef.current = { placeId, type, lat: latitude, lng: longitude };
     selectPin(placeId, type);
     panToWithOffset(latitude, longitude);
   };

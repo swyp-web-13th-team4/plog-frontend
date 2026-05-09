@@ -293,6 +293,25 @@ export function useKakaoMap({
     bookmark.overlays.forEach((o) =>
       o.setMap(show && bookmarkVisibleRef.current ? map : null),
     );
+
+    if (selectedRef.current) {
+      const { pin, placeType } = selectedRef.current;
+      const newInfo = overlayInfoMapRef.current.get(
+        `${placeType}:${pin.placeId}`,
+      );
+      if (newInfo) {
+        newInfo.el.innerHTML = buildPinHtml(
+          newInfo.selectedSrc,
+          newInfo.pin.thumbnailUrl,
+          newInfo.pin.count,
+          true,
+        );
+        newInfo.overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
+        selectedRef.current = newInfo;
+      } else {
+        selectedRef.current = null;
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordPins, bookmarkPins]);
 
@@ -381,6 +400,7 @@ export function useKakaoMap({
       new window.kakao.maps.LatLng(lat, lng),
       containerRef.current?.clientHeight ?? 0,
     );
+    setTimeout(() => updateBounds(map), 100);
   };
 
   return {
