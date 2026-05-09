@@ -1,3 +1,9 @@
+export {
+  deleteRecentPlace,
+  deleteRecentPlaces,
+  getRecentPlaces,
+  saveRecentPlace,
+} from './api/client';
 export { getCategoryLabel } from './lib/category-label';
 export type { PlaceCategoryValue } from './model/place-category';
 export { PLACE_CATEGORIES } from './model/place-category';
