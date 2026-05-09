@@ -106,12 +106,31 @@ function getMinutes(value: { hour: number; minute: number }) {
   return value.hour * 60 + value.minute;
 }
 
+const newPhotoPreviewSchema = z.object({
+  type: z.literal('new'),
+  id: z.string().min(1),
+  file: z.instanceof(File),
+  url: z.string().min(1),
+});
+
+const existingPhotoPreviewSchema = z.object({
+  type: z.literal('existing'),
+  id: z.string().min(1),
+  imageId: z.number().int().positive(),
+  url: z.string().min(1),
+});
+
 export const createLogSchema = z
   .object({
     title: titleSchema,
     contents: contentsSchema,
     photos: z
-      .array(z.custom<PhotoPreview>())
+      .array(
+        z.discriminatedUnion('type', [
+          newPhotoPreviewSchema,
+          existingPhotoPreviewSchema,
+        ]),
+      )
       .min(1, '사진을 1장 이상 등록해 주세요.')
       .max(
         MAX_PHOTO_COUNT,
