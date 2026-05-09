@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation';
 import { AppBar, Icon, type IconName } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { useLogoutMutation } from '@/entities/auth/model/use-logout-mutation';
+
+import { dialog } from '@/shared/lib/dialog';
+
+import { useDeleteAccountMutation } from '../model/use-delete-account-mutation';
+
 type MenuItemProps = {
   title: string;
   iconName: IconName;
@@ -57,6 +63,27 @@ function MenuItem({
 
 export default function SettingsPage() {
   const router = useRouter();
+  const logoutMutation = useLogoutMutation();
+  const deleteAccountMutation = useDeleteAccountMutation();
+
+  const handleLogout = async () => {
+    const confirmed = await dialog.confirm({
+      message: '로그아웃 하시겠습니까?',
+      confirmLabel: '로그아웃',
+      cancelLabel: '취소',
+    });
+    if (confirmed) logoutMutation.mutate();
+  };
+
+  const handleDeleteAccount = async () => {
+    const confirmed = await dialog.confirm({
+      message: '정말 탈퇴하시겠습니까?',
+      description: '탈퇴 시 모든 데이터가 삭제되며 복구할 수 없어요.',
+      confirmLabel: '탈퇴하기',
+      cancelLabel: '취소',
+    });
+    if (confirmed) deleteAccountMutation.mutate();
+  };
 
   return (
     <>
@@ -69,11 +96,11 @@ export default function SettingsPage() {
       </header>
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col divide-y divide-semantic-stroke-subtle pt-[var(--spacing-header)]">
         <section aria-label="계정">
-          <MenuItem title="로그아웃" iconName="logout" onClick={() => {}} />
+          <MenuItem title="로그아웃" iconName="logout" onClick={handleLogout} />
           <MenuItem
             title="탈퇴하기"
             iconName="block"
-            onClick={() => {}}
+            onClick={handleDeleteAccount}
             destructive
           />
         </section>
