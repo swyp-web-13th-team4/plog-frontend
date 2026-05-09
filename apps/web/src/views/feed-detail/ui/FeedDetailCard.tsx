@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,6 @@ import {
   Carousel,
   EmptyState,
   Icon,
-  Select,
   Spinner,
 } from '@plog/ui';
 
@@ -34,6 +33,73 @@ type FeedCarouselController = {
   isBeginning: boolean;
   isEnd: boolean;
 };
+
+type DropdownOption = { label: string; value: string };
+
+// TODO: Dropdown 디자인 시스템 컴포넌트로 분리
+function Dropdown({
+  options,
+  onSelect,
+  disabled,
+}: {
+  options: DropdownOption[];
+  onSelect: (value: string) => void;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClickOutside = (e: globalThis.MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        aria-label="게시글 관리 메뉴"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        disabled={disabled}
+        className="flex size-8 cursor-pointer items-center justify-center rounded-md hover:bg-semantic-bg-deep disabled:cursor-not-allowed disabled:opacity-40"
+        onClick={() => setOpen((prev) => !prev)}
+      >
+        <Icon name="more-vertical" className="text-semantic-object-normal" />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 z-30 mt-2 overflow-hidden rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-1.5"
+        >
+          <ul className="flex flex-col gap-2">
+            {options.map((option) => (
+              <li key={option.value}>
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="label-sm flex min-h-[30px] w-23 cursor-pointer items-center rounded-md px-1.5 py-1 transition-colors hover:bg-semantic-bg-deep hover:text-semantic-object-bold"
+                  onClick={() => {
+                    setOpen(false);
+                    onSelect(option.value);
+                  }}
+                >
+                  {option.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
@@ -157,24 +223,11 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           </div>
         </div>
         {isMyPost && (
-          <div className="relative size-8">
-            <Select
-              items={AUTHOR_ACTION_OPTIONS}
-              value=""
-              placeholder=""
-              aria-label="게시글 관리 메뉴"
-              className="h-8 w-8 rounded-full border-none bg-transparent p-0 text-transparent hover:bg-semantic-bg-deep focus-visible:outline-semantic-stroke-subtle [&_svg]:opacity-0"
-              positionerClassName="z-30"
-              contentClassName="w-28 rounded-xl border border-semantic-stroke-subtler bg-semantic-system-white p-1 shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
-              optionClassName="body-sm h-10 w-full justify-start rounded-lg px-3 py-0 text-semantic-object-normal hover:bg-semantic-bg-deep"
-              disabled={deletePostMutation.isPending}
-              onValueChange={handleAuthorAction}
-            />
-            <Icon
-              name="more-vertical"
-              className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-semantic-object-normal"
-            />
-          </div>
+          <Dropdown
+            options={AUTHOR_ACTION_OPTIONS}
+            disabled={deletePostMutation.isPending}
+            onSelect={handleAuthorAction}
+          />
         )}
       </div>
       <div className="flex flex-col">
