@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -33,10 +33,20 @@ type FeedCardProps = {
 
 function ClampedContent({ content }: { content: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isClamped, setIsClamped] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useLayoutEffect(() => {
+    if (isExpanded) return;
+    const el = textRef.current;
+    if (!el) return;
+    setIsClamped(el.scrollHeight > el.clientHeight);
+  }, [content, isExpanded]);
 
   return (
     <div className="flex justify-between gap-3">
       <p
+        ref={textRef}
         className={cn(
           'body-sm text-semantic-object-normal',
           !isExpanded && 'line-clamp-1',
@@ -44,7 +54,7 @@ function ClampedContent({ content }: { content: string }) {
       >
         {content}
       </p>
-      {!isExpanded && (
+      {!isExpanded && isClamped && (
         <button
           type="button"
           className="caption-md flex shrink-0 cursor-pointer items-center gap-0.5 text-semantic-object-subtle"
