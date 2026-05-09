@@ -80,6 +80,11 @@ export function useToggleBookmark() {
         updateBookmarkInFeedCache(prev, postId, res.isBookmarked),
       );
       queryClient.invalidateQueries({ queryKey: ['mypage'] });
+      queryClient.invalidateQueries({ queryKey: ['map', 'count'] });
+      queryClient.invalidateQueries({ queryKey: ['map', 'pins', 'bookmark'] });
+      queryClient.invalidateQueries({ queryKey: ['map', 'sheet', 'bookmark'] });
+      queryClient.invalidateQueries({ queryKey: ['map', 'pin-detail'] });
+      queryClient.invalidateQueries({ queryKey: ['map', 'place'] });
     },
   });
 
