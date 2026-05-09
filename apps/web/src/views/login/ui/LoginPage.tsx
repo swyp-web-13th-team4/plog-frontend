@@ -3,6 +3,16 @@ import LogoSVG from '@/shared/assets/brand/logo-with-slogan.svg';
 import KakaoIcon from '@/shared/assets/icons/kakao.svg';
 import LoginIllustration from '@/shared/assets/images/login-illustration.svg';
 
+function Separator() {
+  return (
+    <div
+      role="separator"
+      aria-hidden="true"
+      className="inline-block h-3 border-l border-l-semantic-stroke-subtle"
+    />
+  );
+}
+
 export default function LoginPage() {
   return (
     <div className="flex h-dvh w-full flex-col items-center justify-center gap-4 px-10">
@@ -21,19 +31,11 @@ export default function LoginPage() {
         <a href="/terms/privacy" className="underline-offset-2 hover:underline">
           개인정보 처리방침
         </a>
-        <div
-          role="separator"
-          aria-hidden="true"
-          className="inline-block h-3 border-l border-l-semantic-stroke-subtle"
-        />
+        <Separator />
         <a href="/terms/service" className="underline-offset-2 hover:underline">
           서비스 이용약관
         </a>
-        <div
-          role="separator"
-          aria-hidden="true"
-          className="inline-block h-3 border-l border-l-semantic-stroke-subtle"
-        />
+        <Separator />
         <a
           href="/terms/geolocation"
           className="underline-offset-2 hover:underline"
