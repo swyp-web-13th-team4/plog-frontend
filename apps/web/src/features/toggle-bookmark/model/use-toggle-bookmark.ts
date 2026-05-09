@@ -9,9 +9,12 @@ import {
 
 import { FEED_QUERY_KEY, type FeedPage } from '@/entities/feed';
 
+import { clientApi } from '@/shared/api/client-api';
 import { dialog } from '@/shared/lib/dialog';
 
-import { postToggleBookmark } from '../api/client';
+export function postToggleBookmark(postId: number) {
+  return clientApi.post<{ isBookmarked: boolean }>(`/feed/bookmark/${postId}`);
+}
 
 function updateBookmarkInFeedCache(
   prev: InfiniteData<FeedPage> | undefined,
