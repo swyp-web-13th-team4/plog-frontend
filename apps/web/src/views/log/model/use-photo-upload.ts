@@ -87,13 +87,17 @@ export function usePhotoUpload() {
   };
 
   const setExistingPhotos = (images: PostImage[]) => {
-    photos.forEach(revokePhotoUrl);
-    setPhotos(images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview));
+    setPhotos((currentPhotos) => {
+      currentPhotos.forEach(revokePhotoUrl);
+      return images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview);
+    });
   };
 
   const clearPhotos = () => {
-    photos.forEach(revokePhotoUrl);
-    setPhotos([]);
+    setPhotos((currentPhotos) => {
+      currentPhotos.forEach(revokePhotoUrl);
+      return [];
+    });
   };
 
   return {
