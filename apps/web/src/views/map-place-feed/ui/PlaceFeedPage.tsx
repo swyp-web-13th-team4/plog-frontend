@@ -136,7 +136,7 @@ export default function PlaceFeedPage({ placeId }: { placeId: number }) {
 
   const searchParams = useSearchParams();
 
-  const placeName = searchParams.get('name') ?? '';
+  const placeName = searchParams.get('name') || '장소 상세';
   const initialType = (searchParams.get('type') ?? 'record') as PlaceLayer;
 
   const tabs = [

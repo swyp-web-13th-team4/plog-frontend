@@ -108,7 +108,13 @@ export default function MapPage() {
   }, [recordPins, bookmarkPins, selectPin]);
 
   useUserLocation((coords) => {
-    if (!mapRef.current || !window.kakao || pendingRef.current || hasParamNavRef.current) return;
+    if (
+      !mapRef.current ||
+      !window.kakao ||
+      pendingRef.current ||
+      hasParamNavRef.current
+    )
+      return;
     mapRef.current.setCenter(
       new window.kakao.maps.LatLng(coords.latitude, coords.longitude),
     );
