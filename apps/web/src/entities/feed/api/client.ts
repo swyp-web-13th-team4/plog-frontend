@@ -5,6 +5,9 @@ import {
   type FeedListResponse,
   type FeedPage,
   type PostCreateRequest,
+  type PostEditResponse,
+  type PostUpdateRequest,
+  type PostUpdateResponse,
 } from '../model/types';
 
 type GetFeedPageParams = {
@@ -12,11 +15,31 @@ type GetFeedPageParams = {
   createAt?: string | null;
 };
 
+type FeedListApiResponse = FeedListResponse & {
+  createdAt?: string | null;
+};
+
 export const createPost = (data: PostCreateRequest, images: File[]) => {
   const formData = createMultipartRequest(data, { images });
 
   return clientApi.post<unknown>('/post', formData);
 };
+
+export const getPostForEdit = (postId: number) =>
+  clientApi.get<PostEditResponse>(`/post/${postId}/edit`);
+
+export const updatePost = (
+  postId: number,
+  data: PostUpdateRequest,
+  images: File[] = [],
+) => {
+  const formData = createMultipartRequest(data, { images });
+
+  return clientApi.put<PostUpdateResponse>(`/post/${postId}`, formData);
+};
+
+export const deletePost = (postId: number) =>
+  clientApi.delete<unknown>(`/post/${postId}`);
 
 export const getFeedPage = async ({
   createAt,
@@ -31,13 +54,13 @@ export const getFeedPage = async ({
   }
 
   const queryString = searchParams.toString();
-  const data = await clientApi.get<FeedListResponse>(
+  const data = await clientApi.get<FeedListApiResponse>(
     `/feed/list${queryString ? `?${queryString}` : ''}`,
   );
 
   return {
     items: data.feedFindResponses,
     lastPostId: data.lastPostId,
-    createAt: data.createAt,
+    createAt: data.createAt ?? data.createdAt ?? null,
   };
 };

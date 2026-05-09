@@ -27,6 +27,35 @@ export type PostCreateRequest = {
   categoryCode: string;
 };
 
+export type PostEditPost = Omit<PostCreateRequest, 'place'> & {
+  studyTime: number;
+  placeName: string;
+  placeAddress: string;
+  latitude: number;
+  longitude: number;
+};
+
+export type PostEditImage = {
+  id: number;
+  url: string;
+};
+
+export type PostEditImages = {
+  images: PostEditImage[];
+  total: number;
+};
+
+export type PostEditResponse = {
+  post: PostEditPost;
+  images: PostEditImages;
+};
+
+export type PostUpdateRequest = PostCreateRequest & {
+  images: number[];
+};
+
+export type PostUpdateResponse = PostEditResponse;
+
 export type FeedPost = {
   postId: number;
   name: string;

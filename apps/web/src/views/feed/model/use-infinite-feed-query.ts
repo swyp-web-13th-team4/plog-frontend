@@ -22,8 +22,8 @@ export function useInfiniteFeedQuery() {
     queryKey: FEED_QUERY_KEY,
     queryFn: ({ pageParam }) => getFeedPage(pageParam),
     initialPageParam: {
-      lastPostId: null,
-      createAt: null,
+      lastPostId: 0,
+      createAt: new Date().toISOString(),
     },
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       if (lastPage.items.length === 0) return undefined;

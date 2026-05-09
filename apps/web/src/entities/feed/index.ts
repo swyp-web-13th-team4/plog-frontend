@@ -1,4 +1,10 @@
-export { createPost, getFeedPage } from './api/client';
+export {
+  createPost,
+  deletePost,
+  getFeedPage,
+  getPostForEdit,
+  updatePost,
+} from './api/client';
 export {
   formatLikeCount,
   formatStudyDate,
@@ -24,10 +30,16 @@ export type {
   FeedPage,
   FeedPost,
   PostCreateRequest,
+  PostEditImage,
+  PostEditImages,
+  PostEditPost,
+  PostEditResponse,
   PostPlace,
   PostScope,
   PostSortType,
   PostTime,
+  PostUpdateRequest,
+  PostUpdateResponse,
 } from './model/types';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';
