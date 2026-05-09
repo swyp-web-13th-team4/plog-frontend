@@ -45,7 +45,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const numericPostId = Number(postId);
-  const isValidPostId = Number.isFinite(numericPostId);
+  const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
   const {
     data: post,
     isError,

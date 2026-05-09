@@ -114,7 +114,9 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   const router = useRouter();
   const numericEditPostId = editPostId ? Number(editPostId) : null;
   const normalizedEditPostId =
-    numericEditPostId !== null && Number.isFinite(numericEditPostId)
+    numericEditPostId !== null &&
+    Number.isInteger(numericEditPostId) &&
+    numericEditPostId > 0
       ? numericEditPostId
       : null;
   const isEditMode = normalizedEditPostId !== null;
