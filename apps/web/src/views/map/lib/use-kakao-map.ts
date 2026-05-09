@@ -359,9 +359,8 @@ export function useKakaoMap({
         bookmarkOverlaysRef.current.forEach((o) =>
           o.setMap(show && bookmarkVisibleRef.current ? map : null),
         );
-        updateBounds(map);
       };
-      const onDragEnd = () => updateBounds(map);
+      const onCenterChanged = () => updateBounds(map);
       const onMapClick = () => {
         if (selectedRef.current) {
           deselect();
@@ -370,7 +369,11 @@ export function useKakaoMap({
       };
 
       window.kakao.maps.event.addListener(map, 'zoom_changed', onZoomChanged);
-      window.kakao.maps.event.addListener(map, 'dragend', onDragEnd);
+      window.kakao.maps.event.addListener(
+        map,
+        'center_changed',
+        onCenterChanged,
+      );
       window.kakao.maps.event.addListener(map, 'click', onMapClick);
 
       cleanupListenersRef.current = () => {
@@ -379,7 +382,11 @@ export function useKakaoMap({
           'zoom_changed',
           onZoomChanged,
         );
-        window.kakao.maps.event.removeListener(map, 'dragend', onDragEnd);
+        window.kakao.maps.event.removeListener(
+          map,
+          'center_changed',
+          onCenterChanged,
+        );
         window.kakao.maps.event.removeListener(map, 'click', onMapClick);
       };
 
@@ -412,11 +419,6 @@ export function useKakaoMap({
       new window.kakao.maps.LatLng(lat, lng),
       containerRef.current?.clientHeight ?? 0,
     );
-    const onIdle = () => {
-      updateBounds(map);
-      window.kakao.maps.event.removeListener(map, 'idle', onIdle);
-    };
-    window.kakao.maps.event.addListener(map, 'idle', onIdle);
   };
 
   return {
