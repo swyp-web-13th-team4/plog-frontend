@@ -13,8 +13,11 @@ const MAX_LEVEL = 12;
 const MIN_CLUSTER_LEVEL = 4;
 export const SELECTED_LEVEL = 3;
 
-const OVERLAY_Z_INDEX = 3;
-const SELECTED_OVERLAY_Z_INDEX = 4;
+const OVERLAY_Z_INDEX = {
+  RECORD: 3,
+  BOOKMARK: 2,
+  SELECTED: 4,
+} as const;
 
 type SelectedInfo = {
   el: HTMLDivElement;
@@ -104,9 +107,13 @@ export function useKakaoMap({
 
   const deselect = () => {
     if (!selectedRef.current) return;
-    const { el, overlay, pin, markerSrc } = selectedRef.current;
+    const { el, overlay, pin, markerSrc, placeType } = selectedRef.current;
     el.innerHTML = buildPinHtml(markerSrc, pin.thumbnailUrl, pin.count, false);
-    overlay.setZIndex(OVERLAY_Z_INDEX);
+    overlay.setZIndex(
+      placeType === 'record'
+        ? OVERLAY_Z_INDEX.RECORD
+        : OVERLAY_Z_INDEX.BOOKMARK,
+    );
     selectedRef.current = null;
   };
 
@@ -163,7 +170,7 @@ export function useKakaoMap({
         pin.count,
         true,
       );
-      overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
+      overlay.setZIndex(OVERLAY_Z_INDEX.SELECTED);
       selectedRef.current = {
         el,
         overlay,
@@ -210,7 +217,10 @@ export function useKakaoMap({
         content: el,
         xAnchor: 0.5,
         yAnchor: WRAPPER_Y_ANCHOR,
-        zIndex: OVERLAY_Z_INDEX,
+        zIndex:
+          placeType === 'record'
+            ? OVERLAY_Z_INDEX.RECORD
+            : OVERLAY_Z_INDEX.BOOKMARK,
       });
 
       infos.set(`${placeType}:${pin.placeId}`, {
@@ -310,7 +320,7 @@ export function useKakaoMap({
           newInfo.pin.count,
           true,
         );
-        newInfo.overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
+        newInfo.overlay.setZIndex(OVERLAY_Z_INDEX.SELECTED);
         selectedRef.current = newInfo;
       }
     }
@@ -389,7 +399,7 @@ export function useKakaoMap({
       info.pin.count,
       true,
     );
-    info.overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
+    info.overlay.setZIndex(OVERLAY_Z_INDEX.SELECTED);
     selectedRef.current = info;
   };
 
