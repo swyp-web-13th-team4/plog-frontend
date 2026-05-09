@@ -27,7 +27,7 @@ export default function RecentPlaceList({
         <h2 className="title-xs text-semantic-object-boldest">최근 검색</h2>
         <button
           type="button"
-          className="body-md text-semantic-object-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal"
+          className="body-md cursor-pointer text-semantic-object-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal"
           onClick={onClear}
         >
           전체삭제

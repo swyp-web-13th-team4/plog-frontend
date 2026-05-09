@@ -19,7 +19,7 @@ export default function PlaceResultItem({
     <li>
       <button
         type="button"
-        className="w-full border-b border-semantic-stroke-subtler px-6 py-5 text-left transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-accent-normal"
+        className="w-full cursor-pointer border-b border-semantic-stroke-subtler px-6 py-5 text-left hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-semantic-accent-normal"
         onClick={() => onSelect(place)}
       >
         <p className="body-lg text-semantic-object-boldest">

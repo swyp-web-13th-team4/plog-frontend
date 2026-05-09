@@ -39,7 +39,7 @@ export default function RecentPlaceItem({
         </button>
         <button
           type="button"
-          className="ml-2 shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal"
+          className="ml-2 flex cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-accent-normal"
           onClick={() => onRemove(place.id)}
           aria-label={`${place.placeName} 삭제`}
         >
