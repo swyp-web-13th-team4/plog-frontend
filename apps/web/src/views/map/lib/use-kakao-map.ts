@@ -283,7 +283,11 @@ export function useKakaoMap({
     overlayInfoMapRef.current = new Map([...record.infos, ...bookmark.infos]);
 
     if (clustererRef.current) {
-      clustererRef.current.addMarkers([...record.markers, ...bookmark.markers]);
+      const markersToAdd = [
+        ...(recordVisibleRef.current ? record.markers : []),
+        ...(bookmarkVisibleRef.current ? bookmark.markers : []),
+      ];
+      clustererRef.current.addMarkers(markersToAdd);
     }
 
     const show = map.getLevel() < MIN_CLUSTER_LEVEL;
