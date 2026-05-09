@@ -19,11 +19,13 @@ export {
 } from './model/place-tag';
 export { FEED_QUERY_KEY } from './model/query-keys';
 export type {
+  BookmarkSortType,
   FeedPage,
   FeedPost,
   PostCreateRequest,
   PostPlace,
   PostScope,
+  PostSortType,
   PostTime,
 } from './model/types';
 export { default as FeedGridItem } from './ui/FeedGridItem';

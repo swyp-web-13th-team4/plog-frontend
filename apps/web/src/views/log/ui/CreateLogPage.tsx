@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 
 import {
   Button,
+  Chip,
   Field,
   Icon,
   Input,
@@ -37,6 +38,7 @@ import { ReviewTagsSheet } from '@/features/select-review-tags';
 import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
 import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 
+import { PLACE_TAG_LABELS } from '@/entities/feed';
 import { PLACE_CATEGORIES } from '@/entities/place';
 
 import { createLogResolver } from '../model/resolver';
@@ -578,23 +580,48 @@ export default function CreateLogPage() {
           className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6"
         >
           <Field label="후기 요약 태그를 선택해 주세요" required>
-            <ReviewTagsSheet
-              value={reviewTags}
-              onChange={(value) => {
-                setFormValue('placeTags', value);
-              }}
-            >
-              <Button
-                variant="outline"
-                size="large"
-                fullWidth
-                ref={reviewTagsButtonRef}
-                iconLeft={<Icon name="plus" />}
-                className="text-semantic-object-normal [&>svg]:size-4!"
+            <>
+              {reviewTags.length > 0 && (
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {reviewTags.map((tag) => (
+                    <Chip
+                      key={tag}
+                      size="small"
+                      variant="soft"
+                      pressed
+                      onClick={() => {
+                        setFormValue(
+                          'placeTags',
+                          reviewTags.filter(
+                            (selectedTag) => selectedTag !== tag,
+                          ),
+                        );
+                      }}
+                    >
+                      {PLACE_TAG_LABELS[tag]}
+                      <Icon name="close" size={16} />
+                    </Chip>
+                  ))}
+                </div>
+              )}
+              <ReviewTagsSheet
+                value={reviewTags}
+                onChange={(value) => {
+                  setFormValue('placeTags', value);
+                }}
               >
-                태그 추가하기
-              </Button>
-            </ReviewTagsSheet>
+                <Button
+                  variant="outline"
+                  size="large"
+                  fullWidth
+                  ref={reviewTagsButtonRef}
+                  iconLeft={<Icon name="plus" />}
+                  className="text-semantic-object-normal [&>svg]:size-4!"
+                >
+                  태그 추가하기
+                </Button>
+              </ReviewTagsSheet>
+            </>
           </Field>
         </div>
       </section>
