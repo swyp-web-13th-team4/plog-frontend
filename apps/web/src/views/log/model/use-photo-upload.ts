@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { create } from 'zustand';
 
 import { type PostEditImage } from '@/entities/feed';
 
@@ -50,19 +50,24 @@ function revokePhotoUrl(photo: PhotoPreview) {
   if (isNewPhotoPreview(photo)) URL.revokeObjectURL(photo.url);
 }
 
+type PhotoStore = {
+  photos: PhotoPreview[];
+  setPhotos: (
+    updater: PhotoPreview[] | ((prev: PhotoPreview[]) => PhotoPreview[]),
+  ) => void;
+};
+
+const usePhotoStore = create<PhotoStore>()((set) => ({
+  photos: [],
+  setPhotos: (updater) =>
+    set((state) => ({
+      photos: typeof updater === 'function' ? updater(state.photos) : updater,
+    })),
+}));
+
 export function usePhotoUpload() {
-  const photoPreviewsRef = useRef<PhotoPreview[]>([]);
-  const [photos, setPhotos] = useState<PhotoPreview[]>([]);
-
-  useEffect(() => {
-    photoPreviewsRef.current = photos;
-  }, [photos]);
-
-  useEffect(() => {
-    return () => {
-      photoPreviewsRef.current.forEach(revokePhotoUrl);
-    };
-  }, []);
+  const photos = usePhotoStore((state) => state.photos);
+  const setPhotos = usePhotoStore((state) => state.setPhotos);
 
   const handleAddPhotos = (files: File[]) => {
     setPhotos((currentPhotos) => {
@@ -84,12 +89,12 @@ export function usePhotoUpload() {
   };
 
   const setExistingPhotos = (images: PostEditImage[]) => {
-    photoPreviewsRef.current.forEach(revokePhotoUrl);
+    photos.forEach(revokePhotoUrl);
     setPhotos(images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview));
   };
 
   const clearPhotos = () => {
-    photoPreviewsRef.current.forEach(revokePhotoUrl);
+    photos.forEach(revokePhotoUrl);
     setPhotos([]);
   };
 
