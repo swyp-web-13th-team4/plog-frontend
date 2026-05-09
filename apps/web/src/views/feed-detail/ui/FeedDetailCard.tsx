@@ -12,6 +12,7 @@ import {
   Carousel,
   EmptyState,
   Icon,
+  Spinner,
   useToast,
 } from '@plog/ui';
 
@@ -19,9 +20,10 @@ import { CopyLinkButton } from '@/features/copy-link';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
-import { FeedPost, FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
+import { FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
 import { formatStudyDate, formatTimeAgo } from '@/entities/feed';
-import { MOCK_FEED_DATA } from '@/entities/feed/model/mock-data';
+
+import { useFeedDetailQuery } from '../model/use-feed-detail-query';
 
 type FeedCarouselController = {
   slidePrev: () => void;
@@ -33,12 +35,18 @@ type FeedCarouselController = {
 export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
-  const feed = MOCK_FEED_DATA.find((item) => item.postId === Number(postId));
-  const [post, setPost] = useState<FeedPost | null>(feed ?? null);
+  const numericPostId = Number(postId);
+  const isValidPostId = Number.isFinite(numericPostId);
+  const {
+    data: post,
+    isError,
+    isPending,
+    refetch,
+  } = useFeedDetailQuery(numericPostId);
   const carouselRef = useRef<FeedCarouselController | null>(null);
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
-    isEnd: feed ? feed.postImages.length <= 1 : true,
+    isEnd: true,
   });
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
@@ -48,7 +56,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     });
   };
 
-  if (!post) {
+  if (!isValidPostId) {
     return (
       <div className="flex min-h-screen items-center justify-center px-6">
         <EmptyState
@@ -68,8 +76,41 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     );
   }
 
+  if (isPending) {
+    return (
+      <section className="flex min-h-screen items-center justify-center">
+        <Spinner size="large" />
+      </section>
+    );
+  }
+
+  if (isError || !post) {
+    return (
+      <div className="flex min-h-screen items-center justify-center px-6">
+        <EmptyState
+          title="피드를 불러오지 못했어요"
+          description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
+          actions={
+            <div className="flex gap-2">
+              <Button variant="outline" size="small" onClick={() => refetch()}>
+                다시 시도
+              </Button>
+              <Button
+                variant="outline"
+                size="small"
+                onClick={() => router.push('/feed')}
+              >
+                피드로 돌아가기
+              </Button>
+            </div>
+          }
+        />
+      </div>
+    );
+  }
+
   const hasMultipleImages = post.postImages.length > 1;
-  const isMyPost = post.name === '승민';
+  const isMyPost = post.isAuthor;
 
   return (
     <section className="relative">

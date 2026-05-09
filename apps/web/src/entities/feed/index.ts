@@ -1,6 +1,7 @@
 export {
   createPost,
   deletePost,
+  getFeedDetail,
   getFeedPage,
   getPostForEdit,
   updatePost,
@@ -26,6 +27,7 @@ export {
 export { FEED_QUERY_KEY } from './model/query-keys';
 export type {
   BookmarkSortType,
+  FeedDetailResponse,
   FeedListResponse,
   FeedPage,
   FeedPost,

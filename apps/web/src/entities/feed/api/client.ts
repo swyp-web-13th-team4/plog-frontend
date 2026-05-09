@@ -2,6 +2,7 @@ import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
 
 import {
+  type FeedDetailResponse,
   type FeedListResponse,
   type FeedPage,
   type PostCreateRequest,
@@ -40,6 +41,9 @@ export const updatePost = (
 
 export const deletePost = (postId: number) =>
   clientApi.delete<unknown>(`/post/${postId}`);
+
+export const getFeedDetail = (postId: number) =>
+  clientApi.get<FeedDetailResponse>(`/feed/${postId}`);
 
 export const getFeedPage = async ({
   createAt,

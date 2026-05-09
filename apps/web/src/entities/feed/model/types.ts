@@ -76,6 +76,11 @@ export type FeedPost = {
   isPublic?: boolean;
 };
 
+export type FeedDetailResponse = FeedPost & {
+  isAuthor: boolean;
+  memerKey?: string;
+};
+
 export type FeedListResponse = {
   feedFindResponses: FeedPost[];
   lastPostId: number | null;
