@@ -22,7 +22,7 @@ export default function MapPlaceItem({
 }: MapPlaceItemProps) {
   return (
     <div
-      className={cn('flex gap-4 py-4', onClick && 'cursor-pointer')}
+      className={cn('flex gap-4 py-5', onClick && 'cursor-pointer')}
       role={onClick ? 'button' : undefined}
       tabIndex={onClick ? 0 : undefined}
       onClick={onClick}
