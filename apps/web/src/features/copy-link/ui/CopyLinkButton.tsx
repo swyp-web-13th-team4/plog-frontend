@@ -10,6 +10,13 @@ export default function CopyLinkButton({ postId }: CopyLinkButtonProps) {
   const { toast } = useToast();
 
   const handleCopy = async () => {
+    if (!navigator.clipboard) {
+      toast({
+        type: 'error',
+        description: '이 브라우저에서는 링크 복사를 지원하지 않습니다.',
+      });
+      return;
+    }
     const url = `${window.location.origin}/feed/${postId}`;
     try {
       await navigator.clipboard.writeText(url);
