@@ -191,8 +191,10 @@ export default function MapPage() {
             readOnly
             onClick={() => router.push('/map/search')}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ')
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
                 router.push('/map/search');
+              }
             }}
             trailing={
               <Icon
