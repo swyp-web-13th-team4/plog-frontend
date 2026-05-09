@@ -3,12 +3,22 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { type PlaceTagValue } from '@/entities/feed';
-import { type PlaceLayer } from '@/entities/place';
+import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 import { type CursorPage } from '@/shared/api/types';
 
-import { type MapSortType, type PlacePost } from './types';
+type PlacePost = {
+  postId: number;
+  title: string;
+  studyDate: string;
+  studyTime: number;
+  focus: number;
+  contents: string;
+  thumbnailUrl: string;
+  categoryCode: string;
+  tags: PlaceTagValue[];
+};
 
 const LIMIT = 20;
 
@@ -44,6 +54,8 @@ function buildCursor(sortType: MapSortType, last: PlacePost): string {
       return String(last.postId);
   }
 }
+
+export type { PlacePost };
 
 export function usePlaceFeedQuery(
   placeId: number,

@@ -1,5 +1,3 @@
-import { type PlaceTagValue } from '@/entities/feed';
-
 export type MapPin = {
   placeId: number;
   latitude: number;
@@ -31,32 +29,9 @@ export type MapPinDetail = {
   placeCategory: string;
 };
 
-export type MapSortType = 'LATEST' | 'RECORD_COUNT' | 'STUDY_TIME' | 'FOCUS';
-
 export type MapBounds = {
   swLat: number;
   swLng: number;
   neLat: number;
   neLng: number;
-};
-
-export type MapSearchPlace = {
-  placeId: number;
-  placeName: string;
-  address: string;
-  latitude: number;
-  longitude: number;
-  lastStudyDate: string;
-};
-
-export type PlacePost = {
-  postId: number;
-  title: string;
-  studyDate: string;
-  studyTime: number;
-  focus: number;
-  contents: string;
-  thumbnailUrl: string;
-  categoryCode: string;
-  tags: PlaceTagValue[];
 };

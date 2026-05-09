@@ -1,5 +1,7 @@
 export type PlaceLayer = 'record' | 'bookmark';
 
+export type MapSortType = 'LATEST' | 'RECORD_COUNT' | 'STUDY_TIME' | 'FOCUS';
+
 export type Place = {
   id: number;
   lat: number;

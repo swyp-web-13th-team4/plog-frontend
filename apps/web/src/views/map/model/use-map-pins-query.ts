@@ -2,11 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { type PlaceLayer } from '@/entities/place';
+import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 
-import { type MapBounds, type MapPin, type MapSortType } from './types';
+import { type MapBounds, type MapPin } from './types';
 
 function fetchMapPins(
   layer: PlaceLayer,

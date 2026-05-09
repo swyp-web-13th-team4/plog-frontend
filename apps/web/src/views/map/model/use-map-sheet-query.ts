@@ -2,12 +2,12 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { type PlaceLayer } from '@/entities/place';
+import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 import { type CursorPage } from '@/shared/api/types';
 
-import { type MapSheetPlace, type MapSortType } from './types';
+import { type MapSheetPlace } from './types';
 
 const LIMIT = 20;
 

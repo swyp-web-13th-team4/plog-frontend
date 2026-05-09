@@ -1,18 +1,17 @@
 'use client';
 
 import { type ReactNode, useEffect, useState } from 'react';
-
 import { useInView } from 'react-intersection-observer';
 
 import { BottomSheet, Button, Divider, Icon, Select, Switch } from '@plog/ui';
 
 import MapPlaceItem from '@/views/map/ui/MapPlaceItem';
 
-import { type PlaceLayer } from '@/entities/place';
+import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
 import { BookmarkEmptyState, RecordEmptyState } from '@/shared/ui';
 
-import { type MapSheetPlace, type MapSortType } from '../model/types';
+import { type MapSheetPlace } from '../model/types';
 import { useMapCountQuery } from '../model/use-map-count-query';
 import { useMapSheetQuery } from '../model/use-map-sheet-query';
 

@@ -4,7 +4,14 @@ import { useQuery } from '@tanstack/react-query';
 
 import { clientApi } from '@/shared/api/client-api';
 
-import { type MapSearchPlace } from './types';
+export type MapSearchPlace = {
+  placeId: number;
+  placeName: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  lastStudyDate: string;
+};
 
 function fetchMapSearchPlaces(keyword: string) {
   return clientApi.get<MapSearchPlace[]>(
