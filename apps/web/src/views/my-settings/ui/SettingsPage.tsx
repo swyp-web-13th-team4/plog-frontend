@@ -17,6 +17,7 @@ type MenuItemProps = {
   onClick: () => void;
   destructive?: boolean;
   showChevron?: boolean;
+  disabled?: boolean;
   className?: string;
 };
 
@@ -26,16 +27,18 @@ function MenuItem({
   onClick,
   destructive = false,
   showChevron = false,
+  disabled = false,
   className,
 }: MenuItemProps) {
   return (
     <button
       type="button"
       className={cn(
-        'label-lg flex h-18 w-full cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest hover:bg-semantic-bg-deep',
+        'label-lg flex h-18 w-full cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest hover:bg-semantic-bg-deep disabled:cursor-not-allowed disabled:opacity-40',
         destructive && 'text-semantic-feedback-error-normal',
         className,
       )}
+      disabled={disabled}
       onClick={onClick}
     >
       <Icon
@@ -63,8 +66,12 @@ function MenuItem({
 
 export default function SettingsPage() {
   const router = useRouter();
+
   const logoutMutation = useLogoutMutation();
   const deleteAccountMutation = useDeleteAccountMutation();
+
+  const isMutating =
+    logoutMutation.isPending || deleteAccountMutation.isPending;
 
   const handleLogout = async () => {
     const confirmed = await dialog.confirm({
@@ -96,12 +103,18 @@ export default function SettingsPage() {
       </header>
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col divide-y divide-semantic-stroke-subtle pt-[var(--spacing-header)]">
         <section aria-label="계정">
-          <MenuItem title="로그아웃" iconName="logout" onClick={handleLogout} />
+          <MenuItem
+            title="로그아웃"
+            iconName="logout"
+            onClick={handleLogout}
+            disabled={isMutating}
+          />
           <MenuItem
             title="탈퇴하기"
             iconName="block"
             onClick={handleDeleteAccount}
             destructive
+            disabled={isMutating}
           />
         </section>
       </div>
