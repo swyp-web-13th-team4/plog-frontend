@@ -32,7 +32,7 @@ function MenuItem({
     <button
       type="button"
       className={cn(
-        'label-lg flex h-18 w-full cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest',
+        'label-lg flex h-18 w-full cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest hover:bg-semantic-bg-deep',
         destructive && 'text-semantic-feedback-error-normal',
         className,
       )}
