@@ -586,7 +586,8 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
               onClear={() => {
                 setFormValue('title', '');
               }}
-              value={title ?? ''}
+              onBlur={() => setFormValue('title', (title ?? '').trim())}
+              value={(title ?? '').trimStart()}
               placeholder="제목을 입력해 주세요."
               maxLength={20}
             />
@@ -607,7 +608,8 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
               onChange={(event) => {
                 contentsField.onChange(event);
               }}
-              value={contents ?? ''}
+              onBlur={() => setFormValue('contents', (contents ?? '').trim())}
+              value={(contents ?? '').trimStart()}
               placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
               maxLength={300}
               className="[&_textarea]:body-sm"

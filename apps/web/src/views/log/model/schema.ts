@@ -50,7 +50,7 @@ const titleSchema = z
       return;
     }
 
-    if (!/^[가-힣A-Za-z0-9]+$/.test(value)) {
+    if (!/^[가-힣A-Za-z0-9 ]+$/.test(value)) {
       ctx.addIssue({
         code: 'custom',
         message: '한글, 영문, 숫자만 입력 가능해요.',
