@@ -308,8 +308,6 @@ export function useKakaoMap({
         );
         newInfo.overlay.setZIndex(SELECTED_OVERLAY_Z_INDEX);
         selectedRef.current = newInfo;
-      } else {
-        selectedRef.current = null;
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

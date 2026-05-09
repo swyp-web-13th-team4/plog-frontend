@@ -40,6 +40,7 @@ export default function MapPage() {
       : null;
 
   const pendingRef = useRef(initSelection);
+  const hasParamNavRef = useRef(!!initSelection);
 
   const [bounds, setBounds] = useState<MapBounds | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(
@@ -107,7 +108,7 @@ export default function MapPage() {
   }, [recordPins, bookmarkPins, selectPin]);
 
   useUserLocation((coords) => {
-    if (!mapRef.current || !window.kakao || pendingRef.current) return;
+    if (!mapRef.current || !window.kakao || pendingRef.current || hasParamNavRef.current) return;
     mapRef.current.setCenter(
       new window.kakao.maps.LatLng(coords.latitude, coords.longitude),
     );
