@@ -9,6 +9,8 @@ export const CLIENT_BASE_URL = '/api';
 
 export const KAKAO_LOGIN_URL = `${SERVER_URL}/oauth2/authorization/kakao`;
 
+export const KAKAO_MAP_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
+
 export const API_ERROR_CODE = {
   INVALID_ACCESS_PATH: 'E400',
   REQUIRED_AUTH: 'E401',

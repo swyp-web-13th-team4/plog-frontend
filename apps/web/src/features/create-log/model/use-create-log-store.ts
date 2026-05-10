@@ -21,11 +21,12 @@ export const initialCreateLogValues = {
   endedAt: null as TimeValue | null,
   focus: null as FocusLevel | null,
   placeTags: [] as PlaceTagValue[],
-  scope: 'PRIVATE' as PostScope,
+  scope: 'PUBLIC' as PostScope,
 };
 
 const initialState = {
   values: initialCreateLogValues,
+  draftPostId: null as number | null,
   hasPhotos: false,
   hasHydrated: false,
 };
@@ -48,8 +49,14 @@ export function hasCreateLogValues(values: CreateLogStoredValues) {
 export const useCreateLogStore = create(
   persist(
     combine(initialState, (set) => ({
-      setValues: (values: Partial<CreateLogStoredValues>) =>
-        set((state) => ({ values: { ...state.values, ...values } })),
+      setValues: (
+        values: Partial<CreateLogStoredValues>,
+        draftPostId?: number | null,
+      ) =>
+        set((state) => ({
+          values: { ...state.values, ...values },
+          ...(draftPostId !== undefined ? { draftPostId } : {}),
+        })),
       setHasPhotos: (hasPhotos: boolean) => set({ hasPhotos }),
       reset: () => {
         set((state) => ({
@@ -61,7 +68,10 @@ export const useCreateLogStore = create(
     })),
     {
       name: 'plog:create-log',
-      partialize: (state) => ({ values: state.values }),
+      partialize: (state) => ({
+        values: state.values,
+        draftPostId: state.draftPostId,
+      }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
       },
@@ -81,6 +91,15 @@ export const useCreateLogStore = create(
   ),
 );
 
-export function getCreateLogDefaultValues(): CreateLogStoredValues {
-  return structuredClone(useCreateLogStore.getState().values);
+export function getCreateLogDefaultValues(
+  draftPostId: number | null = null,
+): CreateLogStoredValues {
+  const { values, draftPostId: storedDraftPostId } =
+    useCreateLogStore.getState();
+
+  if (storedDraftPostId !== draftPostId) {
+    return structuredClone(initialCreateLogValues);
+  }
+
+  return structuredClone(values);
 }

@@ -9,6 +9,7 @@ import { BottomSheet, Icon, Input } from '@plog/ui';
 
 import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
+import { KAKAO_MAP_SDK_URL } from '@/shared/api/constants';
 import { useUserLocation } from '@/shared/lib/geolocation';
 
 import { useKakaoMap } from '../lib/use-kakao-map';
@@ -178,7 +179,7 @@ export default function MapPage() {
   return (
     <>
       <Script
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=clusterer&autoload=false`}
+        src={KAKAO_MAP_SDK_URL}
         strategy="afterInteractive"
         onReady={handleLoad}
       />

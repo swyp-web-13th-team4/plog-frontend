@@ -42,6 +42,16 @@ function mapExistingPhoto(image: PostImage): ExistingPhotoPreview {
   };
 }
 
+function mapPostEditPlace(post: PostEditData['post']) {
+  return {
+    id: `edit-${post.place.latitude}-${post.place.longitude}-${post.place.name}`,
+    name: post.place.name,
+    address: post.place.address,
+    latitude: post.place.latitude,
+    longitude: post.place.longitude,
+  };
+}
+
 export function mapCreateLogForm(
   values: CreateLogFormValues,
 ): PostCreateRequest {
@@ -80,7 +90,7 @@ export function mapUpdateLogForm(
 ): PostUpdateRequest {
   return {
     ...mapCreateLogForm(values),
-    images: values.photos
+    keepImageIds: values.photos
       .filter(
         (photo): photo is ExistingPhotoPreview => photo.type === 'existing',
       )
@@ -96,16 +106,12 @@ export function mapPostEditResponseToFormValues({
   images,
   post,
 }: PostEditData): CreateLogFormValues {
+  const place = mapPostEditPlace(post);
+
   return {
     title: post.title,
     contents: post.contents,
-    place: {
-      id: `edit-${post.latitude}-${post.longitude}-${post.placeName}`,
-      name: post.placeName,
-      address: post.placeAddress,
-      latitude: post.latitude,
-      longitude: post.longitude,
-    },
+    place,
     categoryCode: post.categoryCode as PlaceCategoryValue,
     studyDate: parseStudyDate(post.studyDate),
     startedAt: post.startedAt,

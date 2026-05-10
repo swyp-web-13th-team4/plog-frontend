@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { create } from 'zustand';
 
 import { type PostImage } from './types';
@@ -67,38 +69,47 @@ export function usePhotoUpload() {
   const photos = usePhotoStore((state) => state.photos);
   const setPhotos = usePhotoStore((state) => state.setPhotos);
 
-  const handleAddPhotos = (files: File[]) => {
-    setPhotos((currentPhotos) => {
-      const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
-      const nextFiles = files.slice(0, availableCount);
-      return [
-        ...currentPhotos,
-        ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
-      ];
-    });
-  };
+  const handleAddPhotos = useCallback(
+    (files: File[]) => {
+      setPhotos((currentPhotos) => {
+        const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
+        const nextFiles = files.slice(0, availableCount);
+        return [
+          ...currentPhotos,
+          ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
+        ];
+      });
+    },
+    [setPhotos],
+  );
 
-  const handleRemovePhoto = (id: string) => {
-    setPhotos((currentPhotos) => {
-      const targetPhoto = currentPhotos.find((photo) => photo.id === id);
-      if (targetPhoto) revokePhotoUrl(targetPhoto);
-      return currentPhotos.filter((photo) => photo.id !== id);
-    });
-  };
+  const handleRemovePhoto = useCallback(
+    (id: string) => {
+      setPhotos((currentPhotos) => {
+        const targetPhoto = currentPhotos.find((photo) => photo.id === id);
+        if (targetPhoto) revokePhotoUrl(targetPhoto);
+        return currentPhotos.filter((photo) => photo.id !== id);
+      });
+    },
+    [setPhotos],
+  );
 
-  const setExistingPhotos = (images: PostImage[]) => {
-    setPhotos((currentPhotos) => {
-      currentPhotos.forEach(revokePhotoUrl);
-      return images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview);
-    });
-  };
+  const setExistingPhotos = useCallback(
+    (images: PostImage[]) => {
+      setPhotos((currentPhotos) => {
+        currentPhotos.forEach(revokePhotoUrl);
+        return images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview);
+      });
+    },
+    [setPhotos],
+  );
 
-  const clearPhotos = () => {
+  const clearPhotos = useCallback(() => {
     setPhotos((currentPhotos) => {
       currentPhotos.forEach(revokePhotoUrl);
       return [];
     });
-  };
+  }, [setPhotos]);
 
   return {
     photos,
