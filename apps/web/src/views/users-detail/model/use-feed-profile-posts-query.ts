@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import {
   feedQueryKeys,
@@ -18,6 +18,7 @@ export function useFeedProfilePostsQuery(
     queryKey: feedQueryKeys.profileViewPosts(selectedMember, sort),
     queryFn: () => getFeedProfileViewPosts(selectedMember, sort),
     enabled: selectedMember.length > 0,
+    placeholderData: keepPreviousData,
     select: (data) => data.posts,
   });
 }

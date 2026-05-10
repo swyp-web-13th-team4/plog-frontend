@@ -83,7 +83,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
       isEnd: swiper.isEnd,
     });
   };
-
+  const isProfileClickable = Boolean(post.memberKey) && !post.isAuthor;
   const handleProfileClick = () => {
     if (!post.memberKey) return;
     if (post.isAuthor) return;
@@ -93,13 +93,26 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
   return (
     <div className={isLast ? '' : 'mb-13.5'}>
       <div className="flex items-center gap-3 px-6 py-3">
-        <Avatar
-          size="xsmall"
-          src={post.profileImage}
-          alt={`${post.name}의 프로필 이미지`}
-          className="cursor-pointer"
-          onClick={handleProfileClick}
-        />
+        {isProfileClickable ? (
+          <button
+            type="button"
+            aria-label={`${post.name} 프로필 보기`}
+            onClick={handleProfileClick}
+            className="cursor-pointer rounded-full"
+          >
+            <Avatar
+              size="xsmall"
+              src={post.profileImage}
+              alt={`${post.name}의 프로필 이미지`}
+            />
+          </button>
+        ) : (
+          <Avatar
+            size="xsmall"
+            src={post.profileImage}
+            alt={`${post.name}의 프로필 이미지`}
+          />
+        )}
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">
             {post.name}
