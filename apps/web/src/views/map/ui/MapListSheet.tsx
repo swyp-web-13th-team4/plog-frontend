@@ -5,7 +5,15 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { BottomSheet, Button, Divider, Icon, Select, Switch } from '@plog/ui';
+import {
+  BottomSheet,
+  Button,
+  Divider,
+  Icon,
+  Select,
+  Spinner,
+  Switch,
+} from '@plog/ui';
 
 import MapPlaceItem from '@/views/map/ui/MapPlaceItem';
 
@@ -122,7 +130,12 @@ function PlaceList({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isPending) return null;
+  if (isPending)
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner size="large" />
+      </div>
+    );
 
   if (places.length === 0) {
     return emptyView;

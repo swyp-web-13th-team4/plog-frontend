@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { Spinner } from '@plog/ui';
+
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
 import { BookmarkButton } from '@/features/toggle-bookmark';
@@ -36,7 +38,12 @@ export default function RecordTab() {
 
   const router = useRouter();
 
-  if (isPending) return null;
+  if (isPending)
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner size="large" />
+      </div>
+    );
 
   if (isError) {
     return (

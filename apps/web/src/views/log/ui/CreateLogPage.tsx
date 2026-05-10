@@ -930,7 +930,7 @@ export default function CreateLogPage({
           <PrivacySettingSection isPublic={isPublic} />
         </section>
         <section className="px-6 pt-6 pb-10">
-          <Button fullWidth size="large" type="submit" disabled={isSubmitting}>
+          <Button fullWidth size="large" type="submit" loading={isSubmitting}>
             {isEditMode ? '저장' : '기록하기'}
           </Button>
         </section>

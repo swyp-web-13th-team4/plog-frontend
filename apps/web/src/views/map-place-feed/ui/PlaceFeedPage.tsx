@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { AppBar, TabGroup } from '@plog/ui';
+import { AppBar, Spinner, TabGroup } from '@plog/ui';
 
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
@@ -81,7 +81,12 @@ function PlaceFeedList({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isPending) return null;
+  if (isPending)
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Spinner size="large" />
+      </div>
+    );
 
   if (isError) {
     return (
