@@ -30,7 +30,7 @@ async function request<T>(
       !isRedirectingToLogin
     ) {
       isRedirectingToLogin = true;
-      await dialog.alert('로그인이 필요합니다.');
+      await dialog.alert('로그인 후 이용할 수 있어요.');
       window.location.href = '/login';
     }
     throw error;
