@@ -11,31 +11,25 @@ export async function GET(request: NextRequest) {
 
   const cookieStore = await cookies();
 
-  if (registerToken) {
-    cookieStore.set('registerToken', registerToken, {
+  const setCookie = (name: string, value: string) => {
+    cookieStore.set(name, value, {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
       path: '/',
     });
-    redirect('/signup');
+  };
+
+  if (registerToken?.trim()) {
+    setCookie('registerToken', registerToken);
+    return redirect('/signup');
   }
 
-  if (accessToken && refreshToken) {
-    cookieStore.set('accessToken', accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-    });
-    cookieStore.set('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      path: '/',
-    });
-    redirect('/map');
+  if (accessToken?.trim() && refreshToken?.trim()) {
+    setCookie('accessToken', accessToken);
+    setCookie('refreshToken', refreshToken);
+    return redirect('/map');
   }
 
-  redirect('/login');
+  return redirect('/login');
 }
