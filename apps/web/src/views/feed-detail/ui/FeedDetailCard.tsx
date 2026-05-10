@@ -107,13 +107,7 @@ const AUTHOR_ACTION_OPTIONS = [
   { label: '수정하기', value: 'edit' },
 ];
 
-export default function FeedDetailCard({
-  postId,
-  backTo,
-}: {
-  postId: string;
-  backTo?: string;
-}) {
+export default function FeedDetailCard({ postId }: { postId: string }) {
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
     isEnd: true,
@@ -162,11 +156,7 @@ export default function FeedDetailCard({
 
   const feedHeader = (
     <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-      <AppBar
-        variant="navigation"
-        title="피드"
-        onBack={() => router.push(backTo ?? '/feed')}
-      />
+      <AppBar variant="navigation" title="피드" onBack={() => router.back()} />
     </header>
   );
 

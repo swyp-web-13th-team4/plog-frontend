@@ -2,11 +2,17 @@
 
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
 import { BookmarkButton } from '@/features/toggle-bookmark';
 
-import { type PlaceTagValue, type PostSortType } from '@/entities/feed';
+import {
+  type FeedPost,
+  type PlaceTagValue,
+  type PostSortType,
+} from '@/entities/feed';
 
 import { FetchErrorEmptyState, RecordEmptyState } from '@/shared/ui';
 
@@ -28,6 +34,8 @@ export default function RecordTab() {
     refetch,
   } = useMyPostsQuery(sort, tags);
 
+  const router = useRouter();
+
   if (isPending) return null;
 
   if (isError) {
@@ -46,12 +54,17 @@ export default function RecordTab() {
     );
   }
 
+  const handleFeedClick = (feed: FeedPost) => {
+    router.push(`/feed/${feed.postId}`);
+  };
+
   return (
     <FeedList
       className="pt-6"
       feeds={feeds}
       sort={sort}
       onSortChange={(v) => setSort(v as PostSortType)}
+      onFeedClick={handleFeedClick}
       sortItems={SORT_ITEMS}
       tags={tags}
       onTagsChange={setTags}
