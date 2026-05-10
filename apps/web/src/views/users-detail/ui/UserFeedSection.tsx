@@ -84,7 +84,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
           <div className="flex flex-1 items-center justify-center">
             <RecordEmptyState
               title="일치하는 정보가 없어요"
-              description="다른 태그를 선택해 보세요."
+              description="다른 정렬 기준을 선택해 보세요."
             />
           </div>
         }
@@ -94,6 +94,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
             <BookmarkButton
               postId={feed.postId}
               isBookmarked={isBookmarked}
+              profilePostsTarget={{ memberKey: userId, sort }}
               className={cn(
                 viewType === 'grid' &&
                   (isBookmarked

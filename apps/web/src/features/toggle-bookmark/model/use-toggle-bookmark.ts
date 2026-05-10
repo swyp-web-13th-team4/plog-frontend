@@ -7,7 +7,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { type FeedPage, feedQueryKeys } from '@/entities/feed';
+import {
+  type FeedPage,
+  type FeedProfilePosts,
+  feedQueryKeys,
+  type PostSortType,
+} from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 import { dialog } from '@/shared/lib/dialog';
@@ -33,18 +38,57 @@ function updateBookmarkInFeedCache(
   };
 }
 
+function updateBookmarkInProfilePostsCache(
+  prev: FeedProfilePosts | undefined,
+  postId: number,
+  isBookmarked: boolean,
+): FeedProfilePosts | undefined {
+  if (!prev) return prev;
+  return {
+    ...prev,
+    posts: prev.posts.map((post) =>
+      post.postId === postId ? { ...post, bookMark: isBookmarked } : post,
+    ),
+  };
+}
+
+export type ProfilePostsBookmarkTarget = {
+  memberKey: string;
+  sort: PostSortType;
+};
+
+type ToggleBookmarkVariables = {
+  postId: number;
+  profilePostsTarget?: ProfilePostsBookmarkTarget;
+};
+
 export function useToggleBookmark() {
   const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: postToggleBookmark,
-    onMutate: async (postId) => {
+    mutationFn: ({ postId }: ToggleBookmarkVariables) =>
+      postToggleBookmark(postId),
+    onMutate: async ({ postId, profilePostsTarget }) => {
+      const profilePostsQueryKey = profilePostsTarget
+        ? feedQueryKeys.profileViewPosts(
+            profilePostsTarget.memberKey,
+            profilePostsTarget.sort,
+          )
+        : undefined;
+
       await queryClient.cancelQueries({ queryKey: feedQueryKeys.list });
+      if (profilePostsQueryKey) {
+        await queryClient.cancelQueries({ queryKey: profilePostsQueryKey });
+      }
+
       const snapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
       );
+      const profilePostsSnapshot = profilePostsQueryKey
+        ? queryClient.getQueryData<FeedProfilePosts>(profilePostsQueryKey)
+        : undefined;
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
@@ -56,9 +100,23 @@ export function useToggleBookmark() {
         },
       );
 
-      return { snapshot };
+      if (profilePostsQueryKey) {
+        queryClient.setQueryData<FeedProfilePosts>(
+          profilePostsQueryKey,
+          (prev) => {
+            const current = prev?.posts.find((post) => post.postId === postId);
+            return updateBookmarkInProfilePostsCache(
+              prev,
+              postId,
+              !current?.bookMark,
+            );
+          },
+        );
+      }
+
+      return { profilePostsQueryKey, profilePostsSnapshot, snapshot };
     },
-    onError: (_err, postId, context) => {
+    onError: (_err, { postId }, context) => {
       if (context?.snapshot) {
         const original = context.snapshot.pages
           .flatMap((p) => p.items)
@@ -73,17 +131,30 @@ export function useToggleBookmark() {
             ),
         );
       }
+      if (context?.profilePostsQueryKey && context.profilePostsSnapshot) {
+        queryClient.setQueryData<FeedProfilePosts>(
+          context.profilePostsQueryKey,
+          context.profilePostsSnapshot,
+        );
+      }
       toast({
         id: 'bookmark-error',
         type: 'error',
         description: '북마크 처리 중 오류가 발생했어요.',
       });
     },
-    onSuccess: (res, postId) => {
+    onSuccess: (res, { postId }, context) => {
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
         (prev) => updateBookmarkInFeedCache(prev, postId, res.isBookmarked),
       );
+      if (context.profilePostsQueryKey) {
+        queryClient.setQueryData<FeedProfilePosts>(
+          context.profilePostsQueryKey,
+          (prev) =>
+            updateBookmarkInProfilePostsCache(prev, postId, res.isBookmarked),
+        );
+      }
       queryClient.invalidateQueries({ queryKey: ['mypage'] });
       queryClient.invalidateQueries({ queryKey: ['map', 'count'] });
       queryClient.invalidateQueries({ queryKey: ['map', 'pins', 'bookmark'] });
@@ -96,6 +167,7 @@ export function useToggleBookmark() {
   const toggleBookmark = async (
     postId: number,
     isBookmarked: boolean,
+    profilePostsTarget?: ProfilePostsBookmarkTarget,
   ): Promise<boolean> => {
     if (isBookmarked) {
       const confirmed = await dialog.confirm({
@@ -106,7 +178,7 @@ export function useToggleBookmark() {
       if (!confirmed) return false;
     }
 
-    mutation.mutate(postId);
+    mutation.mutate({ postId, profilePostsTarget });
     return true;
   };
 

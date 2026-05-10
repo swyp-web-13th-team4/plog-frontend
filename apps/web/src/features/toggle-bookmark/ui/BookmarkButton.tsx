@@ -5,17 +5,22 @@ import { type MouseEvent, useEffect, useState } from 'react';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { useToggleBookmark } from '../model/use-toggle-bookmark';
+import {
+  type ProfilePostsBookmarkTarget,
+  useToggleBookmark,
+} from '../model/use-toggle-bookmark';
 
 type BookmarkButtonProps = {
   postId: number;
   isBookmarked: boolean;
+  profilePostsTarget?: ProfilePostsBookmarkTarget;
   className?: string;
 };
 
 export default function BookmarkButton({
   postId,
   isBookmarked,
+  profilePostsTarget,
   className,
 }: BookmarkButtonProps) {
   const [optimisticBookmarked, setOptimisticBookmarked] =
@@ -29,7 +34,11 @@ export default function BookmarkButton({
 
   const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    const proceeded = await toggleBookmark(postId, optimisticBookmarked);
+    const proceeded = await toggleBookmark(
+      postId,
+      optimisticBookmarked,
+      profilePostsTarget,
+    );
     if (proceeded) setOptimisticBookmarked((prev) => !prev);
   };
 

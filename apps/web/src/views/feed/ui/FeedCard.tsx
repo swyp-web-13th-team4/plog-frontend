@@ -88,7 +88,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
     //Todo: 메인피드조회 isAuthor데이터 추가되면  event.stopPropagation(); 로직 필요
 
     if (!post.memberKey) return;
-
+    if (post.isAuthor) return;
     router.push(`/feed/users/${encodeURIComponent(post.memberKey)}`);
   };
 
