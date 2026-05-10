@@ -20,6 +20,7 @@ import {
   useSaveRecentPlaceMutation,
 } from '@/features/place-search';
 
+import { KAKAO_MAP_SDK_URL } from '@/shared/api/constants';
 import {
   FetchErrorEmptyState,
   PlaceSearchIdleState,
@@ -146,7 +147,7 @@ export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
         />
       </header>
       <Script
-        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services&autoload=false`}
+        src={KAKAO_MAP_SDK_URL}
         strategy="afterInteractive"
         onReady={handleKakaoReady}
         onError={() => setSdkLoadError(true)}
