@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY, type FeedPage } from '@/entities/feed';
+import { type FeedPage, feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 import { dialog } from '@/shared/lib/dialog';
@@ -41,12 +41,13 @@ export function useToggleBookmark() {
   const mutation = useMutation({
     mutationFn: postToggleBookmark,
     onMutate: async (postId) => {
-      await queryClient.cancelQueries({ queryKey: FEED_QUERY_KEY });
-      const snapshot =
-        queryClient.getQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY);
+      await queryClient.cancelQueries({ queryKey: feedQueryKeys.list });
+      const snapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
+        feedQueryKeys.list,
+      );
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
-        FEED_QUERY_KEY,
+        feedQueryKeys.list,
         (prev) => {
           const current = prev?.pages
             .flatMap((p) => p.items)
@@ -63,7 +64,7 @@ export function useToggleBookmark() {
           .flatMap((p) => p.items)
           .find((post) => post.postId === postId);
         queryClient.setQueryData<InfiniteData<FeedPage>>(
-          FEED_QUERY_KEY,
+          feedQueryKeys.list,
           (prev) =>
             updateBookmarkInFeedCache(
               prev,
@@ -79,8 +80,9 @@ export function useToggleBookmark() {
       });
     },
     onSuccess: (res, postId) => {
-      queryClient.setQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY, (prev) =>
-        updateBookmarkInFeedCache(prev, postId, res.isBookmarked),
+      queryClient.setQueryData<InfiniteData<FeedPage>>(
+        feedQueryKeys.list,
+        (prev) => updateBookmarkInFeedCache(prev, postId, res.isBookmarked),
       );
       queryClient.invalidateQueries({ queryKey: ['mypage'] });
       queryClient.invalidateQueries({ queryKey: ['map', 'count'] });

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY } from '@/entities/feed';
+import { feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -14,7 +14,7 @@ function getPostForEdit(postId: number) {
 
 export function useEditLogQuery(postId: number | null) {
   return useQuery({
-    queryKey: [...FEED_QUERY_KEY, 'edit', postId],
+    queryKey: feedQueryKeys.edit(postId),
     queryFn: () => getPostForEdit(postId as number),
     enabled: postId !== null && Number.isFinite(postId),
   });

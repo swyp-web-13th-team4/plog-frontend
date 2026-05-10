@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -74,13 +75,21 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
     isBeginning: true,
     isEnd: post.postImages.length <= 1,
   });
-
+  const router = useRouter();
   const hasMultipleImages = post.postImages.length > 1;
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
       isEnd: swiper.isEnd,
     });
+  };
+
+  const handleProfileClick = () => {
+    //Todo: 메인피드조회 isAuthor데이터 추가되면  event.stopPropagation(); 로직 필요
+
+    if (!post.memberKey) return;
+
+    router.push(`/feed/users/${encodeURIComponent(post.memberKey)}`);
   };
 
   return (
@@ -90,6 +99,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
           size="xsmall"
           src={post.profileImage}
           alt={`${post.name}의 프로필 이미지`}
+          onClick={handleProfileClick}
         />
         <div className="flex flex-col gap-1">
           <span className="label-lg text-semantic-object-boldest">

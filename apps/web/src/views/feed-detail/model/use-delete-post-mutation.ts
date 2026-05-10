@@ -9,7 +9,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY, type FeedPage } from '@/entities/feed';
+import { type FeedPage, feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -41,18 +41,19 @@ export function useDeletePostMutation() {
     mutationFn: deletePost,
     onSuccess: (_data, postId) => {
       queryClient.removeQueries({
-        queryKey: [...FEED_QUERY_KEY, 'detail', postId],
+        queryKey: feedQueryKeys.detail(postId),
         exact: true,
       });
-      queryClient.setQueryData<InfiniteData<FeedPage>>(FEED_QUERY_KEY, (prev) =>
-        removePostFromFeedCache(prev, postId),
+      queryClient.setQueryData<InfiniteData<FeedPage>>(
+        feedQueryKeys.list,
+        (prev) => removePostFromFeedCache(prev, postId),
       );
 
       toast({ type: 'success', description: '게시글이 삭제되었어요.' });
       router.replace('/feed');
 
       void queryClient.invalidateQueries({
-        queryKey: FEED_QUERY_KEY,
+        queryKey: feedQueryKeys.list,
         exact: true,
       });
       void queryClient.invalidateQueries({ queryKey: ['mypage'] });

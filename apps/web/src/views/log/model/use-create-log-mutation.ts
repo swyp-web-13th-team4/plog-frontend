@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { FEED_QUERY_KEY } from '@/entities/feed';
+import { feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
@@ -36,7 +36,7 @@ export function useCreateLogMutation({
       createPost(mapCreateLogForm(values), getNewPhotoFiles(values)),
     onSuccess: async () => {
       onSuccess?.();
-      await queryClient.invalidateQueries({ queryKey: FEED_QUERY_KEY });
+      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
       toast({ type: 'success', description: '기록이 등록되었어요.' });
       router.replace('/feed');
     },

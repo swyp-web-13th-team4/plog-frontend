@@ -1,3 +1,4 @@
+export { getFeedProfileView, getFeedProfileViewPosts } from './api/client';
 export {
   formatLikeCount,
   formatStudyDate,
@@ -16,11 +17,13 @@ export {
   type TagCategory,
   WorkConvenience,
 } from './model/place-tag';
-export { FEED_QUERY_KEY } from './model/query-keys';
+export { feedQueryKeys } from './model/query-keys';
 export type {
   BookmarkSortType,
   FeedPage,
   FeedPost,
+  FeedProfilePosts,
+  FeedProfileView,
   PostScope,
   PostSortType,
 } from './model/types';

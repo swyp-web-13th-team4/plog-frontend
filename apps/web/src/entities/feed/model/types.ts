@@ -2,6 +2,22 @@ import { type PlaceTagValue } from './place-tag';
 
 export type PostScope = 'PUBLIC' | 'PRIVATE';
 
+export type FeedProfileBadge = {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  isAcquired: boolean;
+};
+
+export type FeedProfileMemberInfo = {
+  id?: number;
+  nickname: string;
+  profileImageUrl?: string;
+  introduction: string | null;
+  mainBadge: FeedProfileBadge | null;
+};
+
 export type FeedPost = {
   postId: number;
   name: string;
@@ -27,6 +43,15 @@ export type FeedPage = {
   items: FeedPost[];
   lastPostId: number | null;
   createAt: string | null;
+};
+
+export type FeedProfileView = {
+  memberInfo?: FeedProfileMemberInfo;
+  posts: FeedPost[];
+};
+
+export type FeedProfilePosts = {
+  posts: FeedPost[];
 };
 
 export type PostSortType = 'latest' | 'focus' | 'studyTime';

@@ -2,16 +2,29 @@
 
 import { UserProfile, type UserProfileType } from '@/entities/user';
 
-// TODO: API 연동 시 /api/feed/profileView/{memberKey} 응답의 memberInfo로 교체
-const MOCK_PROFILE: UserProfileType = {
-  id: 4,
-  nickname: 'zl존하민ㅋ',
-  introduction:
-    '글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자글자수백자',
-  mainBadge: null,
-};
+import { useFeedProfileViewQuery } from '../model/use-feed-profile-view-query';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function getProfileFromFeedView(
+  data: ReturnType<typeof useFeedProfileViewQuery>['data'],
+): UserProfileType | null {
+  if (data?.memberInfo) return data.memberInfo;
+
+  const firstPost = data?.posts[0];
+  if (!firstPost) return null;
+
+  return {
+    nickname: firstPost.name,
+    profileImageUrl: firstPost.profileImage,
+    introduction: null,
+    mainBadge: null,
+  };
+}
+
 export default function UserProfileSection({ userId }: { userId: string }) {
-  return <UserProfile profile={MOCK_PROFILE} />;
+  const { data, isPending, isError } = useFeedProfileViewQuery(userId);
+  const profile = getProfileFromFeedView(data);
+
+  if (isPending || isError || !profile) return null;
+
+  return <UserProfile profile={profile} />;
 }
