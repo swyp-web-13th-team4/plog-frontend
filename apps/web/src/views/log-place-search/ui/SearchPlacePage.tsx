@@ -37,7 +37,26 @@ function CenteredView({ children }: { children: ReactNode }) {
   );
 }
 
-export default function SearchPlacePage() {
+function getSafeReturnPath(path: string | null) {
+  if (!path || !path.startsWith('/') || path.startsWith('//')) return '/log';
+
+  return path;
+}
+
+function getEditPostIdFromReturnPath(path: string) {
+  const [pathname, queryString] = path.split('?');
+  const postId = Number(new URLSearchParams(queryString).get('postId'));
+
+  return pathname === '/log' && Number.isInteger(postId) && postId > 0
+    ? postId
+    : null;
+}
+
+type SearchPlacePageProps = {
+  returnTo?: string;
+};
+
+export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
 
@@ -54,6 +73,8 @@ export default function SearchPlacePage() {
   const { toast } = useToast();
 
   const displayState = sdkLoadError ? 'error' : searchState;
+  const returnPath = getSafeReturnPath(returnTo ?? null);
+  const returnPostId = getEditPostIdFromReturnPath(returnPath);
 
   const handleKakaoReady = useCallback(() => {
     window.kakao?.maps.load(() => setSdkLoaded(true));
@@ -71,8 +92,8 @@ export default function SearchPlacePage() {
         latitude: selectedPlace.latitude,
         longitude: selectedPlace.longitude,
       });
-      setCreateLogValues({ place: selectedPlace });
-      router.push('/log');
+      setCreateLogValues({ place: selectedPlace }, returnPostId);
+      router.push(returnPath);
     } catch {
       toast({
         type: 'error',
@@ -97,8 +118,8 @@ export default function SearchPlacePage() {
         latitude: selectedPlace.latitude,
         longitude: selectedPlace.longitude,
       });
-      setCreateLogValues({ place: selectedPlace });
-      router.push('/log');
+      setCreateLogValues({ place: selectedPlace }, returnPostId);
+      router.push(returnPath);
     } catch {
       toast({
         type: 'error',
@@ -121,7 +142,7 @@ export default function SearchPlacePage() {
         <AppBar
           variant="navigation"
           title="장소 검색"
-          onBack={() => router.push('/log')}
+          onBack={() => router.push(returnPath)}
         />
       </header>
       <Script

@@ -80,6 +80,7 @@ type SelectTriggerButtonProps = Omit<
 
 type CreateLogPageProps = {
   editPostId?: string;
+  restoreDraft?: boolean;
 };
 
 function SelectTriggerButton({
@@ -111,7 +112,10 @@ function SelectTriggerButton({
   );
 }
 
-export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
+export default function CreateLogPage({
+  editPostId,
+  restoreDraft = false,
+}: CreateLogPageProps) {
   const router = useRouter();
   const numericEditPostId = editPostId ? Number(editPostId) : null;
   const normalizedEditPostId =
@@ -183,6 +187,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   );
   const resetCreateLog = useCreateLogStore((state) => state.reset);
   const createLogValues = useCreateLogStore((state) => state.values);
+  const createLogDraftPostId = useCreateLogStore((state) => state.draftPostId);
   const hasPhotosInStore = useCreateLogStore((state) => state.hasPhotos);
   const hasStoreHydrated = useCreateLogStore((state) => state.hasHydrated);
   const hasRestoredFormRef = useRef(false);
@@ -215,6 +220,10 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
 
   const updateLogMutation = useUpdateLogMutation({
     postId: normalizedEditPostId,
+    onSuccess: () => {
+      clearPhotos();
+      resetCreateLog();
+    },
   });
   const editLogQuery = useEditLogQuery(normalizedEditPostId);
   const initialEditSnapshot = useMemo(() => {
@@ -251,14 +260,64 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     });
   };
 
+  const persistCurrentValuesToStore = useCallback(
+    (draftPostId: number | null) => {
+      const values = getValues();
+
+      setCreateLogValues(
+        {
+          title: values.title,
+          contents: values.contents,
+          place: values.place,
+          categoryCode: values.categoryCode,
+          studyDate: values.studyDate,
+          startedAt: values.startedAt,
+          endedAt: values.endedAt,
+          focus: values.focus,
+          placeTags: values.placeTags,
+          scope: values.scope,
+        },
+        draftPostId,
+      );
+    },
+    [getValues, setCreateLogValues],
+  );
+
+  const handlePlaceSearchOpen = () => {
+    const returnPath =
+      isEditMode && normalizedEditPostId !== null
+        ? `/log?postId=${normalizedEditPostId}&restoreDraft=1`
+        : '/log';
+
+    persistCurrentValuesToStore(isEditMode ? normalizedEditPostId : null);
+
+    router.push(
+      returnPath === '/log'
+        ? '/log/place-search'
+        : `/log/place-search?returnTo=${encodeURIComponent(returnPath)}`,
+    );
+  };
+
   useEffect(() => {
+    if (!hasStoreHydrated) return;
+
     if (isEditMode) {
       if (!editLogQuery.data || hasRestoredFormRef.current) return;
 
-      const editFormValues = mapPostEditResponseToFormValues(editLogQuery.data);
+      const shouldRestoreDraft =
+        restoreDraft && createLogDraftPostId === normalizedEditPostId;
+      const editFormValues = {
+        ...mapPostEditResponseToFormValues(editLogQuery.data),
+        ...(shouldRestoreDraft
+          ? getCreateLogDefaultValues(normalizedEditPostId)
+          : {}),
+      };
+
       hasRestoredFormRef.current = true;
       reset(editFormValues);
-      setExistingPhotos(editLogQuery.data.images.images);
+      if (!shouldRestoreDraft) {
+        setExistingPhotos(editLogQuery.data.images.images);
+      }
       return;
     }
 
@@ -271,9 +330,12 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     });
   }, [
     editLogQuery.data,
+    createLogDraftPostId,
     hasStoreHydrated,
     isEditMode,
+    normalizedEditPostId,
     reset,
+    restoreDraft,
     setExistingPhotos,
   ]);
 
@@ -678,7 +740,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
                   placeholder="위치를 입력해 주세요."
                   readOnly
                   onClear={handleClearPlaceName}
-                  onClick={() => router.push('/log/place-search')}
+                  onClick={handlePlaceSearchOpen}
                 />
               </Field>
             </div>

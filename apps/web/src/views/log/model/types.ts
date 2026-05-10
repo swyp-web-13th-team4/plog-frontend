@@ -34,7 +34,7 @@ export type PostCreateRequest = {
 };
 
 export type PostUpdateRequest = PostCreateRequest & {
-  images: number[];
+  keepImageIds: number[];
 };
 
 export type PostImage = {
@@ -44,10 +44,7 @@ export type PostImage = {
 
 export type PostEditFields = Omit<PostCreateRequest, 'place'> & {
   studyTime: number;
-  placeName: string;
-  placeAddress: string;
-  latitude: number;
-  longitude: number;
+  place: PostPlace;
 };
 
 export type PostEditData = {
