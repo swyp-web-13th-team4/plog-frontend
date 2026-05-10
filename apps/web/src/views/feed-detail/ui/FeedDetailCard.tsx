@@ -238,10 +238,10 @@ export default function FeedDetailCard({
 
   const hasMultipleImages = post.postImages.length > 1;
   const isMyPost = post.isAuthor ?? false;
+  const isProfileClickable = Boolean(post.memberKey) && !isMyPost;
 
   const handleProfileClick = () => {
     if (!post.memberKey) return;
-    if (isMyPost) return;
     router.push(`/feed/users/${encodeURIComponent(post.memberKey)}`);
   };
 
@@ -251,13 +251,26 @@ export default function FeedDetailCard({
       <section className="relative pt-[var(--spacing-header)]">
         <div className="flex items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
-            <Avatar
-              className="cursor-pointer"
-              size="xsmall"
-              src={post.profileImage}
-              alt={`${post.name}의 프로필 이미지`}
-              onClick={handleProfileClick}
-            />
+            {isProfileClickable ? (
+              <button
+                type="button"
+                aria-label={`${post.name} 프로필 보기`}
+                onClick={handleProfileClick}
+                className="cursor-pointer rounded-full"
+              >
+                <Avatar
+                  size="xsmall"
+                  src={post.profileImage}
+                  alt={`${post.name}의 프로필 이미지`}
+                />
+              </button>
+            ) : (
+              <Avatar
+                size="xsmall"
+                src={post.profileImage}
+                alt={`${post.name}의 프로필 이미지`}
+              />
+            )}
             <div className="flex flex-col gap-1">
               <span className="label-lg text-semantic-object-boldest">
                 {post.name}

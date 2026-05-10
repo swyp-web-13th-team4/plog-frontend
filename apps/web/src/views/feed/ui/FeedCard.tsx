@@ -76,14 +76,17 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
     isEnd: post.postImages.length <= 1,
   });
   const router = useRouter();
+
   const hasMultipleImages = post.postImages.length > 1;
+  const isProfileClickable = Boolean(post.memberKey) && !post.isAuthor;
+
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
       isBeginning: swiper.isBeginning,
       isEnd: swiper.isEnd,
     });
   };
-  const isProfileClickable = Boolean(post.memberKey) && !post.isAuthor;
+
   const handleProfileClick = () => {
     if (!post.memberKey) return;
     if (post.isAuthor) return;
