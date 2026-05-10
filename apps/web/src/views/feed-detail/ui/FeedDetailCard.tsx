@@ -389,16 +389,14 @@ export default function FeedDetailCard({
             <TagBadgeGroup tags={post.tags} />
           </div>
           <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">
-            <div className="flex items-center justify-between">
-              <span className="title-xs text-semantic-object-boldest">
-                {post.title}
-              </span>
-              <p className="caption-md text-semantic-object-subtle">
-                {formatStudyDate(post.createAt)}
-              </p>
-            </div>
-            <span className="body-sm text-semantic-object-normal">
+            <span className="title-xs mb-1 text-semantic-object-boldest">
+              {post.title}
+            </span>
+            <p className="body-sm mb-3 text-semantic-object-normal">
               {post.contents}
+            </p>
+            <span className="caption-md self-end text-semantic-object-subtle">
+              {formatStudyDate(post.createAt)}
             </span>
           </div>
         </div>
