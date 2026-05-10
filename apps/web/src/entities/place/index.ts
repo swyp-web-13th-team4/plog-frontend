@@ -5,7 +5,7 @@ export {
   saveRecentPlace,
 } from './api/client';
 export { getCategoryLabel } from './lib/category-label';
-export type { PlaceCategoryValue } from './model/place-category';
+export type { PlaceCategory, PlaceCategoryValue } from './model/place-category';
 export { PLACE_CATEGORIES } from './model/place-category';
 export { mapQueryKeys, placeQueryKeys } from './model/query-keys';
 export type {
