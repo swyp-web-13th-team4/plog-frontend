@@ -106,7 +106,7 @@ export default function ReviewTagsSheet({
                   aria-selected={selected}
                   aria-controls={panelId}
                   className={cn(
-                    'label-lg flex shrink-0',
+                    'label-lg flex shrink-0 cursor-pointer',
                     selected
                       ? 'text-semantic-object-bold'
                       : 'text-semantic-object-subtle',
