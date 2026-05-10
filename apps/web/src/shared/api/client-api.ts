@@ -1,4 +1,4 @@
-import { BASE_URL } from './constants';
+import { CLIENT_BASE_URL } from './constants';
 import { mergeHeaders, resolveBody } from './request.utils';
 import { parseApiResponse } from './response.utils';
 
@@ -9,7 +9,7 @@ async function request<T>(
   options?: RequestInit,
 ): Promise<T> {
   const bodyOptions = resolveBody(body);
-  const res = await fetch(`${BASE_URL}${endpoint}`, {
+  const res = await fetch(`${CLIENT_BASE_URL}${endpoint}`, {
     ...options,
     method,
     credentials: 'include',

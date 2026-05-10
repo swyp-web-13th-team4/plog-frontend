@@ -5,6 +5,8 @@ const SERVER_URL = (process.env.NEXT_PUBLIC_SERVER_URL ?? '').replace(
 
 export const BASE_URL = `${SERVER_URL}/api`;
 
+export const CLIENT_BASE_URL = '/api';
+
 export const KAKAO_LOGIN_URL = `${SERVER_URL}/oauth2/authorization/kakao`;
 
 export const API_ERROR_CODE = {
