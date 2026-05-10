@@ -46,8 +46,7 @@ export type FeedPage = {
 };
 
 export type FeedProfileView = {
-  memberInfo?: FeedProfileMemberInfo;
-  posts: FeedPost[];
+  memberInfo: FeedProfileMemberInfo;
 };
 
 export type FeedProfilePosts = {
