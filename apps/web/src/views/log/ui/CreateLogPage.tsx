@@ -315,7 +315,7 @@ export default function CreateLogPage({
 
       hasRestoredFormRef.current = true;
       reset(editFormValues);
-      if (!shouldRestoreDraft) {
+      if (!shouldRestoreDraft || photos.length === 0) {
         setExistingPhotos(editLogQuery.data.images.images);
       }
       return;
@@ -334,6 +334,7 @@ export default function CreateLogPage({
     hasStoreHydrated,
     isEditMode,
     normalizedEditPostId,
+    photos.length,
     reset,
     restoreDraft,
     setExistingPhotos,

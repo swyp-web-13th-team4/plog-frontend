@@ -51,11 +51,11 @@ export const useCreateLogStore = create(
     combine(initialState, (set) => ({
       setValues: (
         values: Partial<CreateLogStoredValues>,
-        draftPostId?: number | null,
+        draftPostId: number | null,
       ) =>
         set((state) => ({
           values: { ...state.values, ...values },
-          ...(draftPostId !== undefined ? { draftPostId } : {}),
+          ...(draftPostId !== undefined ? { draftPostId } : draftPostId),
         })),
       setHasPhotos: (hasPhotos: boolean) => set({ hasPhotos }),
       reset: () => {
