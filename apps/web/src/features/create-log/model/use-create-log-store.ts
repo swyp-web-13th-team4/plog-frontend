@@ -21,7 +21,7 @@ export const initialCreateLogValues = {
   endedAt: null as TimeValue | null,
   focus: null as FocusLevel | null,
   placeTags: [] as PlaceTagValue[],
-  scope: 'PRIVATE' as PostScope,
+  scope: 'PUBLIC' as PostScope,
 };
 
 const initialState = {
