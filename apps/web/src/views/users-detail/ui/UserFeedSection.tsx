@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Spinner } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import {
@@ -51,6 +50,8 @@ export default function UserFeedSection({ userId }: { userId: string }) {
     );
   };
 
+  if (isPending) return null;
+
   if (isError) {
     return (
       <section className="flex flex-1 items-center justify-center pt-3">
@@ -73,14 +74,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
         toolbarConfig={{ viewToggle: true }}
         emptyView={
           <div className="flex flex-1 items-center justify-center">
-            {isPending ? (
-              <Spinner size="large" />
-            ) : (
-              <RecordEmptyState
-                title="일치하는 정보가 없어요"
-                description="다른 정렬 기준을 선택해 보세요."
-              />
-            )}
+            <RecordEmptyState description="" />
           </div>
         }
         renderAction={(feed, viewType: FeedViewType) => {
