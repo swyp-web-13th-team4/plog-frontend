@@ -85,8 +85,6 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
   };
 
   const handleProfileClick = () => {
-    //Todo: 메인피드조회 isAuthor데이터 추가되면  event.stopPropagation(); 로직 필요
-
     if (!post.memberKey) return;
     if (post.isAuthor) return;
     router.push(`/feed/users/${encodeURIComponent(post.memberKey)}`);
@@ -99,6 +97,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
           size="xsmall"
           src={post.profileImage}
           alt={`${post.name}의 프로필 이미지`}
+          className="cursor-pointer"
           onClick={handleProfileClick}
         />
         <div className="flex flex-col gap-1">
