@@ -5,6 +5,7 @@ import {
   type PlaceTagValue,
   type PostSortType,
 } from '@/entities/feed';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -21,7 +22,7 @@ export function useMyPostsQuery(
   tags: PlaceTagValue[] = [],
 ) {
   return useQuery({
-    queryKey: ['mypage', 'posts', sort, tags],
+    queryKey: mypageQueryKeys.posts(sort, tags),
     queryFn: () => fetchMyPosts(sort, tags),
     select: (data) => data.posts,
   });

@@ -3,7 +3,11 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { type PlaceTagValue } from '@/entities/feed';
-import { type MapSortType, type PlaceLayer } from '@/entities/place';
+import {
+  mapQueryKeys,
+  type MapSortType,
+  type PlaceLayer,
+} from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 import { type CursorPage } from '@/shared/api/types';
@@ -62,7 +66,7 @@ export function usePlaceFeedQuery(
   tags: PlaceTagValue[] = [],
 ) {
   return useInfiniteQuery({
-    queryKey: ['map', 'place', placeId, layer, sortType, tags],
+    queryKey: mapQueryKeys.place(placeId, layer, sortType, tags),
     queryFn: ({ pageParam }) =>
       fetchPlacePosts(placeId, layer, {
         sortType,

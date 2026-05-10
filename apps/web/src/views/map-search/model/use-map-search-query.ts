@@ -2,6 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { mapQueryKeys } from '@/entities/place';
+
 import { clientApi } from '@/shared/api/client-api';
 
 export type MapSearchPlace = {
@@ -22,7 +24,7 @@ function fetchMapSearchPlaces(keyword: string) {
 export function useMapSearchQuery(keyword: string) {
   const normalized = keyword.trim();
   return useQuery({
-    queryKey: ['map', 'search', normalized],
+    queryKey: mapQueryKeys.search(normalized),
     queryFn: () => fetchMapSearchPlaces(normalized),
     enabled: normalized.length > 0,
   });

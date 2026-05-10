@@ -2,7 +2,11 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { type MapSortType, type PlaceLayer } from '@/entities/place';
+import {
+  mapQueryKeys,
+  type MapSortType,
+  type PlaceLayer,
+} from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 import { type CursorPage } from '@/shared/api/types';
@@ -39,7 +43,7 @@ function buildCursor(sortType: MapSortType, last: MapSheetPlace): string {
 
 export function useMapSheetQuery(layer: PlaceLayer, sortType: MapSortType) {
   return useInfiniteQuery({
-    queryKey: ['map', 'sheet', layer, sortType],
+    queryKey: mapQueryKeys.sheet(layer, sortType),
     queryFn: ({ pageParam }) =>
       fetchMapSheetPlaces(layer, { sortType, cursor: pageParam, limit: LIMIT }),
     initialPageParam: '',

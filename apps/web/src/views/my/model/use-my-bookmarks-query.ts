@@ -5,6 +5,7 @@ import {
   type FeedPost,
   type PlaceTagValue,
 } from '@/entities/feed';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -21,7 +22,7 @@ export function useMyBookmarksQuery(
   tags: PlaceTagValue[] = [],
 ) {
   return useQuery({
-    queryKey: ['mypage', 'bookmarks', sort, tags],
+    queryKey: mypageQueryKeys.bookmarks(sort, tags),
     queryFn: () => fetchMyBookmarks(sort, tags),
     select: (data) => data.myBookmarks,
   });

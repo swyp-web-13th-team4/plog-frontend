@@ -13,6 +13,8 @@ import {
   feedQueryKeys,
   type PostSortType,
 } from '@/entities/feed';
+import { mapQueryKeys } from '@/entities/place';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 import { dialog } from '@/shared/lib/dialog';
@@ -155,12 +157,16 @@ export function useToggleBookmark() {
             updateBookmarkInProfilePostsCache(prev, postId, res.isBookmarked),
         );
       }
-      queryClient.invalidateQueries({ queryKey: ['mypage'] });
-      queryClient.invalidateQueries({ queryKey: ['map', 'count'] });
-      queryClient.invalidateQueries({ queryKey: ['map', 'pins', 'bookmark'] });
-      queryClient.invalidateQueries({ queryKey: ['map', 'sheet', 'bookmark'] });
-      queryClient.invalidateQueries({ queryKey: ['map', 'pin-detail'] });
-      queryClient.invalidateQueries({ queryKey: ['map', 'place'] });
+      queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all });
+      queryClient.invalidateQueries({ queryKey: mapQueryKeys.count() });
+      queryClient.invalidateQueries({
+        queryKey: mapQueryKeys.pinsByLayer('bookmark'),
+      });
+      queryClient.invalidateQueries({
+        queryKey: mapQueryKeys.sheetByLayer('bookmark'),
+      });
+      queryClient.invalidateQueries({ queryKey: mapQueryKeys.pinDetailAll() });
+      queryClient.invalidateQueries({ queryKey: mapQueryKeys.placeAll() });
     },
   });
 

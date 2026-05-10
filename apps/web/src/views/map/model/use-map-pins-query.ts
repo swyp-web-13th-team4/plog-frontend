@@ -2,7 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { type MapSortType, type PlaceLayer } from '@/entities/place';
+import {
+  mapQueryKeys,
+  type MapSortType,
+  type PlaceLayer,
+} from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -30,7 +34,7 @@ export function useMapPinsQuery(
   sortType: MapSortType,
 ) {
   return useQuery({
-    queryKey: ['map', 'pins', layer, bounds, sortType],
+    queryKey: mapQueryKeys.pins(layer, bounds, sortType),
     queryFn: () => fetchMapPins(layer, bounds!, sortType),
     enabled: !!bounds,
   });

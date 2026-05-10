@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-query';
 
 import { type FeedPage, feedQueryKeys } from '@/entities/feed';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -56,7 +57,7 @@ export function useDeletePostMutation() {
         queryKey: feedQueryKeys.list,
         exact: true,
       });
-      void queryClient.invalidateQueries({ queryKey: ['mypage'] });
+      void queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all });
     },
     onError: () => {
       toast({

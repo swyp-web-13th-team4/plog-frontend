@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { type PlaceLayer } from '@/entities/place';
+import { mapQueryKeys, type PlaceLayer } from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -18,7 +18,7 @@ export function useMapPinDetailQuery(
   layer: PlaceLayer,
 ) {
   return useQuery({
-    queryKey: ['map', 'pin-detail', placeId, layer],
+    queryKey: mapQueryKeys.pinDetail(placeId, layer),
     queryFn: () => fetchMapPinDetail(placeId!, layer),
     enabled: placeId !== null,
   });
