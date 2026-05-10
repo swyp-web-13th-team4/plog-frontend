@@ -237,7 +237,13 @@ export default function FeedDetailCard({
   }
 
   const hasMultipleImages = post.postImages.length > 1;
-  const isMyPost = post.isAuthor;
+  const isMyPost = post.isAuthor ?? false;
+
+  const handleProfileClick = () => {
+    if (!post.memberKey) return;
+    if (isMyPost) return;
+    router.push(`/feed/users/${encodeURIComponent(post.memberKey)}`);
+  };
 
   return (
     <>
@@ -246,9 +252,11 @@ export default function FeedDetailCard({
         <div className="flex items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
             <Avatar
+              className="cursor-pointer"
               size="xsmall"
               src={post.profileImage}
               alt={`${post.name}의 프로필 이미지`}
+              onClick={handleProfileClick}
             />
             <div className="flex flex-col gap-1">
               <span className="label-lg text-semantic-object-boldest">
