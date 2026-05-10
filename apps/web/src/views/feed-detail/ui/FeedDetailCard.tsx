@@ -256,7 +256,7 @@ export default function FeedDetailCard({
                 type="button"
                 aria-label={`${post.name} 프로필 보기`}
                 onClick={handleProfileClick}
-                className="cursor-pointer rounded-full"
+                className="flex cursor-pointer items-center justify-center rounded-full"
               >
                 <Avatar
                   size="xsmall"
