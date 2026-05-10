@@ -33,7 +33,7 @@ export function formatStudyDate(time: Date | string | number) {
   const date = new Date(time);
   if (Number.isNaN(date.getTime())) return null;
 
-  return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  return `${date.getUTCFullYear()}년 ${date.getUTCMonth() + 1}월 ${date.getUTCDate()}일`;
 }
 
 export function formatStudyDuration(totalMinutes: number): string {
