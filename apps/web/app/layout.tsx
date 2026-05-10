@@ -2,9 +2,17 @@ import './globals.css';
 
 import { type ReactNode } from 'react';
 
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import Providers from '@/shared/ui/Providers';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  colorScheme: 'light',
+};
 
 export const metadata: Metadata = {
   title: '플로그',

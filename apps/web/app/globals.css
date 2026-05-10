@@ -35,6 +35,10 @@
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
   body {
     @apply bg-semantic-system-white text-semantic-object-boldest;
   }
