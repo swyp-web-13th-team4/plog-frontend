@@ -256,22 +256,18 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
       if (!editLogQuery.data || hasRestoredFormRef.current) return;
 
       const editFormValues = mapPostEditResponseToFormValues(editLogQuery.data);
+      hasRestoredFormRef.current = true;
       reset(editFormValues);
       setExistingPhotos(editLogQuery.data.images.images);
-      queueMicrotask(() => {
-        hasRestoredFormRef.current = true;
-      });
       return;
     }
 
     if (!hasStoreHydrated || hasRestoredFormRef.current) return;
 
+    hasRestoredFormRef.current = true;
     reset({
       ...getCreateLogDefaultValues(),
       photos: [],
-    });
-    queueMicrotask(() => {
-      hasRestoredFormRef.current = true;
     });
   }, [
     editLogQuery.data,
