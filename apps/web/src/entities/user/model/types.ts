@@ -63,7 +63,6 @@ export type UserProfileType = {
 };
 
 export type MypageData = {
-  memberKey?: string;
   nickname: string;
   profileImageUrl: string;
   introduction: string | null;
