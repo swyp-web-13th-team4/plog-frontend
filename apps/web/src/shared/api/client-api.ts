@@ -1,6 +1,10 @@
+import { dialog } from '@/shared/lib/dialog';
+
 import { CLIENT_BASE_URL } from './constants';
 import { mergeHeaders, resolveBody } from './request.utils';
-import { parseApiResponse } from './response.utils';
+import { ApiResponseError, parseApiResponse } from './response.utils';
+
+let isRedirectingToLogin = false;
 
 async function request<T>(
   endpoint: string,
@@ -16,7 +20,21 @@ async function request<T>(
     headers: mergeHeaders(bodyOptions.headers, options?.headers),
     body: bodyOptions.body,
   });
-  return parseApiResponse<T>(res);
+
+  try {
+    return await parseApiResponse<T>(res);
+  } catch (error) {
+    if (
+      error instanceof ApiResponseError &&
+      error.errorCode === 'E401' &&
+      !isRedirectingToLogin
+    ) {
+      isRedirectingToLogin = true;
+      await dialog.alert('로그인이 필요합니다.');
+      window.location.href = '/login';
+    }
+    throw error;
+  }
 }
 
 export const clientApi = {
