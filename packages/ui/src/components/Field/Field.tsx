@@ -74,7 +74,7 @@ function Field({
               <span
                 id={messageId}
                 role="alert"
-                className="text-semantic-feedback-error-normal"
+                className="text-semantic-theme-red-normal"
               >
                 {error}
               </span>
@@ -82,7 +82,7 @@ function Field({
               <span
                 id={messageId}
                 role="status"
-                className="text-semantic-feedback-success-normal"
+                className="text-semantic-theme-green-normal"
               >
                 {success}
               </span>
@@ -100,9 +100,9 @@ function Field({
                 className={cn(
                   'ml-auto',
                   error
-                    ? 'text-semantic-feedback-error-normal'
+                    ? 'text-semantic-theme-red-normal'
                     : success
-                      ? 'text-semantic-feedback-success-normal'
+                      ? 'text-semantic-theme-green-normal'
                       : 'text-semantic-object-subtle',
                 )}
               >

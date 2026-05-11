@@ -159,363 +159,107 @@ const groups: Group[] = [
     ],
   },
   {
-    label: 'Feedback / Error',
+    label: 'Theme / Red',
     rows: [
-      {
-        token: '.feedback.error.bolder',
-        bg: 'bg-semantic-feedback-error-bolder',
-        hex: semantic.feedback.error.bolder,
-      },
-      {
-        token: '.feedback.error.bold',
-        bg: 'bg-semantic-feedback-error-bold',
-        hex: semantic.feedback.error.bold,
-      },
-      {
-        token: '.feedback.error.normal',
-        bg: 'bg-semantic-feedback-error-normal',
-        hex: semantic.feedback.error.normal,
-      },
-      {
-        token: '.feedback.error.neutral',
-        bg: 'bg-semantic-feedback-error-neutral',
-        hex: semantic.feedback.error.neutral,
-      },
-      {
-        token: '.feedback.error.alternative',
-        bg: 'bg-semantic-feedback-error-alternative',
-        hex: semantic.feedback.error.alternative,
-      },
-      {
-        token: '.feedback.error.assistive',
-        bg: 'bg-semantic-feedback-error-assistive',
-        hex: semantic.feedback.error.assistive,
-      },
-      {
-        token: '.feedback.error.subtle',
-        bg: 'bg-semantic-feedback-error-subtle',
-        hex: semantic.feedback.error.subtle,
-      },
-      {
-        token: '.feedback.error.subtler',
-        bg: 'bg-semantic-feedback-error-subtler',
-        hex: semantic.feedback.error.subtler,
-      },
-    ],
-  },
-  {
-    label: 'Feedback / Warning',
-    rows: [
-      {
-        token: '.feedback.warning.bolder',
-        bg: 'bg-semantic-feedback-warning-bolder',
-        hex: semantic.feedback.warning.bolder,
-      },
-      {
-        token: '.feedback.warning.bold',
-        bg: 'bg-semantic-feedback-warning-bold',
-        hex: semantic.feedback.warning.bold,
-      },
-      {
-        token: '.feedback.warning.normal',
-        bg: 'bg-semantic-feedback-warning-normal',
-        hex: semantic.feedback.warning.normal,
-      },
-      {
-        token: '.feedback.warning.neutral',
-        bg: 'bg-semantic-feedback-warning-neutral',
-        hex: semantic.feedback.warning.neutral,
-      },
-      {
-        token: '.feedback.warning.alternative',
-        bg: 'bg-semantic-feedback-warning-alternative',
-        hex: semantic.feedback.warning.alternative,
-      },
-      {
-        token: '.feedback.warning.assistive',
-        bg: 'bg-semantic-feedback-warning-assistive',
-        hex: semantic.feedback.warning.assistive,
-      },
-      {
-        token: '.feedback.warning.subtle',
-        bg: 'bg-semantic-feedback-warning-subtle',
-        hex: semantic.feedback.warning.subtle,
-      },
-      {
-        token: '.feedback.warning.subtler',
-        bg: 'bg-semantic-feedback-warning-subtler',
-        hex: semantic.feedback.warning.subtler,
-      },
-    ],
-  },
-  {
-    label: 'Feedback / Success',
-    rows: [
-      {
-        token: '.feedback.success.bolder',
-        bg: 'bg-semantic-feedback-success-bolder',
-        hex: semantic.feedback.success.bolder,
-      },
-      {
-        token: '.feedback.success.bold',
-        bg: 'bg-semantic-feedback-success-bold',
-        hex: semantic.feedback.success.bold,
-      },
-      {
-        token: '.feedback.success.normal',
-        bg: 'bg-semantic-feedback-success-normal',
-        hex: semantic.feedback.success.normal,
-      },
-      {
-        token: '.feedback.success.neutral',
-        bg: 'bg-semantic-feedback-success-neutral',
-        hex: semantic.feedback.success.neutral,
-      },
-      {
-        token: '.feedback.success.alternative',
-        bg: 'bg-semantic-feedback-success-alternative',
-        hex: semantic.feedback.success.alternative,
-      },
-      {
-        token: '.feedback.success.assistive',
-        bg: 'bg-semantic-feedback-success-assistive',
-        hex: semantic.feedback.success.assistive,
-      },
-      {
-        token: '.feedback.success.subtle',
-        bg: 'bg-semantic-feedback-success-subtle',
-        hex: semantic.feedback.success.subtle,
-      },
-      {
-        token: '.feedback.success.subtler',
-        bg: 'bg-semantic-feedback-success-subtler',
-        hex: semantic.feedback.success.subtler,
-      },
-    ],
-  },
-  {
-    label: 'Feedback / Information',
-    rows: [
-      {
-        token: '.feedback.info.bolder',
-        bg: 'bg-semantic-feedback-info-bolder',
-        hex: semantic.feedback.info.bolder,
-      },
-      {
-        token: '.feedback.info.bold',
-        bg: 'bg-semantic-feedback-info-bold',
-        hex: semantic.feedback.info.bold,
-      },
-      {
-        token: '.feedback.info.normal',
-        bg: 'bg-semantic-feedback-info-normal',
-        hex: semantic.feedback.info.normal,
-      },
-      {
-        token: '.feedback.info.neutral',
-        bg: 'bg-semantic-feedback-info-neutral',
-        hex: semantic.feedback.info.neutral,
-      },
-      {
-        token: '.feedback.info.alternative',
-        bg: 'bg-semantic-feedback-info-alternative',
-        hex: semantic.feedback.info.alternative,
-      },
-      {
-        token: '.feedback.info.assistive',
-        bg: 'bg-semantic-feedback-info-assistive',
-        hex: semantic.feedback.info.assistive,
-      },
-      {
-        token: '.feedback.info.subtle',
-        bg: 'bg-semantic-feedback-info-subtle',
-        hex: semantic.feedback.info.subtle,
-      },
-      {
-        token: '.feedback.info.subtler',
-        bg: 'bg-semantic-feedback-info-subtler',
-        hex: semantic.feedback.info.subtler,
-      },
+      { token: '.theme.red.bolder', bg: 'bg-semantic-theme-red-bolder', hex: semantic.theme.red.bolder },
+      { token: '.theme.red.bold', bg: 'bg-semantic-theme-red-bold', hex: semantic.theme.red.bold },
+      { token: '.theme.red.normal', bg: 'bg-semantic-theme-red-normal', hex: semantic.theme.red.normal },
+      { token: '.theme.red.neutral', bg: 'bg-semantic-theme-red-neutral', hex: semantic.theme.red.neutral },
+      { token: '.theme.red.alternative', bg: 'bg-semantic-theme-red-alternative', hex: semantic.theme.red.alternative },
+      { token: '.theme.red.assistive', bg: 'bg-semantic-theme-red-assistive', hex: semantic.theme.red.assistive },
+      { token: '.theme.red.subtle', bg: 'bg-semantic-theme-red-subtle', hex: semantic.theme.red.subtle },
+      { token: '.theme.red.subtler', bg: 'bg-semantic-theme-red-subtler', hex: semantic.theme.red.subtler },
     ],
   },
   {
     label: 'Theme / Orange',
     rows: [
-      {
-        token: '.theme.orange.bolder',
-        bg: 'bg-semantic-theme-orange-bolder',
-        hex: semantic.theme.orange.bolder,
-      },
-      {
-        token: '.theme.orange.bold',
-        bg: 'bg-semantic-theme-orange-bold',
-        hex: semantic.theme.orange.bold,
-      },
-      {
-        token: '.theme.orange.normal',
-        bg: 'bg-semantic-theme-orange-normal',
-        hex: semantic.theme.orange.normal,
-      },
-      {
-        token: '.theme.orange.neutral',
-        bg: 'bg-semantic-theme-orange-neutral',
-        hex: semantic.theme.orange.neutral,
-      },
-      {
-        token: '.theme.orange.alternative',
-        bg: 'bg-semantic-theme-orange-alternative',
-        hex: semantic.theme.orange.alternative,
-      },
-      {
-        token: '.theme.orange.assistive',
-        bg: 'bg-semantic-theme-orange-assistive',
-        hex: semantic.theme.orange.assistive,
-      },
-      {
-        token: '.theme.orange.subtle',
-        bg: 'bg-semantic-theme-orange-subtle',
-        hex: semantic.theme.orange.subtle,
-      },
-      {
-        token: '.theme.orange.subtler',
-        bg: 'bg-semantic-theme-orange-subtler',
-        hex: semantic.theme.orange.subtler,
-      },
+      { token: '.theme.orange.bolder', bg: 'bg-semantic-theme-orange-bolder', hex: semantic.theme.orange.bolder },
+      { token: '.theme.orange.bold', bg: 'bg-semantic-theme-orange-bold', hex: semantic.theme.orange.bold },
+      { token: '.theme.orange.normal', bg: 'bg-semantic-theme-orange-normal', hex: semantic.theme.orange.normal },
+      { token: '.theme.orange.neutral', bg: 'bg-semantic-theme-orange-neutral', hex: semantic.theme.orange.neutral },
+      { token: '.theme.orange.alternative', bg: 'bg-semantic-theme-orange-alternative', hex: semantic.theme.orange.alternative },
+      { token: '.theme.orange.assistive', bg: 'bg-semantic-theme-orange-assistive', hex: semantic.theme.orange.assistive },
+      { token: '.theme.orange.subtle', bg: 'bg-semantic-theme-orange-subtle', hex: semantic.theme.orange.subtle },
+      { token: '.theme.orange.subtler', bg: 'bg-semantic-theme-orange-subtler', hex: semantic.theme.orange.subtler },
+    ],
+  },
+  {
+    label: 'Theme / Amber',
+    rows: [
+      { token: '.theme.amber.bolder', bg: 'bg-semantic-theme-amber-bolder', hex: semantic.theme.amber.bolder },
+      { token: '.theme.amber.bold', bg: 'bg-semantic-theme-amber-bold', hex: semantic.theme.amber.bold },
+      { token: '.theme.amber.normal', bg: 'bg-semantic-theme-amber-normal', hex: semantic.theme.amber.normal },
+      { token: '.theme.amber.neutral', bg: 'bg-semantic-theme-amber-neutral', hex: semantic.theme.amber.neutral },
+      { token: '.theme.amber.alternative', bg: 'bg-semantic-theme-amber-alternative', hex: semantic.theme.amber.alternative },
+      { token: '.theme.amber.assistive', bg: 'bg-semantic-theme-amber-assistive', hex: semantic.theme.amber.assistive },
+      { token: '.theme.amber.subtle', bg: 'bg-semantic-theme-amber-subtle', hex: semantic.theme.amber.subtle },
+      { token: '.theme.amber.subtler', bg: 'bg-semantic-theme-amber-subtler', hex: semantic.theme.amber.subtler },
     ],
   },
   {
     label: 'Theme / Yellow',
     rows: [
-      {
-        token: '.theme.yellow.bolder',
-        bg: 'bg-semantic-theme-yellow-bolder',
-        hex: semantic.theme.yellow.bolder,
-      },
-      {
-        token: '.theme.yellow.bold',
-        bg: 'bg-semantic-theme-yellow-bold',
-        hex: semantic.theme.yellow.bold,
-      },
-      {
-        token: '.theme.yellow.normal',
-        bg: 'bg-semantic-theme-yellow-normal',
-        hex: semantic.theme.yellow.normal,
-      },
-      {
-        token: '.theme.yellow.neutral',
-        bg: 'bg-semantic-theme-yellow-neutral',
-        hex: semantic.theme.yellow.neutral,
-      },
-      {
-        token: '.theme.yellow.alternative',
-        bg: 'bg-semantic-theme-yellow-alternative',
-        hex: semantic.theme.yellow.alternative,
-      },
-      {
-        token: '.theme.yellow.assistive',
-        bg: 'bg-semantic-theme-yellow-assistive',
-        hex: semantic.theme.yellow.assistive,
-      },
-      {
-        token: '.theme.yellow.subtle',
-        bg: 'bg-semantic-theme-yellow-subtle',
-        hex: semantic.theme.yellow.subtle,
-      },
-      {
-        token: '.theme.yellow.subtler',
-        bg: 'bg-semantic-theme-yellow-subtler',
-        hex: semantic.theme.yellow.subtler,
-      },
+      { token: '.theme.yellow.bolder', bg: 'bg-semantic-theme-yellow-bolder', hex: semantic.theme.yellow.bolder },
+      { token: '.theme.yellow.bold', bg: 'bg-semantic-theme-yellow-bold', hex: semantic.theme.yellow.bold },
+      { token: '.theme.yellow.normal', bg: 'bg-semantic-theme-yellow-normal', hex: semantic.theme.yellow.normal },
+      { token: '.theme.yellow.neutral', bg: 'bg-semantic-theme-yellow-neutral', hex: semantic.theme.yellow.neutral },
+      { token: '.theme.yellow.alternative', bg: 'bg-semantic-theme-yellow-alternative', hex: semantic.theme.yellow.alternative },
+      { token: '.theme.yellow.assistive', bg: 'bg-semantic-theme-yellow-assistive', hex: semantic.theme.yellow.assistive },
+      { token: '.theme.yellow.subtle', bg: 'bg-semantic-theme-yellow-subtle', hex: semantic.theme.yellow.subtle },
+      { token: '.theme.yellow.subtler', bg: 'bg-semantic-theme-yellow-subtler', hex: semantic.theme.yellow.subtler },
+    ],
+  },
+  {
+    label: 'Theme / Green',
+    rows: [
+      { token: '.theme.green.bolder', bg: 'bg-semantic-theme-green-bolder', hex: semantic.theme.green.bolder },
+      { token: '.theme.green.bold', bg: 'bg-semantic-theme-green-bold', hex: semantic.theme.green.bold },
+      { token: '.theme.green.normal', bg: 'bg-semantic-theme-green-normal', hex: semantic.theme.green.normal },
+      { token: '.theme.green.neutral', bg: 'bg-semantic-theme-green-neutral', hex: semantic.theme.green.neutral },
+      { token: '.theme.green.alternative', bg: 'bg-semantic-theme-green-alternative', hex: semantic.theme.green.alternative },
+      { token: '.theme.green.assistive', bg: 'bg-semantic-theme-green-assistive', hex: semantic.theme.green.assistive },
+      { token: '.theme.green.subtle', bg: 'bg-semantic-theme-green-subtle', hex: semantic.theme.green.subtle },
+      { token: '.theme.green.subtler', bg: 'bg-semantic-theme-green-subtler', hex: semantic.theme.green.subtler },
     ],
   },
   {
     label: 'Theme / Sky',
     rows: [
-      {
-        token: '.theme.sky.bolder',
-        bg: 'bg-semantic-theme-sky-bolder',
-        hex: semantic.theme.sky.bolder,
-      },
-      {
-        token: '.theme.sky.bold',
-        bg: 'bg-semantic-theme-sky-bold',
-        hex: semantic.theme.sky.bold,
-      },
-      {
-        token: '.theme.sky.normal',
-        bg: 'bg-semantic-theme-sky-normal',
-        hex: semantic.theme.sky.normal,
-      },
-      {
-        token: '.theme.sky.neutral',
-        bg: 'bg-semantic-theme-sky-neutral',
-        hex: semantic.theme.sky.neutral,
-      },
-      {
-        token: '.theme.sky.alternative',
-        bg: 'bg-semantic-theme-sky-alternative',
-        hex: semantic.theme.sky.alternative,
-      },
-      {
-        token: '.theme.sky.assistive',
-        bg: 'bg-semantic-theme-sky-assistive',
-        hex: semantic.theme.sky.assistive,
-      },
-      {
-        token: '.theme.sky.subtle',
-        bg: 'bg-semantic-theme-sky-subtle',
-        hex: semantic.theme.sky.subtle,
-      },
-      {
-        token: '.theme.sky.subtler',
-        bg: 'bg-semantic-theme-sky-subtler',
-        hex: semantic.theme.sky.subtler,
-      },
+      { token: '.theme.sky.bolder', bg: 'bg-semantic-theme-sky-bolder', hex: semantic.theme.sky.bolder },
+      { token: '.theme.sky.bold', bg: 'bg-semantic-theme-sky-bold', hex: semantic.theme.sky.bold },
+      { token: '.theme.sky.normal', bg: 'bg-semantic-theme-sky-normal', hex: semantic.theme.sky.normal },
+      { token: '.theme.sky.neutral', bg: 'bg-semantic-theme-sky-neutral', hex: semantic.theme.sky.neutral },
+      { token: '.theme.sky.alternative', bg: 'bg-semantic-theme-sky-alternative', hex: semantic.theme.sky.alternative },
+      { token: '.theme.sky.assistive', bg: 'bg-semantic-theme-sky-assistive', hex: semantic.theme.sky.assistive },
+      { token: '.theme.sky.subtle', bg: 'bg-semantic-theme-sky-subtle', hex: semantic.theme.sky.subtle },
+      { token: '.theme.sky.subtler', bg: 'bg-semantic-theme-sky-subtler', hex: semantic.theme.sky.subtler },
+    ],
+  },
+  {
+    label: 'Theme / Blue',
+    rows: [
+      { token: '.theme.blue.bolder', bg: 'bg-semantic-theme-blue-bolder', hex: semantic.theme.blue.bolder },
+      { token: '.theme.blue.bold', bg: 'bg-semantic-theme-blue-bold', hex: semantic.theme.blue.bold },
+      { token: '.theme.blue.normal', bg: 'bg-semantic-theme-blue-normal', hex: semantic.theme.blue.normal },
+      { token: '.theme.blue.neutral', bg: 'bg-semantic-theme-blue-neutral', hex: semantic.theme.blue.neutral },
+      { token: '.theme.blue.alternative', bg: 'bg-semantic-theme-blue-alternative', hex: semantic.theme.blue.alternative },
+      { token: '.theme.blue.assistive', bg: 'bg-semantic-theme-blue-assistive', hex: semantic.theme.blue.assistive },
+      { token: '.theme.blue.subtle', bg: 'bg-semantic-theme-blue-subtle', hex: semantic.theme.blue.subtle },
+      { token: '.theme.blue.subtler', bg: 'bg-semantic-theme-blue-subtler', hex: semantic.theme.blue.subtler },
     ],
   },
   {
     label: 'Theme / Purple',
     rows: [
-      {
-        token: '.theme.purple.bolder',
-        bg: 'bg-semantic-theme-purple-bolder',
-        hex: semantic.theme.purple.bolder,
-      },
-      {
-        token: '.theme.purple.bold',
-        bg: 'bg-semantic-theme-purple-bold',
-        hex: semantic.theme.purple.bold,
-      },
-      {
-        token: '.theme.purple.normal',
-        bg: 'bg-semantic-theme-purple-normal',
-        hex: semantic.theme.purple.normal,
-      },
-      {
-        token: '.theme.purple.neutral',
-        bg: 'bg-semantic-theme-purple-neutral',
-        hex: semantic.theme.purple.neutral,
-      },
-      {
-        token: '.theme.purple.alternative',
-        bg: 'bg-semantic-theme-purple-alternative',
-        hex: semantic.theme.purple.alternative,
-      },
-      {
-        token: '.theme.purple.assistive',
-        bg: 'bg-semantic-theme-purple-assistive',
-        hex: semantic.theme.purple.assistive,
-      },
-      {
-        token: '.theme.purple.subtle',
-        bg: 'bg-semantic-theme-purple-subtle',
-        hex: semantic.theme.purple.subtle,
-      },
-      {
-        token: '.theme.purple.subtler',
-        bg: 'bg-semantic-theme-purple-subtler',
-        hex: semantic.theme.purple.subtler,
-      },
+      { token: '.theme.purple.bolder', bg: 'bg-semantic-theme-purple-bolder', hex: semantic.theme.purple.bolder },
+      { token: '.theme.purple.bold', bg: 'bg-semantic-theme-purple-bold', hex: semantic.theme.purple.bold },
+      { token: '.theme.purple.normal', bg: 'bg-semantic-theme-purple-normal', hex: semantic.theme.purple.normal },
+      { token: '.theme.purple.neutral', bg: 'bg-semantic-theme-purple-neutral', hex: semantic.theme.purple.neutral },
+      { token: '.theme.purple.alternative', bg: 'bg-semantic-theme-purple-alternative', hex: semantic.theme.purple.alternative },
+      { token: '.theme.purple.assistive', bg: 'bg-semantic-theme-purple-assistive', hex: semantic.theme.purple.assistive },
+      { token: '.theme.purple.subtle', bg: 'bg-semantic-theme-purple-subtle', hex: semantic.theme.purple.subtle },
+      { token: '.theme.purple.subtler', bg: 'bg-semantic-theme-purple-subtler', hex: semantic.theme.purple.subtler },
     ],
   },
   {

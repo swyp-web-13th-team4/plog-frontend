@@ -26,9 +26,9 @@ const cardCva = cva('rounded-[20px] border-[3px]', {
       green: 'bg-semantic-accent-subtler border-semantic-accent-normal',
       yellow:
         'bg-semantic-theme-yellow-assistive border-semantic-theme-yellow-bold',
-      pink: 'bg-semantic-feedback-error-subtle border-semantic-feedback-error-alternative',
+      pink: 'bg-semantic-theme-red-subtle border-semantic-theme-red-alternative',
       sky: 'bg-semantic-theme-sky-subtle border-semantic-theme-sky-normal',
-      navy: 'bg-semantic-feedback-info-subtle border-semantic-feedback-info-neutral',
+      navy: 'bg-semantic-theme-blue-subtle border-semantic-theme-blue-neutral',
       purple:
         'bg-semantic-theme-purple-subtle border-semantic-theme-purple-neutral',
     },
@@ -41,10 +41,10 @@ const badgeCva = cva(
     variants: {
       theme: {
         green: 'bg-semantic-accent-normal text-semantic-object-inverse',
-        navy: 'bg-semantic-feedback-info-bold text-semantic-object-inverse',
+        navy: 'bg-semantic-theme-blue-bold text-semantic-object-inverse',
         yellow: 'bg-semantic-theme-yellow-normal text-semantic-object-boldest',
         purple: 'bg-semantic-theme-purple-normal text-semantic-object-inverse',
-        pink: 'bg-semantic-feedback-error-alternative text-semantic-object-inverse',
+        pink: 'bg-semantic-theme-red-alternative text-semantic-object-inverse',
         sky: 'bg-semantic-theme-sky-normal text-semantic-object-inverse',
       },
     },
@@ -55,10 +55,10 @@ const barFillCva = cva('', {
   variants: {
     theme: {
       green: 'bg-semantic-accent-normal',
-      navy: 'bg-semantic-feedback-info-bold',
+      navy: 'bg-semantic-theme-blue-bold',
       yellow: 'bg-semantic-theme-yellow-normal',
       purple: 'bg-semantic-theme-purple-normal',
-      pink: 'bg-semantic-feedback-error-alternative',
+      pink: 'bg-semantic-theme-red-alternative',
       sky: 'bg-semantic-theme-sky-normal',
     },
   },

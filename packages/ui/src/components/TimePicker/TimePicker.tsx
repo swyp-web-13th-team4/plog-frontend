@@ -80,7 +80,7 @@ function TimePicker({
     >
       <div
         aria-hidden="true"
-        className="absolute h-10 w-66 rounded-lg bg-semantic-feedback-success-subtle"
+        className="absolute h-10 w-66 rounded-lg bg-semantic-theme-green-subtle"
       />
       <TimePickerColumn
         aria-label="오전/오후"

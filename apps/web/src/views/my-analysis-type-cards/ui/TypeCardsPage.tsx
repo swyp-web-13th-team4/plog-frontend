@@ -25,11 +25,11 @@ import TypeCard from '../ui/TypeCard';
 type View = 'my' | 'all';
 
 const themeTextClass: Record<TypeCardTheme, string> = {
-  green: 'text-semantic-feedback-success-normal',
+  green: 'text-semantic-theme-green-normal',
   yellow: 'text-semantic-theme-yellow-bold',
-  pink: 'text-semantic-feedback-error-alternative',
+  pink: 'text-semantic-theme-red-alternative',
   sky: 'text-semantic-theme-sky-normal',
-  navy: 'text-semantic-feedback-info-bold',
+  navy: 'text-semantic-theme-blue-bold',
   purple: 'text-semantic-theme-purple-normal',
 };
 

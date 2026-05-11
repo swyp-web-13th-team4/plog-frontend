@@ -130,7 +130,7 @@ function Input({
                   fill="currentColor"
                   className={
                     invalid
-                      ? 'text-semantic-feedback-error-normal'
+                      ? 'text-semantic-theme-red-normal'
                       : 'text-semantic-object-subtle'
                   }
                 />
@@ -147,7 +147,7 @@ function Input({
           className={cn(
             'caption-md mt-1.5 ml-auto',
             invalid
-              ? 'text-semantic-feedback-error-normal'
+              ? 'text-semantic-theme-red-normal'
               : 'text-semantic-object-subtle',
           )}
         >

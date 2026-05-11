@@ -78,7 +78,7 @@ export default function PlaceCategorySheet({
                     {selected && (
                       <Icon
                         name="check-thick"
-                        className="text-semantic-feedback-success-normal"
+                        className="text-semantic-theme-green-normal"
                       />
                     )}
                   </button>

@@ -32,7 +32,7 @@ export function buildPinHtml(
   const badgeLabel = count > 99 ? '99+' : String(count);
   const badge =
     count > 1
-      ? `<div style="position:absolute;top:4px;right:10px;min-width:27px;height:27px;border-radius:14px;background:var(--color-semantic-feedback-error-normal);color:var(--color-semantic-system-white);font-size:var(--text-primitive-16);font-weight:var(--font-weight-primitive-semibold);line-height:var(--leading-primitive-22);display:flex;align-items:center;justify-content:center;padding:0 5px;box-sizing:border-box;">${badgeLabel}</div>`
+      ? `<div style="position:absolute;top:4px;right:10px;min-width:27px;height:27px;border-radius:14px;background:var(--color-semantic-theme-red-normal);color:var(--color-semantic-system-white);font-size:var(--text-primitive-16);font-weight:var(--font-weight-primitive-semibold);line-height:var(--leading-primitive-22);display:flex;align-items:center;justify-content:center;padding:0 5px;box-sizing:border-box;">${badgeLabel}</div>`
       : '';
   return [
     `<div style="position:relative;width:${WRAPPER_WIDTH}px;height:${WRAPPER_HEIGHT}px;cursor:pointer;user-select:none;">`,

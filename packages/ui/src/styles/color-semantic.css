@@ -31,48 +31,16 @@
   --color-semantic-object-subtler: var(--color-primitive-gray-40);
   --color-semantic-object-inverse: var(--color-primitive-base-0);
 
-  /* feedback */
-  --color-semantic-feedback-error-bolder: var(--color-primitive-red-600);
-  --color-semantic-feedback-error-bold: var(--color-primitive-red-500);
-  --color-semantic-feedback-error-normal: var(--color-primitive-red-400);
-  --color-semantic-feedback-error-neutral: var(--color-primitive-red-300);
-  --color-semantic-feedback-error-alternative: var(--color-primitive-red-200);
-  --color-semantic-feedback-error-assistive: var(--color-primitive-red-100);
-  --color-semantic-feedback-error-subtle: var(--color-primitive-red-40);
-  --color-semantic-feedback-error-subtler: var(--color-primitive-red-20);
-
-  --color-semantic-feedback-warning-bolder: var(--color-primitive-amber-600);
-  --color-semantic-feedback-warning-bold: var(--color-primitive-amber-500);
-  --color-semantic-feedback-warning-normal: var(--color-primitive-amber-400);
-  --color-semantic-feedback-warning-neutral: var(--color-primitive-amber-300);
-  --color-semantic-feedback-warning-alternative: var(
-    --color-primitive-amber-200
-  );
-  --color-semantic-feedback-warning-assistive: var(--color-primitive-amber-100);
-  --color-semantic-feedback-warning-subtle: var(--color-primitive-amber-40);
-  --color-semantic-feedback-warning-subtler: var(--color-primitive-amber-20);
-
-  --color-semantic-feedback-success-bolder: var(--color-primitive-green-600);
-  --color-semantic-feedback-success-bold: var(--color-primitive-green-500);
-  --color-semantic-feedback-success-normal: var(--color-primitive-green-350);
-  --color-semantic-feedback-success-neutral: var(--color-primitive-green-300);
-  --color-semantic-feedback-success-alternative: var(
-    --color-primitive-green-200
-  );
-  --color-semantic-feedback-success-assistive: var(--color-primitive-green-100);
-  --color-semantic-feedback-success-subtle: var(--color-primitive-green-40);
-  --color-semantic-feedback-success-subtler: var(--color-primitive-green-20);
-
-  --color-semantic-feedback-info-bolder: var(--color-primitive-blue-600);
-  --color-semantic-feedback-info-bold: var(--color-primitive-blue-500);
-  --color-semantic-feedback-info-normal: var(--color-primitive-blue-400);
-  --color-semantic-feedback-info-neutral: var(--color-primitive-blue-300);
-  --color-semantic-feedback-info-alternative: var(--color-primitive-blue-200);
-  --color-semantic-feedback-info-assistive: var(--color-primitive-blue-100);
-  --color-semantic-feedback-info-subtle: var(--color-primitive-blue-40);
-  --color-semantic-feedback-info-subtler: var(--color-primitive-blue-20);
-
   /* theme */
+  --color-semantic-theme-red-bolder: var(--color-primitive-red-600);
+  --color-semantic-theme-red-bold: var(--color-primitive-red-500);
+  --color-semantic-theme-red-normal: var(--color-primitive-red-400);
+  --color-semantic-theme-red-neutral: var(--color-primitive-red-300);
+  --color-semantic-theme-red-alternative: var(--color-primitive-red-200);
+  --color-semantic-theme-red-assistive: var(--color-primitive-red-100);
+  --color-semantic-theme-red-subtle: var(--color-primitive-red-40);
+  --color-semantic-theme-red-subtler: var(--color-primitive-red-20);
+
   --color-semantic-theme-orange-bolder: var(--color-primitive-orange-700);
   --color-semantic-theme-orange-bold: var(--color-primitive-orange-500);
   --color-semantic-theme-orange-normal: var(--color-primitive-orange-400);
@@ -81,6 +49,15 @@
   --color-semantic-theme-orange-assistive: var(--color-primitive-orange-80);
   --color-semantic-theme-orange-subtle: var(--color-primitive-orange-40);
   --color-semantic-theme-orange-subtler: var(--color-primitive-orange-20);
+
+  --color-semantic-theme-amber-bolder: var(--color-primitive-amber-600);
+  --color-semantic-theme-amber-bold: var(--color-primitive-amber-500);
+  --color-semantic-theme-amber-normal: var(--color-primitive-amber-400);
+  --color-semantic-theme-amber-neutral: var(--color-primitive-amber-300);
+  --color-semantic-theme-amber-alternative: var(--color-primitive-amber-200);
+  --color-semantic-theme-amber-assistive: var(--color-primitive-amber-100);
+  --color-semantic-theme-amber-subtle: var(--color-primitive-amber-40);
+  --color-semantic-theme-amber-subtler: var(--color-primitive-amber-20);
 
   --color-semantic-theme-yellow-bolder: var(--color-primitive-yellow-700);
   --color-semantic-theme-yellow-bold: var(--color-primitive-yellow-500);
@@ -91,6 +68,15 @@
   --color-semantic-theme-yellow-subtle: var(--color-primitive-yellow-40);
   --color-semantic-theme-yellow-subtler: var(--color-primitive-yellow-20);
 
+  --color-semantic-theme-green-bolder: var(--color-primitive-green-600);
+  --color-semantic-theme-green-bold: var(--color-primitive-green-500);
+  --color-semantic-theme-green-normal: var(--color-primitive-green-350);
+  --color-semantic-theme-green-neutral: var(--color-primitive-green-300);
+  --color-semantic-theme-green-alternative: var(--color-primitive-green-200);
+  --color-semantic-theme-green-assistive: var(--color-primitive-green-100);
+  --color-semantic-theme-green-subtle: var(--color-primitive-green-40);
+  --color-semantic-theme-green-subtler: var(--color-primitive-green-20);
+
   --color-semantic-theme-sky-bolder: var(--color-primitive-sky-700);
   --color-semantic-theme-sky-bold: var(--color-primitive-sky-500);
   --color-semantic-theme-sky-normal: var(--color-primitive-sky-400);
@@ -99,6 +85,15 @@
   --color-semantic-theme-sky-assistive: var(--color-primitive-sky-80);
   --color-semantic-theme-sky-subtle: var(--color-primitive-sky-40);
   --color-semantic-theme-sky-subtler: var(--color-primitive-sky-20);
+
+  --color-semantic-theme-blue-bolder: var(--color-primitive-blue-600);
+  --color-semantic-theme-blue-bold: var(--color-primitive-blue-500);
+  --color-semantic-theme-blue-normal: var(--color-primitive-blue-400);
+  --color-semantic-theme-blue-neutral: var(--color-primitive-blue-300);
+  --color-semantic-theme-blue-alternative: var(--color-primitive-blue-200);
+  --color-semantic-theme-blue-assistive: var(--color-primitive-blue-100);
+  --color-semantic-theme-blue-subtle: var(--color-primitive-blue-40);
+  --color-semantic-theme-blue-subtler: var(--color-primitive-blue-20);
 
   --color-semantic-theme-purple-bolder: var(--color-primitive-purple-700);
   --color-semantic-theme-purple-bold: var(--color-primitive-purple-500);

@@ -17,9 +17,9 @@ const toastVariants = cva(
         default:
           'border-semantic-stroke-assistive text-semantic-object-bold [&_span]:bg-semantic-object-subtler',
         success:
-          'border-semantic-feedback-success-assistive text-semantic-feedback-success-bold [&_span]:bg-semantic-feedback-success-subtle',
+          'border-semantic-theme-green-assistive text-semantic-theme-green-bold [&_span]:bg-semantic-theme-green-subtle',
         error:
-          'border-semantic-feedback-error-assistive text-semantic-feedback-error-normal [&_span]:bg-semantic-feedback-error-subtle',
+          'border-semantic-theme-red-assistive text-semantic-theme-red-normal [&_span]:bg-semantic-theme-red-subtle',
       },
     },
     defaultVariants: {

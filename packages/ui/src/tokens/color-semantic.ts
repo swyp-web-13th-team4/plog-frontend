@@ -31,8 +31,8 @@ const semantic = {
     subtler: '#EDEDED',
     inverse: '#FFFFFF',
   },
-  feedback: {
-    error: {
+  theme: {
+    red: {
       bolder: '#911E1E',
       bold: '#BD2727',
       normal: '#F53333',
@@ -42,38 +42,6 @@ const semantic = {
       subtle: '#FDE3E3',
       subtler: '#FFF8F5',
     },
-    warning: {
-      bolder: '#966412',
-      bold: '#C58218',
-      normal: '#FFA91F',
-      neutral: '#FFBC52',
-      alternative: '#FFCC7A',
-      assistive: '#FFDCA3',
-      subtle: '#FFF3E0',
-      subtler: '#FFFBF5',
-    },
-    success: {
-      bolder: '#166321',
-      bold: '#1C822C',
-      normal: '#42B353',
-      neutral: '#56BC66',
-      alternative: '#7ECB8A',
-      assistive: '#A6DBAE',
-      subtle: '#E1F3E3',
-      subtler: '#F5FBF6',
-    },
-    info: {
-      bolder: '#183696',
-      bold: '#1F46C5',
-      normal: '#295BFF',
-      neutral: '#5980FF',
-      alternative: '#809EFF',
-      assistive: '#A7BCFF',
-      subtle: '#E1E8FF',
-      subtler: '#F5F7FF',
-    },
-  },
-  theme: {
     orange: {
       bolder: '#683011',
       bold: '#C55A21',
@@ -83,6 +51,16 @@ const semantic = {
       assistive: '#FFD3BB',
       subtle: '#FFECE2',
       subtler: '#FFF8F5',
+    },
+    amber: {
+      bolder: '#966412',
+      bold: '#C58218',
+      normal: '#FFA91F',
+      neutral: '#FFBC52',
+      alternative: '#FFCC7A',
+      assistive: '#FFDCA3',
+      subtle: '#FFF3E0',
+      subtler: '#FFFBF5',
     },
     yellow: {
       bolder: '#66602D',
@@ -94,6 +72,16 @@ const semantic = {
       subtle: '#FEFCEB',
       subtler: '#FEFEF8',
     },
+    green: {
+      bolder: '#166321',
+      bold: '#1C822C',
+      normal: '#42B353',
+      neutral: '#56BC66',
+      alternative: '#7ECB8A',
+      assistive: '#A6DBAE',
+      subtle: '#E1F3E3',
+      subtler: '#F5FBF6',
+    },
     sky: {
       bolder: '#184568',
       bold: '#2D83C5',
@@ -103,6 +91,16 @@ const semantic = {
       assistive: '#C0E4FF',
       subtle: '#E4F3FF',
       subtler: '#F6FBFF',
+    },
+    blue: {
+      bolder: '#183696',
+      bold: '#1F46C5',
+      normal: '#295BFF',
+      neutral: '#5980FF',
+      alternative: '#809EFF',
+      assistive: '#A7BCFF',
+      subtle: '#E1E8FF',
+      subtler: '#F5F7FF',
     },
     purple: {
       bolder: '#442370',

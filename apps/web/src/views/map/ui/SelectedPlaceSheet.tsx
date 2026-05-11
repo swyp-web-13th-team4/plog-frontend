@@ -49,7 +49,7 @@ function PlaceStatBar({
       className={cn(
         'rounded-xl border py-4',
         isRecord
-          ? 'border-semantic-accent-subtle bg-semantic-feedback-success-subtler'
+          ? 'border-semantic-accent-subtle bg-semantic-theme-green-subtler'
           : 'border-semantic-theme-sky-assistive bg-semantic-theme-sky-subtler',
       )}
     >
@@ -67,7 +67,7 @@ function PlaceStatBar({
                 className={cn(
                   'title-sm',
                   isRecord
-                    ? 'text-semantic-feedback-success-normal'
+                    ? 'text-semantic-theme-green-normal'
                     : 'text-semantic-theme-sky-normal',
                 )}
               >

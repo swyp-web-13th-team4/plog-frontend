@@ -45,10 +45,7 @@ export default function LikeButton({
       onClick={handleClick}
     >
       {optimisticLiked ? (
-        <Icon
-          name="heart-filled"
-          className="text-semantic-feedback-error-neutral"
-        />
+        <Icon name="heart-filled" className="text-semantic-theme-red-neutral" />
       ) : (
         <Icon name="heart" className="text-current" />
       )}

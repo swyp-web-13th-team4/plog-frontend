@@ -35,7 +35,7 @@ function MenuItem({
       type="button"
       className={cn(
         'label-lg flex h-18 w-full cursor-pointer items-center gap-5 p-6 text-semantic-object-boldest hover:bg-semantic-bg-deep disabled:cursor-not-allowed disabled:opacity-40',
-        destructive && 'text-semantic-feedback-error-normal',
+        destructive && 'text-semantic-theme-red-normal',
         className,
       )}
       disabled={disabled}
@@ -46,7 +46,7 @@ function MenuItem({
         size={24}
         className={cn(
           'text-semantic-object-subtle',
-          destructive && 'text-semantic-feedback-error-normal',
+          destructive && 'text-semantic-theme-red-normal',
         )}
       />
       <span className="flex-1 text-start">{title}</span>
@@ -56,7 +56,7 @@ function MenuItem({
           size={24}
           className={cn(
             'text-semantic-object-subtle',
-            destructive && 'text-semantic-feedback-error-normal',
+            destructive && 'text-semantic-theme-red-normal',
           )}
         />
       )}

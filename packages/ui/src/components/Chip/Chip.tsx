@@ -42,7 +42,7 @@ const chipVariants = cva(
         variant: 'soft',
         pressed: true,
         class:
-          'bg-semantic-feedback-success-subtle text-semantic-accent-normal ring-1 ring-semantic-accent-normal enabled:hover:bg-semantic-feedback-success-assistive enabled:active:bg-semantic-feedback-success-alternative focus-visible:outline-semantic-accent-subtle',
+          'bg-semantic-theme-green-subtle text-semantic-accent-normal ring-1 ring-semantic-accent-normal enabled:hover:bg-semantic-theme-green-assistive enabled:active:bg-semantic-theme-green-alternative focus-visible:outline-semantic-accent-subtle',
       },
     ],
     defaultVariants: {
