@@ -1,9 +1,8 @@
 export async function convertImageToJpeg(file: File): Promise<File | null> {
   try {
-    const [imageCompression, { heicTo }] = await Promise.all([
-      import('browser-image-compression').then((m) => m.default),
-      import('heic-to/csp'),
-    ]);
+    const imageCompression = await import('browser-image-compression').then(
+      (m) => m.default,
+    );
 
     let processFile = file;
 
@@ -13,6 +12,7 @@ export async function convertImageToJpeg(file: File): Promise<File | null> {
       file.name.match(/\.(heic|heif)$/i)
     ) {
       try {
+        const { heicTo } = await import('heic-to/csp');
         const convertedBlob = await heicTo({
           blob: file,
           type: 'image/jpeg',
