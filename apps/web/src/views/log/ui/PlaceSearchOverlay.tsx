@@ -2,18 +2,17 @@
 
 import { type ReactNode, useCallback, useState } from 'react';
 
-import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 
 import { AppBar, useToast } from '@plog/ui';
 
 import { PlaceSearchContent } from '@/widgets/place-search';
 
-import { useCreateLogStore } from '@/features/create-log';
 import {
   createSelectedPlace,
   PlaceSearchInput,
   type RecentPlace,
+  type SelectedPlace,
   useDeleteRecentPlaceMutation,
   useDeleteRecentPlacesMutation,
   useRecentPlacesQuery,
@@ -28,7 +27,7 @@ import {
 } from '@/shared/ui';
 
 import { useKakaoPlaceSearch } from '../lib/use-kakao-place-search';
-import SearchResultList from './SearchResultList';
+import PlaceSearchResultList from './PlaceSearchResultList';
 
 function CenteredView({ children }: { children: ReactNode }) {
   return (
@@ -38,26 +37,15 @@ function CenteredView({ children }: { children: ReactNode }) {
   );
 }
 
-function getSafeReturnPath(path: string | null) {
-  if (!path || !path.startsWith('/') || path.startsWith('//')) return '/log';
-
-  return path;
-}
-
-function getEditPostIdFromReturnPath(path: string) {
-  const [pathname, queryString] = path.split('?');
-  const postId = Number(new URLSearchParams(queryString).get('postId'));
-
-  return pathname === '/log' && Number.isInteger(postId) && postId > 0
-    ? postId
-    : null;
-}
-
-type SearchPlacePageProps = {
-  returnTo?: string;
+type PlaceSearchOverlayProps = {
+  onSelectPlace: (place: SelectedPlace) => Promise<void>;
+  onClose: () => void;
 };
 
-export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
+export default function PlaceSearchOverlay({
+  onSelectPlace,
+  onClose,
+}: PlaceSearchOverlayProps) {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
 
@@ -67,34 +55,24 @@ export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
   const saveRecentPlaceMutation = useSaveRecentPlaceMutation();
   const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
   const deleteRecentPlacesMutation = useDeleteRecentPlacesMutation();
-  const setCreateLogValues = useCreateLogStore((state) => state.setValues);
-
-  const router = useRouter();
 
   const { toast } = useToast();
 
   const displayState = sdkLoadError ? 'error' : searchState;
-  const returnPath = getSafeReturnPath(returnTo ?? null);
-  const returnPostId = getEditPostIdFromReturnPath(returnPath);
 
   const handleKakaoReady = useCallback(() => {
     window.kakao?.maps.load(() => setSdkLoaded(true));
   }, []);
 
-  const handleSelectPlace = async (
-    place: kakao.maps.services.PlacesSearchResultItem,
-  ) => {
-    const selectedPlace = createSelectedPlace(place);
-
+  const saveAndSelect = async (place: SelectedPlace) => {
     try {
       await saveRecentPlaceMutation.mutateAsync({
-        placeName: selectedPlace.name,
-        address: selectedPlace.address,
-        latitude: selectedPlace.latitude,
-        longitude: selectedPlace.longitude,
+        placeName: place.name,
+        address: place.address,
+        latitude: place.latitude,
+        longitude: place.longitude,
       });
-      setCreateLogValues({ place: selectedPlace }, returnPostId);
-      router.push(returnPath);
+      await onSelectPlace(place);
     } catch {
       toast({
         type: 'error',
@@ -103,31 +81,18 @@ export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
     }
   };
 
-  const handleSelectRecentPlace = async (place: RecentPlace) => {
-    const selectedPlace = {
+  const handleSelectPlace = (
+    place: kakao.maps.services.PlacesSearchResultItem,
+  ) => saveAndSelect(createSelectedPlace(place));
+
+  const handleSelectRecentPlace = (place: RecentPlace) =>
+    saveAndSelect({
       id: String(place.id),
       name: place.placeName,
       address: place.address,
       latitude: place.latitude,
       longitude: place.longitude,
-    };
-
-    try {
-      await saveRecentPlaceMutation.mutateAsync({
-        placeName: selectedPlace.name,
-        address: selectedPlace.address,
-        latitude: selectedPlace.latitude,
-        longitude: selectedPlace.longitude,
-      });
-      setCreateLogValues({ place: selectedPlace }, returnPostId);
-      router.push(returnPath);
-    } catch {
-      toast({
-        type: 'error',
-        description: '장소 저장에 실패했어요. 다시 시도해 주세요.',
-      });
-    }
-  };
+    });
 
   const handleRemoveRecentPlace = (id: number) => {
     deleteRecentPlaceMutation.mutate(id);
@@ -140,11 +105,7 @@ export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title="장소 검색"
-          onBack={() => router.push(returnPath)}
-        />
+        <AppBar variant="navigation" title="장소 검색" onBack={onClose} />
       </header>
       <Script
         src={KAKAO_MAP_SDK_URL}
@@ -152,7 +113,7 @@ export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
         onReady={handleKakaoReady}
         onError={() => setSdkLoadError(true)}
       />
-      <section className="flex min-h-[calc(100dvh-var(--spacing-header)-var(--spacing-bottom-tab))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
+      <section className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
         <div className="sticky top-[var(--spacing-header)] z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
           <PlaceSearchInput
             value={query}
@@ -164,7 +125,7 @@ export default function SearchPlacePage({ returnTo }: SearchPlacePageProps) {
           <PlaceSearchContent
             state={displayState}
             resultList={
-              <SearchResultList
+              <PlaceSearchResultList
                 places={places}
                 query={query}
                 onSelect={handleSelectPlace}

@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
-
 import { AppBar } from '@plog/ui';
 
 import { HighlightText, PlaceSearchInput } from '@/features/place-search';
@@ -53,10 +51,16 @@ function SearchResultList({
   );
 }
 
-export default function MapSearchPage() {
-  const [keyword, setKeyword] = useState('');
+type MapPlaceSearchOverlayProps = {
+  onSelectPlace: (place: MapSearchPlace) => void;
+  onClose: () => void;
+};
 
-  const router = useRouter();
+export default function MapPlaceSearchOverlay({
+  onSelectPlace,
+  onClose,
+}: MapPlaceSearchOverlayProps) {
+  const [keyword, setKeyword] = useState('');
 
   const debouncedKeyword = useDebounce(keyword);
 
@@ -69,26 +73,12 @@ export default function MapSearchPage() {
 
   const hasQuery = debouncedKeyword.trim().length > 0;
 
-  const handleSelect = (place: MapSearchPlace) => {
-    const params = new URLSearchParams({
-      placeId: String(place.placeId),
-      type: 'record',
-      lat: String(place.latitude),
-      lng: String(place.longitude),
-    });
-    router.push(`/map?${params}`);
-  };
-
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title="장소 검색"
-          onBack={() => router.back()}
-        />
+        <AppBar variant="navigation" title="장소 검색" onBack={onClose} />
       </header>
-      <section className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
+      <section className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
         <div className="sticky top-[var(--spacing-header)] z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
           <PlaceSearchInput
             value={keyword}
@@ -116,7 +106,7 @@ export default function MapSearchPage() {
             <SearchResultList
               places={places}
               query={debouncedKeyword}
-              onSelect={handleSelect}
+              onSelect={onSelectPlace}
             />
           )}
         </div>

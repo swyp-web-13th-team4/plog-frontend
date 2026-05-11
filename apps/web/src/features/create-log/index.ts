@@ -5,12 +5,7 @@ export {
 } from './model/photo-storage';
 export type {
   CreateLogPlace,
-  CreateLogStoredValues,
+  CreateLogValues,
   FocusLevel,
 } from './model/types';
-export {
-  getCreateLogDefaultValues,
-  hasCreateLogValues,
-  initialCreateLogValues,
-  useCreateLogStore,
-} from './model/use-create-log-store';
+export { initialCreateLogValues } from './model/types';

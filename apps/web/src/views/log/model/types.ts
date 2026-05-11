@@ -1,10 +1,10 @@
-import { type CreateLogStoredValues } from '@/features/create-log';
+import { type CreateLogValues } from '@/features/create-log';
 
 import { type PlaceTagValue, type PostScope } from '@/entities/feed';
 
 import { type PhotoPreview } from './use-photo-upload';
 
-export type CreateLogFormValues = CreateLogStoredValues & {
+export type CreateLogFormValues = CreateLogValues & {
   photos: PhotoPreview[];
 };
 

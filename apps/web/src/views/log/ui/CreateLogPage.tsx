@@ -8,6 +8,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react';
 import {
   type FieldErrors,
@@ -33,12 +34,7 @@ import {
 } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import {
-  getCreateLogDefaultValues,
-  hasCreateLogValues,
-  initialCreateLogValues,
-  useCreateLogStore,
-} from '@/features/create-log';
+import { initialCreateLogValues } from '@/features/create-log';
 import { PlaceCategorySheet } from '@/features/select-place-category';
 import { ReviewTagsSheet } from '@/features/select-review-tags';
 import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
@@ -61,6 +57,7 @@ import { usePhotoUpload } from '../model/use-photo-upload';
 import { useScrollFocusFeedback } from '../model/use-scroll-focus-feedback';
 import { useUpdateLogMutation } from '../model/use-update-log-mutation';
 import PhotoUploader from './PhotoUploader';
+import PlaceSearchOverlay from './PlaceSearchOverlay';
 import PrivacySettingSection from './PrivacySettingSection';
 import RatingPicker from './RatingPicker';
 
@@ -80,7 +77,6 @@ type SelectTriggerButtonProps = Omit<
 
 type CreateLogPageProps = {
   editPostId?: string;
-  restoreDraft?: boolean;
 };
 
 function SelectTriggerButton({
@@ -112,10 +108,7 @@ function SelectTriggerButton({
   );
 }
 
-export default function CreateLogPage({
-  editPostId,
-  restoreDraft = false,
-}: CreateLogPageProps) {
+export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   const router = useRouter();
   const numericEditPostId = editPostId ? Number(editPostId) : null;
   const normalizedEditPostId =
@@ -126,6 +119,9 @@ export default function CreateLogPage({
       : null;
   const isEditMode = normalizedEditPostId !== null;
   const hasInvalidEditPostId = editPostId !== undefined && !isEditMode;
+
+  const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
+
   const {
     fieldRef: photoFieldRef,
     focusRef: photoUploadButtonRef,
@@ -181,15 +177,6 @@ export default function CreateLogPage({
     clearPhotos,
   } = usePhotoUpload();
   const { toast } = useToast();
-  const setCreateLogValues = useCreateLogStore((state) => state.setValues);
-  const setCreateLogHasPhotos = useCreateLogStore(
-    (state) => state.setHasPhotos,
-  );
-  const resetCreateLog = useCreateLogStore((state) => state.reset);
-  const createLogValues = useCreateLogStore((state) => state.values);
-  const createLogDraftPostId = useCreateLogStore((state) => state.draftPostId);
-  const hasPhotosInStore = useCreateLogStore((state) => state.hasPhotos);
-  const hasStoreHydrated = useCreateLogStore((state) => state.hasHydrated);
   const hasRestoredFormRef = useRef(false);
 
   const {
@@ -214,7 +201,6 @@ export default function CreateLogPage({
   const createLogMutation = useCreateLogMutation({
     onSuccess: () => {
       clearPhotos();
-      resetCreateLog();
     },
   });
 
@@ -222,7 +208,6 @@ export default function CreateLogPage({
     postId: normalizedEditPostId,
     onSuccess: () => {
       clearPhotos();
-      resetCreateLog();
     },
   });
   const editLogQuery = useEditLogQuery(normalizedEditPostId);
@@ -260,128 +245,30 @@ export default function CreateLogPage({
     });
   };
 
-  const persistCurrentValuesToStore = useCallback(
-    (draftPostId: number | null) => {
-      const values = getValues();
-
-      setCreateLogValues(
-        {
-          title: values.title,
-          contents: values.contents,
-          place: values.place,
-          categoryCode: values.categoryCode,
-          studyDate: values.studyDate,
-          startedAt: values.startedAt,
-          endedAt: values.endedAt,
-          focus: values.focus,
-          placeTags: values.placeTags,
-          scope: values.scope,
-        },
-        draftPostId,
-      );
-    },
-    [getValues, setCreateLogValues],
-  );
-
-  const handlePlaceSearchOpen = () => {
-    const returnPath =
-      isEditMode && normalizedEditPostId !== null
-        ? `/log?postId=${normalizedEditPostId}&restoreDraft=1`
-        : '/log';
-
-    persistCurrentValuesToStore(isEditMode ? normalizedEditPostId : null);
-
-    router.push(
-      returnPath === '/log'
-        ? '/log/place-search'
-        : `/log/place-search?returnTo=${encodeURIComponent(returnPath)}`,
-    );
-  };
-
   useEffect(() => {
-    if (!hasStoreHydrated) return;
-
-    if (isEditMode) {
-      if (!editLogQuery.data || hasRestoredFormRef.current) return;
-
-      const shouldRestoreDraft =
-        restoreDraft && createLogDraftPostId === normalizedEditPostId;
-      const editFormValues = {
-        ...mapPostEditResponseToFormValues(editLogQuery.data),
-        ...(shouldRestoreDraft
-          ? getCreateLogDefaultValues(normalizedEditPostId)
-          : {}),
-      };
-
-      hasRestoredFormRef.current = true;
-      reset(editFormValues);
-      if (!shouldRestoreDraft || photos.length === 0) {
-        setExistingPhotos(editLogQuery.data.images.images);
-      }
-      return;
-    }
-
-    if (!hasStoreHydrated || hasRestoredFormRef.current) return;
+    if (!isEditMode || !editLogQuery.data || hasRestoredFormRef.current) return;
 
     hasRestoredFormRef.current = true;
-    reset({
-      ...getCreateLogDefaultValues(),
-      photos: [],
-    });
-  }, [
-    editLogQuery.data,
-    createLogDraftPostId,
-    hasStoreHydrated,
-    isEditMode,
-    normalizedEditPostId,
-    photos.length,
-    reset,
-    restoreDraft,
-    setExistingPhotos,
-  ]);
+    reset(mapPostEditResponseToFormValues(editLogQuery.data));
+    setExistingPhotos(editLogQuery.data.images.images);
+  }, [editLogQuery.data, isEditMode, reset, setExistingPhotos]);
 
   useEffect(() => {
-    if (!hasRestoredFormRef.current) return;
-
     setValue('photos', photos, {
       shouldDirty: photos.length > 0,
       shouldValidate: isSubmitted,
     });
-    if (!isEditMode) setCreateLogHasPhotos(photos.length > 0);
-  }, [isEditMode, isSubmitted, photos, setCreateLogHasPhotos, setValue]);
-
-  useEffect(() => {
-    if (isEditMode || !hasRestoredFormRef.current) return;
-
-    setCreateLogValues({
-      title,
-      contents,
-      place,
-      categoryCode: placeCategory,
-      studyDate: workDate,
-      startedAt: startTime,
-      endedAt: endTime,
-      focus: focusScore,
-      placeTags: reviewTags,
-      scope,
-    });
-  }, [
-    contents,
-    endTime,
-    focusScore,
-    isEditMode,
-    place,
-    placeCategory,
-    reviewTags,
-    setCreateLogValues,
-    scope,
-    startTime,
-    title,
-    workDate,
-  ]);
+  }, [isSubmitted, photos, setValue]);
 
   const handleClearPlaceName = () => {
     setFormValue('place', null);
+  };
+
+  const handleSelectPlaceFromSearch = async (
+    place: CreateLogFormValues['place'],
+  ) => {
+    setFormValue('place', place);
+    setIsPlaceSearchOpen(false);
   };
 
   const handleInvalidSubmit = (
@@ -543,7 +430,6 @@ export default function CreateLogPage({
 
     if (!confirmed) return;
 
-    resetCreateLog();
     clearPhotos();
     router.push(detailPath);
   }, [
@@ -551,7 +437,6 @@ export default function CreateLogPage({
     getValues,
     initialEditSnapshot,
     normalizedEditPostId,
-    resetCreateLog,
     router,
   ]);
 
@@ -561,8 +446,18 @@ export default function CreateLogPage({
       return;
     }
 
+    const values = getValues();
     const hasCreateLogData =
-      hasCreateLogValues(createLogValues) || hasPhotosInStore;
+      values.title.trim().length > 0 ||
+      values.contents.trim().length > 0 ||
+      values.place !== null ||
+      values.categoryCode !== null ||
+      values.studyDate !== null ||
+      values.startedAt !== null ||
+      values.endedAt !== null ||
+      values.focus !== null ||
+      values.placeTags.length > 0 ||
+      photos.length > 0;
 
     if (!hasCreateLogData) {
       router.push('/map');
@@ -578,16 +473,16 @@ export default function CreateLogPage({
 
     if (!confirmed) return;
 
-    resetCreateLog();
+    clearPhotos();
     router.push('/map');
   }, [
     isEditMode,
     normalizedEditPostId,
     hasInvalidEditPostId,
     handleEditLogBack,
-    createLogValues,
-    hasPhotosInStore,
-    resetCreateLog,
+    getValues,
+    photos.length,
+    clearPhotos,
     router,
   ]);
 
@@ -741,7 +636,7 @@ export default function CreateLogPage({
                   placeholder="위치를 입력해 주세요."
                   readOnly
                   onClear={handleClearPlaceName}
-                  onClick={handlePlaceSearchOpen}
+                  onClick={() => setIsPlaceSearchOpen(true)}
                 />
               </Field>
             </div>
@@ -935,6 +830,14 @@ export default function CreateLogPage({
           </Button>
         </section>
       </form>
+      {isPlaceSearchOpen && (
+        <div className="fixed inset-0 z-10 mx-auto max-w-layout">
+          <PlaceSearchOverlay
+            onSelectPlace={handleSelectPlaceFromSearch}
+            onClose={() => setIsPlaceSearchOpen(false)}
+          />
+        </div>
+      )}
     </>
   );
 }

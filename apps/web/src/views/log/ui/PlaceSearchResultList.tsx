@@ -1,16 +1,16 @@
 import PlaceResultItem from './PlaceResultItem';
 
-type SearchResultListProps = {
+type PlaceSearchResultListProps = {
   places: kakao.maps.services.PlacesSearchResultItem[];
   query: string;
   onSelect: (place: kakao.maps.services.PlacesSearchResultItem) => void;
 };
 
-export default function SearchResultList({
+export default function PlaceSearchResultList({
   places,
   query,
   onSelect,
-}: SearchResultListProps) {
+}: PlaceSearchResultListProps) {
   return (
     <ul className="bg-semantic-bg-standard">
       {places.map((place) => (

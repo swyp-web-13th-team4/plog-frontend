@@ -13,7 +13,7 @@ export type CreateLogPlace = {
   longitude: number;
 };
 
-export type CreateLogStoredValues = {
+export type CreateLogValues = {
   title: string;
   contents: string;
   place: CreateLogPlace | null;
@@ -24,4 +24,17 @@ export type CreateLogStoredValues = {
   focus: FocusLevel | null;
   placeTags: PlaceTagValue[];
   scope: PostScope;
+};
+
+export const initialCreateLogValues: CreateLogValues = {
+  title: '',
+  contents: '',
+  place: null,
+  categoryCode: null,
+  studyDate: null,
+  startedAt: null,
+  endedAt: null,
+  focus: null,
+  placeTags: [],
+  scope: 'PUBLIC',
 };

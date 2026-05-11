@@ -17,6 +17,7 @@ import { type MapBounds } from '../model/types';
 import { useMapPinDetailQuery } from '../model/use-map-pin-detail-query';
 import { useMapPinsQuery } from '../model/use-map-pins-query';
 import MapListSheet from './MapListSheet';
+import MapPlaceSearchOverlay from './MapPlaceSearchOverlay';
 import SelectedPlaceSheet from './SelectedPlaceSheet';
 
 const DEFAULT_SORT: MapSortType = 'LATEST';
@@ -49,6 +50,7 @@ export default function MapPage() {
   const pendingRef = useRef(initSelection);
   const hasParamNavRef = useRef(!!initSelection);
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [bounds, setBounds] = useState<MapBounds | null>(null);
   const [selectedPlaceId, setSelectedPlaceId] = useState<number | null>(
     initSelection?.placeId ?? null,
@@ -190,11 +192,11 @@ export default function MapPage() {
             className="cursor-pointer shadow-[0px_2px_12px_0px_rgba(0,0,0,0.15)]"
             placeholder="기록했던 장소를 입력해 주세요"
             readOnly
-            onClick={() => router.push('/map/search')}
+            onClick={() => setIsSearchOpen(true)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                router.push('/map/search');
+                setIsSearchOpen(true);
               }
             }}
             trailing={
@@ -239,6 +241,27 @@ export default function MapPage() {
         onViewPosts={handleViewPosts}
         onCreatePost={handleCreatePost}
       />
+      {isSearchOpen && (
+        <div className="fixed inset-0 z-10 mx-auto max-w-layout">
+          <MapPlaceSearchOverlay
+            onSelectPlace={(place) => {
+              setIsSearchOpen(false);
+              setSelectedPlaceId(place.placeId);
+              setSelectedType('record');
+              setFromList(false);
+              pendingRef.current = {
+                placeId: place.placeId,
+                type: 'record',
+                lat: place.latitude,
+                lng: place.longitude,
+              };
+              selectPin(place.placeId, 'record');
+              panToWithOffset(place.latitude, place.longitude);
+            }}
+            onClose={() => setIsSearchOpen(false)}
+          />
+        </div>
+      )}
     </>
   );
 }
