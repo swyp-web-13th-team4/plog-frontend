@@ -6,6 +6,8 @@ import Image from 'next/image';
 
 import { Icon } from '@plog/ui';
 
+import { convertImageToJpeg } from '@/shared/lib/convert-image';
+
 import {
   isNewPhotoPreview,
   MAX_PHOTO_COUNT,
@@ -17,6 +19,7 @@ type PhotoUploaderProps = {
   onAdd: (files: File[]) => void;
   onRemove: (id: string) => void;
   onFileSizeExceeded?: () => void;
+  onConversionFailed?: () => void;
   uploadButtonRef?: Ref<HTMLButtonElement>;
 };
 
@@ -27,6 +30,7 @@ export default function PhotoUploader({
   onAdd,
   onRemove,
   onFileSizeExceeded,
+  onConversionFailed,
   uploadButtonRef,
 }: PhotoUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +46,7 @@ export default function PhotoUploader({
     fileInputRef.current.files = dataTransfer.files;
   }, [photos]);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const ACCEPTED_TYPES = new Set([
       'image/jpeg',
       'image/png',
@@ -63,7 +67,16 @@ export default function PhotoUploader({
     event.target.value = '';
 
     if (selectedFiles.length === 0) return;
-    onAdd(selectedFiles);
+
+    const results = await Promise.all(selectedFiles.map(convertImageToJpeg));
+    const converted = results.filter((f): f is File => f !== null);
+
+    if (converted.length < results.length) {
+      onConversionFailed?.();
+    }
+
+    if (converted.length === 0) return;
+    onAdd(converted);
   };
 
   return (
@@ -113,7 +126,7 @@ export default function PhotoUploader({
               >
                 <Icon
                   name="close"
-                  className="text-semantic-system-white"
+                  className="text-semantic-object-inverse"
                   size={16}
                 />
               </button>

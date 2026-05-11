@@ -11,6 +11,8 @@ import { Avatar, BottomSheet, Button, Icon, useToast } from '@plog/ui';
 
 import { type DefaultProfileImage } from '@/entities/user';
 
+import { convertImageToJpeg } from '@/shared/lib/convert-image';
+
 type ProfileImageSheetProps = {
   defaultImages: DefaultProfileImage[];
   open: boolean;
@@ -43,7 +45,7 @@ export default function ProfileImageSheet({
     imageInputRef.current?.click();
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_IMAGE_SIZE) {
@@ -55,7 +57,17 @@ export default function ProfileImageSheet({
       return;
     }
     e.currentTarget.value = '';
-    onUpload(file);
+
+    const converted = await convertImageToJpeg(file);
+    if (!converted) {
+      toast({
+        type: 'error',
+        description: '사진 업로드에 실패했어요. 다시 시도해 주세요.',
+      });
+      return;
+    }
+
+    onUpload(converted);
     onOpenChange(false);
   };
 

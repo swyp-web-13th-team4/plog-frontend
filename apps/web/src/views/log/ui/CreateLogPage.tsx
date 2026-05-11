@@ -577,6 +577,13 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
                     description: '10MB 이하의 이미지 파일만 등록 가능해요.',
                   });
                 }}
+                onConversionFailed={() => {
+                  toast({
+                    type: 'error',
+                    description:
+                      '사진 업로드에 실패했어요. 다시 시도해 주세요.',
+                  });
+                }}
               />
             </Field>
           </div>
