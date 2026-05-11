@@ -7,6 +7,7 @@ import { AppBar } from '@plog/ui';
 import { HighlightText, PlaceSearchInput } from '@/features/place-search';
 
 import { useDebounce } from '@/shared/lib/debounce';
+import { useScrollLock } from '@/shared/lib/scroll-lock';
 import {
   FetchErrorEmptyState,
   PlaceSearchIdleState,
@@ -72,6 +73,8 @@ export default function MapPlaceSearchOverlay({
   } = useMapSearchQuery(debouncedKeyword);
 
   const hasQuery = debouncedKeyword.trim().length > 0;
+
+  useScrollLock();
 
   return (
     <>

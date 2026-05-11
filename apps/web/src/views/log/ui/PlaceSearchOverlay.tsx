@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useCallback, useState } from 'react';
+import { type ReactNode, useCallback, useEffect, useState } from 'react';
 
 import Script from 'next/script';
 
@@ -20,6 +20,7 @@ import {
 } from '@/features/place-search';
 
 import { KAKAO_MAP_SDK_URL } from '@/shared/api/constants';
+import { useScrollLock } from '@/shared/lib/scroll-lock';
 import {
   FetchErrorEmptyState,
   PlaceSearchIdleState,
@@ -57,6 +58,8 @@ export default function PlaceSearchOverlay({
   const deleteRecentPlacesMutation = useDeleteRecentPlacesMutation();
 
   const { toast } = useToast();
+
+  useScrollLock();
 
   const displayState = sdkLoadError ? 'error' : searchState;
 
