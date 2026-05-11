@@ -112,7 +112,7 @@ export default function SpaceRankingsSection({
   return (
     <section className="flex flex-col gap-3">
       <h2 className="title-sm text-semantic-object-boldest">공간별 순위</h2>
-      <div className="flex flex-col gap-3 rounded-xl border border-semantic-stroke-subtle bg-semantic-object-inverse px-5 py-6">
+      <div className="flex flex-col gap-3 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white px-5 py-6">
         <div className="flex items-end justify-around">
           {slots.map((ranking, idx) => (
             <SpaceRankingItem

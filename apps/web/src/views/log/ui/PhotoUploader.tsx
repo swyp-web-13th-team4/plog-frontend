@@ -81,7 +81,7 @@ export default function PhotoUploader({
         ref={uploadButtonRef}
         type="button"
         disabled={!canAddMore}
-        className="flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
+        className="flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
         aria-label="사진 등록"
         onClick={() => fileInputRef.current?.click()}
       >
@@ -107,13 +107,13 @@ export default function PhotoUploader({
               />
               <button
                 type="button"
-                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-system-white bg-semantic-theme-red-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
+                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-object-inverse bg-semantic-theme-red-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
                 aria-label={`등록된 사진 ${index + 1} 삭제`}
                 onClick={() => onRemove(photo.id)}
               >
                 <Icon
                   name="close"
-                  className="text-semantic-system-white"
+                  className="text-semantic-object-inverse"
                   size={16}
                 />
               </button>

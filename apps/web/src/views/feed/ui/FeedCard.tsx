@@ -165,7 +165,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 >
                   <Icon
                     name="chevron-left"
-                    className="text-semantic-system-white"
+                    className="text-semantic-object-inverse"
                   />
                 </button>
               ) : (
@@ -183,7 +183,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 >
                   <Icon
                     name="chevron-right"
-                    className="text-semantic-system-white"
+                    className="text-semantic-object-inverse"
                   />
                 </button>
               ) : (

@@ -29,7 +29,7 @@ function Switch({ ref, className, ...props }: SwitchProps) {
     >
       <BaseSwitch.Thumb
         className={cn(
-          'block size-3.5 rounded-full bg-semantic-system-white transition-transform duration-200',
+          'block size-3.5 rounded-full bg-semantic-object-inverse transition-transform duration-200',
           'data-checked:translate-x-5',
           'data-disabled:bg-semantic-object-subtle',
         )}

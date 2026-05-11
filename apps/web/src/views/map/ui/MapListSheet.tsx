@@ -170,7 +170,7 @@ function PlaceList({
             render={
               <button
                 type="button"
-                className="label-md pointer-events-auto inline-flex cursor-pointer items-center gap-2 rounded-full bg-semantic-accent-normal px-6 py-3 text-semantic-system-white"
+                className="label-md pointer-events-auto inline-flex cursor-pointer items-center gap-2 rounded-full bg-semantic-accent-normal px-6 py-3 text-semantic-object-inverse"
               >
                 지도 보기
                 <Icon

@@ -9,7 +9,7 @@ type StatCardProps = {
 
 function StatCard({ icon, label, value, unit }: StatCardProps) {
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-semantic-stroke-subtle bg-semantic-bg-standard p-4">
+    <div className="flex flex-col gap-4 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-4">
       <div className="flex items-center gap-1.5">
         <Icon name={icon} size={18} className="text-semantic-object-subtle" />
         <span className="label-md text-semantic-object-bold">{label}</span>

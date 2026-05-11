@@ -82,7 +82,7 @@ function StatBar({
       <span className="label-sm w-12 shrink-0 text-semantic-object-bold">
         {label}
       </span>
-      <div className="flex h-3 flex-1 divide-x-1 divide-semantic-system-white overflow-hidden rounded-full">
+      <div className="flex h-3 flex-1 divide-x-1 divide-semantic-object-inverse overflow-hidden rounded-full">
         {Array.from({ length: STAT_SEGMENTS }, (_, i) => (
           <div
             key={i}

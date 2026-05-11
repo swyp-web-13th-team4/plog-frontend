@@ -10,7 +10,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        solid: 'text-semantic-system-white',
+        solid: 'text-semantic-object-inverse',
         soft: '',
         outline: 'bg-semantic-system-white',
       },

@@ -9,7 +9,7 @@ export function getDatePickerCellStateClass(
 ): string {
   if (isDisabled) return 'cursor-not-allowed text-semantic-object-subtler';
   if (isSelected)
-    return 'cursor-pointer bg-semantic-accent-normal text-semantic-system-white';
+    return 'cursor-pointer bg-semantic-accent-normal text-semantic-object-inverse';
   if (isToday) return `${interactive} text-semantic-accent-normal`;
   if (isCurrentMonth) return `${interactive} text-semantic-object-boldest`;
   return `${interactive} text-semantic-object-subtle`;

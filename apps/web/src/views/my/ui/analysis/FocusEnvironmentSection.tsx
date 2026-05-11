@@ -36,7 +36,7 @@ function ConditionRow({
 }: ConditionRowProps) {
   return (
     <div className="flex items-center gap-3 rounded-xl bg-semantic-bg-deep px-5 py-4">
-      <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-semantic-stroke-subtle bg-semantic-object-inverse">
+      <div className="flex size-10 shrink-0 items-center justify-center rounded-full border border-semantic-stroke-subtle bg-semantic-system-white">
         <Icon
           name={locked ? 'question' : iconName}
           size={26}
@@ -72,7 +72,7 @@ export default function FocusEnvironmentSection({
       <h2 className="title-sm text-semantic-object-boldest">
         나에게 맞는 집중 환경 조건
       </h2>
-      <div className="flex flex-col gap-3 rounded-xl border border-semantic-stroke-subtle bg-semantic-object-inverse px-5 py-6">
+      <div className="flex flex-col gap-3 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white px-5 py-6">
         <ConditionRow
           iconName="clock-filled"
           result={

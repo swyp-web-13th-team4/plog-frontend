@@ -319,7 +319,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   >
                     <Icon
                       name="chevron-left"
-                      className="text-semantic-system-white"
+                      className="text-semantic-object-inverse"
                     />
                   </button>
                 ) : (
@@ -337,7 +337,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                   >
                     <Icon
                       name="chevron-right"
-                      className="text-semantic-system-white"
+                      className="text-semantic-object-inverse"
                     />
                   </button>
                 ) : (

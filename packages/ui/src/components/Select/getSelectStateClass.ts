@@ -23,7 +23,7 @@ export function getDropDownItemStateClass({
   if (selected) return 'cursor-pointer text-semantic-accent-normal';
   if (hover)
     return 'cursor-pointer bg-semantic-bg-deep text-semantic-object-bold';
-  return 'cursor-pointer bg-semantic-bg-standard text-semantic-object-bold';
+  return 'cursor-pointer bg-semantic-system-white text-semantic-object-bold';
 }
 
 export function getDropDownItemFocusClass({ selected }: { selected: boolean }) {
