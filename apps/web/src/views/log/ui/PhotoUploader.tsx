@@ -107,13 +107,13 @@ export default function PhotoUploader({
               />
               <button
                 type="button"
-                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-object-inverse bg-semantic-theme-red-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
+                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-system-white bg-semantic-feedback-error-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
                 aria-label={`등록된 사진 ${index + 1} 삭제`}
                 onClick={() => onRemove(photo.id)}
               >
                 <Icon
                   name="close"
-                  className="text-semantic-object-inverse"
+                  className="text-semantic-system-white"
                   size={16}
                 />
               </button>
