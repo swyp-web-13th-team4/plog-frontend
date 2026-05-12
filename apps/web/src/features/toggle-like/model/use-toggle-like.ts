@@ -45,17 +45,12 @@ function updateLikeInFeedDetailCache(
   return { ...prev, like: isLiked, likes: prev.likes + delta };
 }
 
-type ToggleLikeVariables = {
-  postId: number;
-  isLiked: boolean;
-};
-
 export function useToggleLike() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: ({ postId }: ToggleLikeVariables) => postToggleLike(postId),
+    mutationFn: ({ postId }: { postId: number }) => postToggleLike(postId),
     onMutate: async ({ postId }) => {
       await queryClient.cancelQueries({ queryKey: feedQueryKeys.list });
       await queryClient.cancelQueries({
@@ -110,8 +105,8 @@ export function useToggleLike() {
     },
   });
 
-  const toggleLike = (postId: number, isLiked: boolean) => {
-    mutation.mutate({ postId, isLiked });
+  const toggleLike = (postId: number) => {
+    mutation.mutate({ postId });
   };
 
   return { toggleLike, isPending: mutation.isPending };
