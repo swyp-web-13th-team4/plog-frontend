@@ -7,7 +7,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { type FeedPage, feedQueryKeys } from '@/entities/feed';
+import { type FeedPage, type FeedPost, feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -34,35 +34,63 @@ function updateLikeInFeedCache(
   };
 }
 
+function updateLikeInFeedDetailCache(
+  prev: FeedPost | undefined,
+  postId: number,
+  isLiked: boolean,
+): FeedPost | undefined {
+  if (!prev || prev.postId !== postId) return prev;
+
+  const delta = prev.like === isLiked ? 0 : isLiked ? 1 : -1;
+  return { ...prev, like: isLiked, likes: prev.likes + delta };
+}
+
+type ToggleLikeVariables = {
+  postId: number;
+  isLiked: boolean;
+};
+
 export function useToggleLike() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: postToggleLike,
-    onMutate: async (postId) => {
+    mutationFn: ({ postId }: ToggleLikeVariables) => postToggleLike(postId),
+    onMutate: async ({ postId }) => {
       await queryClient.cancelQueries({ queryKey: feedQueryKeys.list });
+      await queryClient.cancelQueries({
+        queryKey: feedQueryKeys.detail(postId),
+      });
+
       const snapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
+      );
+      const detailSnapshot = queryClient.getQueryData<FeedPost>(
+        feedQueryKeys.detail(postId),
       );
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => {
-          const current = prev?.pages
-            .flatMap((p) => p.items)
-            .find((post) => post.postId === postId);
-          return updateLikeInFeedCache(prev, postId, !current?.like);
-        },
+        (prev) => updateLikeInFeedCache(prev, postId, !detailSnapshot?.like),
       );
 
-      return { snapshot };
+      queryClient.setQueryData<FeedPost>(feedQueryKeys.detail(postId), (prev) =>
+        updateLikeInFeedDetailCache(prev, postId, !detailSnapshot?.like),
+      );
+
+      return { detailSnapshot, snapshot };
     },
-    onError: (_err, _postId, context) => {
+    onError: (_err, _variables, context) => {
       if (context?.snapshot) {
         queryClient.setQueryData<InfiniteData<FeedPage>>(
           feedQueryKeys.list,
           context.snapshot,
+        );
+      }
+      if (context?.detailSnapshot) {
+        queryClient.setQueryData<FeedPost>(
+          feedQueryKeys.detail(context.detailSnapshot.postId),
+          context.detailSnapshot,
         );
       }
       toast({
@@ -71,16 +99,19 @@ export function useToggleLike() {
         description: '좋아요 처리 중 오류가 발생했어요.',
       });
     },
-    onSuccess: (res, postId) => {
+    onSuccess: (res, { postId }) => {
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
         (prev) => updateLikeInFeedCache(prev, postId, res.isLiked),
       );
+      queryClient.setQueryData<FeedPost>(feedQueryKeys.detail(postId), (prev) =>
+        updateLikeInFeedDetailCache(prev, postId, res.isLiked),
+      );
     },
   });
 
-  const toggleLike = (postId: number) => {
-    mutation.mutate(postId);
+  const toggleLike = (postId: number, isLiked: boolean) => {
+    mutation.mutate({ postId, isLiked });
   };
 
   return { toggleLike, isPending: mutation.isPending };
