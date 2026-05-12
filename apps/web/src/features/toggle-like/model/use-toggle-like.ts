@@ -15,34 +15,41 @@ function postToggleLike(postId: number) {
   return clientApi.post<{ isLiked: boolean }>(`/feed/like/${postId}`);
 }
 
-function updateLikeInFeedCache(
+function updateLikeCount(
+  post: FeedPost,
+  postId: number,
+  isLiked: boolean,
+): FeedPost {
+  if (post.postId !== postId) return post;
+
+  const countLike = post.like === isLiked ? 0 : isLiked ? 1 : -1;
+  return { ...post, like: isLiked, likes: post.likes + countLike };
+}
+
+function updateLikeInFeedList(
   prev: InfiniteData<FeedPage> | undefined,
   postId: number,
   isLiked: boolean,
 ): InfiniteData<FeedPage> | undefined {
   if (!prev) return prev;
+
   return {
     ...prev,
     pages: prev.pages.map((page) => ({
       ...page,
-      items: page.items.map((post) => {
-        if (post.postId !== postId) return post;
-        const delta = post.like === isLiked ? 0 : isLiked ? 1 : -1;
-        return { ...post, like: isLiked, likes: post.likes + delta };
-      }),
+      items: page.items.map((post) => updateLikeCount(post, postId, isLiked)),
     })),
   };
 }
 
-function updateLikeInFeedDetailCache(
+function updateLikeInFeedDetail(
   prev: FeedPost | undefined,
   postId: number,
   isLiked: boolean,
 ): FeedPost | undefined {
-  if (!prev || prev.postId !== postId) return prev;
+  if (!prev) return prev;
 
-  const delta = prev.like === isLiked ? 0 : isLiked ? 1 : -1;
-  return { ...prev, like: isLiked, likes: prev.likes + delta };
+  return updateLikeCount(prev, postId, isLiked);
 }
 
 export function useToggleLike() {
@@ -66,11 +73,11 @@ export function useToggleLike() {
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => updateLikeInFeedCache(prev, postId, !detailSnapshot?.like),
+        (prev) => updateLikeInFeedList(prev, postId, !detailSnapshot?.like),
       );
 
       queryClient.setQueryData<FeedPost>(feedQueryKeys.detail(postId), (prev) =>
-        updateLikeInFeedDetailCache(prev, postId, !detailSnapshot?.like),
+        updateLikeInFeedDetail(prev, postId, !detailSnapshot?.like),
       );
 
       return { detailSnapshot, snapshot };
@@ -97,10 +104,10 @@ export function useToggleLike() {
     onSuccess: (res, { postId }) => {
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => updateLikeInFeedCache(prev, postId, res.isLiked),
+        (prev) => updateLikeInFeedList(prev, postId, res.isLiked),
       );
       queryClient.setQueryData<FeedPost>(feedQueryKeys.detail(postId), (prev) =>
-        updateLikeInFeedDetailCache(prev, postId, res.isLiked),
+        updateLikeInFeedDetail(prev, postId, res.isLiked),
       );
     },
   });
