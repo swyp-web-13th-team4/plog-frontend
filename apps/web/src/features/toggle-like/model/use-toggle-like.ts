@@ -26,6 +26,10 @@ function updateLikeCount(
   return { ...post, like: isLiked, likes: post.likes + countLike };
 }
 
+function toggleLikeCount(post: FeedPost, postId: number): FeedPost {
+  return updateLikeCount(post, postId, !post.like);
+}
+
 function updateLikeInFeedList(
   prev: InfiniteData<FeedPage> | undefined,
   postId: number,
@@ -73,11 +77,23 @@ export function useToggleLike() {
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => updateLikeInFeedList(prev, postId, !detailSnapshot?.like),
+        (prev) => {
+          if (!prev) return prev;
+
+          return {
+            ...prev,
+            pages: prev.pages.map((page) => ({
+              ...page,
+              items: page.items.map((post) => toggleLikeCount(post, postId)),
+            })),
+          };
+        },
       );
 
-      queryClient.setQueryData<FeedPost>(feedQueryKeys.detail(postId), (prev) =>
-        updateLikeInFeedDetail(prev, postId, !detailSnapshot?.like),
+      queryClient.setQueryData<FeedPost>(
+        feedQueryKeys.detail(postId),
+        (prev) =>
+          prev ? updateLikeInFeedDetail(prev, postId, !prev.like) : prev,
       );
 
       return { detailSnapshot, snapshot };
