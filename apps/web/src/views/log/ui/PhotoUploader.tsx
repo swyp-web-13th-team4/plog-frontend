@@ -1,6 +1,6 @@
 'use client';
 
-import { type ChangeEvent, type Ref, useEffect, useRef } from 'react';
+import { type ChangeEvent, type Ref, useRef } from 'react';
 
 import Image from 'next/image';
 
@@ -9,10 +9,12 @@ import { Icon } from '@plog/ui';
 import { convertImageToJpeg } from '@/shared/lib/convert-image';
 
 import {
-  isNewPhotoPreview,
+  ACCEPTED_IMAGE_TYPES,
   MAX_PHOTO_COUNT,
-  type PhotoPreview,
-} from '../model/use-photo-upload';
+  MAX_PHOTO_FILE_SIZE,
+  PHOTO_INPUT_ACCEPT,
+} from '../model/image-policy';
+import { type PhotoPreview } from '../model/use-photo-upload';
 
 type PhotoUploaderProps = {
   photos: PhotoPreview[];
@@ -23,8 +25,6 @@ type PhotoUploaderProps = {
   uploadButtonRef?: Ref<HTMLButtonElement>;
 };
 
-const MAX_PHOTO_FILE_SIZE = 10 * 1024 * 1024;
-
 export default function PhotoUploader({
   photos,
   onAdd,
@@ -34,27 +34,11 @@ export default function PhotoUploader({
   uploadButtonRef,
 }: PhotoUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const canAddMore = photos.length < MAX_PHOTO_COUNT;
-
-  useEffect(() => {
-    if (!fileInputRef.current) return;
-
-    const dataTransfer = new DataTransfer();
-    photos
-      .filter(isNewPhotoPreview)
-      .forEach(({ file }) => dataTransfer.items.add(file));
-    fileInputRef.current.files = dataTransfer.files;
-  }, [photos]);
+  const canAddMoreImages = photos.length < MAX_PHOTO_COUNT;
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const ACCEPTED_TYPES = new Set([
-      'image/jpeg',
-      'image/png',
-      'image/heic',
-      'image/heif',
-    ]);
     const acceptedFiles = Array.from(event.target.files ?? []).filter((file) =>
-      ACCEPTED_TYPES.has(file.type),
+      ACCEPTED_IMAGE_TYPES.has(file.type),
     );
     const selectedFiles = acceptedFiles.filter(
       (file) => file.size <= MAX_PHOTO_FILE_SIZE,
@@ -85,7 +69,7 @@ export default function PhotoUploader({
         ref={fileInputRef}
         type="file"
         name="photos"
-        accept=".jpg, .jpeg, .png, .heic"
+        accept={PHOTO_INPUT_ACCEPT}
         multiple
         className="sr-only"
         onChange={handleFileChange}
@@ -93,7 +77,7 @@ export default function PhotoUploader({
       <button
         ref={uploadButtonRef}
         type="button"
-        disabled={!canAddMore}
+        disabled={!canAddMoreImages}
         className="flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
         aria-label="사진 등록"
         onClick={() => fileInputRef.current?.click()}

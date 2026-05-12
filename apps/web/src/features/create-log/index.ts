@@ -1,8 +1,3 @@
-export {
-  clearCreateLogPhotoFiles,
-  getCreateLogPhotoFiles,
-  setCreateLogPhotoFiles,
-} from './model/photo-storage';
 export type {
   CreateLogPlace,
   CreateLogValues,

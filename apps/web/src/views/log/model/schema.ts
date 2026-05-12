@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
-import { isNewPhotoPreview, MAX_PHOTO_COUNT } from './use-photo-upload';
-
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+import { MAX_PHOTO_COUNT, MAX_PHOTO_FILE_SIZE } from './image-policy';
+import { isNewPhotoPreview } from './use-photo-upload';
 
 const timeSchema = z.object({
   hour: z.number().int().min(0).max(23),
@@ -136,7 +135,8 @@ export const createLogSchema = z
         (photos) =>
           photos.every(
             (photo) =>
-              !isNewPhotoPreview(photo) || photo.file.size <= MAX_FILE_SIZE,
+              !isNewPhotoPreview(photo) ||
+              photo.file.size <= MAX_PHOTO_FILE_SIZE,
           ),
         { message: '10MB 이하의 이미지 파일만 등록 가능해요.' },
       ),

@@ -1,7 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { create } from 'zustand';
-
+import { MAX_PHOTO_COUNT } from './image-policy';
 import { type PostImage } from './types';
 
 export type NewPhotoPreview = {
@@ -19,8 +18,6 @@ export type ExistingPhotoPreview = {
 };
 
 export type PhotoPreview = NewPhotoPreview | ExistingPhotoPreview;
-
-export const MAX_PHOTO_COUNT = 5;
 
 function createPhotoPreview(file: File, index: number): NewPhotoPreview {
   return {
@@ -50,24 +47,19 @@ function revokePhotoUrl(photo: PhotoPreview) {
   if (isNewPhotoPreview(photo)) URL.revokeObjectURL(photo.url);
 }
 
-type PhotoStore = {
-  photos: PhotoPreview[];
-  setPhotos: (
-    updater: PhotoPreview[] | ((prev: PhotoPreview[]) => PhotoPreview[]),
-  ) => void;
-};
-
-const usePhotoStore = create<PhotoStore>()((set) => ({
-  photos: [],
-  setPhotos: (updater) =>
-    set((state) => ({
-      photos: typeof updater === 'function' ? updater(state.photos) : updater,
-    })),
-}));
-
 export function usePhotoUpload() {
-  const photos = usePhotoStore((state) => state.photos);
-  const setPhotos = usePhotoStore((state) => state.setPhotos);
+  const [photos, setPhotos] = useState<PhotoPreview[]>([]);
+  const photosRef = useRef(photos);
+
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
+
+  useEffect(() => {
+    return () => {
+      photosRef.current.forEach(revokePhotoUrl);
+    };
+  }, []);
 
   const handleAddPhotos = useCallback(
     (files: File[]) => {
