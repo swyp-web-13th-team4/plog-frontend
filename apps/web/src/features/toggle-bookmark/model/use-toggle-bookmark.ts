@@ -121,16 +121,6 @@ export function useToggleBookmark() {
         await queryClient.cancelQueries({ queryKey: profilePostsQueryKey });
       }
 
-      const snapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
-      );
-      const detailSnapshot = queryClient.getQueryData<FeedPost>(
-        feedQueryKeys.detail(postId),
-      );
-      const profilePostsSnapshot = profilePostsQueryKey
-        ? queryClient.getQueryData<FeedProfilePosts>(profilePostsQueryKey)
-        : undefined;
-
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
         (prev) => toggleBookmarkInFeedCache(prev, postId),
@@ -148,31 +138,18 @@ export function useToggleBookmark() {
         );
       }
 
-      return {
-        detailSnapshot,
-        profilePostsQueryKey,
-        profilePostsSnapshot,
-        snapshot,
-      };
+      return { profilePostsQueryKey };
     },
-    onError: (_err, _variables, context) => {
-      if (context?.snapshot) {
-        queryClient.setQueryData<InfiniteData<FeedPage>>(
-          feedQueryKeys.list,
-          context.snapshot,
-        );
-      }
-      if (context?.detailSnapshot) {
-        queryClient.setQueryData<FeedPost>(
-          feedQueryKeys.detail(context.detailSnapshot.postId),
-          context.detailSnapshot,
-        );
-      }
-      if (context?.profilePostsQueryKey && context.profilePostsSnapshot) {
-        queryClient.setQueryData<FeedProfilePosts>(
-          context.profilePostsQueryKey,
-          context.profilePostsSnapshot,
-        );
+    onError: (_err, { postId }, context) => {
+      queryClient.invalidateQueries({
+        queryKey: feedQueryKeys.list,
+        exact: true,
+      });
+      queryClient.invalidateQueries({ queryKey: feedQueryKeys.detail(postId) });
+      if (context?.profilePostsQueryKey) {
+        queryClient.invalidateQueries({
+          queryKey: context.profilePostsQueryKey,
+        });
       }
       toast({
         id: 'bookmark-error',

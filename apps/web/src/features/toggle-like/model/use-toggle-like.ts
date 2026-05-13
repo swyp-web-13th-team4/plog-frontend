@@ -51,13 +51,6 @@ export function useToggleLike() {
         queryKey: feedQueryKeys.detail(postId),
       });
 
-      const listSnapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
-      );
-      const detailSnapshot = queryClient.getQueryData<FeedPost>(
-        feedQueryKeys.detail(postId),
-      );
-
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
         (prev) => toggleLikeInFeedList(prev, postId),
@@ -67,22 +60,8 @@ export function useToggleLike() {
         feedQueryKeys.detail(postId),
         (prev) => (prev ? applyLike(prev, !prev.like) : prev),
       );
-
-      return { listSnapshot, detailSnapshot };
     },
-    onError: (_err, _variables, context) => {
-      if (context?.listSnapshot) {
-        queryClient.setQueryData<InfiniteData<FeedPage>>(
-          feedQueryKeys.list,
-          context.listSnapshot,
-        );
-      }
-      if (context?.detailSnapshot) {
-        queryClient.setQueryData<FeedPost>(
-          feedQueryKeys.detail(context.detailSnapshot.postId),
-          context.detailSnapshot,
-        );
-      }
+    onError: () => {
       toast({
         id: 'like-error',
         type: 'error',
