@@ -10,10 +10,10 @@ import { feedQueryKeys } from '@/entities/feed';
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
 
-import { getNewPhotoFiles, mapCreateLogForm } from './mapper';
-import { type CreateLogFormValues, type PostCreateRequest } from './types';
+import { createLogForm, getNewPhotoFiles } from './mapper';
+import { type CreateLogFormValues, type CreateRequest } from './types';
 
-function createPost(data: PostCreateRequest, images: File[]) {
+function createPost(data: CreateRequest, images: File[]) {
   return clientApi.post<unknown>(
     '/post',
     createMultipartRequest(data, { images }),
@@ -33,7 +33,7 @@ export function useCreateLogMutation({
 
   return useMutation({
     mutationFn: (values: CreateLogFormValues) =>
-      createPost(mapCreateLogForm(values), getNewPhotoFiles(values)),
+      createPost(createLogForm(values), getNewPhotoFiles(values)),
     onSuccess: async () => {
       onSuccess?.();
       await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });

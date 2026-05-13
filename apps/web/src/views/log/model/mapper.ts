@@ -2,10 +2,10 @@ import { type PlaceCategoryValue } from '@/entities/place';
 
 import {
   type CreateLogFormValues,
-  type PostCreateRequest,
-  type PostEditData,
+  type CreateRequest,
+  type EditData,
   type PostImage,
-  type PostUpdateRequest,
+  type UpdateRequest,
 } from './types';
 import {
   type ExistingPhotoPreview,
@@ -33,7 +33,7 @@ function parseStudyDate(value: string) {
   return { year, month, date };
 }
 
-function mapExistingPhoto(image: PostImage): ExistingPhotoPreview {
+function existingPhoto(image: PostImage): ExistingPhotoPreview {
   return {
     type: 'existing',
     id: `existing-${image.id}`,
@@ -42,7 +42,7 @@ function mapExistingPhoto(image: PostImage): ExistingPhotoPreview {
   };
 }
 
-function mapPostEditPlace(post: PostEditData['post']) {
+function postEditPlace(post: EditData['post']) {
   return {
     id: `edit-${post.place.latitude}-${post.place.longitude}-${post.place.name}`,
     name: post.place.name,
@@ -52,9 +52,7 @@ function mapPostEditPlace(post: PostEditData['post']) {
   };
 }
 
-export function mapCreateLogForm(
-  values: CreateLogFormValues,
-): PostCreateRequest {
+export function createLogForm(values: CreateLogFormValues): CreateRequest {
   if (
     !values.place ||
     !values.categoryCode ||
@@ -85,11 +83,9 @@ export function mapCreateLogForm(
   };
 }
 
-export function mapUpdateLogForm(
-  values: CreateLogFormValues,
-): PostUpdateRequest {
+export function updateLogForm(values: CreateLogFormValues): UpdateRequest {
   return {
-    ...mapCreateLogForm(values),
+    ...createLogForm(values),
     keepImageIds: values.photos
       .filter(
         (photo): photo is ExistingPhotoPreview => photo.type === 'existing',
@@ -102,11 +98,11 @@ export function getNewPhotoFiles(values: CreateLogFormValues) {
   return values.photos.filter(isNewPhotoPreview).map(({ file }) => file);
 }
 
-export function mapPostEditResponseToFormValues({
+export function editFormValues({
   images,
   post,
-}: PostEditData): CreateLogFormValues {
-  const place = mapPostEditPlace(post);
+}: EditData): CreateLogFormValues {
+  const place = postEditPlace(post);
 
   return {
     title: post.title,
@@ -119,11 +115,11 @@ export function mapPostEditResponseToFormValues({
     focus: post.focus as CreateLogFormValues['focus'],
     placeTags: post.placeTags,
     scope: post.scope,
-    photos: images.images.map(mapExistingPhoto),
+    photos: images.images.map(existingPhoto),
   };
 }
 
-function serializePhoto(photo: PhotoPreview) {
+function photoTypes(photo: PhotoPreview) {
   if (isNewPhotoPreview(photo)) {
     return {
       type: photo.type,
@@ -141,8 +137,23 @@ function serializePhoto(photo: PhotoPreview) {
 
 export function createLogFormSnapshot(values: CreateLogFormValues) {
   return JSON.stringify({
-    ...mapCreateLogForm(values),
+    title: values.title.trim(),
+    contents: values.contents.trim(),
+    startedAt: values.startedAt,
+    endedAt: values.endedAt,
+    studyDate: values.studyDate ? formatStudyDate(values.studyDate) : null,
+    focus: values.focus,
+    scope: values.scope,
+    place: values.place
+      ? {
+          name: values.place.name,
+          address: values.place.address,
+          latitude: values.place.latitude,
+          longitude: values.place.longitude,
+        }
+      : null,
+    categoryCode: values.categoryCode,
     placeTags: [...values.placeTags].sort(),
-    photos: values.photos.map(serializePhoto),
+    photos: values.photos.map(photoTypes),
   });
 }

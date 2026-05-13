@@ -7,7 +7,7 @@ type FeedbackTarget = {
   focusTarget: FocusTarget;
 };
 
-export function useScrollFocusFeedback<
+export function useScrollFocusTarget<
   TField extends HTMLElement,
   TFocus extends HTMLElement,
 >() {

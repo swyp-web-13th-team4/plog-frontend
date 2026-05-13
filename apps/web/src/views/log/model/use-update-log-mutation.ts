@@ -10,19 +10,15 @@ import { feedQueryKeys } from '@/entities/feed';
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
 
-import { getNewPhotoFiles, mapUpdateLogForm } from './mapper';
+import { getNewPhotoFiles, updateLogForm } from './mapper';
 import {
   type CreateLogFormValues,
-  type PostEditData,
-  type PostUpdateRequest,
+  type EditData,
+  type UpdateRequest,
 } from './types';
 
-function updatePost(
-  postId: number,
-  data: PostUpdateRequest,
-  images: File[] = [],
-) {
-  return clientApi.put<PostEditData>(
+function updatePost(postId: number, data: UpdateRequest, images: File[] = []) {
+  return clientApi.put<EditData>(
     `/post/${postId}`,
     createMultipartRequest(data, { images }),
   );
@@ -49,7 +45,7 @@ export function useUpdateLogMutation({
 
       return updatePost(
         postId,
-        mapUpdateLogForm(values),
+        updateLogForm(values),
         getNewPhotoFiles(values),
       );
     },

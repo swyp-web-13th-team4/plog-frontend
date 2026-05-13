@@ -6,10 +6,10 @@ import { feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
-import { type PostEditData } from './types';
+import { type EditData } from './types';
 
 function getPostForEdit(postId: number) {
-  return clientApi.get<PostEditData>(`/post/${postId}/edit`);
+  return clientApi.get<EditData>(`/post/${postId}/edit`);
 }
 
 export function useEditLogQuery(postId: number | null) {
