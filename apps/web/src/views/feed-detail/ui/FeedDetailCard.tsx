@@ -346,7 +346,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-2.5 px-6 pt-3">
+          <div className="flex flex-col gap-4 px-6 pt-3">
             {!isMyPost && (
               <div className="flex justify-between">
                 <div className="flex items-center gap-1.5">
@@ -364,23 +364,21 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                 </div>
               </div>
             )}
-            <div className="flex flex-col gap-0.5">
+            <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="title-xs text-semantic-object-boldest">
-                    {post.placeName}
-                  </span>
-                  {post.category && (
-                    <Badge color="skyblue" variant="soft">
-                      {post.category}
-                    </Badge>
-                  )}
-                </div>
+                <Badge variant="soft" color="orange">
+                  {post.category}
+                </Badge>
                 {isMyPost && <CopyLinkButton postId={post.postId} />}
               </div>
-              <p className="body-sm text-semantic-object-normal">
-                {post.address}
-              </p>
+              <div className="flex flex-col gap-1">
+                <span className="title-xs text-semantic-object-boldest">
+                  {post.placeName}
+                </span>
+                <p className="body-sm text-semantic-object-normal">
+                  {post.address}
+                </p>
+              </div>
             </div>
             <FeedStatsSummary
               isUserOwnFeed={isMyPost}
