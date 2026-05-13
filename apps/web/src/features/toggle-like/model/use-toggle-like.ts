@@ -15,45 +15,25 @@ function postToggleLike(postId: number) {
   return clientApi.post<{ isLiked: boolean }>(`/feed/like/${postId}`);
 }
 
-function updateLikeCount(
-  post: FeedPost,
-  postId: number,
-  isLiked: boolean,
-): FeedPost {
-  if (post.postId !== postId) return post;
-
+function applyLike(post: FeedPost, isLiked: boolean): FeedPost {
   const countLike = post.like === isLiked ? 0 : isLiked ? 1 : -1;
   return { ...post, like: isLiked, likes: post.likes + countLike };
 }
 
-function toggleLikeCount(post: FeedPost, postId: number): FeedPost {
-  return updateLikeCount(post, postId, !post.like);
-}
-
-function updateLikeInFeedList(
+function toggleLikeInFeedList(
   prev: InfiniteData<FeedPage> | undefined,
   postId: number,
-  isLiked: boolean,
 ): InfiniteData<FeedPage> | undefined {
   if (!prev) return prev;
-
   return {
     ...prev,
     pages: prev.pages.map((page) => ({
       ...page,
-      items: page.items.map((post) => updateLikeCount(post, postId, isLiked)),
+      items: page.items.map((post) =>
+        post.postId === postId ? applyLike(post, !post.like) : post,
+      ),
     })),
   };
-}
-
-function updateLikeInFeedDetail(
-  prev: FeedPost | undefined,
-  postId: number,
-  isLiked: boolean,
-): FeedPost | undefined {
-  if (!prev) return prev;
-
-  return updateLikeCount(prev, postId, isLiked);
 }
 
 export function useToggleLike() {
@@ -63,12 +43,15 @@ export function useToggleLike() {
   const mutation = useMutation({
     mutationFn: ({ postId }: { postId: number }) => postToggleLike(postId),
     onMutate: async ({ postId }) => {
-      await queryClient.cancelQueries({ queryKey: feedQueryKeys.list });
+      await queryClient.cancelQueries({
+        queryKey: feedQueryKeys.list,
+        exact: true,
+      });
       await queryClient.cancelQueries({
         queryKey: feedQueryKeys.detail(postId),
       });
 
-      const snapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
+      const listSnapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
       );
       const detailSnapshot = queryClient.getQueryData<FeedPost>(
@@ -77,32 +60,21 @@ export function useToggleLike() {
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => {
-          if (!prev) return prev;
-
-          return {
-            ...prev,
-            pages: prev.pages.map((page) => ({
-              ...page,
-              items: page.items.map((post) => toggleLikeCount(post, postId)),
-            })),
-          };
-        },
+        (prev) => toggleLikeInFeedList(prev, postId),
       );
 
       queryClient.setQueryData<FeedPost>(
         feedQueryKeys.detail(postId),
-        (prev) =>
-          prev ? updateLikeInFeedDetail(prev, postId, !prev.like) : prev,
+        (prev) => (prev ? applyLike(prev, !prev.like) : prev),
       );
 
-      return { detailSnapshot, snapshot };
+      return { listSnapshot, detailSnapshot };
     },
     onError: (_err, _variables, context) => {
-      if (context?.snapshot) {
+      if (context?.listSnapshot) {
         queryClient.setQueryData<InfiniteData<FeedPage>>(
           feedQueryKeys.list,
-          context.snapshot,
+          context.listSnapshot,
         );
       }
       if (context?.detailSnapshot) {
@@ -117,14 +89,14 @@ export function useToggleLike() {
         description: '좋아요 처리 중 오류가 발생했어요.',
       });
     },
-    onSuccess: (res, { postId }) => {
-      queryClient.setQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
-        (prev) => updateLikeInFeedList(prev, postId, res.isLiked),
-      );
-      queryClient.setQueryData<FeedPost>(feedQueryKeys.detail(postId), (prev) =>
-        updateLikeInFeedDetail(prev, postId, res.isLiked),
-      );
+    onSettled: (_data, _err, { postId }) => {
+      queryClient.invalidateQueries({
+        queryKey: feedQueryKeys.list,
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: feedQueryKeys.detail(postId),
+      });
     },
   });
 
