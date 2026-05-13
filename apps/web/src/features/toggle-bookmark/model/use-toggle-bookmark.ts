@@ -9,6 +9,7 @@ import {
 
 import {
   type FeedPage,
+  type FeedPost,
   type FeedProfilePosts,
   feedQueryKeys,
   type PostSortType,
@@ -21,6 +22,22 @@ import { dialog } from '@/shared/lib/dialog';
 
 export function postToggleBookmark(postId: number) {
   return clientApi.post<{ isBookmarked: boolean }>(`/feed/bookmark/${postId}`);
+}
+
+function toggleBookmarkInFeedCache(
+  prev: InfiniteData<FeedPage> | undefined,
+  postId: number,
+): InfiniteData<FeedPage> | undefined {
+  if (!prev) return prev;
+  return {
+    ...prev,
+    pages: prev.pages.map((page) => ({
+      ...page,
+      items: page.items.map((post) =>
+        post.postId === postId ? { ...post, bookMark: !post.bookMark } : post,
+      ),
+    })),
+  };
 }
 
 function updateBookmarkInFeedCache(
@@ -37,6 +54,19 @@ function updateBookmarkInFeedCache(
         post.postId === postId ? { ...post, bookMark: isBookmarked } : post,
       ),
     })),
+  };
+}
+
+function toggleBookmarkInProfilePostsCache(
+  prev: FeedProfilePosts | undefined,
+  postId: number,
+): FeedProfilePosts | undefined {
+  if (!prev) return prev;
+  return {
+    ...prev,
+    posts: prev.posts.map((post) =>
+      post.postId === postId ? { ...post, bookMark: !post.bookMark } : post,
+    ),
   };
 }
 
@@ -80,7 +110,13 @@ export function useToggleBookmark() {
           )
         : undefined;
 
-      await queryClient.cancelQueries({ queryKey: feedQueryKeys.list });
+      await queryClient.cancelQueries({
+        queryKey: feedQueryKeys.list,
+        exact: true,
+      });
+      await queryClient.cancelQueries({
+        queryKey: feedQueryKeys.detail(postId),
+      });
       if (profilePostsQueryKey) {
         await queryClient.cancelQueries({ queryKey: profilePostsQueryKey });
       }
@@ -88,49 +124,48 @@ export function useToggleBookmark() {
       const snapshot = queryClient.getQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
       );
+      const detailSnapshot = queryClient.getQueryData<FeedPost>(
+        feedQueryKeys.detail(postId),
+      );
       const profilePostsSnapshot = profilePostsQueryKey
         ? queryClient.getQueryData<FeedProfilePosts>(profilePostsQueryKey)
         : undefined;
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => {
-          const current = prev?.pages
-            .flatMap((p) => p.items)
-            .find((post) => post.postId === postId);
-          return updateBookmarkInFeedCache(prev, postId, !current?.bookMark);
-        },
+        (prev) => toggleBookmarkInFeedCache(prev, postId),
+      );
+
+      queryClient.setQueryData<FeedPost>(
+        feedQueryKeys.detail(postId),
+        (prev) => (prev ? { ...prev, bookMark: !prev.bookMark } : prev),
       );
 
       if (profilePostsQueryKey) {
         queryClient.setQueryData<FeedProfilePosts>(
           profilePostsQueryKey,
-          (prev) => {
-            const current = prev?.posts.find((post) => post.postId === postId);
-            return updateBookmarkInProfilePostsCache(
-              prev,
-              postId,
-              !current?.bookMark,
-            );
-          },
+          (prev) => toggleBookmarkInProfilePostsCache(prev, postId),
         );
       }
 
-      return { profilePostsQueryKey, profilePostsSnapshot, snapshot };
+      return {
+        detailSnapshot,
+        profilePostsQueryKey,
+        profilePostsSnapshot,
+        snapshot,
+      };
     },
-    onError: (_err, { postId }, context) => {
+    onError: (_err, _variables, context) => {
       if (context?.snapshot) {
-        const original = context.snapshot.pages
-          .flatMap((p) => p.items)
-          .find((post) => post.postId === postId);
         queryClient.setQueryData<InfiniteData<FeedPage>>(
           feedQueryKeys.list,
-          (prev) =>
-            updateBookmarkInFeedCache(
-              prev,
-              postId,
-              original?.bookMark ?? false,
-            ),
+          context.snapshot,
+        );
+      }
+      if (context?.detailSnapshot) {
+        queryClient.setQueryData<FeedPost>(
+          feedQueryKeys.detail(context.detailSnapshot.postId),
+          context.detailSnapshot,
         );
       }
       if (context?.profilePostsQueryKey && context.profilePostsSnapshot) {
@@ -149,6 +184,10 @@ export function useToggleBookmark() {
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
         (prev) => updateBookmarkInFeedCache(prev, postId, res.isBookmarked),
+      );
+      queryClient.setQueryData<FeedPost>(
+        feedQueryKeys.detail(postId),
+        (prev) => (prev ? { ...prev, bookMark: res.isBookmarked } : prev),
       );
       if (context.profilePostsQueryKey) {
         queryClient.setQueryData<FeedProfilePosts>(
