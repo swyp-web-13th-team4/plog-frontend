@@ -17,6 +17,7 @@ import { initialCreateLogValues } from '@/features/create-log';
 
 import { dialog } from '@/shared/lib/dialog';
 
+import { MAX_PHOTO_FILE_SIZE } from './image-policy';
 import { createLogFormSnapshot, editFormValues } from './mapper';
 import { createLogResolver } from './resolver';
 import { type CreateLogFormValues } from './types';
@@ -265,7 +266,7 @@ export function useCreateLogPage(editPostId?: string) {
   const handlePhotoFileSizeExceeded = () => {
     toast({
       type: 'error',
-      description: '10MB 이하의 이미지 파일만 등록 가능해요.',
+      description: `${MAX_PHOTO_FILE_SIZE / (1024 * 1024)}MB 이하의 이미지 파일만 등록 가능해요.`,
     });
   };
 

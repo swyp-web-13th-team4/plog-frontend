@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { Field, Input, Textarea } from '@plog/ui';
 
 import { type LogFormController } from '../model/use-create-log-page';
@@ -30,6 +32,24 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
     titleFieldRef,
     titleInputRef,
   } = focusTargets;
+  const { ref: contentsFormRef } = contentsField;
+  const { ref: titleFormRef } = titleField;
+
+  const setTitleRef = useCallback(
+    (element: HTMLElement | null) => {
+      titleFormRef(element);
+      titleInputRef(element);
+    },
+    [titleFormRef, titleInputRef],
+  );
+
+  const setContentsRef = useCallback(
+    (element: HTMLTextAreaElement | null) => {
+      contentsFormRef(element);
+      contentsInputRef(element);
+    },
+    [contentsFormRef, contentsInputRef],
+  );
 
   return (
     <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
@@ -49,10 +69,7 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
         <Field label="제목" required error={errors.title?.message}>
           <Input
             {...titleField}
-            ref={(element) => {
-              titleField.ref(element);
-              titleInputRef(element);
-            }}
+            ref={setTitleRef}
             onChange={titleField.onChange}
             onClear={() => {
               setFormValue('title', '');
@@ -72,10 +89,7 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
         >
           <Textarea
             {...contentsField}
-            ref={(element) => {
-              contentsField.ref(element);
-              contentsInputRef(element);
-            }}
+            ref={setContentsRef}
             onChange={contentsField.onChange}
             onBlur={() => setFormValue('contents', (contents ?? '').trim())}
             value={(contents ?? '').trimStart()}
