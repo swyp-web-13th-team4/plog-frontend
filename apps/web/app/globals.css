@@ -41,6 +41,7 @@
 
   body {
     @apply bg-semantic-system-white text-semantic-object-boldest;
+    scrollbar-gutter: stable;
   }
 
   :focus-visible {
