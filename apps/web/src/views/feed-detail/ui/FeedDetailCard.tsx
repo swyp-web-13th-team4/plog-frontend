@@ -16,7 +16,7 @@ import {
   Spinner,
 } from '@plog/ui';
 
-import { CopyLinkButton } from '@/features/copy-link';
+import { ShareButton } from '@/features/share-post';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
@@ -346,7 +346,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-4 px-6 pt-3">
+          <div className="flex flex-col gap-2.5 px-6 pt-3">
             {!isMyPost && (
               <div className="flex justify-between">
                 <div className="flex items-center gap-1.5">
@@ -360,16 +360,16 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                     postId={post.postId}
                     isBookmarked={post.bookMark}
                   />
-                  <CopyLinkButton postId={post.postId} />
+                  <ShareButton postId={post.postId} />
                 </div>
               </div>
             )}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
                 <Badge variant="soft" color="orange">
                   {post.category}
                 </Badge>
-                {isMyPost && <CopyLinkButton postId={post.postId} />}
+                {isMyPost && <ShareButton postId={post.postId} />}
               </div>
               <div className="flex flex-col gap-1">
                 <span className="title-xs text-semantic-object-boldest">

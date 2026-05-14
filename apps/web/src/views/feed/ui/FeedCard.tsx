@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Avatar, Carousel, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { CopyLinkButton } from '@/features/copy-link';
+import { ShareButton } from '@/features/share-post';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
@@ -205,7 +205,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 postId={post.postId}
                 isBookmarked={post.bookMark}
               />
-              <CopyLinkButton postId={post.postId} />
+              <ShareButton postId={post.postId} />
             </div>
           </div>
           <div className="flex flex-col gap-3">

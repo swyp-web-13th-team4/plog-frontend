@@ -2,12 +2,14 @@
 
 import { Icon, useToast } from '@plog/ui';
 
-type CopyLinkButtonProps = {
+type ShareButtonProps = {
   postId: number;
 };
 
-export default function CopyLinkButton({ postId }: CopyLinkButtonProps) {
+export default function ShareButton({ postId }: ShareButtonProps) {
   const { toast } = useToast();
+
+  const url = `${window.location.origin}/feed/${postId}`;
 
   const handleCopy = async () => {
     if (!navigator.clipboard) {
@@ -17,7 +19,6 @@ export default function CopyLinkButton({ postId }: CopyLinkButtonProps) {
       });
       return;
     }
-    const url = `${window.location.origin}/feed/${postId}`;
     try {
       await navigator.clipboard.writeText(url);
       toast({
@@ -32,11 +33,26 @@ export default function CopyLinkButton({ postId }: CopyLinkButtonProps) {
     }
   };
 
+  const handleShare = async () => {
+    if (!navigator.share) {
+      await handleCopy();
+    }
+    try {
+      const shareData = { url };
+      await navigator.share(shareData);
+    } catch {
+      toast({
+        type: 'error',
+        description: '공유에 실패했어요. 다시 시도해 주세요.',
+      });
+    }
+  };
+
   return (
     <button
       type="button"
       className="flex cursor-pointer items-center"
-      onClick={handleCopy}
+      onClick={handleShare}
     >
       <Icon name="share" className="text-semantic-object-normal" />
     </button>
