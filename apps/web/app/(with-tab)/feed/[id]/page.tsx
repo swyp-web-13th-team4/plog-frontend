@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
-import { type FeedPost } from '@/entities/feed';
 import { FeedDetailPage } from '@/views/feed-detail';
+
+import { type FeedPost } from '@/entities/feed';
 
 import { serverApi } from '@/shared/api/server-api';
 
