@@ -41,7 +41,11 @@ export default function ShareButton({ postId }: ShareButtonProps) {
       const shareData = { url };
       await navigator.share(shareData);
     } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') return;
+      if (
+        error instanceof DOMException &&
+        (error.name === 'AbortError' || error.name === 'InvalidStateError')
+      )
+        return;
       toast({
         type: 'error',
         description: '공유에 실패했어요. 다시 시도해 주세요.',
