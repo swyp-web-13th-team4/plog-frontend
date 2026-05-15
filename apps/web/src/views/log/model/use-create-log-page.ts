@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   type FieldErrors,
   type FieldPath,
@@ -48,13 +48,6 @@ export function useCreateLogPage(editPostId?: string) {
 
   const invalidFocus = useCreateLogInvalidFocus();
 
-  const {
-    photos,
-    handleAddPhotos,
-    handleRemovePhoto,
-    setExistingPhotos,
-    clearPhotos,
-  } = usePhotoUpload();
   const { toast } = useToast();
   const hasRestoredFormRef = useRef(false);
 
@@ -109,6 +102,7 @@ export function useCreateLogPage(editPostId?: string) {
   const focusScore = useWatch({ control, name: 'focus' });
   const reviewTags = useWatch({ control, name: 'placeTags' });
   const scope = useWatch({ control, name: 'scope' });
+  const photos = useWatch({ control, name: 'photos' });
   const isPublic = scope === 'PUBLIC';
 
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
@@ -121,20 +115,27 @@ export function useCreateLogPage(editPostId?: string) {
     });
   };
 
+  const setPhotos = useCallback(
+    (nextPhotos: CreateLogFormValues['photos']) => {
+      setValue('photos', nextPhotos, {
+        shouldDirty: true,
+        shouldValidate: isSubmitted,
+      });
+    },
+    [isSubmitted, setValue],
+  );
+
+  const { handleAddPhotos, handleRemovePhoto, clearPhotos } = usePhotoUpload({
+    photos,
+    onPhotosChange: setPhotos,
+  });
+
   useEffect(() => {
     if (!isEditMode || !editLogQuery.data || hasRestoredFormRef.current) return;
 
     hasRestoredFormRef.current = true;
     reset(editFormValues(editLogQuery.data));
-    setExistingPhotos(editLogQuery.data.images.images);
-  }, [editLogQuery.data, isEditMode, reset, setExistingPhotos]);
-
-  useEffect(() => {
-    setValue('photos', photos, {
-      shouldDirty: photos.length > 0,
-      shouldValidate: isSubmitted,
-    });
-  }, [isSubmitted, photos, setValue]);
+  }, [editLogQuery.data, isEditMode, reset]);
 
   const handleClearPlaceName = () => {
     setFormValue('place', null);
@@ -243,7 +244,7 @@ export function useCreateLogPage(editPostId?: string) {
       values.endedAt !== null ||
       values.focus !== null ||
       values.placeTags.length > 0 ||
-      photos.length > 0;
+      values.photos.length > 0;
 
     if (!hasCreateLogData) {
       router.push('/map');

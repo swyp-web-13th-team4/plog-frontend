@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { MAX_PHOTO_COUNT } from './image-policy';
-import { type PostImage } from './types';
 
 export type NewPhotoPreview = {
   type: 'new';
@@ -28,15 +27,6 @@ function createPhotoPreview(file: File, index: number): NewPhotoPreview {
   };
 }
 
-function createExistingPhotoPreview(image: PostImage): ExistingPhotoPreview {
-  return {
-    type: 'existing',
-    id: `existing-${image.id}`,
-    imageId: image.id,
-    url: image.url,
-  };
-}
-
 export function isNewPhotoPreview(
   photo: PhotoPreview,
 ): photo is NewPhotoPreview {
@@ -47,12 +37,27 @@ function revokePhotoUrl(photo: PhotoPreview) {
   if (isNewPhotoPreview(photo)) URL.revokeObjectURL(photo.url);
 }
 
-export function usePhotoUpload() {
-  const [photos, setPhotos] = useState<PhotoPreview[]>([]);
+type UsePhotoUploadOptions = {
+  photos: PhotoPreview[];
+  onPhotosChange: (photos: PhotoPreview[]) => void;
+};
+
+export function usePhotoUpload({
+  photos,
+  onPhotosChange,
+}: UsePhotoUploadOptions) {
   const photosRef = useRef(photos);
+  const previousPhotosRef = useRef(photos);
 
   useEffect(() => {
+    previousPhotosRef.current
+      .filter((previousPhoto) =>
+        photos.every((photo) => photo.id !== previousPhoto.id),
+      )
+      .forEach(revokePhotoUrl);
+
     photosRef.current = photos;
+    previousPhotosRef.current = photos;
   }, [photos]);
 
   useEffect(() => {
@@ -63,51 +68,37 @@ export function usePhotoUpload() {
 
   const handleAddPhotos = useCallback(
     (files: File[]) => {
-      setPhotos((currentPhotos) => {
-        const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
-        const nextFiles = files.slice(0, availableCount);
-        return [
-          ...currentPhotos,
-          ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
-        ];
-      });
+      const currentPhotos = photosRef.current;
+      const availableCount = MAX_PHOTO_COUNT - currentPhotos.length;
+      const nextFiles = files.slice(0, availableCount);
+
+      onPhotosChange([
+        ...currentPhotos,
+        ...nextFiles.map((file, index) => createPhotoPreview(file, index)),
+      ]);
     },
-    [setPhotos],
+    [onPhotosChange],
   );
 
   const handleRemovePhoto = useCallback(
     (id: string) => {
-      setPhotos((currentPhotos) => {
-        const targetPhoto = currentPhotos.find((photo) => photo.id === id);
-        if (targetPhoto) revokePhotoUrl(targetPhoto);
-        return currentPhotos.filter((photo) => photo.id !== id);
-      });
-    },
-    [setPhotos],
-  );
+      const currentPhotos = photosRef.current;
+      const targetPhoto = currentPhotos.find((photo) => photo.id === id);
 
-  const setExistingPhotos = useCallback(
-    (images: PostImage[]) => {
-      setPhotos((currentPhotos) => {
-        currentPhotos.forEach(revokePhotoUrl);
-        return images.slice(0, MAX_PHOTO_COUNT).map(createExistingPhotoPreview);
-      });
+      if (targetPhoto) revokePhotoUrl(targetPhoto);
+      onPhotosChange(currentPhotos.filter((photo) => photo.id !== id));
     },
-    [setPhotos],
+    [onPhotosChange],
   );
 
   const clearPhotos = useCallback(() => {
-    setPhotos((currentPhotos) => {
-      currentPhotos.forEach(revokePhotoUrl);
-      return [];
-    });
-  }, [setPhotos]);
+    photosRef.current.forEach(revokePhotoUrl);
+    onPhotosChange([]);
+  }, [onPhotosChange]);
 
   return {
-    photos,
     handleAddPhotos,
     handleRemovePhoto,
-    setExistingPhotos,
     clearPhotos,
   };
 }
