@@ -12,6 +12,10 @@ import { Avatar, BottomSheet, Button, Icon, useToast } from '@plog/ui';
 import { type DefaultProfileImage } from '@/entities/user';
 
 import { convertImageToJpeg } from '@/shared/lib/convert-image';
+import {
+  IMAGE_INPUT_ACCEPT,
+  IMAGE_UPLOAD_MAX_FILE_SIZE,
+} from '@/shared/lib/image-upload-policy';
 
 type ProfileImageSheetProps = {
   defaultImages: DefaultProfileImage[];
@@ -22,8 +26,6 @@ type ProfileImageSheetProps = {
   onSelectDefault: (imageId: number) => void;
   onUpload: (file: File) => void;
 };
-
-const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 export default function ProfileImageSheet({
   defaultImages,
@@ -48,7 +50,7 @@ export default function ProfileImageSheet({
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > MAX_IMAGE_SIZE) {
+    if (file.size > IMAGE_UPLOAD_MAX_FILE_SIZE) {
       e.currentTarget.value = '';
       toast({
         type: 'error',
@@ -159,7 +161,7 @@ export default function ProfileImageSheet({
             <input
               ref={imageInputRef}
               type="file"
-              accept="image/jpeg, image/png, image/webp, image/heic, image/heif"
+              accept={IMAGE_INPUT_ACCEPT}
               aria-hidden
               tabIndex={-1}
               className="invisible"

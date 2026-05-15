@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { MAX_PHOTO_COUNT } from './image-policy';
+import { MAX_PHOTO_COUNT } from '@/shared/lib/image-upload-policy';
 
 export type NewPhotoPreview = {
   type: 'new';

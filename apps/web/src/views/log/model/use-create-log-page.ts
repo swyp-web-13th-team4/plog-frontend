@@ -16,8 +16,8 @@ import { useToast } from '@plog/ui';
 import { initialCreateLogValues } from '@/features/create-log';
 
 import { dialog } from '@/shared/lib/dialog';
+import { IMAGE_UPLOAD_MAX_FILE_SIZE } from '@/shared/lib/image-upload-policy';
 
-import { MAX_PHOTO_FILE_SIZE } from './image-policy';
 import { createLogFormSnapshot, editFormValues } from './mapper';
 import { createLogResolver } from './resolver';
 import { type CreateLogFormValues } from './types';
@@ -92,17 +92,34 @@ export function useCreateLogPage(editPostId?: string) {
   const titleField = register('title');
   const contentsField = register('contents');
 
-  const title = useWatch({ control, name: 'title' });
-  const contents = useWatch({ control, name: 'contents' });
-  const place = useWatch({ control, name: 'place' });
-  const placeCategory = useWatch({ control, name: 'categoryCode' });
-  const workDate = useWatch({ control, name: 'studyDate' });
-  const startTime = useWatch({ control, name: 'startedAt' });
-  const endTime = useWatch({ control, name: 'endedAt' });
-  const focusScore = useWatch({ control, name: 'focus' });
-  const reviewTags = useWatch({ control, name: 'placeTags' });
-  const scope = useWatch({ control, name: 'scope' });
-  const photos = useWatch({ control, name: 'photos' });
+  const [
+    title,
+    contents,
+    place,
+    placeCategory,
+    workDate,
+    startTime,
+    endTime,
+    focusScore,
+    reviewTags,
+    scope,
+    photos,
+  ] = useWatch({
+    control,
+    name: [
+      'title',
+      'contents',
+      'place',
+      'categoryCode',
+      'studyDate',
+      'startedAt',
+      'endedAt',
+      'focus',
+      'placeTags',
+      'scope',
+      'photos',
+    ],
+  });
   const isPublic = scope === 'PUBLIC';
 
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
@@ -265,7 +282,7 @@ export function useCreateLogPage(editPostId?: string) {
   const handlePhotoFileSizeExceeded = () => {
     toast({
       type: 'error',
-      description: `${MAX_PHOTO_FILE_SIZE / (1024 * 1024)}MB 이하의 이미지 파일만 등록 가능해요.`,
+      description: `${IMAGE_UPLOAD_MAX_FILE_SIZE / (1024 * 1024)}MB 이하의 이미지 파일만 등록 가능해요.`,
     });
   };
 

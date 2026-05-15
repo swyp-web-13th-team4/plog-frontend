@@ -7,13 +7,13 @@ import Image from 'next/image';
 import { Icon } from '@plog/ui';
 
 import { convertImageToJpeg } from '@/shared/lib/convert-image';
-
 import {
   ACCEPTED_IMAGE_TYPES,
+  IMAGE_INPUT_ACCEPT,
+  IMAGE_UPLOAD_MAX_FILE_SIZE,
   MAX_PHOTO_COUNT,
-  MAX_PHOTO_FILE_SIZE,
-  PHOTO_INPUT_ACCEPT,
-} from '../model/image-policy';
+} from '@/shared/lib/image-upload-policy';
+
 import { type PhotoPreview } from '../model/use-photo-upload';
 
 type PhotoUploaderProps = {
@@ -41,7 +41,7 @@ export default function PhotoUploader({
       ACCEPTED_IMAGE_TYPES.has(file.type),
     );
     const selectedFiles = acceptedFiles.filter(
-      (file) => file.size <= MAX_PHOTO_FILE_SIZE,
+      (file) => file.size <= IMAGE_UPLOAD_MAX_FILE_SIZE,
     );
 
     if (acceptedFiles.length !== selectedFiles.length) {
@@ -69,7 +69,7 @@ export default function PhotoUploader({
         ref={fileInputRef}
         type="file"
         name="photos"
-        accept={PHOTO_INPUT_ACCEPT}
+        accept={IMAGE_INPUT_ACCEPT}
         multiple
         className="sr-only"
         onChange={handleFileChange}

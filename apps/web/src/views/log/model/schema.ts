@@ -9,7 +9,11 @@ import {
   WorkConvenience,
 } from '@/entities/feed';
 
-import { MAX_PHOTO_COUNT, MAX_PHOTO_FILE_SIZE } from './image-policy';
+import {
+  IMAGE_UPLOAD_MAX_FILE_SIZE,
+  MAX_PHOTO_COUNT,
+} from '@/shared/lib/image-upload-policy';
+
 import { isNewPhotoPreview } from './use-photo-upload';
 
 const timeSchema = z.object({
@@ -166,7 +170,7 @@ export const createLogSchema = z
           photos.every(
             (photo) =>
               !isNewPhotoPreview(photo) ||
-              photo.file.size <= MAX_PHOTO_FILE_SIZE,
+              photo.file.size <= IMAGE_UPLOAD_MAX_FILE_SIZE,
           ),
         { message: '10MB 이하의 이미지 파일만 등록 가능해요.' },
       ),
