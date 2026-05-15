@@ -7,7 +7,6 @@ export function proxy(request: NextRequest) {
 
   const isProtectedPage =
     pathname.startsWith('/map') ||
-    pathname.startsWith('/feed') ||
     pathname.startsWith('/log') ||
     pathname.startsWith('/my');
 
@@ -25,11 +24,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/map/:path*',
-    '/feed/:path*',
-    '/log/:path*',
-    '/my/:path*',
-    '/signup/:path*',
-  ],
+  matcher: ['/map/:path*', '/log/:path*', '/my/:path*', '/signup/:path*'],
 };
