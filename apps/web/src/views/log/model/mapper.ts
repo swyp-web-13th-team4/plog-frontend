@@ -112,7 +112,7 @@ export function editFormValues({
     studyDate: parseStudyDate(post.studyDate),
     startedAt: post.startedAt,
     endedAt: post.endedAt,
-    focus: post.focus as CreateLogFormValues['focus'],
+    focus: post.focus,
     placeTags: post.placeTags,
     scope: post.scope,
     photos: images.images.map(existingPhoto),

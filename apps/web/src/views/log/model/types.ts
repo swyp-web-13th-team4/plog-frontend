@@ -1,12 +1,8 @@
-import { type CreateLogValues } from '@/features/create-log';
+import { type z } from 'zod';
 
-import { type PlaceTagValue, type PostScope } from '@/entities/feed';
+import { type createLogSchema } from './schema';
 
-import { type PhotoPreview } from './use-photo-upload';
-
-export type CreateLogFormValues = CreateLogValues & {
-  photos: PhotoPreview[];
-};
+export type CreateLogFormValues = z.infer<typeof createLogSchema>;
 
 export type Time = {
   hour: number;
@@ -26,11 +22,11 @@ export type CreateRequest = {
   startedAt: Time;
   endedAt: Time;
   studyDate: string;
-  focus: number;
-  scope: PostScope;
+  focus: NonNullable<CreateLogFormValues['focus']>;
+  scope: CreateLogFormValues['scope'];
   place: Place;
-  placeTags: PlaceTagValue[];
-  categoryCode: string;
+  placeTags: CreateLogFormValues['placeTags'];
+  categoryCode: NonNullable<CreateLogFormValues['categoryCode']>;
 };
 
 export type UpdateRequest = CreateRequest & {

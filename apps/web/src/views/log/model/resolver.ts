@@ -1,12 +1,15 @@
 import { type FieldErrors, type Resolver } from 'react-hook-form';
 
-import { type ZodError } from 'zod';
-
 import { createLogSchema } from './schema';
 import { type CreateLogFormValues } from './types';
 
+type CreateLogParseError = Extract<
+  ReturnType<typeof createLogSchema.safeParse>,
+  { success: false }
+>['error'];
+
 function getFieldErrors(
-  error: ZodError<CreateLogFormValues>,
+  error: CreateLogParseError,
 ): FieldErrors<CreateLogFormValues> {
   return error.issues.reduce<FieldErrors<CreateLogFormValues>>(
     (fieldErrors, issue) => {
@@ -33,13 +36,13 @@ export const createLogResolver: Resolver<CreateLogFormValues> = async (
 
   if (result.success) {
     return {
-      values: result.data as CreateLogFormValues,
+      values: result.data,
       errors: {},
     };
   }
 
   return {
     values: {},
-    errors: getFieldErrors(result.error as ZodError<CreateLogFormValues>),
+    errors: getFieldErrors(result.error),
   };
 };

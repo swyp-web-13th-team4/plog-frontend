@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+import {
+  AtmosphereAndFocus,
+  EnvironmentAndComfort,
+  OtherTags,
+  type PlaceTagValue,
+  SeatingAndSpace,
+  WorkConvenience,
+} from '@/entities/feed';
+
 import { MAX_PHOTO_COUNT, MAX_PHOTO_FILE_SIZE } from './image-policy';
 import { isNewPhotoPreview } from './use-photo-upload';
 
@@ -32,6 +41,27 @@ const placeCategorySchema = z.enum([
 ]);
 
 const scopeSchema = z.enum(['PUBLIC', 'PRIVATE']);
+
+const focusSchema = z.union([
+  z.literal(1),
+  z.literal(2),
+  z.literal(3),
+  z.literal(4),
+  z.literal(5),
+]);
+
+const placeTagValues = [
+  ...Object.values(AtmosphereAndFocus),
+  ...Object.values(WorkConvenience),
+  ...Object.values(SeatingAndSpace),
+  ...Object.values(EnvironmentAndComfort),
+  ...Object.values(OtherTags),
+] as PlaceTagValue[];
+
+const placeTagSchema = z.custom<PlaceTagValue>(
+  (value) => placeTagValues.includes(value as PlaceTagValue),
+  { message: '유효하지 않은 태그입니다.' },
+);
 
 const titleSchema = z
   .string()
@@ -140,30 +170,26 @@ export const createLogSchema = z
           ),
         { message: '10MB 이하의 이미지 파일만 등록 가능해요.' },
       ),
-    place: placeSchema.nullable().refine((value) => value !== null, {
+    place: placeSchema.nullable().refine((value): boolean => value !== null, {
       message: '작업 장소를 입력해 주세요.',
     }),
     categoryCode: placeCategorySchema
       .nullable()
-      .refine((value) => value !== null, {
+      .refine((value): boolean => value !== null, {
         message: '장소 카테고리를 선택해 주세요.',
       }),
-    studyDate: dateSchema.nullable().refine((value) => value !== null, {
-      message: '작업 날짜를 선택해 주세요.',
-    }),
+    studyDate: dateSchema
+      .nullable()
+      .refine((value): boolean => value !== null, {
+        message: '작업 날짜를 선택해 주세요.',
+      }),
     startedAt: timeSchema.nullable(),
     endedAt: timeSchema.nullable(),
-    focus: z
-      .number()
-      .int()
-      .min(1)
-      .max(5)
-      .nullable()
-      .refine((value) => value !== null, {
-        message: '오늘의 집중도를 선택해 주세요.',
-      }),
+    focus: focusSchema.nullable().refine((value): boolean => value !== null, {
+      message: '오늘의 집중도를 선택해 주세요.',
+    }),
     placeTags: z
-      .array(z.string())
+      .array(placeTagSchema)
       .min(1, '최소 1개 이상의 태그를 선택해 주세요.'),
     scope: scopeSchema,
   })

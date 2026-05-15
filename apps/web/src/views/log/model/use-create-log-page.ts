@@ -110,7 +110,6 @@ export function useCreateLogPage(editPostId?: string) {
     value: FieldPathValue<CreateLogFormValues, TFieldName>,
   ) => {
     setValue(fieldName, value, {
-      shouldDirty: true,
       shouldValidate: true,
     });
   };
@@ -118,7 +117,6 @@ export function useCreateLogPage(editPostId?: string) {
   const setPhotos = useCallback(
     (nextPhotos: CreateLogFormValues['photos']) => {
       setValue('photos', nextPhotos, {
-        shouldDirty: true,
         shouldValidate: isSubmitted,
       });
     },
