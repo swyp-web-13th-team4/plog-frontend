@@ -17,7 +17,7 @@ export function proxy(request: NextRequest) {
   }
 
   if (accessToken && isGuestOnlyPage) {
-    return NextResponse.redirect(new URL('/map', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
