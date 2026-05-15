@@ -36,6 +36,7 @@ export default function ShareButton({ postId }: ShareButtonProps) {
   const handleShare = async () => {
     if (!navigator.share) {
       await handleCopy();
+      return;
     }
     try {
       const shareData = { url };
