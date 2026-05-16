@@ -16,11 +16,12 @@ import {
   DEFAULT_REVIEW_PLACE_NAME,
   REVIEW_PLACE_IMAGE_SRC,
   type ReviewEnvironmentName,
+  type ReviewEnvironmentScore,
 } from './types';
 
 export type ReviewEnvironmentValues = Record<
   ReviewEnvironmentName,
-  string | null
+  ReviewEnvironmentScore | null
 >;
 
 type UseReviewPageOptions = {
@@ -64,7 +65,7 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
 
   const handleEnvironmentChange = (
     name: ReviewEnvironmentName,
-    value: string | null,
+    value: ReviewEnvironmentScore | null,
   ) => {
     setEnvironmentValues((current) => ({
       ...current,

@@ -1,8 +1,13 @@
 import { Chip, Field, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { REVIEW_ENVIRONMENT_GROUPS } from '../model/constants';
-import { type ReviewEnvironmentGroup } from '../model/types';
+import {
+  REVIEW_ENVIRONMENT_GROUPS,
+  REVIEW_ENVIRONMENT_LABELS,
+  REVIEW_ENVIRONMENT_SCORES,
+  type ReviewEnvironmentGroup,
+  type ReviewEnvironmentScore,
+} from '../model/types';
 import { type ReviewFormController } from '../model/use-review-page';
 
 type ReviewEnvironmentSectionProps = {
@@ -15,8 +20,8 @@ function EnvironmentChoiceGroup({
   onChange,
 }: {
   group: ReviewEnvironmentGroup;
-  value: string | null;
-  onChange: (value: string | null) => void;
+  value: ReviewEnvironmentScore | null;
+  onChange: (value: ReviewEnvironmentScore | null) => void;
 }) {
   return (
     <div className="flex w-full flex-col gap-3">
@@ -30,16 +35,18 @@ function EnvironmentChoiceGroup({
       </div>
       <input type="hidden" name={group.name} value={value ?? ''} />
       <div className="grid grid-cols-3 gap-3">
-        {group.options.map((option) => (
+        {REVIEW_ENVIRONMENT_SCORES.map((score) => (
           <Chip
-            key={option}
+            key={score}
             size="large"
             variant="solid"
-            pressed={value === option}
+            pressed={value === score}
             className="w-full min-w-0"
-            onPressedChange={(pressed) => onChange(pressed ? option : null)}
+            onPressedChange={(pressed) => onChange(pressed ? score : null)}
           >
-            <span className={cn('label-sm')}>{option}</span>
+            <span className={cn('label-sm')}>
+              {REVIEW_ENVIRONMENT_LABELS[group.name][score]}
+            </span>
           </Chip>
         ))}
       </div>
