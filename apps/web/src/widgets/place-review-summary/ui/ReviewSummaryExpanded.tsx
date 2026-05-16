@@ -1,5 +1,6 @@
 // ReviewSummaryExpanded.tsx
 import { Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { formatReviewCount, formatReviewPersonCount } from '../lib/utils';
 import {
@@ -22,7 +23,14 @@ export default function ReviewSummaryExpanded({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <h2 className="label-lg text-semantic-object-boldest">방문자 리뷰</h2>
-          <span className="title-xs text-semantic-accent-normal">
+          <span
+            className={cn(
+              'title-xs',
+              variant === 'record'
+                ? 'text-semantic-accent-normal'
+                : 'text-semantic-theme-sky-normal',
+            )}
+          >
             {formatReviewCount(summary.totalCount)}
           </span>
         </div>

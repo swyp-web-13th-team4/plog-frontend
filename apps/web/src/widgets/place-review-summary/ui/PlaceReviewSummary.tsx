@@ -25,6 +25,7 @@ export default function PlaceReviewSummary({
   return (
     <ReviewSummaryBasic
       summary={summary}
+      variant={variant}
       onMoreClick={() => setExpanded(true)}
     />
   );

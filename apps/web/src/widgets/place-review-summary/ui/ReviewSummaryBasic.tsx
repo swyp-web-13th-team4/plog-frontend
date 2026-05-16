@@ -1,16 +1,22 @@
 // ReviewSummaryCompact.tsx
 import { Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { formatCompactReviewCount } from '../lib/utils';
-import { type PlaceReviewSummary } from '../model/types';
+import {
+  type PlaceReviewSummary,
+  type PlaceReviewVariant,
+} from '../model/types';
 import ReviewSummaryChip from './ReviewSummaryChip';
 type ReviewSummaryCompactProps = {
   summary: PlaceReviewSummary;
+  variant: PlaceReviewVariant;
   onMoreClick: () => void;
 };
 
 export default function ReviewSummaryBasic({
   summary,
+  variant,
   onMoreClick,
 }: ReviewSummaryCompactProps) {
   return (
@@ -18,7 +24,14 @@ export default function ReviewSummaryBasic({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <h2 className="label-lg text-semantic-object-boldest">방문자 리뷰</h2>
-          <span className="title-xs text-semantic-accent-normal">
+          <span
+            className={cn(
+              'title-xs',
+              variant === 'record'
+                ? 'text-semantic-accent-normal'
+                : 'text-semantic-theme-sky-normal',
+            )}
+          >
             {formatCompactReviewCount(summary.totalCount)}
           </span>
         </div>
