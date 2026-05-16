@@ -1,10 +1,10 @@
 import { type DateValue, Field, Icon, type TimeValue } from '@plog/ui';
 
+import { SelectTriggerButton } from '@/features/select-trigger-button';
 import { WorkDateDialog } from '@/features/select-work-date';
 import { WorkTimeDialog } from '@/features/select-work-time';
 
 import { type ReviewFormController } from '../model/use-review-page';
-import SelectTriggerButton from './SelectTriggerButton';
 
 type ReviewVisitSectionProps = {
   controller: ReviewFormController;

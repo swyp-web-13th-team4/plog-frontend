@@ -1,10 +1,10 @@
 import { Field, Icon } from '@plog/ui';
 
+import { SelectTriggerButton } from '@/features/select-trigger-button';
 import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
 import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
 
 import { type LogFormController } from '../model/use-create-log-page';
-import SelectTriggerButton from './SelectTriggerButton';
 
 type LogWorkSessionFieldsProps = {
   controller: LogFormController;
