@@ -18,19 +18,28 @@ export async function generateMetadata({
   try {
     const post = await serverApi.get<FeedPost>(`/feed/${id}`);
     const thumbnail = post.postImages[0];
-    const title = `${post.title} - 플로그`;
+    const title = post.title;
     const description = post.contents;
+    const images = thumbnail
+      ? [{ url: thumbnail, width: 480, height: 480, alt: post.title }]
+      : undefined;
 
     return {
       title,
       description,
       openGraph: {
         type: 'article',
+        siteName: '플로그',
         title,
         description,
-        images: thumbnail
-          ? [{ url: thumbnail, width: 480, height: 480, alt: post.title }]
-          : undefined,
+        locale: 'ko_KR',
+        images,
+      },
+      twitter: {
+        card: thumbnail ? 'summary_large_image' : 'summary',
+        title,
+        description,
+        images: thumbnail ? [thumbnail] : undefined,
       },
     };
   } catch {

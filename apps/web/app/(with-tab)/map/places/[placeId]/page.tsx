@@ -1,5 +1,9 @@
 import { Suspense } from 'react';
 
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = { title: '장소' };
+
 import { notFound } from 'next/navigation';
 
 import { PlaceFeedPage } from '@/views/map-place-feed';
