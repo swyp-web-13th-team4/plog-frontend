@@ -14,24 +14,30 @@ export const viewport: Viewport = {
   colorScheme: 'light',
 };
 
+const siteUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'https://localhost:3000';
+
 export const metadata: Metadata = {
-  title: '플로그',
-  description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
-  icons: {
-    icon: '/favicon.svg',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: '플로그',
+    template: '%s | 플로그',
   },
+  description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
   openGraph: {
     type: 'website',
+    siteName: '플로그',
     title: '플로그',
     description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: '플로그',
-      },
-    ],
+    locale: 'ko_KR',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: '플로그' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '플로그',
+    description: '나를 잘 이해하고, 더 깊이 몰입할 수 있도록',
+    images: ['/og-image.jpg'],
   },
 };
 
