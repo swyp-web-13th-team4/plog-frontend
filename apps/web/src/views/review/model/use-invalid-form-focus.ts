@@ -4,11 +4,22 @@ import { useScrollFocusTarget } from '@/shared/lib/scroll-focus-target';
 
 import { type ReviewFormValues } from './types';
 
-export type ReviewFormFields = 'environmentValues' | 'contents' | 'photos';
+export type ReviewFormFields =
+  | 'rating'
+  | 'environmentValues'
+  | 'contents'
+  | 'photos';
 
 export function getInvalidSubmitFeedback(
   fieldErrors: FieldErrors<ReviewFormValues>,
 ): { field: ReviewFormFields; toastMessage?: string } | null {
+  if (fieldErrors.rating) {
+    return {
+      field: 'rating',
+      toastMessage: fieldErrors.rating.message,
+    };
+  }
+
   if (fieldErrors.environmentValues) {
     return {
       field: 'environmentValues',
@@ -33,12 +44,16 @@ export function getInvalidSubmitFeedback(
 }
 
 export function useReviewInvalidFocus() {
+  const rating = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const environment = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const contents = useScrollFocusTarget<HTMLDivElement, HTMLTextAreaElement>();
   const photos = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
 
   const focusField = (field: ReviewFormFields) => {
     switch (field) {
+      case 'rating':
+        rating.trigger();
+        break;
       case 'environmentValues':
         environment.trigger();
         break;
@@ -60,6 +75,8 @@ export function useReviewInvalidFocus() {
       environmentFirstButtonRef: environment.focusRef,
       photoFieldRef: photos.fieldRef,
       photoUploadButtonRef: photos.focusRef,
+      ratingFieldRef: rating.fieldRef,
+      ratingFirstButtonRef: rating.focusRef,
     },
   };
 }

@@ -10,6 +10,10 @@ const environmentScoreSchema = z.union([
   z.literal(5),
 ]);
 
+const ratingScoreSchema = environmentScoreSchema.nullable().refine(Boolean, {
+  message: '별점을 선택해 주세요.',
+});
+
 const environmentValuesSchema = z
   .object({
     spaceSize: environmentScoreSchema.nullable(),
@@ -22,6 +26,7 @@ const environmentValuesSchema = z
   });
 
 export const reviewSchema = z.object({
+  rating: ratingScoreSchema,
   environmentValues: environmentValuesSchema,
   contents: z
     .string()

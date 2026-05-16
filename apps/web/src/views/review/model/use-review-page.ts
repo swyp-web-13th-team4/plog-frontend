@@ -26,6 +26,7 @@ import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
   type ReviewFormValues,
+  type ReviewRatingScore,
 } from './types';
 import {
   getInvalidSubmitFeedback,
@@ -37,6 +38,7 @@ type UseReviewPageOptions = {
 };
 
 const initialReviewValues: ReviewFormValues = {
+  rating: null,
   environmentValues: {
     spaceSize: null,
     noiseLevel: null,
@@ -57,7 +59,6 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
   const numericPostId = Number(postId);
   const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
 
-  const [rating, setRating] = useState(0);
   const [visitDate, setVisitDate] = useState<DateValue | null>(null);
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
   const [endTime, setEndTime] = useState<TimeValue | null>(null);
@@ -75,9 +76,9 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     reValidateMode: 'onChange',
   });
 
-  const [environmentValues, reviewText, photos] = useWatch({
+  const [rating, environmentValues, reviewText, photos] = useWatch({
     control,
-    name: ['environmentValues', 'contents', 'photos'],
+    name: ['rating', 'environmentValues', 'contents', 'photos'],
   });
 
   const contentsField = register('contents');
@@ -117,6 +118,10 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
       ...environmentValues,
       [name]: value,
     });
+  };
+
+  const handleRatingChange = (value: number) => {
+    setFormValue('rating', value as ReviewRatingScore);
   };
 
   const handleInvalidSubmit = (fieldErrors: FieldErrors<ReviewFormValues>) => {
@@ -161,7 +166,7 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     rating,
     reviewText,
     setEndTime,
-    setRating,
+    setRating: handleRatingChange,
     setStartTime,
     setVisitDate,
     startTime,

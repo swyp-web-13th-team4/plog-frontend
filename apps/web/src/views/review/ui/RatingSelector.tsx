@@ -1,15 +1,17 @@
-import { useMemo } from 'react';
+import { type Ref, useMemo } from 'react';
 
 import { Icon } from '@plog/ui';
 
 type RatingSelectorProps = {
   value: number;
   onChange: (value: number) => void;
+  focusFirstButton?: Ref<HTMLButtonElement>;
 };
 
 export default function RatingSelector({
   value,
   onChange,
+  focusFirstButton,
 }: RatingSelectorProps) {
   const stars = useMemo(() => Array.from({ length: 5 }, (_, i) => i + 1), []);
 
@@ -25,6 +27,7 @@ export default function RatingSelector({
         return (
           <button
             key={score}
+            ref={score === stars[0] ? focusFirstButton : undefined}
             type="button"
             role="radio"
             aria-checked={value === score}

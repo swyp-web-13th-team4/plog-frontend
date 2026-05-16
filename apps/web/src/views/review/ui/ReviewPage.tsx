@@ -23,9 +23,9 @@ export default function ReviewPage({ postId }: ReviewPageProps) {
         <AppBar variant="navigation" title="장소 리뷰" onBack={handleBack} />
       </header>
 
-      <form className="flex flex-col" noValidate onSubmit={handleSubmitReview}>
+      <form className="flex flex-col" onSubmit={handleSubmitReview}>
         <input type="hidden" name="postId" value={postId} />
-        <input type="hidden" name="rating" value={rating} />
+        <input type="hidden" name="rating" value={rating ?? ''} />
 
         <ReviewHeroSection controller={controller} />
         <SectionDivider />

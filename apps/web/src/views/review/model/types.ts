@@ -13,6 +13,7 @@ export type ReviewEnvironmentName =
   | 'focusLevel';
 
 export type ReviewEnvironmentScore = 1 | 2 | 3 | 4 | 5;
+export type ReviewRatingScore = 1 | 2 | 3 | 4 | 5;
 
 export type ReviewEnvironmentValues = Record<
   ReviewEnvironmentName,

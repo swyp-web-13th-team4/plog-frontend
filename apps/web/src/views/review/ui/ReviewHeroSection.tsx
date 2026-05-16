@@ -10,10 +10,12 @@ type ReviewHeroSectionProps = {
 export default function ReviewHeroSection({
   controller,
 }: ReviewHeroSectionProps) {
-  const { placeImageSrc, placeName, rating, setRating } = controller;
+  const { focusTargets, placeImageSrc, placeName, rating, setRating } =
+    controller;
+  const { ratingFieldRef, ratingFirstButtonRef } = focusTargets;
 
   return (
-    <section className="px-6 pt-8 pb-10">
+    <section ref={ratingFieldRef} className="px-6 pt-8 pb-10">
       <div className="flex flex-col items-center justify-center gap-8">
         <div className="relative size-30 overflow-hidden rounded-xl">
           <Image
@@ -33,7 +35,11 @@ export default function ReviewHeroSection({
             </span>
             <p className="title-lg text-semantic-object-boldest">{placeName}</p>
           </div>
-          <RatingSelector value={rating} onChange={setRating} />
+          <RatingSelector
+            value={rating ?? 0}
+            focusFirstButton={ratingFirstButtonRef}
+            onChange={setRating}
+          />
         </div>
       </div>
     </section>
