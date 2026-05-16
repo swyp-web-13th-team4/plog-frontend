@@ -16,7 +16,7 @@ type ReviewSummaryChipProps = {
 
 export default function ReviewSummaryChip({ metric }: ReviewSummaryChipProps) {
   return (
-    <div className="flex min-h-10 items-center justify-between gap-3 rounded-full bg-semantic-bg-deep px-4 py-2.5">
+    <div className="flex min-h-10 items-center justify-between gap-3 rounded-full bg-semantic-bg-deep px-3 py-2.5">
       <div className="flex items-center gap-1">
         <Icon
           name={ICON_BY_TYPE[metric.type]}
