@@ -14,9 +14,12 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 
 import { initialCreateLogValues } from '@/features/create-log';
+import {
+  usePhotoUpload,
+  usePhotoUploadFeedback,
+} from '@/features/photo-upload';
 
 import { dialog } from '@/shared/lib/dialog';
-import { IMAGE_UPLOAD_MAX_FILE_SIZE } from '@/shared/lib/image-upload-policy';
 
 import { createLogFormSnapshot, editFormValues } from './mapper';
 import { createLogResolver } from './resolver';
@@ -27,7 +30,6 @@ import {
   getInvalidSubmitFeedback,
   useCreateLogInvalidFocus,
 } from './use-invalid-form-focus';
-import { usePhotoUpload } from './use-photo-upload';
 import { useUpdateLogMutation } from './use-update-log-mutation';
 
 export type LogFormController = ReturnType<typeof useCreateLogPage>;
@@ -49,6 +51,8 @@ export function useCreateLogPage(editPostId?: string) {
   const invalidFocus = useCreateLogInvalidFocus();
 
   const { toast } = useToast();
+  const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
+    usePhotoUploadFeedback();
   const hasRestoredFormRef = useRef(false);
 
   const {
@@ -277,20 +281,6 @@ export function useCreateLogPage(editPostId?: string) {
 
     clearPhotos();
     router.push('/map');
-  };
-
-  const handlePhotoFileSizeExceeded = () => {
-    toast({
-      type: 'error',
-      description: `${IMAGE_UPLOAD_MAX_FILE_SIZE / (1024 * 1024)}MB 이하의 이미지 파일만 등록 가능해요.`,
-    });
-  };
-
-  const handlePhotoConversionFailed = () => {
-    toast({
-      type: 'error',
-      description: '사진 업로드에 실패했어요. 다시 시도해 주세요.',
-    });
   };
 
   const handleSubmitLog = handleSubmit(handleValidSubmit, handleInvalidSubmit);

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { isNewPhotoPreview } from '@/features/photo-upload';
+
 import {
   AtmosphereAndFocus,
   EnvironmentAndComfort,
@@ -13,8 +15,6 @@ import {
   IMAGE_UPLOAD_MAX_FILE_SIZE,
   MAX_PHOTO_COUNT,
 } from '@/shared/lib/image-upload-policy';
-
-import { isNewPhotoPreview } from './use-photo-upload';
 
 const timeSchema = z.object({
   hour: z.number().int().min(0).max(23),
