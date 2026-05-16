@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import {
   Badge,
   Button,
   Carousel,
+  Dropdown,
   EmptyState,
   Icon,
   Spinner,
@@ -38,73 +39,6 @@ type FeedCarouselController = {
   isBeginning: boolean;
   isEnd: boolean;
 };
-
-type DropdownOption = { label: string; value: string };
-
-// TODO: Dropdown 디자인 시스템 컴포넌트로 분리
-function Dropdown({
-  options,
-  onSelect,
-  disabled,
-}: {
-  options: DropdownOption[];
-  onSelect: (value: string) => void;
-  disabled?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e: globalThis.MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [open]);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        type="button"
-        aria-label="게시글 관리 메뉴"
-        aria-expanded={open}
-        aria-haspopup="menu"
-        disabled={disabled}
-        className="flex size-8 cursor-pointer items-center justify-center rounded-md hover:bg-semantic-bg-deep disabled:cursor-not-allowed disabled:opacity-40"
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        <Icon name="more-vertical" className="text-semantic-object-normal" />
-      </button>
-      {open && (
-        <div
-          role="menu"
-          className="absolute right-0 z-30 mt-2 overflow-hidden rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-1.5"
-        >
-          <ul className="flex flex-col gap-2">
-            {options.map((option) => (
-              <li key={option.value}>
-                <button
-                  type="button"
-                  role="menuitem"
-                  className="label-sm flex min-h-[30px] w-23 cursor-pointer items-center rounded-md px-1.5 py-1 transition-colors hover:bg-semantic-bg-deep hover:text-semantic-object-bold"
-                  onClick={() => {
-                    setOpen(false);
-                    onSelect(option.value);
-                  }}
-                >
-                  {option.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-}
 
 const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
@@ -278,7 +212,13 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           {isMyPost && (
             <Dropdown
               aria-label="게시글 관리 메뉴"
-              options={AUTHOR_ACTION_OPTIONS}
+              items={AUTHOR_ACTION_OPTIONS}
+              trigger={
+                <Icon
+                  name="more-vertical"
+                  className="text-semantic-object-normal"
+                />
+              }
               disabled={deletePostMutation.isPending}
               onSelect={handleAuthorAction}
             />
