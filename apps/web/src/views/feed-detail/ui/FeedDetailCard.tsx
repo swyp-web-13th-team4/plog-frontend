@@ -360,7 +360,11 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                     postId={post.postId}
                     isBookmarked={post.bookMark}
                   />
-                  <ShareButton postId={post.postId} />
+                  <ShareButton
+                    postId={post.postId}
+                    title={post.title}
+                    text={post.contents}
+                  />
                 </div>
               </div>
             )}
@@ -369,7 +373,13 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
                 <Badge variant="soft" color="orange">
                   {post.category}
                 </Badge>
-                {isMyPost && <ShareButton postId={post.postId} />}
+                {isMyPost && (
+                  <ShareButton
+                    postId={post.postId}
+                    title={post.title}
+                    text={post.contents}
+                  />
+                )}
               </div>
               <div className="flex flex-col gap-1">
                 <span className="title-xs text-semantic-object-boldest">

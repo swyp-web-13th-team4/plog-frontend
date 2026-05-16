@@ -205,7 +205,11 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 postId={post.postId}
                 isBookmarked={post.bookMark}
               />
-              <ShareButton postId={post.postId} />
+              <ShareButton
+                postId={post.postId}
+                title={post.title}
+                text={post.contents}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-3">

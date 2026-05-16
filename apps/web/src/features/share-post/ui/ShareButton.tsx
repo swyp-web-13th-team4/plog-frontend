@@ -4,9 +4,11 @@ import { Icon, useToast } from '@plog/ui';
 
 type ShareButtonProps = {
   postId: number;
+  title?: string;
+  text?: string;
 };
 
-export default function ShareButton({ postId }: ShareButtonProps) {
+export default function ShareButton({ postId, title, text }: ShareButtonProps) {
   const { toast } = useToast();
 
   const url = `${window.location.origin}/feed/${postId}`;
@@ -39,7 +41,11 @@ export default function ShareButton({ postId }: ShareButtonProps) {
       return;
     }
     try {
-      const shareData = { url };
+      const shareData: ShareData = {
+        url,
+        ...(title && { title }),
+        ...(text && { text }),
+      };
       await navigator.share(shareData);
     } catch (error) {
       if (
