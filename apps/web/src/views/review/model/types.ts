@@ -1,4 +1,7 @@
 import { type IconName } from '@plog/ui';
+import { type z } from 'zod';
+
+import { type reviewSchema } from './schema';
 
 export const REVIEW_PLACE_IMAGE_SRC = '/review-place-preview.png';
 export const DEFAULT_REVIEW_PLACE_NAME = '방문 장소';
@@ -10,6 +13,13 @@ export type ReviewEnvironmentName =
   | 'focusLevel';
 
 export type ReviewEnvironmentScore = 1 | 2 | 3 | 4 | 5;
+
+export type ReviewEnvironmentValues = Record<
+  ReviewEnvironmentName,
+  ReviewEnvironmentScore | null
+>;
+
+export type ReviewFormValues = z.infer<typeof reviewSchema>;
 
 export type ReviewEnvironmentGroup = {
   name: ReviewEnvironmentName;

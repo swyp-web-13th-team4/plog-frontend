@@ -16,10 +16,12 @@ type ReviewEnvironmentSectionProps = {
 
 function EnvironmentChoiceGroup({
   group,
+  focusFirstButton,
   value,
   onChange,
 }: {
   group: ReviewEnvironmentGroup;
+  focusFirstButton?: (element: HTMLButtonElement | null) => void;
   value: ReviewEnvironmentScore | null;
   onChange: (value: ReviewEnvironmentScore | null) => void;
 }) {
@@ -38,6 +40,11 @@ function EnvironmentChoiceGroup({
         {REVIEW_ENVIRONMENT_SCORES.map((score) => (
           <Chip
             key={score}
+            ref={
+              score === REVIEW_ENVIRONMENT_SCORES[0]
+                ? focusFirstButton
+                : undefined
+            }
             size="large"
             variant="solid"
             pressed={value === score}
@@ -57,10 +64,15 @@ function EnvironmentChoiceGroup({
 export default function ReviewEnvironmentSection({
   controller,
 }: ReviewEnvironmentSectionProps) {
-  const { environmentValues, handleEnvironmentChange } = controller;
+  const { environmentValues, focusTargets, handleEnvironmentChange } =
+    controller;
+  const { environmentFieldRef, environmentFirstButtonRef } = focusTargets;
 
   return (
-    <section className="flex flex-col px-6 pt-6 pb-10">
+    <section
+      ref={environmentFieldRef}
+      className="flex flex-col px-6 pt-6 pb-10"
+    >
       <Field
         label="방문하신 장소의 환경은 어떠셨나요?"
         className="gap-4"
@@ -71,6 +83,11 @@ export default function ReviewEnvironmentSection({
             <EnvironmentChoiceGroup
               key={group.name}
               group={group}
+              focusFirstButton={
+                group.name === REVIEW_ENVIRONMENT_GROUPS[0].name
+                  ? environmentFirstButtonRef
+                  : undefined
+              }
               value={environmentValues[group.name]}
               onChange={(value) => handleEnvironmentChange(group.name, value)}
             />

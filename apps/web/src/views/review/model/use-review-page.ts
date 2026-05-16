@@ -1,10 +1,17 @@
 'use client';
 
-import { type FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import {
+  type FieldErrors,
+  type FieldPath,
+  type FieldPathValue,
+  useForm,
+  useWatch,
+} from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 
-import { type DateValue, type TimeValue } from '@plog/ui';
+import { type DateValue, type TimeValue, useToast } from '@plog/ui';
 
 import {
   type PhotoPreview,
@@ -12,26 +19,40 @@ import {
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
+import { reviewResolver } from './resolver';
 import {
   DEFAULT_REVIEW_PLACE_NAME,
   REVIEW_PLACE_IMAGE_SRC,
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
+  type ReviewFormValues,
 } from './types';
-
-export type ReviewEnvironmentValues = Record<
-  ReviewEnvironmentName,
-  ReviewEnvironmentScore | null
->;
+import {
+  getInvalidSubmitFeedback,
+  useReviewInvalidFocus,
+} from './use-invalid-form-focus';
 
 type UseReviewPageOptions = {
   postId: string;
 };
 
+const initialReviewValues: ReviewFormValues = {
+  environmentValues: {
+    spaceSize: null,
+    noiseLevel: null,
+    congestionLevel: null,
+    focusLevel: null,
+  },
+  contents: '',
+  photos: [],
+};
+
 export function useReviewPage({ postId }: UseReviewPageOptions) {
   const router = useRouter();
+  const { toast } = useToast();
   const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
     usePhotoUploadFeedback();
+  const invalidFocus = useReviewInvalidFocus();
 
   const numericPostId = Number(postId);
   const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
@@ -40,19 +61,44 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
   const [visitDate, setVisitDate] = useState<DateValue | null>(null);
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
   const [endTime, setEndTime] = useState<TimeValue | null>(null);
-  const [reviewText, setReviewText] = useState('');
-  const [photos, setPhotos] = useState<PhotoPreview[]>([]);
-  const [environmentValues, setEnvironmentValues] =
-    useState<ReviewEnvironmentValues>({
-      spaceSize: null,
-      noiseLevel: null,
-      congestionLevel: null,
-      focusLevel: null,
-    });
 
-  const handlePhotosChange = useCallback((nextPhotos: PhotoPreview[]) => {
-    setPhotos(nextPhotos);
-  }, []);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    control,
+    formState: { errors, isSubmitted },
+  } = useForm<ReviewFormValues>({
+    resolver: reviewResolver,
+    defaultValues: initialReviewValues,
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+  });
+
+  const [environmentValues, reviewText, photos] = useWatch({
+    control,
+    name: ['environmentValues', 'contents', 'photos'],
+  });
+
+  const contentsField = register('contents');
+
+  const setFormValue = <TFieldName extends FieldPath<ReviewFormValues>>(
+    fieldName: TFieldName,
+    value: FieldPathValue<ReviewFormValues, TFieldName>,
+  ) => {
+    setValue(fieldName, value, {
+      shouldValidate: true,
+    });
+  };
+
+  const handlePhotosChange = useCallback(
+    (nextPhotos: PhotoPreview[]) => {
+      setValue('photos', nextPhotos, {
+        shouldValidate: isSubmitted,
+      });
+    },
+    [isSubmitted, setValue],
+  );
 
   const { handleAddPhotos, handleRemovePhoto } = usePhotoUpload({
     photos,
@@ -67,19 +113,40 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     name: ReviewEnvironmentName,
     value: ReviewEnvironmentScore | null,
   ) => {
-    setEnvironmentValues((current) => ({
-      ...current,
+    setFormValue('environmentValues', {
+      ...environmentValues,
       [name]: value,
-    }));
+    });
   };
 
-  const handleSubmitReview = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleInvalidSubmit = (fieldErrors: FieldErrors<ReviewFormValues>) => {
+    const feedback = getInvalidSubmitFeedback(fieldErrors);
+    if (!feedback) return;
+
+    invalidFocus.focusField(feedback.field);
+    if (feedback.toastMessage) {
+      toast({
+        type: 'error',
+        description: feedback.toastMessage,
+      });
+    }
   };
+
+  const handleValidSubmit = () => {
+    // TODO: 리뷰 생성 API 연결 시 submit mutation을 호출합니다.
+  };
+
+  const handleSubmitReview = handleSubmit(
+    handleValidSubmit,
+    handleInvalidSubmit,
+  );
 
   return {
+    contentsField,
     endTime,
     environmentValues,
+    errors,
+    focusTargets: invalidFocus.focusTargets,
     handleAddPhotos,
     handleBack,
     handleEnvironmentChange,
@@ -95,7 +162,6 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     reviewText,
     setEndTime,
     setRating,
-    setReviewText,
     setStartTime,
     setVisitDate,
     startTime,
