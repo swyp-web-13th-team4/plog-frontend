@@ -14,8 +14,8 @@ export const viewport: Viewport = {
   colorScheme: 'light',
 };
 
-const siteUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : 'https://localhost:3000';
 
 export const metadata: Metadata = {
