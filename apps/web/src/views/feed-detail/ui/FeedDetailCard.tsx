@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -62,10 +62,12 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     data: post,
     isError,
     isPending,
+    isPrivateAccessError,
     refetch,
   } = useFeedDetailQuery(numericPostId);
 
   const deletePostMutation = useDeletePostMutation();
+  const privateAccessHandledRef = useRef(false);
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
@@ -98,6 +100,19 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     </header>
   );
 
+  useEffect(() => {
+    if (!isPrivateAccessError || privateAccessHandledRef.current) return;
+
+    privateAccessHandledRef.current = true;
+
+    const redirectPrivatePostAccess = async () => {
+      await dialog.alert('비공개 게시글입니다.');
+      router.replace('/');
+    };
+
+    void redirectPrivatePostAccess();
+  }, [isPrivateAccessError, router]);
+
   if (!isValidPostId) {
     return (
       <>
@@ -122,6 +137,17 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   }
 
   if (isPending) {
+    return (
+      <>
+        {feedHeader}
+        <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
+          <Spinner size="large" />
+        </section>
+      </>
+    );
+  }
+
+  if (isPrivateAccessError) {
     return (
       <>
         {feedHeader}
