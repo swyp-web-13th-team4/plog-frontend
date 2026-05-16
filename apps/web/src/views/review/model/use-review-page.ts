@@ -19,12 +19,15 @@ import {
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
+import {
+  type ReviewEnvironmentName,
+  type ReviewEnvironmentScore,
+} from '@/entities/review';
+
 import { reviewResolver } from './resolver';
 import {
   DEFAULT_REVIEW_PLACE_NAME,
   REVIEW_PLACE_IMAGE_SRC,
-  type ReviewEnvironmentName,
-  type ReviewEnvironmentScore,
   type ReviewFormValues,
   type ReviewRatingScore,
 } from './types';

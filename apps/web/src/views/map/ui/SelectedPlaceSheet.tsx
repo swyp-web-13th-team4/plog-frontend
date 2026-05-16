@@ -5,6 +5,11 @@ import { Fragment } from 'react';
 import { Badge, BottomSheet, Button, Divider, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import {
+  mockPlaceReviewSummary,
+  PlaceReviewSummary,
+} from '@/widgets/place-review-summary';
+
 import { formatStudyDurationShort } from '@/entities/feed';
 import { getCategoryLabel, type PlaceLayer } from '@/entities/place';
 
@@ -145,7 +150,13 @@ export default function SelectedPlaceSheet({
                   {place.address}
                 </p>
               </div>
+
               <PlaceStatBar place={place} isRecord={isRecord} />
+              <PlaceReviewSummary
+                variant={isRecord ? 'record' : 'bookmark'}
+                summary={mockPlaceReviewSummary}
+              />
+
               {isRecord ? (
                 <div className="flex gap-2">
                   <div className="flex-1">

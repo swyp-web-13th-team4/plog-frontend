@@ -2,11 +2,14 @@ import { Chip, Field, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import {
-  REVIEW_ENVIRONMENT_GROUPS,
   REVIEW_ENVIRONMENT_LABELS,
   REVIEW_ENVIRONMENT_SCORES,
-  type ReviewEnvironmentGroup,
   type ReviewEnvironmentScore,
+} from '@/entities/review';
+
+import {
+  REVIEW_ENVIRONMENT_GROUPS,
+  type ReviewEnvironmentGroup,
 } from '../model/types';
 import { type ReviewFormController } from '../model/use-review-page';
 
