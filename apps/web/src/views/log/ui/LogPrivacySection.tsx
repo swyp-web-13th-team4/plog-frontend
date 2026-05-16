@@ -1,7 +1,8 @@
 import { Field, Switch } from '@plog/ui';
 
+import { PrivacySettingSection } from '@/entities/feed';
+
 import { type LogFormController } from '../model/use-create-log-page';
-import PrivacySettingSection from './PrivacySettingSection';
 
 type LogPrivacySectionProps = {
   controller: LogFormController;

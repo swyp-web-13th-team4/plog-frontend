@@ -20,7 +20,11 @@ import { ShareButton } from '@/features/share-post';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
-import { FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
+import {
+  FeedStatsSummary,
+  PrivacySettingSection,
+  TagBadgeGroup,
+} from '@/entities/feed';
 import { formatStudyDate, formatTimeAgo } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
@@ -229,6 +233,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   const hasMultipleImages = post.postImages.length > 1;
   const isMyPost = post.isAuthor ?? false;
   const isProfileClickable = Boolean(post.memberKey) && !isMyPost;
+  const isPrivate = post.scope === 'PRIVATE';
 
   const handleProfileClick = () => {
     if (!post.memberKey) return;
@@ -272,6 +277,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           </div>
           {isMyPost && (
             <Dropdown
+              aria-label="게시글 관리 메뉴"
               options={AUTHOR_ACTION_OPTIONS}
               disabled={deletePostMutation.isPending}
               onSelect={handleAuthorAction}
@@ -411,6 +417,11 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
             </span>
           </div>
         </div>
+        {isPrivate && (
+          <div className="px-6">
+            <PrivacySettingSection isPublic={!isPrivate} />
+          </div>
+        )}
       </section>
     </>
   );
