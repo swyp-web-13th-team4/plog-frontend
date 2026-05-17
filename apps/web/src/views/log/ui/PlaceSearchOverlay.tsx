@@ -116,7 +116,7 @@ export default function PlaceSearchOverlay({
         onReady={handleKakaoReady}
         onError={() => setSdkLoadError(true)}
       />
-      <section className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
+      <section className="flex h-dvh flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
         <div className="sticky top-[var(--spacing-header)] z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
           <PlaceSearchInput
             value={query}
@@ -124,7 +124,7 @@ export default function PlaceSearchOverlay({
             onClear={handleClearQuery}
           />
         </div>
-        <div className="flex flex-1 flex-col">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
           <PlaceSearchContent
             state={displayState}
             resultList={
