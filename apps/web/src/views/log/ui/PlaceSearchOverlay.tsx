@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useCallback, useState } from 'react';
+import { type ReactNode, useCallback, useRef, useState } from 'react';
 
 import Script from 'next/script';
 
@@ -49,9 +49,18 @@ export default function PlaceSearchOverlay({
 }: PlaceSearchOverlayProps) {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
+  const resultScrollRef = useRef<HTMLDivElement>(null);
 
-  const { query, places, searchState, handleQueryChange, handleClearQuery } =
-    useKakaoPlaceSearch(sdkLoaded);
+  const {
+    query,
+    places,
+    searchState,
+    hasNextPage,
+    isFetchingNextPage,
+    loadNextPage,
+    handleQueryChange,
+    handleClearQuery,
+  } = useKakaoPlaceSearch(sdkLoaded);
   const { data: recentPlaces = [] } = useRecentPlacesQuery();
   const saveRecentPlaceMutation = useSaveRecentPlaceMutation();
   const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
@@ -66,6 +75,22 @@ export default function PlaceSearchOverlay({
   const handleKakaoReady = useCallback(() => {
     window.kakao?.maps.load(() => setSdkLoaded(true));
   }, []);
+
+  const handleResultScroll = useCallback(() => {
+    if (displayState !== 'success' || !hasNextPage || isFetchingNextPage) {
+      return;
+    }
+
+    const scrollContainer = resultScrollRef.current;
+    if (!scrollContainer) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    const distanceToBottom = scrollHeight - scrollTop - clientHeight;
+
+    if (distanceToBottom <= 80) {
+      loadNextPage();
+    }
+  }, [displayState, hasNextPage, isFetchingNextPage, loadNextPage]);
 
   const saveAndSelect = async (place: SelectedPlace) => {
     try {
@@ -124,7 +149,11 @@ export default function PlaceSearchOverlay({
             onClear={handleClearQuery}
           />
         </div>
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+        <div
+          ref={resultScrollRef}
+          className="flex min-h-0 flex-1 flex-col overflow-y-auto"
+          onScroll={handleResultScroll}
+        >
           <PlaceSearchContent
             state={displayState}
             resultList={

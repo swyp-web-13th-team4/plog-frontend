@@ -1,4 +1,10 @@
-import { type ChangeEvent, useEffect, useState } from 'react';
+import {
+  type ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { type SearchState } from '@/widgets/place-search';
 
@@ -10,6 +16,11 @@ export function useKakaoPlaceSearch(sdkLoaded: boolean) {
     kakao.maps.services.PlacesSearchResultItem[]
   >([]);
   const [searchState, setSearchState] = useState<SearchState>('idle');
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+
+  const paginationRef = useRef<kakao.maps.services.Pagination | null>(null);
+  const isFetchingNextPageRef = useRef(false);
 
   const trimmedQuery = query.trim();
   const canSearch = sdkLoaded && trimmedQuery.length >= MIN_SEARCH_LENGTH;
@@ -23,21 +34,35 @@ export function useKakaoPlaceSearch(sdkLoaded: boolean) {
       if (!window.kakao?.maps?.services) {
         setPlaces([]);
         setSearchState('error');
+        setHasNextPage(false);
+        setIsFetchingNextPage(false);
+        isFetchingNextPageRef.current = false;
+        paginationRef.current = null;
         return;
       }
 
       const placesService = new window.kakao.maps.services.Places();
 
-      placesService.keywordSearch(trimmedQuery, (data, status) => {
+      placesService.keywordSearch(trimmedQuery, (data, status, pagination) => {
         if (canceled) return;
 
         if (status === window.kakao?.maps.services.Status.OK) {
-          setPlaces(data);
+          setPlaces((prevPlaces) =>
+            pagination.current === 1 ? data : [...prevPlaces, ...data],
+          );
           setSearchState(data.length > 0 ? 'success' : 'empty');
+          setHasNextPage(pagination.hasNextPage);
+          setIsFetchingNextPage(false);
+          isFetchingNextPageRef.current = false;
+          paginationRef.current = pagination;
           return;
         }
 
         setPlaces([]);
+        setHasNextPage(false);
+        setIsFetchingNextPage(false);
+        isFetchingNextPageRef.current = false;
+        paginationRef.current = null;
         setSearchState(
           status === window.kakao?.maps.services.Status.ZERO_RESULT
             ? 'empty'
@@ -58,6 +83,10 @@ export function useKakaoPlaceSearch(sdkLoaded: boolean) {
     if (nextQuery.trim().length < MIN_SEARCH_LENGTH) {
       setPlaces([]);
       setSearchState('idle');
+      setHasNextPage(false);
+      setIsFetchingNextPage(false);
+      isFetchingNextPageRef.current = false;
+      paginationRef.current = null;
     } else {
       setSearchState('loading');
     }
@@ -67,7 +96,30 @@ export function useKakaoPlaceSearch(sdkLoaded: boolean) {
     setQuery('');
     setPlaces([]);
     setSearchState('idle');
+    setHasNextPage(false);
+    setIsFetchingNextPage(false);
+    isFetchingNextPageRef.current = false;
+    paginationRef.current = null;
   };
 
-  return { query, places, searchState, handleQueryChange, handleClearQuery };
+  const loadNextPage = useCallback(() => {
+    if (!paginationRef.current?.hasNextPage || isFetchingNextPageRef.current) {
+      return;
+    }
+
+    isFetchingNextPageRef.current = true;
+    setIsFetchingNextPage(true);
+    paginationRef.current.nextPage();
+  }, []);
+
+  return {
+    query,
+    places,
+    searchState,
+    hasNextPage,
+    isFetchingNextPage,
+    loadNextPage,
+    handleQueryChange,
+    handleClearQuery,
+  };
 }
