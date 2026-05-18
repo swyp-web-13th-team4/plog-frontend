@@ -86,7 +86,11 @@ export default function RecordTab() {
       }
       renderAction={(feed) =>
         !feed.isPublic && (
-          <Icon name="lock-filled" className="text-semantic-object-subtle" />
+          <Icon
+            name="lock-filled"
+            className="text-semantic-object-subtle"
+            aria-label="비공개 게시물"
+          />
         )
       }
     />
