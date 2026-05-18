@@ -9,7 +9,7 @@ const triggerBaseClassName =
   'inline-flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-semantic-bg-deep disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-semantic-stroke-subtle';
 
 const popupBaseClassName =
-  'overflow-hidden rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-1.5 focus-within:outline-2 focus-within:outline-offset-1 focus-within:outline-semantic-stroke-subtle';
+  'overflow-hidden rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-1.5';
 
 const itemBaseClassName =
   'label-sm flex min-h-[30px] w-23 cursor-pointer items-center rounded-md px-1.5 py-1 transition-colors hover:bg-semantic-bg-deep hover:text-semantic-object-bold focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-semantic-stroke-subtle data-[highlighted]:bg-semantic-bg-deep data-[highlighted]:text-semantic-object-bold data-[disabled]:cursor-not-allowed data-[disabled]:text-semantic-object-subtle data-[disabled]:hover:bg-transparent';
