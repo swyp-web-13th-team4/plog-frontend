@@ -10,6 +10,7 @@ export * from './components/Chip';
 export * from './components/DatePicker';
 export * from './components/Dialog';
 export * from './components/Divider';
+export * from './components/Dropdown';
 export * from './components/EmptyState';
 export * from './components/Field';
 export * from './components/Icon';

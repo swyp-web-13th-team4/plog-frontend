@@ -1,7 +1,8 @@
 import { Field, Switch } from '@plog/ui';
 
+import { PrivacySettingSection } from '@/entities/feed';
+
 import { type LogFormController } from '../model/use-create-log-page';
-import PrivacySettingSection from './PrivacySettingSection';
 
 type LogPrivacySectionProps = {
   controller: LogFormController;
@@ -10,7 +11,8 @@ type LogPrivacySectionProps = {
 export default function LogPrivacySection({
   controller,
 }: LogPrivacySectionProps) {
-  const { isPublic, setFormValue } = controller;
+  const { scope, setFormValue } = controller;
+  const isPublic = scope === 'PUBLIC';
 
   return (
     <section className="flex flex-col gap-4 px-6 pt-6 pb-10">
@@ -27,7 +29,7 @@ export default function LogPrivacySection({
           aria-label="공개 설정"
         />
       </Field>
-      <PrivacySettingSection isPublic={isPublic} />
+      <PrivacySettingSection scope={scope} />
     </section>
   );
 }

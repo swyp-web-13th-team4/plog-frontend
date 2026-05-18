@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Spinner } from '@plog/ui';
+import { Icon, Spinner } from '@plog/ui';
 
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
@@ -84,15 +84,15 @@ export default function RecordTab() {
           />
         </div>
       }
-      renderAction={(feed, viewType) => (
-        <BookmarkButton
-          postId={feed.postId}
-          isBookmarked={feed.bookMark}
-          className={
-            viewType === 'grid' ? 'text-semantic-object-subtle' : undefined
-          }
-        />
-      )}
+      renderAction={(feed) =>
+        !feed.isPublic && (
+          <Icon
+            name="lock-filled"
+            className="text-semantic-object-subtle"
+            aria-label="비공개 게시물"
+          />
+        )
+      }
     />
   );
 }
