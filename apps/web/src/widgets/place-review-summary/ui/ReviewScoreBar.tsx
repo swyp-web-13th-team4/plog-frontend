@@ -41,8 +41,10 @@ export default function ReviewScoreBar({
   variant,
 }: ReviewScoreBarProps) {
   const ratio = totalCount > 0 ? metric.count / totalCount : 0;
-  const width = `${Math.max(ratio * 100, 8)}%`;
-  const barClassName = getBarClassName(variant, ratio);
+  const normalizedRatio = Math.min(Math.max(ratio, 0), 1);
+  const width =
+    totalCount === 0 ? '0%' : `${Math.max(normalizedRatio * 100, 8)}%`;
+  const barClassName = getBarClassName(variant, normalizedRatio);
 
   return (
     <div className="flex gap-2">
