@@ -196,7 +196,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   return (
     <>
       {feedHeader}
-      <section className="relative pt-[var(--spacing-header)] pb-bottom-tab">
+      <section className="relative pt-[var(--spacing-header)]">
         <div className="flex items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
             {isProfileClickable ? (
@@ -377,8 +377,8 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           </div>
         </div>
         {isPrivate && (
-          <div className="px-6">
-            <PrivacySettingSection isPublic={!isPrivate} />
+          <div className="px-6 pb-bottom-tab">
+            <PrivacySettingSection scope={post.scope} />
           </div>
         )}
       </section>

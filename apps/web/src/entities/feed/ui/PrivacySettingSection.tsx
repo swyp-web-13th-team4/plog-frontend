@@ -1,6 +1,8 @@
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { type PostScope } from '../model/types';
+
 const PRIVACY_SETTING_OPTIONS = [
   {
     type: 'all',
@@ -15,12 +17,13 @@ const PRIVACY_SETTING_OPTIONS = [
 ] as const;
 
 type PrivacySettingSectionProps = {
-  isPublic: boolean;
+  scope: PostScope;
 };
 
 export default function PrivacySettingSection({
-  isPublic,
+  scope,
 }: PrivacySettingSectionProps) {
+  const isPublic = scope === 'PUBLIC';
   const privacyType = isPublic ? 'all' : 'private';
   const { title, content } =
     PRIVACY_SETTING_OPTIONS.find(({ type }) => type === privacyType) ??
