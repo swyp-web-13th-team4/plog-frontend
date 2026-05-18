@@ -10,7 +10,12 @@ import { type SearchState } from '@/widgets/place-search';
 
 const MIN_SEARCH_LENGTH = 1;
 
-export function useKakaoPlaceSearch(sdkLoaded: boolean) {
+type UserCoords = Pick<GeolocationCoordinates, 'latitude' | 'longitude'>;
+
+export function useKakaoPlaceSearch(
+  sdkLoaded: boolean,
+  userCoords: UserCoords | null,
+) {
   const [query, setQuery] = useState('');
   const [places, setPlaces] = useState<
     kakao.maps.services.PlacesSearchResultItem[]
@@ -42,40 +47,54 @@ export function useKakaoPlaceSearch(sdkLoaded: boolean) {
       }
 
       const placesService = new window.kakao.maps.services.Places();
+      const searchOptions: kakao.maps.services.PlacesSearchOptions | undefined =
+        userCoords
+          ? {
+              location: new window.kakao.maps.LatLng(
+                userCoords.latitude,
+                userCoords.longitude,
+              ),
+              sort: window.kakao.maps.services.SortBy.DISTANCE,
+            }
+          : undefined;
 
-      placesService.keywordSearch(trimmedQuery, (data, status, pagination) => {
-        if (canceled) return;
+      placesService.keywordSearch(
+        trimmedQuery,
+        (data, status, pagination) => {
+          if (canceled) return;
 
-        if (status === window.kakao?.maps.services.Status.OK) {
-          setPlaces((prevPlaces) =>
-            pagination.current === 1 ? data : [...prevPlaces, ...data],
-          );
-          setSearchState(data.length > 0 ? 'success' : 'empty');
-          setHasNextPage(pagination.hasNextPage);
+          if (status === window.kakao?.maps.services.Status.OK) {
+            setPlaces((prevPlaces) =>
+              pagination.current === 1 ? data : [...prevPlaces, ...data],
+            );
+            setSearchState(data.length > 0 ? 'success' : 'empty');
+            setHasNextPage(pagination.hasNextPage);
+            setIsFetchingNextPage(false);
+            isFetchingNextPageRef.current = false;
+            paginationRef.current = pagination;
+            return;
+          }
+
+          setPlaces([]);
+          setHasNextPage(false);
           setIsFetchingNextPage(false);
           isFetchingNextPageRef.current = false;
-          paginationRef.current = pagination;
-          return;
-        }
-
-        setPlaces([]);
-        setHasNextPage(false);
-        setIsFetchingNextPage(false);
-        isFetchingNextPageRef.current = false;
-        paginationRef.current = null;
-        setSearchState(
-          status === window.kakao?.maps.services.Status.ZERO_RESULT
-            ? 'empty'
-            : 'error',
-        );
-      });
+          paginationRef.current = null;
+          setSearchState(
+            status === window.kakao?.maps.services.Status.ZERO_RESULT
+              ? 'empty'
+              : 'error',
+          );
+        },
+        searchOptions,
+      );
     }, 300);
 
     return () => {
       canceled = true;
       window.clearTimeout(timerId);
     };
-  }, [canSearch, trimmedQuery]);
+  }, [canSearch, trimmedQuery, userCoords]);
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextQuery = event.target.value;

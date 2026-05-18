@@ -159,6 +159,23 @@ declare namespace kakao.maps {
       totalCount: number;
     }
 
+    type SortBy = 'ACCURACY' | 'DISTANCE';
+
+    interface PlacesSearchOptions {
+      category_group_code?: string;
+      location?: LatLng;
+      x?: number;
+      y?: number;
+      radius?: number;
+      bounds?: LatLngBounds;
+      rect?: string;
+      size?: number;
+      page?: number;
+      sort?: SortBy;
+      useMapCenter?: boolean;
+      useMapBounds?: boolean;
+    }
+
     type PlacesSearchCallback = (
       data: PlacesSearchResultItem[],
       status: Status,
@@ -166,13 +183,22 @@ declare namespace kakao.maps {
     ) => void;
 
     class Places {
-      keywordSearch(keyword: string, callback: PlacesSearchCallback): void;
+      keywordSearch(
+        keyword: string,
+        callback: PlacesSearchCallback,
+        options?: PlacesSearchOptions,
+      ): void;
     }
 
     const Status: {
       OK: 'OK';
       ZERO_RESULT: 'ZERO_RESULT';
       ERROR: 'ERROR';
+    };
+
+    const SortBy: {
+      ACCURACY: 'ACCURACY';
+      DISTANCE: 'DISTANCE';
     };
   }
 }

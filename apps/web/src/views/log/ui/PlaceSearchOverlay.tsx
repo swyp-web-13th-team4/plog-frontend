@@ -20,6 +20,7 @@ import {
 } from '@/features/place-search';
 
 import { KAKAO_MAP_SDK_URL } from '@/shared/api/constants';
+import { useUserLocation } from '@/shared/lib/geolocation';
 import { useScrollLock } from '@/shared/lib/scroll-lock';
 import {
   FetchErrorEmptyState,
@@ -49,6 +50,9 @@ export default function PlaceSearchOverlay({
 }: PlaceSearchOverlayProps) {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
+  const [userCoords, setUserCoords] = useState<GeolocationCoordinates | null>(
+    null,
+  );
   const resultScrollRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -60,7 +64,7 @@ export default function PlaceSearchOverlay({
     loadNextPage,
     handleQueryChange,
     handleClearQuery,
-  } = useKakaoPlaceSearch(sdkLoaded);
+  } = useKakaoPlaceSearch(sdkLoaded, userCoords);
   const { data: recentPlaces = [] } = useRecentPlacesQuery();
   const saveRecentPlaceMutation = useSaveRecentPlaceMutation();
   const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
@@ -69,6 +73,9 @@ export default function PlaceSearchOverlay({
   const { toast } = useToast();
 
   useScrollLock();
+  useUserLocation((coords) => {
+    setUserCoords(coords);
+  });
 
   const displayState = sdkLoadError ? 'error' : searchState;
 
