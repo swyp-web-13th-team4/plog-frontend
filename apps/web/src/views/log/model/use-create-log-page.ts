@@ -316,6 +316,7 @@ export function useCreateLogPage(editPostId?: string) {
     placeCategory,
     reviewTags,
     setFormValue,
+    scope,
     startTime,
     title,
     titleField,

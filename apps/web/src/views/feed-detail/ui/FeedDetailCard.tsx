@@ -11,6 +11,7 @@ import {
   Badge,
   Button,
   Carousel,
+  Dropdown,
   EmptyState,
   Icon,
   Spinner,
@@ -20,7 +21,11 @@ import { ShareButton } from '@/features/share-post';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
-import { FeedStatsSummary, TagBadgeGroup } from '@/entities/feed';
+import {
+  FeedStatsSummary,
+  PrivacySettingSection,
+  TagBadgeGroup,
+} from '@/entities/feed';
 import { formatStudyDate, formatTimeAgo } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
@@ -34,73 +39,6 @@ type FeedCarouselController = {
   isBeginning: boolean;
   isEnd: boolean;
 };
-
-type DropdownOption = { label: string; value: string };
-
-// TODO: Dropdown 디자인 시스템 컴포넌트로 분리
-function Dropdown({
-  options,
-  onSelect,
-  disabled,
-}: {
-  options: DropdownOption[];
-  onSelect: (value: string) => void;
-  disabled?: boolean;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handleClickOutside = (e: globalThis.MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [open]);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        type="button"
-        aria-label="게시글 관리 메뉴"
-        aria-expanded={open}
-        aria-haspopup="menu"
-        disabled={disabled}
-        className="flex size-8 cursor-pointer items-center justify-center rounded-md hover:bg-semantic-bg-deep disabled:cursor-not-allowed disabled:opacity-40"
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        <Icon name="more-vertical" className="text-semantic-object-normal" />
-      </button>
-      {open && (
-        <div
-          role="menu"
-          className="absolute right-0 z-30 mt-2 overflow-hidden rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white p-1.5"
-        >
-          <ul className="flex flex-col gap-2">
-            {options.map((option) => (
-              <li key={option.value}>
-                <button
-                  type="button"
-                  role="menuitem"
-                  className="label-sm flex min-h-[30px] w-23 cursor-pointer items-center rounded-md px-1.5 py-1 transition-colors hover:bg-semantic-bg-deep hover:text-semantic-object-bold"
-                  onClick={() => {
-                    setOpen(false);
-                    onSelect(option.value);
-                  }}
-                >
-                  {option.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-}
 
 const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
@@ -124,10 +62,12 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     data: post,
     isError,
     isPending,
+    isPrivateAccessError,
     refetch,
   } = useFeedDetailQuery(numericPostId);
 
   const deletePostMutation = useDeletePostMutation();
+  const privateAccessHandledRef = useRef(false);
 
   const updateCarouselEdgeState = (swiper: FeedCarouselController) => {
     setCarouselState({
@@ -159,6 +99,19 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
       <AppBar variant="navigation" title="피드" onBack={() => router.back()} />
     </header>
   );
+
+  useEffect(() => {
+    if (!isPrivateAccessError || privateAccessHandledRef.current) return;
+
+    privateAccessHandledRef.current = true;
+
+    const redirectPrivatePostAccess = async () => {
+      await dialog.alert('비공개 게시글입니다.');
+      router.replace('/');
+    };
+
+    void redirectPrivatePostAccess();
+  }, [isPrivateAccessError, router]);
 
   if (!isValidPostId) {
     return (
@@ -192,6 +145,10 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
         </section>
       </>
     );
+  }
+
+  if (isPrivateAccessError) {
+    return <>{feedHeader}</>;
   }
 
   if (isError || !post) {
@@ -229,6 +186,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   const hasMultipleImages = post.postImages.length > 1;
   const isMyPost = post.isAuthor ?? false;
   const isProfileClickable = Boolean(post.memberKey) && !isMyPost;
+  const isPrivate = post.scope === 'PRIVATE';
 
   const handleProfileClick = () => {
     if (!post.memberKey) return;
@@ -272,7 +230,14 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
           </div>
           {isMyPost && (
             <Dropdown
-              options={AUTHOR_ACTION_OPTIONS}
+              aria-label="게시글 관리 메뉴"
+              items={AUTHOR_ACTION_OPTIONS}
+              trigger={
+                <Icon
+                  name="more-vertical"
+                  className="text-semantic-object-normal"
+                />
+              }
               disabled={deletePostMutation.isPending}
               onSelect={handleAuthorAction}
             />
@@ -411,6 +376,11 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
             </span>
           </div>
         </div>
+        {isPrivate && (
+          <div className="px-6 pb-bottom-tab">
+            <PrivacySettingSection scope={post.scope} />
+          </div>
+        )}
       </section>
     </>
   );
