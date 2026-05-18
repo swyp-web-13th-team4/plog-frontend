@@ -203,7 +203,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   return (
     <>
       {feedHeader}
-      <section className="relative pt-[var(--spacing-header)]">
+      <section className="relative pt-[var(--spacing-header)] pb-bottom-tab">
         <div className="flex items-center justify-between px-6 py-3">
           <div className="flex items-center gap-3">
             {isProfileClickable ? (
