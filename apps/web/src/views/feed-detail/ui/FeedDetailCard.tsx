@@ -148,14 +148,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   }
 
   if (isPrivateAccessError) {
-    return (
-      <>
-        {feedHeader}
-        <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
-          <Spinner size="large" />
-        </section>
-      </>
-    );
+    return <>{feedHeader}</>;
   }
 
   if (isError || !post) {
