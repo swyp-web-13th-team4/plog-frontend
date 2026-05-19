@@ -30,6 +30,13 @@ export function useKakaoPlaceSearch(
   const trimmedQuery = query.trim();
   const canSearch = sdkLoaded && trimmedQuery.length >= MIN_SEARCH_LENGTH;
 
+  const resetPagination = useCallback(() => {
+    setHasNextPage(false);
+    setIsFetchingNextPage(false);
+    isFetchingNextPageRef.current = false;
+    paginationRef.current = null;
+  }, []);
+
   useEffect(() => {
     if (!canSearch) return;
 
@@ -39,10 +46,7 @@ export function useKakaoPlaceSearch(
       if (!window.kakao?.maps?.services) {
         setPlaces([]);
         setSearchState('error');
-        setHasNextPage(false);
-        setIsFetchingNextPage(false);
-        isFetchingNextPageRef.current = false;
-        paginationRef.current = null;
+        resetPagination();
         return;
       }
 
@@ -76,10 +80,7 @@ export function useKakaoPlaceSearch(
           }
 
           setPlaces([]);
-          setHasNextPage(false);
-          setIsFetchingNextPage(false);
-          isFetchingNextPageRef.current = false;
-          paginationRef.current = null;
+          resetPagination();
           setSearchState(
             status === window.kakao?.maps.services.Status.ZERO_RESULT
               ? 'empty'
@@ -94,7 +95,7 @@ export function useKakaoPlaceSearch(
       canceled = true;
       window.clearTimeout(timerId);
     };
-  }, [canSearch, trimmedQuery, userCoords]);
+  }, [canSearch, resetPagination, trimmedQuery, userCoords]);
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextQuery = event.target.value;
@@ -102,10 +103,7 @@ export function useKakaoPlaceSearch(
     if (nextQuery.trim().length < MIN_SEARCH_LENGTH) {
       setPlaces([]);
       setSearchState('idle');
-      setHasNextPage(false);
-      setIsFetchingNextPage(false);
-      isFetchingNextPageRef.current = false;
-      paginationRef.current = null;
+      resetPagination();
     } else {
       setSearchState('loading');
     }
@@ -115,10 +113,7 @@ export function useKakaoPlaceSearch(
     setQuery('');
     setPlaces([]);
     setSearchState('idle');
-    setHasNextPage(false);
-    setIsFetchingNextPage(false);
-    isFetchingNextPageRef.current = false;
-    paginationRef.current = null;
+    resetPagination();
   };
 
   const loadNextPage = useCallback(() => {
