@@ -38,7 +38,7 @@ export type FeedPost = {
   address?: string;
   isPublic?: boolean;
   isAuthor?: boolean;
-  scope: PostScope;
+  scope?: PostScope;
 };
 
 export type FeedPage = {
