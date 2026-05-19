@@ -27,6 +27,8 @@ export function useKakaoPlaceSearch(
   const paginationRef = useRef<kakao.maps.services.Pagination | null>(null);
   const isFetchingNextPageRef = useRef(false);
 
+  const latitude = userCoords?.latitude;
+  const longitude = userCoords?.longitude;
   const trimmedQuery = query.trim();
   const canSearch = sdkLoaded && trimmedQuery.length >= MIN_SEARCH_LENGTH;
 
@@ -52,12 +54,9 @@ export function useKakaoPlaceSearch(
 
       const placesService = new window.kakao.maps.services.Places();
       const searchOptions: kakao.maps.services.PlacesSearchOptions | undefined =
-        userCoords
+        latitude !== undefined && longitude !== undefined
           ? {
-              location: new window.kakao.maps.LatLng(
-                userCoords.latitude,
-                userCoords.longitude,
-              ),
+              location: new window.kakao.maps.LatLng(latitude, longitude),
               sort: window.kakao.maps.services.SortBy.DISTANCE,
             }
           : undefined;
@@ -95,7 +94,7 @@ export function useKakaoPlaceSearch(
       canceled = true;
       window.clearTimeout(timerId);
     };
-  }, [canSearch, resetPagination, trimmedQuery, userCoords]);
+  }, [canSearch, latitude, longitude, resetPagination, trimmedQuery]);
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextQuery = event.target.value;
