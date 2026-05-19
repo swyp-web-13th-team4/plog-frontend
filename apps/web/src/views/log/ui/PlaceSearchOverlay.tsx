@@ -15,6 +15,7 @@ import {
   type SelectedPlace,
   useDeleteRecentPlaceMutation,
   useDeleteRecentPlacesMutation,
+  type UserCoords,
   useRecentPlacesQuery,
   useSaveRecentPlaceMutation,
 } from '@/features/place-search';
@@ -52,9 +53,7 @@ export default function PlaceSearchOverlay({
 }: PlaceSearchOverlayProps) {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
-  const [userCoords, setUserCoords] = useState<GeolocationCoordinates | null>(
-    null,
-  );
+  const [userCoords, setUserCoords] = useState<UserCoords | null>(null);
   const resultScrollRef = useRef<HTMLDivElement>(null);
 
   const {

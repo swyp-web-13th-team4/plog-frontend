@@ -8,9 +8,9 @@ import {
 
 import { type SearchState } from '@/widgets/place-search';
 
-const MIN_SEARCH_LENGTH = 1;
+import { type UserCoords } from '@/features/place-search';
 
-type UserCoords = Pick<GeolocationCoordinates, 'latitude' | 'longitude'>;
+const MIN_SEARCH_LENGTH = 1;
 
 export function useKakaoPlaceSearch(
   sdkLoaded: boolean,

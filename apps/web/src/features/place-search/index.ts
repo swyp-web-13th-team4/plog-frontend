@@ -1,6 +1,7 @@
 export { formatRecentPlaceDate } from './model/recent-place-date';
 export type { SelectedPlace } from './model/selected-place';
 export { createSelectedPlace } from './model/selected-place';
+export type { UserCoords } from './model/types';
 export {
   useDeleteRecentPlaceMutation,
   useDeleteRecentPlacesMutation,
