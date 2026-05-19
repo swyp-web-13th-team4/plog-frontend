@@ -31,6 +31,8 @@ import {
 import { useKakaoPlaceSearch } from '../lib/use-kakao-place-search';
 import PlaceSearchResultList from './PlaceSearchResultList';
 
+const BOTTOM_NAV_HEIGHT = 80;
+
 function CenteredView({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-1 items-center justify-center bg-semantic-bg-deep p-6">
@@ -94,7 +96,7 @@ export default function PlaceSearchOverlay({
     const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
     const distanceToBottom = scrollHeight - scrollTop - clientHeight;
 
-    if (distanceToBottom <= 80) {
+    if (distanceToBottom <= BOTTOM_NAV_HEIGHT) {
       loadNextPage();
     }
   }, [displayState, hasNextPage, isFetchingNextPage, loadNextPage]);
