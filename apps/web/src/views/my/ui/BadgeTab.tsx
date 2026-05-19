@@ -138,7 +138,7 @@ function MainBadgeSection({ mainBadge }: MainBadgeSectionProps) {
           <img
             src={mainBadge.imageUrl}
             alt={mainBadge.name}
-            className="size-full object-contain"
+            className="object-contain"
           />
         ) : (
           <Icon
