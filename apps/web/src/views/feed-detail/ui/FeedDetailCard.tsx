@@ -378,7 +378,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
         </div>
         {isPrivate && (
           <div className="px-6 pb-bottom-tab">
-            <PrivacySettingSection scope={post.scope} />
+            <PrivacySettingSection scope="PRIVATE" />
           </div>
         )}
       </section>
