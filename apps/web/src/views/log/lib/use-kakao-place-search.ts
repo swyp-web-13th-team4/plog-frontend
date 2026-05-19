@@ -10,7 +10,10 @@ import { type SearchState } from '@/widgets/place-search';
 
 import { type UserCoords } from '@/features/place-search';
 
+import { useDebounce } from '@/shared/lib/debounce';
+
 const MIN_SEARCH_LENGTH = 1;
+const SEARCH_DEBOUNCE_DELAY = 300;
 
 export function useKakaoPlaceSearch(
   sdkLoaded: boolean,
@@ -30,7 +33,8 @@ export function useKakaoPlaceSearch(
   const latitude = userCoords?.latitude;
   const longitude = userCoords?.longitude;
   const trimmedQuery = query.trim();
-  const canSearch = sdkLoaded && trimmedQuery.length >= MIN_SEARCH_LENGTH;
+  const debouncedQuery = useDebounce(trimmedQuery, SEARCH_DEBOUNCE_DELAY);
+  const canSearch = sdkLoaded && debouncedQuery.length >= MIN_SEARCH_LENGTH;
 
   const resetPagination = useCallback(() => {
     setHasNextPage(false);
@@ -43,58 +47,49 @@ export function useKakaoPlaceSearch(
     if (!canSearch) return;
 
     let canceled = false;
+    const kakaoMaps = window.kakao?.maps;
 
-    const timerId = window.setTimeout(() => {
-      if (!window.kakao?.maps?.services) {
-        setPlaces([]);
-        setSearchState('error');
-        resetPagination();
-        return;
-      }
+    if (!kakaoMaps?.services) return;
 
-      const placesService = new window.kakao.maps.services.Places();
-      const searchOptions: kakao.maps.services.PlacesSearchOptions | undefined =
-        latitude !== undefined && longitude !== undefined
-          ? {
-              location: new window.kakao.maps.LatLng(latitude, longitude),
-              sort: window.kakao.maps.services.SortBy.DISTANCE,
-            }
-          : undefined;
-
-      placesService.keywordSearch(
-        trimmedQuery,
-        (data, status, pagination) => {
-          if (canceled) return;
-
-          if (status === window.kakao?.maps.services.Status.OK) {
-            setPlaces((prevPlaces) =>
-              pagination.current === 1 ? data : [...prevPlaces, ...data],
-            );
-            setSearchState(data.length > 0 ? 'success' : 'empty');
-            setHasNextPage(pagination.hasNextPage);
-            setIsFetchingNextPage(false);
-            isFetchingNextPageRef.current = false;
-            paginationRef.current = pagination;
-            return;
+    const placesService = new kakaoMaps.services.Places();
+    const searchOptions: kakao.maps.services.PlacesSearchOptions | undefined =
+      latitude !== undefined && longitude !== undefined
+        ? {
+            location: new kakaoMaps.LatLng(latitude, longitude),
+            sort: kakaoMaps.services.SortBy.DISTANCE,
           }
+        : undefined;
 
-          setPlaces([]);
-          resetPagination();
-          setSearchState(
-            status === window.kakao?.maps.services.Status.ZERO_RESULT
-              ? 'empty'
-              : 'error',
+    placesService.keywordSearch(
+      debouncedQuery,
+      (data, status, pagination) => {
+        if (canceled) return;
+
+        if (status === kakaoMaps.services.Status.OK) {
+          setPlaces((prevPlaces) =>
+            pagination.current === 1 ? data : [...prevPlaces, ...data],
           );
-        },
-        searchOptions,
-      );
-    }, 300);
+          setSearchState(data.length > 0 ? 'success' : 'empty');
+          setHasNextPage(pagination.hasNextPage);
+          setIsFetchingNextPage(false);
+          isFetchingNextPageRef.current = false;
+          paginationRef.current = pagination;
+          return;
+        }
+
+        setPlaces([]);
+        resetPagination();
+        setSearchState(
+          status === kakaoMaps.services.Status.ZERO_RESULT ? 'empty' : 'error',
+        );
+      },
+      searchOptions,
+    );
 
     return () => {
       canceled = true;
-      window.clearTimeout(timerId);
     };
-  }, [canSearch, latitude, longitude, resetPagination, trimmedQuery]);
+  }, [canSearch, debouncedQuery, latitude, longitude, resetPagination]);
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     const nextQuery = event.target.value;
