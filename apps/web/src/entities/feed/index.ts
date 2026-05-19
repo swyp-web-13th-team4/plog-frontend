@@ -1,7 +1,7 @@
 export { getFeedProfileView, getFeedProfileViewPosts } from './api/client';
 export {
+  formatDate,
   formatLikeCount,
-  formatStudyDate,
   formatStudyDuration,
   formatStudyDurationShort,
   formatTimeAgo,
