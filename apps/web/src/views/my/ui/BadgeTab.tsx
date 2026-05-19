@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button, Dialog, Icon, Spinner, useToast } from '@plog/ui';
 import { cn } from '@plog/utils';
@@ -28,6 +28,12 @@ export default function BadgeTab() {
   const [selectedBadge, setSelectedBadge] = useState<UserBadge | null>(null);
 
   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (clearTimerRef.current) clearTimeout(clearTimerRef.current);
+    };
+  }, []);
 
   const { toast } = useToast();
 
