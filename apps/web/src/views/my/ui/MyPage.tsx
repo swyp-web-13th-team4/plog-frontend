@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AppBar, Icon, TabGroup } from '@plog/ui';
 
 import AnalysisTab from './analysis/AnalysisTab';
+import BadgeTab from './BadgeTab';
 import BookmarkTab from './BookmarkTab';
 import ProfileSection from './ProfileSection';
 import RecordTab from './RecordTab';
@@ -24,18 +25,13 @@ const TABS = [
     activeIcon: <Icon name="bookmark-filled" size={20} />,
     panel: <BookmarkTab />,
   },
-  // {
-  //   value: 'badge',
-  //   label: '뱃지',
-  //   icon: <Icon name="badge" size={20} />,
-  //   activeIcon: <Icon name="badge-filled" size={20} />,
-  //   panel: (
-  //     <div className="flex items-center justify-center py-20 text-semantic-object-subtle">
-  //       <p className="body-sm">뱃지 탭은 준비 중이에요.</p>
-  //     </div>
-  //   ),
-  //   disabled: true,
-  // },
+  {
+    value: 'badge',
+    label: '배지',
+    icon: <Icon name="badge" size={20} />,
+    activeIcon: <Icon name="badge-filled" size={20} />,
+    panel: <BadgeTab />,
+  },
   {
     value: 'analysis',
     label: '분석',

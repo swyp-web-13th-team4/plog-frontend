@@ -6,6 +6,7 @@ export type UserBadge = {
   description: string;
   imageUrl: string;
   isAcquired: boolean;
+  acquiredAt: string;
 };
 
 export type TypeCardId = 'LOGI' | 'CHICHI' | 'TORI' | 'HARU' | 'POPO' | 'NAO';

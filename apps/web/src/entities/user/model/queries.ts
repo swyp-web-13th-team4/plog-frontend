@@ -10,6 +10,7 @@ export const mypageQueryKeys = {
     ['mypage', 'posts', sort, tags] as const,
   bookmarks: (sort: string, tags: readonly string[]) =>
     ['mypage', 'bookmarks', sort, tags] as const,
+  badges: ['mypage', 'badges'] as const,
 };
 
 export function useMypageQuery() {

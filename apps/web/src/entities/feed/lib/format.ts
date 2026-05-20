@@ -29,7 +29,7 @@ export function formatTimeAgo(time: Date | string | number) {
   return `${yearDiff}년 전`;
 }
 
-export function formatStudyDate(time: Date | string | number) {
+export function formatDate(time: Date | string | number) {
   const date = new Date(time);
   if (Number.isNaN(date.getTime())) return null;
 

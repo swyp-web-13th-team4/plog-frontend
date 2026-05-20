@@ -26,7 +26,7 @@ import {
   PrivacySettingSection,
   TagBadgeGroup,
 } from '@/entities/feed';
-import { formatStudyDate, formatTimeAgo } from '@/entities/feed';
+import { formatDate, formatTimeAgo } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
 
@@ -372,13 +372,13 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
               {post.contents}
             </p>
             <span className="caption-md self-end text-semantic-object-subtle">
-              {formatStudyDate(post.createAt)}
+              {formatDate(post.createAt)}
             </span>
           </div>
         </div>
         {isPrivate && (
           <div className="px-6 pb-bottom-tab">
-            <PrivacySettingSection scope={post.scope} />
+            <PrivacySettingSection scope="PRIVATE" />
           </div>
         )}
       </section>

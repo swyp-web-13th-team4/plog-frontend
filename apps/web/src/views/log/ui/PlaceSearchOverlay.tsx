@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useCallback, useState } from 'react';
+import { type ReactNode, useCallback, useRef, useState } from 'react';
 
 import Script from 'next/script';
 
@@ -15,11 +15,13 @@ import {
   type SelectedPlace,
   useDeleteRecentPlaceMutation,
   useDeleteRecentPlacesMutation,
+  type UserCoords,
   useRecentPlacesQuery,
   useSaveRecentPlaceMutation,
 } from '@/features/place-search';
 
 import { KAKAO_MAP_SDK_URL } from '@/shared/api/constants';
+import { useUserLocation } from '@/shared/lib/geolocation';
 import { useScrollLock } from '@/shared/lib/scroll-lock';
 import {
   FetchErrorEmptyState,
@@ -29,6 +31,8 @@ import {
 
 import { useKakaoPlaceSearch } from '../lib/use-kakao-place-search';
 import PlaceSearchResultList from './PlaceSearchResultList';
+
+const BOTTOM_NAV_HEIGHT = 80;
 
 function CenteredView({ children }: { children: ReactNode }) {
   return (
@@ -49,9 +53,19 @@ export default function PlaceSearchOverlay({
 }: PlaceSearchOverlayProps) {
   const [sdkLoaded, setSdkLoaded] = useState(false);
   const [sdkLoadError, setSdkLoadError] = useState(false);
+  const [userCoords, setUserCoords] = useState<UserCoords | null>(null);
+  const resultScrollRef = useRef<HTMLDivElement>(null);
 
-  const { query, places, searchState, handleQueryChange, handleClearQuery } =
-    useKakaoPlaceSearch(sdkLoaded);
+  const {
+    query,
+    places,
+    searchState,
+    hasNextPage,
+    isFetchingNextPage,
+    loadNextPage,
+    handleQueryChange,
+    handleClearQuery,
+  } = useKakaoPlaceSearch(sdkLoaded, userCoords);
   const { data: recentPlaces = [] } = useRecentPlacesQuery();
   const saveRecentPlaceMutation = useSaveRecentPlaceMutation();
   const deleteRecentPlaceMutation = useDeleteRecentPlaceMutation();
@@ -60,12 +74,31 @@ export default function PlaceSearchOverlay({
   const { toast } = useToast();
 
   useScrollLock();
+  useUserLocation((coords) => {
+    setUserCoords(coords);
+  });
 
   const displayState = sdkLoadError ? 'error' : searchState;
 
   const handleKakaoReady = useCallback(() => {
     window.kakao?.maps.load(() => setSdkLoaded(true));
   }, []);
+
+  const handleResultScroll = useCallback(() => {
+    if (displayState !== 'success' || !hasNextPage || isFetchingNextPage) {
+      return;
+    }
+
+    const scrollContainer = resultScrollRef.current;
+    if (!scrollContainer) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+    const distanceToBottom = scrollHeight - scrollTop - clientHeight;
+
+    if (distanceToBottom <= BOTTOM_NAV_HEIGHT) {
+      loadNextPage();
+    }
+  }, [displayState, hasNextPage, isFetchingNextPage, loadNextPage]);
 
   const saveAndSelect = async (place: SelectedPlace) => {
     try {
@@ -116,7 +149,7 @@ export default function PlaceSearchOverlay({
         onReady={handleKakaoReady}
         onError={() => setSdkLoadError(true)}
       />
-      <section className="flex min-h-[calc(100dvh-var(--spacing-header))] flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
+      <section className="flex h-dvh flex-col bg-semantic-bg-standard pt-[var(--spacing-header)]">
         <div className="sticky top-[var(--spacing-header)] z-10 border-b border-semantic-stroke-subtler bg-semantic-bg-standard px-6 py-6">
           <PlaceSearchInput
             value={query}
@@ -124,7 +157,11 @@ export default function PlaceSearchOverlay({
             onClear={handleClearQuery}
           />
         </div>
-        <div className="flex flex-1 flex-col">
+        <div
+          ref={resultScrollRef}
+          className="flex min-h-0 flex-1 flex-col overflow-y-auto"
+          onScroll={handleResultScroll}
+        >
           <PlaceSearchContent
             state={displayState}
             resultList={

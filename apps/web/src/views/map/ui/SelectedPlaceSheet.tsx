@@ -137,14 +137,14 @@ export default function SelectedPlaceSheet({
                   </button>
                 )}
               </div>
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-0.5">
+                <div className="flex flex-col gap-1.5">
+                  <Badge variant="soft" color="orange" className="w-fit">
+                    {getCategoryLabel(place.placeCategory)}
+                  </Badge>
                   <p className="title-sm text-semantic-object-boldest">
                     {place.placeName}
                   </p>
-                  <Badge variant="soft" color="skyblue">
-                    {getCategoryLabel(place.placeCategory)}
-                  </Badge>
                 </div>
                 <p className="body-sm text-semantic-object-normal">
                   {place.address}
