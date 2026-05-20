@@ -38,6 +38,7 @@ export default function BadgeTab() {
   const { toast } = useToast();
 
   const mainBadge = mypage?.mainBadge ?? null;
+  const DIALOG_CLOSE_DELAY_MS = 200;
 
   const openBadgeDialog = (badge: UserBadge) => {
     if (clearTimerRef.current) clearTimeout(clearTimerRef.current);
@@ -47,7 +48,10 @@ export default function BadgeTab() {
 
   const closeBadgeDialog = () => {
     setDialogOpen(false);
-    clearTimerRef.current = setTimeout(() => setSelectedBadge(null), 200);
+    clearTimerRef.current = setTimeout(
+      () => setSelectedBadge(null),
+      DIALOG_CLOSE_DELAY_MS,
+    );
   };
 
   const handleSetMainBadge = () => {
