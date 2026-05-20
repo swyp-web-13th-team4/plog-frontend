@@ -3,10 +3,19 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import {
+  type FeedProfilePosts,
   feedQueryKeys,
-  getFeedProfileViewPosts,
   type PostSortType,
 } from '@/entities/feed';
+
+import { clientApi } from '@/shared/api/client-api';
+
+function fetchFeedProfileViewPosts(memberKey: string, sort: PostSortType) {
+  const params = new URLSearchParams({ sort });
+  return clientApi.get<FeedProfilePosts>(
+    `/feed/profileView/${encodeURIComponent(memberKey)}/posts?${params}`,
+  );
+}
 
 export function useFeedProfilePostsQuery(
   memberKey: string,
@@ -16,7 +25,7 @@ export function useFeedProfilePostsQuery(
 
   return useQuery({
     queryKey: feedQueryKeys.profileViewPosts(selectedMember, sort),
-    queryFn: () => getFeedProfileViewPosts(selectedMember, sort),
+    queryFn: () => fetchFeedProfileViewPosts(selectedMember, sort),
     enabled: selectedMember.length > 0,
     placeholderData: keepPreviousData,
     select: (data) => data.posts,
