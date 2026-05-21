@@ -3,6 +3,7 @@
 import { AppBar, Button, Spinner } from '@plog/ui';
 
 import { useCreateLogPage } from '../model/use-create-log-page';
+import DecisionReviewModal from './DecisionReviewModal';
 import LogBasicSection from './LogBasicSection';
 import LogPlaceFields from './LogPlaceFields';
 import LogPrivacySection from './LogPrivacySection';
@@ -25,12 +26,15 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     handleBack,
     handleClosePlaceSearch,
     handleInvalidEditBack,
+    handleMakeReview,
+    handleReviewSkip,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
     isSubmitting,
+    makeReviewItem,
   } = controller;
 
   const logHeader = (
@@ -124,6 +128,15 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
             onClose={handleClosePlaceSearch}
           />
         </div>
+      )}
+      {makeReviewItem && (
+        <DecisionReviewModal
+          open
+          placeName={makeReviewItem.placeName}
+          imageUrl={makeReviewItem.imageUrl}
+          onReview={handleMakeReview}
+          onSkip={handleReviewSkip}
+        />
       )}
     </>
   );

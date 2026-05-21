@@ -34,6 +34,12 @@ import { useUpdateLogMutation } from './use-update-log-mutation';
 
 export type LogFormController = ReturnType<typeof useCreateLogPage>;
 
+type MakeReviewItem = {
+  postId: number;
+  placeName: string;
+  imageUrl?: string;
+};
+
 export function useCreateLogPage(editPostId?: string) {
   const router = useRouter();
   const numericEditPostId = editPostId ? Number(editPostId) : null;
@@ -47,6 +53,9 @@ export function useCreateLogPage(editPostId?: string) {
   const hasInvalidEditPostId = editPostId !== undefined && !isEditMode;
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
+  const [makeReviewItem, setMakeReviewItem] = useState<MakeReviewItem | null>(
+    null,
+  );
 
   const invalidFocus = useCreateLogInvalidFocus();
 
@@ -75,8 +84,12 @@ export function useCreateLogPage(editPostId?: string) {
   });
 
   const createLogMutation = useCreateLogMutation({
-    onSuccess: () => {
-      clearPhotos();
+    onSuccess: ({ postId, values }) => {
+      setMakeReviewItem({
+        postId,
+        placeName: values.place?.name ?? '방문한 장소',
+        imageUrl: values.photos[0]?.url,
+      });
     },
   });
 
@@ -173,6 +186,25 @@ export function useCreateLogPage(editPostId?: string) {
   ) => {
     setFormValue('place', place);
     setIsPlaceSearchOpen(false);
+  };
+
+  const closeReviewModal = () => {
+    setMakeReviewItem(null);
+    clearPhotos();
+  };
+
+  const handleMakeReview = () => {
+    if (!makeReviewItem) return;
+
+    const { postId } = makeReviewItem;
+    closeReviewModal();
+    router.replace(`/feed/review/${postId}`);
+  };
+
+  const handleReviewSkip = () => {
+    closeReviewModal();
+    toast({ type: 'success', description: '기록이 등록되었어요.' });
+    router.replace('/feed');
   };
 
   const handleInvalidSubmit = (
@@ -315,6 +347,7 @@ export function useCreateLogPage(editPostId?: string) {
     place,
     placeCategory,
     reviewTags,
+    makeReviewItem,
     setFormValue,
     scope,
     startTime,
@@ -323,5 +356,7 @@ export function useCreateLogPage(editPostId?: string) {
     trigger,
     workDate,
     focusTargets: invalidFocus.focusTargets,
+    handleMakeReview,
+    handleReviewSkip,
   };
 }
