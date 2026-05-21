@@ -28,12 +28,6 @@ const environmentValuesSchema = z
 export const reviewSchema = z.object({
   rating: ratingScoreSchema,
   environmentValues: environmentValuesSchema,
-  contents: z
-    .string()
-    .trim()
-    .min(1, '후기를 입력해 주세요.')
-    .max(300, '후기는 300자 이내로 입력해 주세요.'),
-  photos: z
-    .array(z.custom<PhotoPreview>())
-    .min(1, '이미지를 1장 이상 등록해 주세요.'),
+  contents: z.string().trim(),
+  photos: z.array(z.custom<PhotoPreview>()),
 });

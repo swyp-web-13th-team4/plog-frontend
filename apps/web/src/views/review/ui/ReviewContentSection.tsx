@@ -15,8 +15,6 @@ export default function ReviewContentSection({
 }: ReviewContentSectionProps) {
   const {
     contentsField,
-    errors,
-    focusTargets,
     handleAddPhotos,
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
@@ -24,29 +22,19 @@ export default function ReviewContentSection({
     photos,
     reviewText,
   } = controller;
-  const {
-    contentsFieldRef,
-    contentsInputRef,
-    photoFieldRef,
-    photoUploadButtonRef,
-  } = focusTargets;
   const { ref: contentsFormRef } = contentsField;
 
   const setContentsRef = useCallback(
     (element: HTMLTextAreaElement | null) => {
       contentsFormRef(element);
-      contentsInputRef(element);
     },
-    [contentsFormRef, contentsInputRef],
+    [contentsFormRef],
   );
 
   return (
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
-      <div ref={contentsFieldRef}>
-        <Field
-          label="더 자세한 후기를 남겨주세요"
-          error={errors.contents?.message}
-        >
+      <div>
+        <Field label="더 자세한 후기를 남겨주세요">
           <Textarea
             {...contentsField}
             ref={setContentsRef}
@@ -60,11 +48,10 @@ export default function ReviewContentSection({
         </Field>
       </div>
 
-      <div ref={photoFieldRef}>
+      <div>
         <Field label="이미지">
           <PhotoUploader
             photos={photos}
-            uploadButtonRef={photoUploadButtonRef}
             onAdd={handleAddPhotos}
             onRemove={handleRemovePhoto}
             onFileSizeExceeded={handlePhotoFileSizeExceeded}
