@@ -14,8 +14,14 @@ import { dialog } from '@/shared/lib/dialog';
 import { createLogForm, getNewPhotoFiles } from './mapper';
 import { type CreateLogFormValues, type CreateRequest } from './types';
 
+type CreatePostResponse = {
+  texts: {
+    postId: number;
+  };
+};
+
 function createPost(data: CreateRequest, images: File[]) {
-  return clientApi.post<number>(
+  return clientApi.post<CreatePostResponse>(
     '/post',
     createMultipartRequest(data, { images }),
   );
@@ -34,12 +40,12 @@ export function useCreateLogMutation({
 
   return useMutation({
     mutationFn: async (values: CreateLogFormValues) => {
-      const postId = await createPost(
+      const response = await createPost(
         createLogForm(values),
         getNewPhotoFiles(values),
       );
 
-      return { postId, values };
+      return { postId: response.texts.postId, values };
     },
     onSuccess: async ({ postId, values }) => {
       await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
