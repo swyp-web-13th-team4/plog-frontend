@@ -42,8 +42,8 @@ export default function UserProfile({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={mainBadge.imageUrl}
-              width={24}
-              height={24}
+              width={28}
+              height={28}
               alt={mainBadge.name}
               aria-label={`${mainBadge.name}. ${mainBadge.description}`}
               title={mainBadge.description}
