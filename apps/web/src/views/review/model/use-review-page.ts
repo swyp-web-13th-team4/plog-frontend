@@ -25,6 +25,8 @@ import {
   type ReviewEnvironmentScore,
 } from '@/entities/review';
 
+import { parseStudyDate } from '@/shared/lib/study-date';
+
 import { reviewResolver } from './resolver';
 import { type ReviewFormValues, type ReviewRatingScore } from './types';
 import {
@@ -47,15 +49,6 @@ const initialReviewValues: ReviewFormValues = {
   contents: '',
   photos: [],
 };
-
-function parseStudyDate(value: string | undefined): DateValue | null {
-  if (!value) return null;
-
-  const [year, month, date] = value.split('-').map(Number);
-  if (!year || !month || !date) return null;
-
-  return { year, month, date };
-}
 
 export function useReviewPage({ postId }: UseReviewPostId) {
   const router = useRouter();
@@ -182,7 +175,8 @@ export function useReviewPage({ postId }: UseReviewPostId) {
     setStartTime,
     setVisitDate,
     startTime: startTime ?? post?.startedAt ?? null,
-    visitDate: visitDate ?? parseStudyDate(post?.studyDate),
+    visitDate:
+      visitDate ?? (post?.studyDate ? parseStudyDate(post.studyDate) : null),
   };
 }
 

@@ -6,6 +6,8 @@ import {
 
 import { type PlaceCategoryValue } from '@/entities/place';
 
+import { formatStudyDate, parseStudyDate } from '@/shared/lib/study-date';
+
 import {
   type CreateLogFormValues,
   type CreateRequest,
@@ -13,26 +15,6 @@ import {
   type PostImage,
   type UpdateRequest,
 } from './types';
-
-function padDatePart(value: number) {
-  return String(value).padStart(2, '0');
-}
-
-function formatStudyDate({
-  year,
-  month,
-  date,
-}: NonNullable<CreateLogFormValues['studyDate']>) {
-  return `${year}-${padDatePart(month)}-${padDatePart(date)}`;
-}
-
-function parseStudyDate(value: string) {
-  const [year = 0, month = 0, date = 0] = value
-    .split('-')
-    .map((part) => Number(part));
-
-  return { year, month, date };
-}
 
 function existingPhoto(image: PostImage): ExistingPhotoPreview {
   return {
