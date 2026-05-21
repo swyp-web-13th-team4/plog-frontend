@@ -11,7 +11,7 @@ import {
   REVIEW_ENVIRONMENT_GROUPS,
   type ReviewEnvironmentGroup,
 } from '../model/types';
-import { type ReviewFormController } from '../model/use-review-page';
+import { type ReviewFormController } from '../model/use-create-review-page';
 
 type ReviewEnvironmentSectionProps = {
   controller: ReviewFormController;

@@ -34,7 +34,7 @@ import {
   useReviewInvalidFocus,
 } from './use-invalid-form-focus';
 
-type UseReviewPostId = {
+type UseCreateReviewPostId = {
   postId: string;
 };
 
@@ -50,7 +50,7 @@ const initialReviewValues: ReviewFormValues = {
   photos: [],
 };
 
-export function useReviewPage({ postId }: UseReviewPostId) {
+export function useCreateReviewPage({ postId }: UseCreateReviewPostId) {
   const router = useRouter();
   const { toast } = useToast();
   const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
@@ -180,4 +180,4 @@ export function useReviewPage({ postId }: UseReviewPostId) {
   };
 }
 
-export type ReviewFormController = ReturnType<typeof useReviewPage>;
+export type ReviewFormController = ReturnType<typeof useCreateReviewPage>;

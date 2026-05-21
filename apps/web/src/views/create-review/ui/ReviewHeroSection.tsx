@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { type ReviewFormController } from '../model/use-review-page';
+import { type ReviewFormController } from '../model/use-create-review-page';
 import RatingSelector from './RatingSelector';
 
 type ReviewHeroSectionProps = {

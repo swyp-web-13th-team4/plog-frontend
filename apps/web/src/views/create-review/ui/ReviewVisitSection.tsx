@@ -2,7 +2,7 @@ import { type DateValue, Field, Icon, type TimeValue } from '@plog/ui';
 
 import { SelectTriggerButton } from '@/features/select-trigger-button';
 
-import { type ReviewFormController } from '../model/use-review-page';
+import { type ReviewFormController } from '../model/use-create-review-page';
 
 type ReviewVisitSectionProps = {
   controller: ReviewFormController;

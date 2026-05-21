@@ -1,4 +1,4 @@
-import { CreateReviewPage } from '@/views/review';
+import { CreateReviewPage } from '@/views/create-review';
 
 export default async function Page({
   params,

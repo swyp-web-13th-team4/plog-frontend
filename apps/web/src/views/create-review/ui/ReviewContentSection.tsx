@@ -4,7 +4,7 @@ import { Field, Textarea } from '@plog/ui';
 
 import { PhotoUploader } from '@/features/photo-upload';
 
-import { type ReviewFormController } from '../model/use-review-page';
+import { type ReviewFormController } from '../model/use-create-review-page';
 
 type ReviewContentSectionProps = {
   controller: ReviewFormController;

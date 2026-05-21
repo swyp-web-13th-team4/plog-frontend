@@ -2,7 +2,7 @@
 
 import { AppBar, Button } from '@plog/ui';
 
-import { useReviewPage } from '../model/use-review-page';
+import { useCreateReviewPage } from '../model/use-create-review-page';
 import ReviewContentSection from './ReviewContentSection';
 import ReviewEnvironmentSection from './ReviewEnvironmentSection';
 import ReviewHeroSection from './ReviewHeroSection';
@@ -14,7 +14,7 @@ type CreateReviewPageProps = {
 };
 
 export default function CreateReviewPage({ postId }: CreateReviewPageProps) {
-  const controller = useReviewPage({ postId });
+  const controller = useCreateReviewPage({ postId });
   const { handleBack, handleSubmitReview, rating } = controller;
 
   return (

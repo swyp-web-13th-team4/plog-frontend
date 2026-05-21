@@ -198,7 +198,7 @@ export function useCreateLogPage(editPostId?: string) {
 
     const { postId } = makeReviewItem;
     closeReviewModal();
-    router.replace(`/feed/review/${postId}`);
+    router.replace(`/feed/create-review/${postId}`);
   };
 
   const handleReviewSkip = () => {
