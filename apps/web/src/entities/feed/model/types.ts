@@ -38,6 +38,7 @@ export type FeedPost = {
   tags: PlaceTagValue[];
   like: boolean;
   bookMark: boolean;
+  studyDate?: string;
   memberKey?: string;
   category?: string;
   address?: string;
