@@ -9,11 +9,11 @@ import ReviewHeroSection from './ReviewHeroSection';
 import ReviewVisitSection from './ReviewVisitSection';
 import SectionDivider from './SectionDivider';
 
-type ReviewPageProps = {
+type CreateReviewPageProps = {
   postId: string;
 };
 
-export default function CreateReviewPage({ postId }: ReviewPageProps) {
+export default function CreateReviewPage({ postId }: CreateReviewPageProps) {
   const controller = useReviewPage({ postId });
   const { handleBack, handleSubmitReview, rating } = controller;
 
