@@ -34,7 +34,7 @@ export default function UserProfile({
     <div className={cn('flex flex-col items-center gap-4 p-6', className)}>
       <Avatar size="small" src={profileImageUrl} alt={`${nickname} 프로필`} />
       <div className="flex flex-col items-center gap-1 text-center">
-        <div className="flex items-center gap-2">
+        <div className="relative flex items-center gap-2">
           <span className="title-md text-semantic-object-boldest">
             {nickname}
           </span>
@@ -42,12 +42,12 @@ export default function UserProfile({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={mainBadge.imageUrl}
-              width={24}
-              height={24}
+              width={28}
+              height={28}
               alt={mainBadge.name}
               aria-label={`${mainBadge.name}. ${mainBadge.description}`}
               title={mainBadge.description}
-              className="shrink-0"
+              className="absolute right-0 translate-x-8"
             />
           )}
         </div>

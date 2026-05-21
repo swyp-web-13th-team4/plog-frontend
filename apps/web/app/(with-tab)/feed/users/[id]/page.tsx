@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 
 import { UserProfilePage } from '@/views/users-detail';
-
-import { type FeedProfileView } from '@/entities/feed';
+import { type UserDetailData } from '@/views/users-detail/model/types';
 
 import { serverApi } from '@/shared/api/server-api';
 
@@ -16,7 +15,7 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const profile = await serverApi.get<FeedProfileView>(
+    const profile = await serverApi.get<UserDetailData>(
       `/feed/profileView/${encodeURIComponent(id)}`,
     );
     return { title: `${profile.memberInfo.nickname} 님의 프로필` };

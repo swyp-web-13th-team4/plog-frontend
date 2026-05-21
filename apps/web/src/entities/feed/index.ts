@@ -1,8 +1,4 @@
-export {
-  getFeedDetail,
-  getFeedProfileView,
-  getFeedProfileViewPosts,
-} from './api/client';
+export { getFeedDetail } from './api/client';
 export {
   formatDate,
   formatLikeCount,
@@ -27,7 +23,6 @@ export type {
   FeedPage,
   FeedPost,
   FeedProfilePosts,
-  FeedProfileView,
   PostScope,
   PostSortType,
 } from './model/types';
