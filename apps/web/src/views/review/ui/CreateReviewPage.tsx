@@ -13,7 +13,7 @@ type ReviewPageProps = {
   postId: string;
 };
 
-export default function ReviewPage({ postId }: ReviewPageProps) {
+export default function CreateReviewPage({ postId }: ReviewPageProps) {
   const controller = useReviewPage({ postId });
   const { handleBack, handleSubmitReview, rating } = controller;
 

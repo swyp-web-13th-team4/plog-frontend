@@ -1,4 +1,4 @@
-import { ReviewPage } from '@/views/review';
+import { CreateReviewPage } from '@/views/review';
 
 export default async function Page({
   params,
@@ -7,5 +7,5 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  return <ReviewPage postId={id} />;
+  return <CreateReviewPage postId={id} />;
 }
