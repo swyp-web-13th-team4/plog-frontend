@@ -23,15 +23,16 @@ import { LikeButton } from '@/features/toggle-like';
 
 import {
   FeedStatsSummary,
+  formatDate,
+  formatTimeAgo,
   PrivacySettingSection,
   TagBadgeGroup,
+  useFeedDetailQuery,
 } from '@/entities/feed';
-import { formatDate, formatTimeAgo } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
 
 import { useDeletePostMutation } from '../model/use-delete-post-mutation';
-import { useFeedDetailQuery } from '../model/use-feed-detail-query';
 
 type FeedCarouselController = {
   slidePrev: () => void;

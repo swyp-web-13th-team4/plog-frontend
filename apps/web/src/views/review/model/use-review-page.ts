@@ -19,18 +19,14 @@ import {
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
+import { useFeedDetailQuery } from '@/entities/feed';
 import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
 } from '@/entities/review';
 
 import { reviewResolver } from './resolver';
-import {
-  DEFAULT_REVIEW_PLACE_NAME,
-  REVIEW_PLACE_IMAGE_SRC,
-  type ReviewFormValues,
-  type ReviewRatingScore,
-} from './types';
+import { type ReviewFormValues, type ReviewRatingScore } from './types';
 import {
   getInvalidSubmitFeedback,
   useReviewInvalidFocus,
@@ -57,10 +53,13 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
   const { toast } = useToast();
   const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
     usePhotoUploadFeedback();
+
   const invalidFocus = useReviewInvalidFocus();
 
   const numericPostId = Number(postId);
   const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
+  const reviewPostQuery = useFeedDetailQuery(numericPostId);
+  const post = reviewPostQuery.data;
 
   const [visitDate, setVisitDate] = useState<DateValue | null>(null);
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
@@ -163,10 +162,11 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     handleRemovePhoto,
     handleSubmitReview,
     photos,
-    placeImageSrc: REVIEW_PLACE_IMAGE_SRC,
-    placeName: DEFAULT_REVIEW_PLACE_NAME,
+    placeImageSrc: post?.postImages[0],
+    placeName: post?.placeName,
     postId,
     rating,
+    reviewPostQuery,
     reviewText,
     setEndTime,
     setRating: handleRatingChange,

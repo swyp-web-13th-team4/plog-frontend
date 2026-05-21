@@ -8,9 +8,6 @@ import {
 
 import { type reviewSchema } from './schema';
 
-export const REVIEW_PLACE_IMAGE_SRC = '/review-place-preview.png';
-export const DEFAULT_REVIEW_PLACE_NAME = '방문 장소';
-
 export type ReviewRatingScore = 1 | 2 | 3 | 4 | 5;
 
 export type ReviewEnvironmentValues = Record<

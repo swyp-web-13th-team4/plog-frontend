@@ -1,5 +1,10 @@
 import { type PlaceTagValue } from './place-tag';
 
+export type Time = {
+  hour: number;
+  minute: number;
+};
+
 export type PostScope = 'PUBLIC' | 'PRIVATE';
 
 export type FeedProfileBadge = {
@@ -39,6 +44,8 @@ export type FeedPost = {
   isPublic?: boolean;
   isAuthor?: boolean;
   scope?: PostScope;
+  startedAt?: Time;
+  endedAt?: Time;
 };
 
 export type FeedPage = {

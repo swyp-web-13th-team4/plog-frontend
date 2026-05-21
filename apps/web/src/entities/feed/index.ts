@@ -1,4 +1,8 @@
-export { getFeedProfileView, getFeedProfileViewPosts } from './api/client';
+export {
+  getFeedDetail,
+  getFeedProfileView,
+  getFeedProfileViewPosts,
+} from './api/client';
 export {
   formatDate,
   formatLikeCount,
@@ -27,6 +31,7 @@ export type {
   PostScope,
   PostSortType,
 } from './model/types';
+export { useFeedDetailQuery } from './model/use-feed-detail-query';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';
 export { default as FeedStatsSummary } from './ui/FeedStatsSummary';
