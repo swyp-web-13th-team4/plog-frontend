@@ -32,7 +32,7 @@ import {
   useReviewInvalidFocus,
 } from './use-invalid-form-focus';
 
-type UseReviewPageOptions = {
+type UseReviewPostId = {
   postId: string;
 };
 
@@ -48,7 +48,16 @@ const initialReviewValues: ReviewFormValues = {
   photos: [],
 };
 
-export function useReviewPage({ postId }: UseReviewPageOptions) {
+function parseStudyDate(value: string | undefined): DateValue | null {
+  if (!value) return null;
+
+  const [year, month, date] = value.split('-').map(Number);
+  if (!year || !month || !date) return null;
+
+  return { year, month, date };
+}
+
+export function useReviewPage({ postId }: UseReviewPostId) {
   const router = useRouter();
   const { toast } = useToast();
   const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
@@ -150,7 +159,7 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
 
   return {
     contentsField,
-    endTime,
+    endTime: endTime ?? post?.endedAt ?? null,
     environmentValues,
     errors,
     focusTargets: invalidFocus.focusTargets,
@@ -162,8 +171,8 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     handleRemovePhoto,
     handleSubmitReview,
     photos,
-    placeImageSrc: post?.postImages[0],
-    placeName: post?.placeName,
+    placeImageSrc: post?.postImages[0] ?? null,
+    placeName: post?.placeName ?? '방문한 장소',
     postId,
     rating,
     reviewPostQuery,
@@ -172,8 +181,8 @@ export function useReviewPage({ postId }: UseReviewPageOptions) {
     setRating: handleRatingChange,
     setStartTime,
     setVisitDate,
-    startTime,
-    visitDate,
+    startTime: startTime ?? post?.startedAt ?? null,
+    visitDate: visitDate ?? parseStudyDate(post?.studyDate),
   };
 }
 

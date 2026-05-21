@@ -17,15 +17,17 @@ export default function ReviewHeroSection({
   return (
     <section ref={ratingFieldRef} className="px-6 pt-8 pb-10">
       <div className="flex flex-col items-center justify-center gap-8">
-        <div className="relative size-30 overflow-hidden rounded-xl">
-          <Image
-            src={placeImageSrc}
-            alt={placeName}
-            fill
-            priority
-            sizes="120px"
-            className="object-cover"
-          />
+        <div className="relative size-30 overflow-hidden rounded-xl bg-semantic-object-subtler">
+          {placeImageSrc && (
+            <Image
+              src={placeImageSrc}
+              alt={placeName}
+              fill
+              priority
+              sizes="120px"
+              className="object-cover"
+            />
+          )}
         </div>
 
         <div className="flex flex-col items-center gap-6">

@@ -1,8 +1,6 @@
 import { type DateValue, Field, Icon, type TimeValue } from '@plog/ui';
 
 import { SelectTriggerButton } from '@/features/select-trigger-button';
-import { WorkDateDialog } from '@/features/select-work-date';
-import { WorkTimeDialog } from '@/features/select-work-time';
 
 import { type ReviewFormController } from '../model/use-review-page';
 
@@ -18,6 +16,14 @@ function padTimePart(value: number) {
   return String(value).padStart(2, '0');
 }
 
+function serializeDateValue(value: DateValue) {
+  return `${value.year}-${padTimePart(value.month)}-${padTimePart(value.date)}`;
+}
+
+function serializeTimeValue(value: TimeValue) {
+  return `${padTimePart(value.hour)}:${padTimePart(value.minute)}`;
+}
+
 function formatKoreanTime(value: TimeValue) {
   const meridiem = value.hour < 12 ? '오전' : '오후';
   const displayHour = value.hour % 12 || 12;
@@ -28,43 +34,41 @@ function formatKoreanTime(value: TimeValue) {
 export default function ReviewVisitSection({
   controller,
 }: ReviewVisitSectionProps) {
-  const {
-    endTime,
-    setEndTime,
-    setStartTime,
-    setVisitDate,
-    startTime,
-    visitDate,
-  } = controller;
+  const { endTime, startTime, visitDate } = controller;
 
   return (
     <section className="flex flex-col px-6 pt-6 pb-10">
       <Field label="해당 장소를 언제 방문하셨나요?" className="gap-4" required>
         <Field label="방문 날짜">
-          <WorkDateDialog value={visitDate} onChange={setVisitDate}>
-            <SelectTriggerButton
-              value={visitDate ? formatKoreanDate(visitDate) : null}
-              placeholder="방문 날짜 선택"
-              icon={
-                <Icon
-                  name="calendar"
-                  size={20}
-                  className="text-semantic-object-subtle"
-                />
-              }
-              aria-label="방문 날짜 선택"
-            />
-          </WorkDateDialog>
+          <input
+            type="hidden"
+            name="workDate"
+            value={visitDate ? serializeDateValue(visitDate) : ''}
+          />
+          <SelectTriggerButton
+            value={visitDate ? formatKoreanDate(visitDate) : null}
+            placeholder="방문 날짜 선택"
+            icon={
+              <Icon
+                name="calendar"
+                size={20}
+                className="text-semantic-object-subtle"
+              />
+            }
+            aria-label="방문 날짜"
+            className="cursor-not-allowed text-semantic-object-subtler"
+            disabled
+          />
         </Field>
 
         <Field label="방문 시간">
           <div className="grid grid-cols-2 gap-4">
-            <WorkTimeDialog
-              value={startTime}
-              onChange={setStartTime}
-              label="방문 시작 시간"
-              name="startedAt"
-            >
+            <div>
+              <input
+                type="hidden"
+                name="startedAt"
+                value={startTime ? serializeTimeValue(startTime) : ''}
+              />
               <SelectTriggerButton
                 value={startTime ? formatKoreanTime(startTime) : null}
                 placeholder="--:--"
@@ -75,15 +79,17 @@ export default function ReviewVisitSection({
                     className="text-semantic-object-subtle"
                   />
                 }
-                aria-label="방문 시작 시간 선택"
+                aria-label="방문 시작 시간"
+                className="cursor-not-allowed text-semantic-object-subtler"
+                disabled
               />
-            </WorkTimeDialog>
-            <WorkTimeDialog
-              value={endTime}
-              onChange={setEndTime}
-              label="방문 종료 시간"
-              name="endedAt"
-            >
+            </div>
+            <div>
+              <input
+                type="hidden"
+                name="endedAt"
+                value={endTime ? serializeTimeValue(endTime) : ''}
+              />
               <SelectTriggerButton
                 value={endTime ? formatKoreanTime(endTime) : null}
                 placeholder="--:--"
@@ -94,9 +100,11 @@ export default function ReviewVisitSection({
                     className="text-semantic-object-subtle"
                   />
                 }
-                aria-label="방문 종료 시간 선택"
+                aria-label="방문 종료 시간"
+                className="cursor-not-allowed text-semantic-object-subtler"
+                disabled
               />
-            </WorkTimeDialog>
+            </div>
           </div>
         </Field>
       </Field>
