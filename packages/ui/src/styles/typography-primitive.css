@@ -4,6 +4,7 @@
   --default-font-family: var(--font-pretendard);
 
   /* font-size */
+  --text-primitive-11: 0.6875rem;
   --text-primitive-12: 0.75rem;
   --text-primitive-13: 0.8125rem;
   --text-primitive-14: 0.875rem;
@@ -26,6 +27,7 @@
   --font-weight-primitive-regular: 400;
 
   /* line-height */
+  --leading-primitive-14: 0.875rem;
   --leading-primitive-16: 1rem;
   --leading-primitive-18: 1.125rem;
   --leading-primitive-20: 1.25rem;

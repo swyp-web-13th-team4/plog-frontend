@@ -16,6 +16,7 @@ const typographySemantic = {
     lg: { fontSize: 16, fontWeight: 500, lineHeight: 24 },
     md: { fontSize: 15, fontWeight: 400, lineHeight: 22 },
     sm: { fontSize: 14, fontWeight: 400, lineHeight: 22 },
+    xs: { fontSize: 13, fontWeight: 400, lineHeight: 18 },
   },
   label: {
     xl: { fontSize: 18, fontWeight: 600, lineHeight: 24 },
@@ -24,6 +25,7 @@ const typographySemantic = {
     sm: { fontSize: 13, fontWeight: 500, lineHeight: 18 },
   },
   caption: {
+    sm: { fontSize: 11, fontWeight: 400, lineHeight: 14 },
     md: { fontSize: 12, fontWeight: 400, lineHeight: 16 },
   },
 } as const;

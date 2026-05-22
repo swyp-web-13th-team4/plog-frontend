@@ -50,6 +50,10 @@
   --font-weight-semantic-body-sm: var(--font-weight-primitive-regular);
   --leading-semantic-body-sm: var(--leading-primitive-22);
 
+  --text-semantic-body-xs: var(--text-primitive-13);
+  --font-weight-semantic-body-xs: var(--font-weight-primitive-regular);
+  --leading-semantic-body-xs: var(--leading-primitive-18);
+
   /* label */
   --text-semantic-label-xl: var(--text-primitive-18);
   --font-weight-semantic-label-xl: var(--font-weight-primitive-semibold);
@@ -68,6 +72,10 @@
   --leading-semantic-label-sm: var(--leading-primitive-18);
 
   /* caption */
+  --text-semantic-caption-sm: var(--text-primitive-11);
+  --font-weight-semantic-caption-sm: var(--font-weight-primitive-regular);
+  --leading-semantic-caption-sm: var(--leading-primitive-14);
+
   --text-semantic-caption-md: var(--text-primitive-12);
   --font-weight-semantic-caption-md: var(--font-weight-primitive-regular);
   --leading-semantic-caption-md: var(--leading-primitive-16);
@@ -139,6 +147,11 @@
     font-weight: var(--font-weight-primitive-regular);
     line-height: var(--leading-primitive-22);
   }
+  .body-xs {
+    font-size: var(--text-primitive-13);
+    font-weight: var(--font-weight-primitive-regular);
+    line-height: var(--leading-primitive-18);
+  }
 
   /* label */
   .label-xl {
@@ -163,6 +176,11 @@
   }
 
   /* caption */
+  .caption-sm {
+    font-size: var(--text-primitive-11);
+    font-weight: var(--font-weight-primitive-regular);
+    line-height: var(--leading-primitive-14);
+  }
   .caption-md {
     font-size: var(--text-primitive-12);
     font-weight: var(--font-weight-primitive-regular);
