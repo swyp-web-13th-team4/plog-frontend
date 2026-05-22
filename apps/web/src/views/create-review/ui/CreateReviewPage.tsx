@@ -3,6 +3,7 @@
 import { AppBar, Button } from '@plog/ui';
 
 import { useCreateReviewPage } from '../model/use-create-review-page';
+import LeaveReviewDialog from './LeaveReviewDialog';
 import ReviewContentSection from './ReviewContentSection';
 import ReviewEnvironmentSection from './ReviewEnvironmentSection';
 import ReviewHeroSection from './ReviewHeroSection';
@@ -15,7 +16,14 @@ type CreateReviewPageProps = {
 
 export default function CreateReviewPage({ postId }: CreateReviewPageProps) {
   const controller = useCreateReviewPage({ postId });
-  const { handleBack, handleSubmitReview, rating } = controller;
+  const {
+    handleBack,
+    handleCancelLeave,
+    handleConfirmLeave,
+    handleSubmitReview,
+    leaveConfirmOpen,
+    rating,
+  } = controller;
 
   return (
     <>
@@ -41,6 +49,11 @@ export default function CreateReviewPage({ postId }: CreateReviewPageProps) {
           </Button>
         </section>
       </form>
+      <LeaveReviewDialog
+        open={leaveConfirmOpen}
+        onCancel={handleCancelLeave}
+        onConfirm={handleConfirmLeave}
+      />
     </>
   );
 }

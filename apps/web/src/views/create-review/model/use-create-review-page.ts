@@ -59,13 +59,13 @@ export function useCreateReviewPage({ postId }: UseCreateReviewPostId) {
   const invalidFocus = useReviewInvalidFocus();
 
   const numericPostId = Number(postId);
-  const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
   const reviewPostQuery = useFeedDetailQuery(numericPostId);
   const post = reviewPostQuery.data;
 
   const [visitDate, setVisitDate] = useState<DateValue | null>(null);
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
   const [endTime, setEndTime] = useState<TimeValue | null>(null);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
   const {
     register,
@@ -111,7 +111,15 @@ export function useCreateReviewPage({ postId }: UseCreateReviewPostId) {
   });
 
   const handleBack = () => {
-    router.push(isValidPostId ? `/feed/${numericPostId}` : '/feed');
+    setLeaveConfirmOpen(true);
+  };
+
+  const handleCancelLeave = () => {
+    setLeaveConfirmOpen(false);
+  };
+
+  const handleConfirmLeave = () => {
+    router.push('/feed');
   };
 
   const handleEnvironmentChange = (
@@ -158,11 +166,14 @@ export function useCreateReviewPage({ postId }: UseCreateReviewPostId) {
     focusTargets: invalidFocus.focusTargets,
     handleAddPhotos,
     handleBack,
+    handleCancelLeave,
+    handleConfirmLeave,
     handleEnvironmentChange,
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
     handleRemovePhoto,
     handleSubmitReview,
+    leaveConfirmOpen,
     photos,
     placeImageSrc: post?.postImages[0] ?? null,
     placeName: post?.placeName ?? '방문한 장소',
