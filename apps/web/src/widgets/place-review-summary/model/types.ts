@@ -15,10 +15,26 @@ export type PlaceReviewMetric = {
 };
 
 export type PlaceReviewScoreCounts = Record<ReviewEnvironmentScore, number>;
+export type UserReviewEnvironmentSummary = Omit<PlaceReviewMetric, 'count'>;
 
 export type PlaceReviewSummary = {
   totalCount: number;
   averageRating: number;
   ratingParticipantCount: number;
   items: PlaceReviewMetric[];
+};
+
+export type UserReviewInfo = {
+  memberKey: string;
+  nickname: string;
+  profileImageUrl: string;
+  rating: number;
+  createdAt: string;
+  environmentSummaries: UserReviewEnvironmentSummary[];
+  content?: string;
+  images?: string[];
+};
+
+export type PlaceReviewLists = PlaceReviewSummary & {
+  reviewLists: UserReviewInfo[];
 };
