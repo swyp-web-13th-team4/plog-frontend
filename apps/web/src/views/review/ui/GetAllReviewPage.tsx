@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AppBar } from '@plog/ui';
 
 import { mockPlaceReviewSummary } from '@/widgets/place-review-summary';
+import ReviewLists from '@/widgets/place-review-summary/ui/ReviewLists';
 import ReviewSummary from '@/widgets/place-review-summary/ui/ReviewSummary';
 
 import { PlaceLayer } from '@/entities/place';
@@ -32,6 +33,7 @@ export default function GetAllReviewsPage({
         summary={mockPlaceReviewSummary}
       />
       <div aria-hidden="true" className="h-2 bg-semantic-bg-deep" />
+      <ReviewLists placeId={placeId} />
     </>
   );
 }
