@@ -14,6 +14,14 @@ type ReviewSummaryProps = {
   variant: PlaceReviewVariant;
 };
 
+function getMetricRank(summary: PlaceReviewSummary, targetCount: number) {
+  const rankedCounts = [
+    ...new Set(summary.items.map(({ count }) => count)),
+  ].sort((a, b) => b - a);
+
+  return rankedCounts.indexOf(targetCount) + 1;
+}
+
 export default function ReviewSummary({
   summary,
   variant,
@@ -50,6 +58,7 @@ export default function ReviewSummary({
             metric={item}
             totalCount={summary.totalCount}
             variant={variant}
+            rank={getMetricRank(summary, item.count)}
           />
         ))}
       </div>

@@ -13,19 +13,20 @@ type ReviewScoreBarProps = {
   metric: PlaceReviewMetric;
   totalCount: number;
   variant: PlaceReviewVariant;
+  rank: number;
 };
 
-function getBarClassName(variant: PlaceReviewVariant, ratio: number) {
+function getBarClassName(variant: PlaceReviewVariant, rank: number) {
   if (variant === 'record') {
-    if (ratio >= 0.75) return 'bg-semantic-accent-neutral';
-    if (ratio >= 0.5) return 'bg-semantic-accent-alternative';
-    if (ratio >= 0.25) return 'bg-semantic-accent-subtle';
+    if (rank === 1) return 'bg-semantic-accent-neutral';
+    if (rank === 2) return 'bg-semantic-accent-alternative';
+    if (rank === 3) return 'bg-semantic-accent-subtle';
     return 'bg-semantic-accent-subtler';
   }
 
-  if (ratio >= 0.75) return 'bg-semantic-theme-sky-neutral';
-  if (ratio >= 0.5) return 'bg-semantic-theme-sky-alternative';
-  if (ratio >= 0.25) return 'bg-semantic-theme-sky-assistive';
+  if (rank === 1) return 'bg-semantic-theme-sky-neutral';
+  if (rank === 2) return 'bg-semantic-theme-sky-alternative';
+  if (rank === 3) return 'bg-semantic-theme-sky-assistive';
   return 'bg-semantic-theme-sky-subtle';
 }
 
@@ -33,12 +34,13 @@ export default function ReviewScoreBar({
   metric,
   totalCount,
   variant,
+  rank,
 }: ReviewScoreBarProps) {
   const ratio = totalCount > 0 ? metric.count / totalCount : 0;
   const normalizedRatio = Math.min(Math.max(ratio, 0), 1);
   const width =
     totalCount === 0 ? '0%' : `${Math.max(normalizedRatio * 100, 8)}%`;
-  const barClassName = getBarClassName(variant, normalizedRatio);
+  const barClassName = getBarClassName(variant, rank);
   const environmentGroup = REVIEW_ENVIRONMENT_GROUP_MAP[metric.type];
 
   return (
