@@ -116,7 +116,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           )}
         </div>
         {hasImages && (
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex gap-2">
             {images.slice(0, 3).map((image, index) => {
               const showMore = images.length >= 3 && index === 2;
 
@@ -126,13 +126,12 @@ export default function ReviewItem({ review }: ReviewItemProps) {
                   type="button"
                   aria-label={`${review.nickname} 리뷰 이미지 ${index + 1} 보기`}
                   onClick={() => openImageModal(index)}
-                  className="relative aspect-square min-w-0 cursor-pointer overflow-hidden rounded-xl bg-semantic-object-subtler"
+                  className="relative size-20 min-w-0 cursor-pointer overflow-hidden rounded-xl bg-semantic-object-subtler"
                 >
                   <ImageWithFallback
                     src={image}
                     alt={`${review.nickname} 리뷰 이미지 ${index + 1}`}
                     fill
-                    sizes="33vw"
                     className="object-cover"
                   />
                   {showMore && (
@@ -146,7 +145,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           </div>
         )}
       </div>
-      {hasImages && (
+      {hasImages && imageModalOpen && (
         <ImagesModal
           open={imageModalOpen}
           images={images}
