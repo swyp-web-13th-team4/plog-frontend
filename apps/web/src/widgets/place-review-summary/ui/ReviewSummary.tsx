@@ -32,7 +32,7 @@ export default function ReviewSummary({
         <div className="flex items-center gap-2">
           <h2 className="label-lg text-semantic-object-boldest">방문자 리뷰</h2>
           <span className="label-lg flex items-center text-semantic-object-boldest">
-            <p
+            <span
               className={cn(
                 'title-xs',
                 variant === 'record'
@@ -41,7 +41,7 @@ export default function ReviewSummary({
               )}
             >
               {summary.totalCount}
-            </p>
+            </span>
             개
           </span>
         </div>
