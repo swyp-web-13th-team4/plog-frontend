@@ -2,7 +2,8 @@
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { formatReviewPersonCount } from '../lib/utils';
+import { REVIEW_ENVIRONMENT_GROUP_MAP } from '@/entities/review';
+
 import {
   type PlaceReviewMetric,
   type PlaceReviewVariant,
@@ -13,13 +14,6 @@ type ReviewScoreBarProps = {
   totalCount: number;
   variant: PlaceReviewVariant;
 };
-
-const ICON_TYPE = {
-  spaceSize: 'company-filled',
-  noiseLevel: 'megaphone-filled',
-  congestionLevel: 'smile-filled',
-  focusLevel: 'fire-filled',
-} as const;
 
 function getBarClassName(variant: PlaceReviewVariant, ratio: number) {
   if (variant === 'record') {
@@ -45,15 +39,19 @@ export default function ReviewScoreBar({
   const width =
     totalCount === 0 ? '0%' : `${Math.max(normalizedRatio * 100, 8)}%`;
   const barClassName = getBarClassName(variant, normalizedRatio);
+  const environmentGroup = REVIEW_ENVIRONMENT_GROUP_MAP[metric.type];
 
   return (
     <div className="flex gap-2">
-      <div className="flex size-11 items-center justify-center rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white">
+      <div className="flex w-21.25 items-center gap-1.5 justify-self-start rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white pl-2.5">
         <Icon
-          name={ICON_TYPE[metric.type]}
-          size={20}
+          name={environmentGroup.iconName}
+          size={14}
           className="text-semantic-object-subtle"
         />
+        <span className="caption-md text-semantic-object-boldest">
+          {environmentGroup.title}
+        </span>
       </div>
 
       <div className="relative h-11 flex-1 overflow-hidden rounded-xl bg-semantic-bg-deep">
@@ -66,7 +64,7 @@ export default function ReviewScoreBar({
             {metric.label}
           </span>
           <span className="label-sm text-semantic-object-boldest">
-            {formatReviewPersonCount(metric.count)}
+            {metric.count}명
           </span>
         </div>
       </div>

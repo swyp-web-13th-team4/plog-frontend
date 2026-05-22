@@ -4,4 +4,3 @@ export type {
   PlaceReviewMetricType,
   PlaceReviewVariant,
 } from './model/types';
-export { default as PlaceReviewSummary } from './ui/PlaceReviewSummary';

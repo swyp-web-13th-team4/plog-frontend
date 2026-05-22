@@ -1,4 +1,5 @@
 import {
+  REVIEW_ENVIRONMENT_GROUPS,
   REVIEW_ENVIRONMENT_LABELS,
   REVIEW_ENVIRONMENT_SCORES,
   type ReviewEnvironmentScore,
@@ -11,23 +12,8 @@ import {
 } from '../model/types';
 
 export const PLACE_REVIEW_METRIC_ORDER: PlaceReviewMetricType[] = [
-  'spaceSize',
-  'noiseLevel',
-  'congestionLevel',
-  'focusLevel',
+  ...REVIEW_ENVIRONMENT_GROUPS.map(({ name }) => name),
 ];
-
-export function formatCompactReviewCount(count: number) {
-  return count >= 1000 ? '+999' : `+${count}`;
-}
-
-export function formatReviewCount(count: number) {
-  return count >= 1000 ? '+999' : String(count);
-}
-
-export function formatReviewPersonCount(count: number) {
-  return count >= 1000 ? '+999' : `${count}명`;
-}
 
 export function getTopReviewMetric(
   type: PlaceReviewMetricType,

@@ -1,12 +1,11 @@
-import { type ReviewEnvironmentScore } from '@/entities/review';
+import {
+  type ReviewEnvironmentName,
+  type ReviewEnvironmentScore,
+} from '@/entities/review';
 
 export type PlaceReviewVariant = 'record' | 'bookmark';
 
-export type PlaceReviewMetricType =
-  | 'spaceSize'
-  | 'noiseLevel'
-  | 'congestionLevel'
-  | 'focusLevel';
+export type PlaceReviewMetricType = ReviewEnvironmentName;
 
 export type PlaceReviewMetric = {
   type: PlaceReviewMetricType;

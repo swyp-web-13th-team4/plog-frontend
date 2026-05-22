@@ -2,13 +2,12 @@
 
 import { Fragment } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { Badge, BottomSheet, Button, Divider, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import {
-  mockPlaceReviewSummary,
-  PlaceReviewSummary,
-} from '@/widgets/place-review-summary';
+import { mockPlaceReviewSummary } from '@/widgets/place-review-summary';
 
 import { formatStudyDurationShort } from '@/entities/feed';
 import { getCategoryLabel, type PlaceLayer } from '@/entities/place';
@@ -98,7 +97,7 @@ export default function SelectedPlaceSheet({
   onCreatePost,
 }: SelectedPlaceSheetProps) {
   const isRecord = placeType === 'record';
-
+  const router = useRouter();
   return (
     <BottomSheet
       open={place !== null}
@@ -151,11 +150,34 @@ export default function SelectedPlaceSheet({
                 </p>
               </div>
 
+              <div className="flex items-center gap-1">
+                <Icon
+                  name="star-filled"
+                  size={20}
+                  className="text-semantic-theme-amber-neutral"
+                />
+                <div className="flex items-center gap-1.5">
+                  <span className="label-sm text-semantic-object-bold">
+                    {mockPlaceReviewSummary.averageRating}
+                  </span>
+                  <Divider
+                    thickness="small"
+                    orientation="vertical"
+                    className="h-3"
+                  />
+                  <button
+                    onClick={() => {
+                      router.push(
+                        `/reviews?placeId=${place.placeId}&type=${placeType}`,
+                      );
+                    }}
+                    className="caption-md cursor-pointer text-semantic-object-normal underline"
+                  >
+                    리뷰 {mockPlaceReviewSummary.totalCount}개
+                  </button>
+                </div>
+              </div>
               <PlaceStatBar place={place} isRecord={isRecord} />
-              <PlaceReviewSummary
-                variant={isRecord ? 'record' : 'bookmark'}
-                summary={mockPlaceReviewSummary}
-              />
 
               {isRecord ? (
                 <div className="flex gap-2">
