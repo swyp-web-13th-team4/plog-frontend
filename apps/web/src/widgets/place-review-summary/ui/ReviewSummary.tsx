@@ -45,7 +45,7 @@ export default function ReviewSummary({
             개
           </span>
         </div>
-        <div className="text-semantic-objet-bold flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 text-semantic-object-bold">
           <Icon name="star-filled" size={18} />
           <span className="label-lg">{summary.averageRating.toFixed(2)}</span>
         </div>
