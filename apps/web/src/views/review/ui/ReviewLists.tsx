@@ -49,7 +49,7 @@ export default function ReviewLists({ placeId }: { placeId: number }) {
 
   return (
     <section className="flex flex-col gap-2 px-6 py-5">
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <Select
           items={REVIEW_LIST_OPTIONS}
           value={sort}

@@ -110,7 +110,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           </div>
 
           {review.content && (
-            <p className="body-xs text-semantic-object-bold">
+            <p className="body-sm text-semantic-object-bold">
               {review.content}
             </p>
           )}
