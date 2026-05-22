@@ -1,9 +1,7 @@
 export { mockPlaceReviewSummary } from './model/mock-data';
 export type {
-  PlaceReviewLists,
   PlaceReviewMetric,
   PlaceReviewMetricType,
+  PlaceReviewSummary,
   PlaceReviewVariant,
-  UserReviewEnvironmentSummary,
-  UserReviewInfo,
 } from './model/types';

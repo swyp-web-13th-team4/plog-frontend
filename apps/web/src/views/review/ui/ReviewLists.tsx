@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button, Icon, Select } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { mockPlaceReviewSummary } from '../model/mock-data';
+import { mockReviewLists } from '../model/mock-data';
 import { type UserReviewInfo } from '../model/types';
 import ReviewItem from './ReviewItem';
 
@@ -37,7 +37,7 @@ export default function ReviewLists({ placeId }: { placeId: number }) {
   const [photoOnly, setPhotoOnly] = useState(false);
 
   const reviews = sortReviews(
-    mockPlaceReviewSummary.reviewLists.filter(
+    mockReviewLists.filter(
       (review) => !photoOnly || (review.images && review.images.length > 0),
     ),
     sort,
