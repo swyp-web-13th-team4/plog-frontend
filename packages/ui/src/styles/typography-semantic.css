@@ -74,7 +74,7 @@
   /* caption */
   --text-semantic-caption-sm: var(--text-primitive-11);
   --font-weight-semantic-caption-sm: var(--font-weight-primitive-regular);
-  --leading-semantic-caption-sm: var(--leading-primitive-14);
+  --leading-semantic-caption-sm: var(--leading-primitive-16);
 
   --text-semantic-caption-md: var(--text-primitive-12);
   --font-weight-semantic-caption-md: var(--font-weight-primitive-regular);
