@@ -16,8 +16,12 @@ export async function GET(request: NextRequest) {
     },
   });
 
+  if (!response.ok) {
+    return new Response(null, { status: response.status });
+  }
+
   return new Response(response.body, {
-    status: response.status,
+    status: 200,
     headers: {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
