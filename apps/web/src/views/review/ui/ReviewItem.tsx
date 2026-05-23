@@ -66,7 +66,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
               <div className="flex gap-1">
                 <RatingStars rating={review.rating} />
                 <div className="flex gap-1">
-                  <span className="caption-md text-semantic-object-boldest">
+                  <span className="label-md text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
                     {review.rating.toFixed(1)}
                   </span>
                   <Divider
@@ -97,11 +97,11 @@ export default function ReviewItem({ review }: ReviewItemProps) {
                       size={12}
                       className="text-semantic-object-subtle"
                     />
-                    <span className="caption-md text-semantic-object-boldest">
+                    <span className="label-sm text-semantic-object-boldest mobile:text-semantic-caption-sm mobile:leading-semantic-caption-sm mobile:font-semantic-caption-sm">
                       {group.title}
                     </span>
                   </div>
-                  <span className="caption-md text-semantic-object-bold">
+                  <span className="label-sm text-semantic-object-bold mobile:text-semantic-caption-sm mobile:leading-semantic-caption-sm mobile:font-semantic-caption-sm">
                     {summary.label}
                   </span>
                 </div>
@@ -110,7 +110,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
           </div>
 
           {review.content && (
-            <p className="body-sm text-semantic-object-bold">
+            <p className="body-sm text-semantic-object-bold mobile:text-semantic-body-xs mobile:leading-semantic-body-xs mobile:font-semantic-body-xs">
               {review.content}
             </p>
           )}

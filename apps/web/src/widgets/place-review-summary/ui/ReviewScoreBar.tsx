@@ -45,13 +45,13 @@ export default function ReviewScoreBar({
 
   return (
     <div className="flex gap-2">
-      <div className="flex w-21.25 items-center gap-1.5 justify-self-start rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white pl-2.5">
+      <div className="flex w-23.75 items-center gap-1.5 justify-self-start rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white pl-2.5 mobile:w-21.25">
         <Icon
           name={environmentGroup.iconName}
           size={14}
           className="text-semantic-object-subtle"
         />
-        <span className="caption-md text-semantic-object-boldest">
+        <span className="label-sm text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
           {environmentGroup.title}
         </span>
       </div>
@@ -62,10 +62,10 @@ export default function ReviewScoreBar({
           style={{ width }}
         />
         <div className="absolute inset-0 flex items-center justify-between px-5">
-          <span className="label-sm text-semantic-object-boldest">
+          <span className="label-sm mobile: text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
             {metric.label}
           </span>
-          <span className="label-sm text-semantic-object-boldest">
+          <span className="label-sm mobile: text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
             {metric.count}명
           </span>
         </div>

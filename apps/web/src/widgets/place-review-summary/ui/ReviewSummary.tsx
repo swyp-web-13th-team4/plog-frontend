@@ -30,15 +30,12 @@ export default function ReviewSummary({
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h2 className="label-lg text-semantic-object-boldest">방문자 리뷰</h2>
-          <span className="label-lg flex items-center text-semantic-object-boldest">
+          <h2 className="title-xs text-semantic-object-boldest mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
+            방문자 리뷰
+          </h2>
+          <span className="title-xs flex items-center text-semantic-object-boldest mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
             <span
-              className={cn(
-                'title-xs',
-                variant === 'record'
-                  ? 'text-semantic-accent-normal'
-                  : 'text-semantic-theme-sky-normal',
-              )}
+              className={`${variant === 'record' ? 'text-semantic-accent-normal' : 'text-semantic-theme-sky-normal'}`}
             >
               {summary.totalCount}
             </span>
@@ -47,7 +44,9 @@ export default function ReviewSummary({
         </div>
         <div className="flex items-center gap-1.5 text-semantic-object-bold">
           <Icon name="star-filled" size={18} />
-          <span className="label-lg">{summary.averageRating.toFixed(2)}</span>
+          <span className="label-xl mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
+            {summary.averageRating.toFixed(2)}
+          </span>
         </div>
       </div>
 
