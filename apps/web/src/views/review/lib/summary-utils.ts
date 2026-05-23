@@ -9,7 +9,7 @@ import {
   type PlaceReviewMetric,
   type PlaceReviewMetricType,
   type PlaceReviewScoreCounts,
-} from '../model/types';
+} from '../model/summary-types';
 
 export const PLACE_REVIEW_METRIC_ORDER: PlaceReviewMetricType[] = [
   ...REVIEW_ENVIRONMENT_GROUPS.map(({ name }) => name),

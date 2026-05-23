@@ -7,7 +7,7 @@ import { REVIEW_ENVIRONMENT_GROUP_MAP } from '@/entities/review';
 import {
   type PlaceReviewMetric,
   type PlaceReviewVariant,
-} from '../model/types';
+} from '../model/summary-types';
 
 type ReviewScoreBarProps = {
   metric: PlaceReviewMetric;

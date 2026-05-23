@@ -4,12 +4,11 @@ import { useRouter } from 'next/navigation';
 
 import { AppBar } from '@plog/ui';
 
-import { mockPlaceReviewSummary } from '@/widgets/place-review-summary';
-import ReviewSummary from '@/widgets/place-review-summary/ui/ReviewSummary';
-
 import { PlaceLayer } from '@/entities/place';
 
+import { mockPlaceReviewSummary } from '../model/summary-mock-data';
 import ReviewLists from './ReviewLists';
+import ReviewSummary from './ReviewSummary';
 
 export default function GetAllReviewsPage({
   placeId,

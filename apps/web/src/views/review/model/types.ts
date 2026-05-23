@@ -1,9 +1,9 @@
-import { type PlaceReviewMetric } from '@/widgets/place-review-summary';
-
 import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
 } from '@/entities/review';
+
+import { type PlaceReviewMetric } from './summary-types';
 
 export type ReviewSortType = 'latest' | 'registered' | 'highest' | 'lowest';
 

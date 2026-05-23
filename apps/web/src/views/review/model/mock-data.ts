@@ -1,7 +1,6 @@
-import { PLACE_REVIEW_METRIC_ORDER } from '@/widgets/place-review-summary/lib/utils';
-
 import { REVIEW_ENVIRONMENT_LABELS } from '@/entities/review';
 
+import { PLACE_REVIEW_METRIC_ORDER } from '../lib/summary-utils';
 import { type UserReviewEnvironmentValues, type UserReviewInfo } from './types';
 
 function createEnvironmentSummaries(values: UserReviewEnvironmentValues) {

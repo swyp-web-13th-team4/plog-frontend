@@ -1,7 +1,13 @@
 import { type ReviewEnvironmentScore } from '@/entities/review';
 
-import { getTopReviewMetric, PLACE_REVIEW_METRIC_ORDER } from '../lib/utils';
-import { type PlaceReviewMetricType, type PlaceReviewSummary } from './types';
+import {
+  getTopReviewMetric,
+  PLACE_REVIEW_METRIC_ORDER,
+} from '../lib/summary-utils';
+import {
+  type PlaceReviewMetricType,
+  type PlaceReviewSummary,
+} from './summary-types';
 
 type MockReviewDistribution = {
   counts: Record<ReviewEnvironmentScore, number>;

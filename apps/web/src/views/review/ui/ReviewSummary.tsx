@@ -5,7 +5,7 @@ import { Icon } from '@plog/ui';
 import {
   type PlaceReviewSummary,
   type PlaceReviewVariant,
-} from '../model/types';
+} from '../model/summary-types';
 import ReviewScoreBar from './ReviewScoreBar';
 
 type ReviewSummaryProps = {

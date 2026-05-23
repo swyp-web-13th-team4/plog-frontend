@@ -7,14 +7,17 @@ import { useRouter } from 'next/navigation';
 import { Badge, BottomSheet, Button, Divider, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { mockPlaceReviewSummary } from '@/widgets/place-review-summary';
-
 import { formatStudyDurationShort } from '@/entities/feed';
 import { getCategoryLabel, type PlaceLayer } from '@/entities/place';
 
 import { ImageWithFallback } from '@/shared/ui';
 
 import { type MapPinDetail } from '../model/types';
+
+const mockPlaceReviewStats = {
+  averageRating: 4.27,
+  totalCount: 1200,
+};
 
 export type SelectedPlaceSheetProps = {
   place: MapPinDetail | null;
@@ -158,7 +161,7 @@ export default function SelectedPlaceSheet({
                 />
                 <div className="flex items-center gap-1.5">
                   <span className="label-sm text-semantic-object-bold">
-                    {mockPlaceReviewSummary.averageRating}
+                    {mockPlaceReviewStats.averageRating}
                   </span>
                   <Divider
                     thickness="small"
@@ -173,7 +176,7 @@ export default function SelectedPlaceSheet({
                     }}
                     className="caption-md cursor-pointer text-semantic-object-normal underline"
                   >
-                    리뷰 {mockPlaceReviewSummary.totalCount}개
+                    리뷰 {mockPlaceReviewStats.totalCount}개
                   </button>
                 </div>
               </div>
