@@ -179,7 +179,7 @@
   .caption-sm {
     font-size: var(--text-primitive-11);
     font-weight: var(--font-weight-primitive-regular);
-    line-height: var(--leading-primitive-14);
+    line-height: var(--leading-primitive-16);
   }
   .caption-md {
     font-size: var(--text-primitive-12);
