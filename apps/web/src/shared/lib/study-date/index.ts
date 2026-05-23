@@ -23,5 +23,4 @@ export function parseStudyDate(value: string): DateValue {
     date <= 31;
 
   return isValid ? { year, month, date } : { year: 0, month: 0, date: 0 };
-  return { year, month, date };
 }

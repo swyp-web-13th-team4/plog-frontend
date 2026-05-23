@@ -15,5 +15,5 @@ export default async function Page({
     notFound();
   }
 
-  return <GetAllReviewsPage placeId={Number(placeId)} placeType={placeType} />;
+  return <GetAllReviewsPage placeId={numericPlaceId} placeType={placeType} />;
 }
