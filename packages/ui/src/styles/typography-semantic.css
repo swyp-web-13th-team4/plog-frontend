@@ -52,7 +52,7 @@
 
   --text-semantic-body-xs: var(--text-primitive-13);
   --font-weight-semantic-body-xs: var(--font-weight-primitive-regular);
-  --leading-semantic-body-xs: var(--leading-primitive-18);
+  --leading-semantic-body-xs: var(--leading-primitive-20);
 
   /* label */
   --text-semantic-label-xl: var(--text-primitive-18);
@@ -150,7 +150,7 @@
   .body-xs {
     font-size: var(--text-primitive-13);
     font-weight: var(--font-weight-primitive-regular);
-    line-height: var(--leading-primitive-18);
+    line-height: var(--leading-primitive-20);
   }
 
   /* label */

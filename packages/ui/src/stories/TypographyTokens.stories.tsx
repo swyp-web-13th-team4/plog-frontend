@@ -36,12 +36,12 @@ const tokens = [
   { name: 'body-lg', size: 16, weight: 500, lineHeight: 24 },
   { name: 'body-md', size: 15, weight: 400, lineHeight: 22 },
   { name: 'body-sm', size: 14, weight: 400, lineHeight: 22 },
-  { name: 'body-xs', size: 13, weight: 400, lineHeight: 18 },
+  { name: 'body-xs', size: 13, weight: 400, lineHeight: 20 },
   { name: 'label-xl', size: 18, weight: 600, lineHeight: 24 },
   { name: 'label-lg', size: 16, weight: 600, lineHeight: 22 },
   { name: 'label-md', size: 14, weight: 500, lineHeight: 20 },
   { name: 'label-sm', size: 13, weight: 500, lineHeight: 18 },
-  { name: 'caption-sm', size: 11, weight: 400, lineHeight: 14 },
+  { name: 'caption-sm', size: 11, weight: 400, lineHeight: 16 },
   { name: 'caption-md', size: 12, weight: 400, lineHeight: 16 },
 ] as const;
 

@@ -24,7 +24,6 @@ const typographyPrimitive = {
     regular: 400,
   },
   lineHeight: {
-    14: 14,
     16: 16,
     18: 18,
     20: 20,
