@@ -20,6 +20,8 @@ export default function BadgeNotification() {
       setAcquiredBadge(payload);
     });
 
+    es.onerror = () => es.close();
+
     return () => es.close();
   }, []);
 
