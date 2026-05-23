@@ -1,7 +1,6 @@
 'use client';
 
 import { Icon } from '@plog/ui';
-import { cn } from '@plog/utils';
 
 import {
   type PlaceReviewSummary,
@@ -43,7 +42,12 @@ export default function ReviewSummary({
           </span>
         </div>
         <div className="flex items-center gap-1.5 text-semantic-object-bold">
-          <Icon name="star-filled" size={18} />
+          <Icon
+            name="star-filled"
+            boxed={false}
+            className="h-5.5 w-5.5 mobile:h-4.5 mobile:w-4.5"
+          />
+
           <span className="label-xl mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
             {summary.averageRating.toFixed(2)}
           </span>

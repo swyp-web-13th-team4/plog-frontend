@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { Avatar, Divider, Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { REVIEW_ENVIRONMENT_GROUP_MAP } from '@/entities/review';
 
@@ -25,12 +26,13 @@ function RatingStars({ rating }: { rating: number }) {
           <Icon
             key={index}
             name="star-filled"
-            size={14}
-            className={
+            boxed={false}
+            className={cn(
+              'h-4 w-4 mobile:h-3.5 mobile:w-3.5',
               filled
                 ? 'text-semantic-theme-amber-normal'
-                : 'text-semantic-object-subtler'
-            }
+                : 'text-semantic-object-subtler',
+            )}
           />
         );
       })}
@@ -94,8 +96,8 @@ export default function ReviewItem({ review }: ReviewItemProps) {
                   <div className="flex items-center gap-1">
                     <Icon
                       name={group.iconName}
-                      size={12}
-                      className="text-semantic-object-subtle"
+                      boxed={false}
+                      className="h-3.5 w-3.5 text-semantic-object-subtle mobile:h-3 mobile:w-3"
                     />
                     <span className="label-sm text-semantic-object-boldest mobile:text-semantic-caption-sm mobile:leading-semantic-caption-sm mobile:font-semantic-caption-sm">
                       {group.title}
