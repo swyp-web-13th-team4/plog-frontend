@@ -120,7 +120,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
         {hasImages && (
           <div className="flex gap-2">
             {images.slice(0, 3).map((image, index) => {
-              const showMore = images.length >= 3 && index === 2;
+              const showMore = images.length > 3 && index === 2;
 
               return (
                 <button
