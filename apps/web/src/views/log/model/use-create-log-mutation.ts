@@ -15,8 +15,8 @@ import { createLogForm, getNewPhotoFiles } from './mapper';
 import { type CreateLogFormValues, type CreateRequest } from './types';
 
 type CreatePostResponse = {
-  texts: {
-    postId: number;
+  texts?: {
+    postId?: number;
   };
 };
 
@@ -45,7 +45,7 @@ export function useCreateLogMutation({
         getNewPhotoFiles(values),
       );
 
-      return { postId: response.texts.postId, values };
+      return { postId: response.texts?.postId ?? null, values };
     },
     onSuccess: async ({ postId, values }) => {
       await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
