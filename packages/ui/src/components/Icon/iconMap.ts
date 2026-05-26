@@ -62,6 +62,7 @@ import GraduationFilledIcon from './icons/graduation-filled.svg?react';
 import GridIcon from './icons/grid.svg?react';
 import HeartIcon from './icons/heart.svg?react';
 import HeartFilledIcon from './icons/heart-filled.svg?react';
+import ImageBannedIcon from './icons/image-banned.svg?react';
 import InboxIcon from './icons/inbox.svg?react';
 import InboxFilledIcon from './icons/inbox-filled.svg?react';
 import LikeIcon from './icons/like.svg?react';
@@ -213,6 +214,7 @@ export const iconMap = {
   grid: { Component: GridIcon, width: 24, height: 24 },
   heart: { Component: HeartIcon, width: 24, height: 24 },
   'heart-filled': { Component: HeartFilledIcon, width: 24, height: 24 },
+  'image-banned': { Component: ImageBannedIcon, width: 24, height: 24 },
   inbox: { Component: InboxIcon, width: 24, height: 24 },
   'inbox-filled': { Component: InboxFilledIcon, width: 24, height: 24 },
   like: { Component: LikeIcon, width: 24, height: 24 },
