@@ -29,6 +29,10 @@ export function buildPinHtml(
   const offsetLeft = (WRAPPER_WIDTH - pinW) / 2;
   const offsetTop = WRAPPER_HEIGHT - pinH;
 
+  const fallbackIconSize = isSelected ? 40 : 32;
+  const imageBannedPath =
+    'M20.4736 23.3001L18.1736 21.0001H4.99861C4.44861 21.0001 3.97761 20.8044 3.58561 20.4131C3.19427 20.0211 2.99861 19.5501 2.99861 19.0001V5.8251L0.698608 3.5001L2.09861 2.1001L21.8986 21.9001L20.4736 23.3001ZM4.99861 19.0001H16.1736L14.1736 17.0001H5.99861L8.99861 13.0001L10.9986 15.7251L11.8486 14.6751L4.99861 7.8251V19.0001ZM20.9986 18.1751L18.9986 16.1751V5.0001H7.82361L5.82361 3.0001H18.9986C19.5486 3.0001 20.0196 3.19576 20.4116 3.5871C20.8029 3.9791 20.9986 4.4501 20.9986 5.0001V18.1751Z';
+
   const badgeLabel = count > 99 ? '99+' : String(count);
   const badge =
     count > 1
@@ -39,7 +43,10 @@ export function buildPinHtml(
     `<div style="position:absolute;left:${offsetLeft}px;top:${offsetTop}px;width:${pinW}px;height:${pinH}px;">`,
     `<img src="${markerSrc}" alt="" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"/>`,
     `<div style="position:absolute;left:${imgL}px;top:${imgT}px;width:${imgS}px;height:${imgS}px;border-radius:50%;overflow:hidden;background:var(--color-semantic-object-subtler);">`,
-    `<img src="${imageUrl}" alt="" draggable="false" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;pointer-events:none;"/>`,
+    `<img src="${imageUrl}" alt="" draggable="false" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover;pointer-events:none;"/>`,
+    `<div style="display:none;width:100%;height:100%;align-items:center;justify-content:center;">`,
+    `<svg width="${fallbackIconSize}" height="${fallbackIconSize}" viewBox="0 0 24 24" fill="var(--color-semantic-object-subtle)" xmlns="http://www.w3.org/2000/svg"><path d="${imageBannedPath}"/></svg>`,
+    `</div>`,
     `</div>`,
     badge,
     `</div>`,
