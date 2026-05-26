@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { Icon, Spinner } from '@plog/ui';
-import { cn } from '@plog/utils';
 
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
