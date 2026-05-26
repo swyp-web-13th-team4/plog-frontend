@@ -2,10 +2,10 @@
 
 import { type ReactNode } from 'react';
 
-import Image from 'next/image';
-
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
+
+import { ImageWithFallback } from '@/shared/ui';
 
 import { formatStudyDuration } from '../lib/format';
 import { type FeedPost } from '../model/types';
@@ -36,13 +36,13 @@ export default function FeedGridItem({
       }}
       className={cn('flex flex-col gap-4', onClick && 'cursor-pointer')}
     >
-      <div className="relative overflow-hidden rounded-lg">
-        <Image
+      <div className="relative aspect-square overflow-hidden rounded-lg">
+        <ImageWithFallback
           src={feed.postImages[0]}
           alt={`${feed.title}의 대표 이미지`}
-          width={208}
-          height={208}
-          className="aspect-square w-full object-cover"
+          fill
+          sizes="208px"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0)_100%)]" />
         <div className="absolute inset-x-3 top-3 flex items-start justify-between">

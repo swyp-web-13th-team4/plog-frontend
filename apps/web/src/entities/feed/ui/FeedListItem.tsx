@@ -2,10 +2,10 @@
 
 import { type ReactNode } from 'react';
 
-import Image from 'next/image';
-
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
+
+import { ImageWithFallback } from '@/shared/ui';
 
 import { formatStudyDuration } from '../lib/format';
 import { type FeedPost } from '../model/types';
@@ -40,7 +40,7 @@ export default function FeedListItem({
       )}
     >
       <div className="relative size-30 overflow-hidden rounded-xl mobile:size-27">
-        <Image
+        <ImageWithFallback
           src={feed.postImages[0]}
           alt={`${feed.title}의 대표 이미지`}
           fill

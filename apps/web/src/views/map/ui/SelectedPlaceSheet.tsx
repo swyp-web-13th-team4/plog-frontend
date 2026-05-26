@@ -116,6 +116,7 @@ export default function SelectedPlaceSheet({
                   alt={place.placeName}
                   fill
                   className="object-cover"
+                  fallbackIconSize={64}
                 />
                 {onBack && (
                   <button
