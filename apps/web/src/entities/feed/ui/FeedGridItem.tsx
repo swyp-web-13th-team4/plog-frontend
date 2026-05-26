@@ -44,7 +44,7 @@ export default function FeedGridItem({
           height={208}
           className="aspect-square w-full object-cover"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.3)_0%,rgba(0,0,0,0)_100%)]" />
         <div className="absolute inset-x-3 top-3 flex items-start justify-between">
           <div className="mt-1 flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
             <Icon name="clock" size={16} />
