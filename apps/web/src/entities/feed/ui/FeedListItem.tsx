@@ -15,12 +15,14 @@ type FeedListItemProps = {
   feed: FeedPost;
   onClick?: () => void;
   action?: ReactNode;
+  thumbnailBadge?: ReactNode;
 };
 
 export default function FeedListItem({
   feed,
   onClick,
   action,
+  thumbnailBadge,
 }: FeedListItemProps) {
   return (
     <div
@@ -47,6 +49,10 @@ export default function FeedListItem({
           sizes="(max-width: 440px) 108px, 120px"
           className="object-cover"
         />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.3)_0%,rgba(0,0,0,0)_100%)]" />
+        {thumbnailBadge && (
+          <div className="absolute top-2 left-2">{thumbnailBadge}</div>
+        )}
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="relative">

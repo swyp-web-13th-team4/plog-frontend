@@ -86,7 +86,7 @@ export default function BookmarkTab() {
       renderAction={(feed, viewType) => (
         <BookmarkButton
           className={
-            viewType === 'grid' ? 'text-semantic-object-subtle' : undefined
+            viewType === 'grid' ? 'text-semantic-object-subtler' : undefined
           }
           postId={feed.postId}
           isBookmarked={feed.bookMark}
