@@ -26,5 +26,5 @@ export async function parseApiResponse<T>(res: Response): Promise<T> {
 export function getNextCursorPageParam(
   lastPage: CursorPage<unknown>,
 ): string | undefined {
-  return lastPage.hasNext ? lastPage.nextCursor : undefined;
+  return lastPage.hasNext ? (lastPage.nextCursor ?? undefined) : undefined;
 }
