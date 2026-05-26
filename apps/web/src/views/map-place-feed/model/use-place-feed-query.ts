@@ -10,6 +10,7 @@ import {
 } from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
+import { getNextCursorPageParam } from '@/shared/api/response.utils';
 import { type CursorPage } from '@/shared/api/types';
 
 type PlacePost = {
@@ -48,17 +49,6 @@ function fetchPlacePosts(
   );
 }
 
-function buildCursor(sortType: MapSortType, last: PlacePost): string {
-  switch (sortType) {
-    case 'STUDY_TIME':
-      return `${last.studyTime}:${last.postId}`;
-    case 'FOCUS':
-      return `${last.focus}:${last.postId}`;
-    default:
-      return String(last.postId);
-  }
-}
-
 export function usePlaceFeedQuery(
   placeId: number,
   layer: PlaceLayer,
@@ -75,10 +65,6 @@ export function usePlaceFeedQuery(
         limit: LIMIT,
       }),
     initialPageParam: '',
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.hasNext) return undefined;
-      const last = lastPage.content[lastPage.content.length - 1];
-      return last ? buildCursor(sortType, last) : undefined;
-    },
+    getNextPageParam: getNextCursorPageParam,
   });
 }
