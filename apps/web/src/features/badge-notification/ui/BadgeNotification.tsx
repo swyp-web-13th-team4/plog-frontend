@@ -28,6 +28,10 @@ export default function BadgeNotification() {
         setAcquiredBadge(payload);
       });
 
+      es.onopen = () => {
+        retryCount = 0;
+      };
+
       es.onerror = () => {
         es?.close();
         if (retryCount < MAX_RETRIES) {
