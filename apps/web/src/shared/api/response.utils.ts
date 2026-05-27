@@ -1,4 +1,4 @@
-import { type ApiErrorCode, type ApiResponse } from './types';
+import { type ApiErrorCode, type ApiResponse, type CursorPage } from './types';
 
 export class ApiResponseError extends Error {
   constructor(
@@ -21,4 +21,10 @@ export async function parseApiResponse<T>(res: Response): Promise<T> {
     );
   }
   return json.data as T;
+}
+
+export function getNextCursorPageParam(
+  lastPage: CursorPage<unknown>,
+): string | undefined {
+  return lastPage.hasNext ? (lastPage.nextCursor ?? undefined) : undefined;
 }

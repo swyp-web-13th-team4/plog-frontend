@@ -17,4 +17,5 @@ export type ApiErrorCode = (typeof API_ERROR_CODE)[keyof typeof API_ERROR_CODE];
 export type CursorPage<T> = {
   content: T[];
   hasNext: boolean;
+  nextCursor: string | null;
 };

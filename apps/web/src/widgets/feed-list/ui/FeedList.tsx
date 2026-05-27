@@ -30,6 +30,7 @@ type FeedListProps = {
   tags?: PlaceTagValue[];
   onTagsChange?: (tags: PlaceTagValue[]) => void;
   renderAction?: (feed: FeedPost, viewType: FeedViewType) => ReactNode;
+  renderThumbnailBadge?: (feed: FeedPost) => ReactNode;
   onFeedClick?: (feed: FeedPost) => void;
   toolbarConfig?: ToolbarConfig;
   emptyView?: ReactNode;
@@ -44,6 +45,7 @@ export default function FeedList({
   tags = [],
   onTagsChange,
   renderAction,
+  renderThumbnailBadge,
   onFeedClick,
   toolbarConfig,
   emptyView,
@@ -128,6 +130,7 @@ export default function FeedList({
               feed={feed}
               onClick={onFeedClick ? () => onFeedClick(feed) : undefined}
               action={renderAction?.(feed, viewType)}
+              thumbnailBadge={renderThumbnailBadge?.(feed)}
             />
           ))}
         </div>

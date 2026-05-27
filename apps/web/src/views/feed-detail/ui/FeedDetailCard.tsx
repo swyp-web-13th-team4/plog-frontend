@@ -313,39 +313,30 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
             )}
           </div>
           <div className="flex flex-col gap-2.5 px-6 pt-3">
-            {!isMyPost && (
-              <div className="flex justify-between">
-                <div className="flex items-center gap-1.5">
-                  <LikeButton postId={post.postId} isLiked={post.like} />
-                  <span className="caption-md text-semantic-object-normal">
-                    {post.likes < 1000 ? post.likes : '999+'}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <BookmarkButton
-                    postId={post.postId}
-                    isBookmarked={post.bookMark}
-                  />
-                  <ShareButton
-                    postId={post.postId}
-                    title={post.title}
-                    text={post.contents}
-                  />
-                </div>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-1.5">
+                <LikeButton postId={post.postId} isLiked={post.like} />
+                <span className="caption-md text-semantic-object-normal">
+                  {post.likes < 1000 ? post.likes : '999+'}
+                </span>
               </div>
-            )}
+              <div className="flex items-center gap-3">
+                <BookmarkButton
+                  postId={post.postId}
+                  isBookmarked={post.bookMark}
+                />
+                <ShareButton
+                  postId={post.postId}
+                  title={post.title}
+                  text={post.contents}
+                />
+              </div>
+            </div>
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between">
                 <Badge variant="soft" color="orange">
                   {post.category}
                 </Badge>
-                {isMyPost && (
-                  <ShareButton
-                    postId={post.postId}
-                    title={post.title}
-                    text={post.contents}
-                  />
-                )}
               </div>
               <div className="flex flex-col gap-1">
                 <span className="title-xs text-semantic-object-boldest">

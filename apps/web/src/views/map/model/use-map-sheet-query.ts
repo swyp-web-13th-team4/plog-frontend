@@ -9,6 +9,7 @@ import {
 } from '@/entities/place';
 
 import { clientApi } from '@/shared/api/client-api';
+import { getNextCursorPageParam } from '@/shared/api/response.utils';
 import { type CursorPage } from '@/shared/api/types';
 
 import { type MapSheetPlace } from './types';
@@ -30,27 +31,12 @@ function fetchMapSheetPlaces(
   );
 }
 
-function buildCursor(sortType: MapSortType, last: MapSheetPlace): string {
-  switch (sortType) {
-    case 'LATEST':
-      return `${last.lastStudyDate}:${last.placeId}`;
-    case 'RECORD_COUNT':
-      return `${last.count}:${last.placeId}`;
-    default:
-      return String(last.placeId);
-  }
-}
-
 export function useMapSheetQuery(layer: PlaceLayer, sortType: MapSortType) {
   return useInfiniteQuery({
     queryKey: mapQueryKeys.sheet(layer, sortType),
     queryFn: ({ pageParam }) =>
       fetchMapSheetPlaces(layer, { sortType, cursor: pageParam, limit: LIMIT }),
     initialPageParam: '',
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.hasNext) return undefined;
-      const last = lastPage.content[lastPage.content.length - 1];
-      return last ? buildCursor(sortType, last) : undefined;
-    },
+    getNextPageParam: getNextCursorPageParam,
   });
 }
