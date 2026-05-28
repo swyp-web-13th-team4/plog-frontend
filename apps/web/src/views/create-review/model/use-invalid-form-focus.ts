@@ -19,7 +19,9 @@ export function getInvalidSubmitFeedback(
   if (fieldErrors.environmentValues) {
     return {
       field: 'environmentValues',
-      toastMessage: fieldErrors.environmentValues.message,
+      toastMessage:
+        fieldErrors.environmentValues.root?.message ??
+        fieldErrors.environmentValues.message,
     };
   }
 

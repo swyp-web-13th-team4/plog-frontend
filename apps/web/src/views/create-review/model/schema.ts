@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 import { type PhotoPreview } from '@/features/photo-upload';
 
+import { ReviewRatingScore } from './types';
+
 const environmentScoreSchema = z.union([
   z.literal(1),
   z.literal(2),
@@ -10,9 +12,11 @@ const environmentScoreSchema = z.union([
   z.literal(5),
 ]);
 
-const ratingScoreSchema = environmentScoreSchema.nullable().refine(Boolean, {
-  message: '별점을 선택해 주세요.',
-});
+const ratingScoreSchema = environmentScoreSchema
+  .nullable()
+  .refine((v): v is ReviewRatingScore => v !== null, {
+    message: '별점을 선택해 주세요',
+  });
 
 const environmentValuesSchema = z
   .object({
