@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { FeedDetailPage } from '@/views/feed-detail';
+import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
 
 import { type FeedPost } from '@/entities/feed';
 
@@ -47,4 +47,8 @@ export async function generateMetadata({
   }
 }
 
-export default FeedDetailPage;
+export default async function Page({ params }: FeedDetailPageProps) {
+  const { id } = await params;
+
+  return <FeedDetailCard postId={id} />;
+}
