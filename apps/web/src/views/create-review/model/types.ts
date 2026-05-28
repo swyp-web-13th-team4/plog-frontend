@@ -14,4 +14,5 @@ export type ReviewEnvironmentValues = Record<
   ReviewEnvironmentScore | null
 >;
 
-export type ReviewFormValues = z.infer<typeof reviewSchema>;
+export type ReviewFormValues = z.input<typeof reviewSchema>;
+export type ReviewSubmitValues = z.output<typeof reviewSchema>;

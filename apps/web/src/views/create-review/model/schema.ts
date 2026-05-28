@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { type PhotoPreview } from '@/features/photo-upload';
 
-import { ReviewRatingScore } from './types';
+import { type ReviewRatingScore } from './types';
 
 const environmentScoreSchema = z.union([
   z.literal(1),
