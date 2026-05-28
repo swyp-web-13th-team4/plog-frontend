@@ -62,10 +62,10 @@ export default function ReviewScoreBar({
           style={{ width }}
         />
         <div className="absolute inset-0 flex items-center justify-between px-5">
-          <span className="label-sm mobile: text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+          <span className="label-sm mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md mobile:text-semantic-object-boldest">
             {metric.label}
           </span>
-          <span className="label-sm mobile: text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+          <span className="label-sm mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md mobile:text-semantic-object-boldest">
             {metric.count}명
           </span>
         </div>

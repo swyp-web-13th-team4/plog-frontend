@@ -74,7 +74,7 @@ export default function ReviewItem({ review }: ReviewItemProps) {
                   <Divider
                     orientation="vertical"
                     thickness="small"
-                    className="2.5"
+                    className="h-2.5"
                   />
                   <span className="caption-md shrink-0 text-semantic-object-normal">
                     {review.createdAt}
