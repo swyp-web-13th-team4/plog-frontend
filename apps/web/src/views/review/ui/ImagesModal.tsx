@@ -21,8 +21,6 @@ export default function ImagesModal({
 }: ImagesModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-  if (!open) return null;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <Dialog.Content className="h-dvh w-full max-w-layout gap-0 rounded-none bg-semantic-system-black p-0 text-semantic-object-inverse">
