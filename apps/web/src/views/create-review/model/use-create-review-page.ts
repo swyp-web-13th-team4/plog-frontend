@@ -171,7 +171,7 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     handleSubmitReview,
     leaveConfirmOpen,
     photos,
-    placeImageSrc: post?.postImages[0] ?? null,
+    placeImageSrc: post?.postImages?.[0] ?? null,
     placeName: post?.placeName ?? '방문한 장소',
     postId,
     rating,
