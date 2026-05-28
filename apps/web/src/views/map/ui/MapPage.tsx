@@ -61,6 +61,12 @@ export default function MapPage() {
   const [fromList, setFromList] = useState(false);
   const [recordVisible, setRecordVisible] = useState(true);
   const [bookmarkVisible, setBookmarkVisible] = useState(true);
+  const [selectedCoords, setSelectedCoords] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(
+    initSelection ? { lat: initSelection.lat, lng: initSelection.lng } : null,
+  );
 
   const handle = useMemo(() => BottomSheet.createHandle(), []);
   const listHandle = useMemo(() => BottomSheet.createHandle(), []);
@@ -91,10 +97,12 @@ export default function MapPage() {
     onPlaceSelect: (pin, type) => {
       if (!pin || !type) {
         setSelectedPlaceId(null);
+        setSelectedCoords(null);
         return;
       }
       setSelectedPlaceId(pin.placeId);
       setSelectedType(type);
+      setSelectedCoords({ lat: pin.latitude, lng: pin.longitude });
       setFromList(false);
       handle.close();
       listHandle.close();
@@ -147,6 +155,7 @@ export default function MapPage() {
   ) => {
     setSelectedPlaceId(placeId);
     setSelectedType(type);
+    setSelectedCoords({ lat: latitude, lng: longitude });
     setFromList(true);
     pendingRef.current = { placeId, type, lat: latitude, lng: longitude };
     selectPin(placeId, type);
@@ -157,12 +166,14 @@ export default function MapPage() {
     pendingRef.current = null;
     deselect();
     setSelectedPlaceId(null);
+    setSelectedCoords(null);
     setFromList(false);
   };
 
   const handleSelectedBack = () => {
     pendingRef.current = null;
     setSelectedPlaceId(null);
+    setSelectedCoords(null);
     setFromList(false);
     listHandle.open(null);
   };
@@ -175,6 +186,17 @@ export default function MapPage() {
   };
 
   const handleCreatePost = () => {
+    if (selectedPlace && selectedCoords) {
+      sessionStorage.setItem(
+        'map:initial-place',
+        JSON.stringify({
+          name: selectedPlace.placeName,
+          address: selectedPlace.address,
+          latitude: selectedCoords.lat,
+          longitude: selectedCoords.lng,
+        }),
+      );
+    }
     router.push('/log');
   };
 
