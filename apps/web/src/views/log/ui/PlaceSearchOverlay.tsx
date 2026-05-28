@@ -123,7 +123,6 @@ export default function PlaceSearchOverlay({
 
   const handleSelectRecentPlace = (place: RecentPlace) =>
     saveAndSelect({
-      id: String(place.id),
       name: place.placeName,
       address: place.address,
       latitude: place.latitude,

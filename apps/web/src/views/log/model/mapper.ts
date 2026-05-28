@@ -44,7 +44,6 @@ function existingPhoto(image: PostImage): ExistingPhotoPreview {
 
 function postEditPlace(post: EditData['post']) {
   return {
-    id: `edit-${post.place.latitude}-${post.place.longitude}-${post.place.name}`,
     name: post.place.name,
     address: post.place.address,
     latitude: post.place.latitude,

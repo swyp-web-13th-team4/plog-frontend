@@ -1,5 +1,4 @@
 export type SelectedPlace = {
-  id: string;
   name: string;
   address: string;
   latitude: number;
@@ -14,7 +13,6 @@ export function createSelectedPlace(
   place: kakao.maps.services.PlacesSearchResultItem,
 ): SelectedPlace {
   return {
-    id: place.id,
     name: place.place_name,
     address: getDisplayAddress(place),
     latitude: Number(place.y),

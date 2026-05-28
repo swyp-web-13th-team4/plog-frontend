@@ -6,7 +6,6 @@ import { type PlaceCategoryValue } from '@/entities/place';
 export type FocusLevel = 1 | 2 | 3 | 4 | 5;
 
 export type CreateLogPlace = {
-  id: string;
   name: string;
   address: string;
   latitude: number;

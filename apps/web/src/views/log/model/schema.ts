@@ -28,7 +28,6 @@ const dateSchema = z.object({
 });
 
 const placeSchema = z.object({
-  id: z.string().min(1),
   name: z.string().trim().min(1, '작업 장소를 선택해 주세요.'),
   address: z.string().trim().min(1, '장소 주소를 확인해 주세요.'),
   latitude: z.number(),
