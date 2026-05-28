@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { GetAllReviewsPage } from '@/views/review';
+import { ReviewPage } from '@/views/review';
 
 export default async function Page({
   searchParams,
@@ -15,5 +15,5 @@ export default async function Page({
     notFound();
   }
 
-  return <GetAllReviewsPage placeId={numericPlaceId} placeType={placeType} />;
+  return <ReviewPage placeId={numericPlaceId} placeType={placeType} />;
 }

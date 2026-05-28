@@ -1,1 +1,1 @@
-export { default as GetAllReviewsPage } from './ui/GetAllReviewPage';
+export { default as ReviewPage } from './ui/ReviewPage';

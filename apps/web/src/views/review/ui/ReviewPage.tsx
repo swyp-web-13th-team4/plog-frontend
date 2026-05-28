@@ -10,7 +10,7 @@ import { mockPlaceReviewSummary } from '../model/summary-mock-data';
 import ReviewLists from './ReviewLists';
 import ReviewSummary from './ReviewSummary';
 
-export default function GetAllReviewsPage({
+export default function ReviewPage({
   placeId,
   placeType,
 }: {
