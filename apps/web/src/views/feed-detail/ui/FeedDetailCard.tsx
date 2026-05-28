@@ -22,11 +22,13 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import {
+  type FeedPost,
   FeedStatsSummary,
+  formatDate,
+  formatTimeAgo,
   PrivacySettingSection,
   TagBadgeGroup,
 } from '@/entities/feed';
-import { formatDate, formatTimeAgo } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
 
@@ -45,7 +47,15 @@ const AUTHOR_ACTION_OPTIONS = [
   { label: '수정하기', value: 'edit' },
 ];
 
-export default function FeedDetailCard({ postId }: { postId: string }) {
+type FeedDetailCardProps = {
+  postId: string;
+  initialPost?: FeedPost;
+};
+
+export default function FeedDetailCard({
+  postId,
+  initialPost,
+}: FeedDetailCardProps) {
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
     isEnd: true,
@@ -56,7 +66,6 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
   const router = useRouter();
 
   const numericPostId = Number(postId);
-  const isValidPostId = Number.isInteger(numericPostId) && numericPostId > 0;
 
   const {
     data: post,
@@ -64,7 +73,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
     isPending,
     isPrivateAccessError,
     refetch,
-  } = useFeedDetailQuery(numericPostId);
+  } = useFeedDetailQuery(numericPostId, initialPost);
 
   const deletePostMutation = useDeletePostMutation();
   const privateAccessHandledRef = useRef(false);
@@ -112,29 +121,6 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
 
     void redirectPrivatePostAccess();
   }, [isPrivateAccessError, router]);
-
-  if (!isValidPostId) {
-    return (
-      <>
-        {feedHeader}
-        <div className="flex min-h-screen items-center justify-center px-6 pt-[var(--spacing-header)]">
-          <EmptyState
-            title="피드를 찾을 수 없어요"
-            description="목록으로 돌아가서 다른 기록을 확인해 보세요."
-            actions={
-              <Button
-                variant="outline"
-                size="small"
-                onClick={() => router.push('/feed')}
-              >
-                피드로 돌아가기
-              </Button>
-            }
-          />
-        </div>
-      </>
-    );
-  }
 
   if (isPending) {
     return (

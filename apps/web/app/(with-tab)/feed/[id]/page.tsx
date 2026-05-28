@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
 
 import { type FeedPost } from '@/entities/feed';
 
+import { API_ERROR_CODE } from '@/shared/api/constants';
+import { ApiResponseError } from '@/shared/api/response.utils';
 import { serverApi } from '@/shared/api/server-api';
 
 type FeedDetailPageProps = {
@@ -49,6 +52,22 @@ export async function generateMetadata({
 
 export default async function Page({ params }: FeedDetailPageProps) {
   const { id } = await params;
+  const numericPostId = Number(id);
 
-  return <FeedDetailCard postId={id} />;
+  if (!Number.isInteger(numericPostId) || numericPostId <= 0) notFound();
+
+  let initialPost: FeedPost | undefined;
+
+  try {
+    initialPost = await serverApi.get<FeedPost>(`/feed/${id}`);
+  } catch (error) {
+    if (
+      error instanceof ApiResponseError &&
+      error.errorCode === API_ERROR_CODE.POST_NOT_FOUND
+    ) {
+      notFound();
+    }
+  }
+
+  return <FeedDetailCard initialPost={initialPost} postId={id} />;
 }
