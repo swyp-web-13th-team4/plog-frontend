@@ -34,10 +34,6 @@ import {
   useReviewInvalidFocus,
 } from './use-invalid-form-focus';
 
-type UseCreateReviewPostId = {
-  postId: string;
-};
-
 const initialReviewValues: ReviewFormValues = {
   rating: null,
   environmentValues: {
@@ -50,7 +46,7 @@ const initialReviewValues: ReviewFormValues = {
   photos: [],
 };
 
-export function useCreateReviewPage({ postId }: UseCreateReviewPostId) {
+export function useCreateReviewPage({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
