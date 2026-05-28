@@ -25,7 +25,7 @@ export function useFeedDetailQuery(postId: number, initialData?: FeedPost) {
     queryFn: () => getFeedDetail(postId),
     enabled: Number.isInteger(postId) && postId > 0,
     initialData,
-    retry: (_, error) => !isPrivateAccessError(error),
+    retry: false,
   });
 
   return {

@@ -67,7 +67,11 @@ export default async function Page({ params }: FeedDetailPageProps) {
     ) {
       notFound();
     }
+
+    return <FeedDetailCard postId={id} />;
   }
+
+  if (!initialPost) notFound();
 
   return <FeedDetailCard initialPost={initialPost} postId={id} />;
 }

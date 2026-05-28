@@ -9,10 +9,8 @@ import {
   AppBar,
   Avatar,
   Badge,
-  Button,
   Carousel,
   Dropdown,
-  EmptyState,
   Icon,
   Spinner,
 } from '@plog/ui';
@@ -31,6 +29,7 @@ import {
 } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
+import { FetchErrorEmptyState } from '@/shared/ui';
 
 import { useDeletePostMutation } from '../model/use-delete-post-mutation';
 import { useFeedDetailQuery } from '../model/use-feed-detail-query';
@@ -137,33 +136,12 @@ export default function FeedDetailCard({
     return <>{feedHeader}</>;
   }
 
-  if (isError || !post) {
+  if (isError) {
     return (
       <>
         {feedHeader}
         <div className="flex min-h-screen items-center justify-center px-6 pt-[var(--spacing-header)]">
-          <EmptyState
-            title="피드를 불러오지 못했어요"
-            description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
-            actions={
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  size="small"
-                  onClick={() => refetch()}
-                >
-                  다시 시도
-                </Button>
-                <Button
-                  variant="outline"
-                  size="small"
-                  onClick={() => router.push('/feed')}
-                >
-                  피드로 돌아가기
-                </Button>
-              </div>
-            }
-          />
+          <FetchErrorEmptyState onRetry={() => refetch()} />
         </div>
       </>
     );
