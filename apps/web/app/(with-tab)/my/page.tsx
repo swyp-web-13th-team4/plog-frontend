@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
 
 import { MyPage } from '@/views/my';
@@ -5,5 +7,9 @@ import { MyPage } from '@/views/my';
 export const metadata: Metadata = { title: '마이페이지' };
 
 export default function Page() {
-  return <MyPage />;
+  return (
+    <Suspense>
+      <MyPage />
+    </Suspense>
+  );
 }

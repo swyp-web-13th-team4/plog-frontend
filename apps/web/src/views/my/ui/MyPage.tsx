@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { AppBar, Icon, TabGroup } from '@plog/ui';
 
@@ -41,8 +41,14 @@ const TABS = [
   },
 ];
 
+const TAB_VALUES = TABS.map((t) => t.value);
+
 export default function MyPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const tabParam = searchParams.get('tab');
+  const activeTab = TAB_VALUES.includes(tabParam ?? '') ? tabParam : 'record';
 
   return (
     <>
@@ -63,7 +69,8 @@ export default function MyPage() {
         <ProfileSection />
         <TabGroup
           items={TABS}
-          defaultValue="record"
+          value={activeTab}
+          onValueChange={(tab) => router.replace(`/my?tab=${tab}`)}
           className="flex flex-1 flex-col"
           listClassName="sticky top-[var(--spacing-header)] z-10 border-b border-b-semantic-stroke-subtle bg-semantic-bg-standard"
           panelClassName="flex flex-1"

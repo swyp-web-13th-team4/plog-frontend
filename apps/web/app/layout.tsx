@@ -4,6 +4,8 @@ import { type ReactNode } from 'react';
 
 import type { Metadata, Viewport } from 'next';
 
+import { BadgeNotification } from '@/features/badge-notification';
+
 import Providers from '@/shared/ui/Providers';
 
 export const viewport: Viewport = {
@@ -53,6 +55,7 @@ export default function RootLayout({
           <main className="mx-auto min-h-dvh w-full max-w-layout shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]">
             {children}
           </main>
+          <BadgeNotification />
         </Providers>
       </body>
     </html>
