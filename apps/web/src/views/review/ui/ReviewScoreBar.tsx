@@ -1,4 +1,3 @@
-// ui/ReviewScoreBar.tsx
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
