@@ -21,11 +21,23 @@ import {
 const MAP_INITIAL_PLACE_KEY = 'map:initial-place';
 
 function readMapInitialPlace(): CreateLogPlace | null {
+  if (typeof window === 'undefined') return null;
   try {
     const saved = sessionStorage.getItem(MAP_INITIAL_PLACE_KEY);
     if (!saved) return null;
+    const parsed: unknown = JSON.parse(saved);
+    if (
+      typeof parsed !== 'object' ||
+      parsed === null ||
+      typeof (parsed as Record<string, unknown>).name !== 'string' ||
+      typeof (parsed as Record<string, unknown>).address !== 'string' ||
+      typeof (parsed as Record<string, unknown>).latitude !== 'number' ||
+      typeof (parsed as Record<string, unknown>).longitude !== 'number'
+    ) {
+      return null;
+    }
     sessionStorage.removeItem(MAP_INITIAL_PLACE_KEY);
-    return JSON.parse(saved) as CreateLogPlace;
+    return parsed as CreateLogPlace;
   } catch {
     return null;
   }
