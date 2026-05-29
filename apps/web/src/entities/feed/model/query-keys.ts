@@ -4,6 +4,7 @@ export const feedQueryKeys = {
   list: ['feed'] as const,
   detail: (postId: number) => ['feed', postId] as const,
   edit: (postId: number | null) => ['feed', 'edit', postId] as const,
+  profileViewAll: () => ['feed', 'profileView'] as const,
   profileView: (memberKey: string) =>
     ['feed', 'profileView', memberKey] as const,
   profileViewPosts: (memberKey: string, sort: PostSortType) =>
