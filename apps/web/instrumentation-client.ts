@@ -17,6 +17,7 @@ Sentry.init({
     Sentry.browserTracingIntegration(),
   ],
 
+  sendDefaultPii: true,
   enabled: process.env.NODE_ENV === 'production',
 });
 
