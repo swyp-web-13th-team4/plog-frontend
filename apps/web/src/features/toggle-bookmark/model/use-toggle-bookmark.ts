@@ -183,7 +183,9 @@ export function useToggleBookmark() {
       });
       queryClient.invalidateQueries({ queryKey: mapQueryKeys.pinDetailAll() });
       queryClient.invalidateQueries({ queryKey: mapQueryKeys.placeAll() });
-      queryClient.invalidateQueries({ queryKey: feedQueryKeys.profileViewAll() });
+      queryClient.invalidateQueries({
+        queryKey: feedQueryKeys.profileViewAll(),
+      });
     },
   });
 
