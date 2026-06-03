@@ -90,6 +90,7 @@ export default function BookmarkTab() {
           }
           postId={feed.postId}
           isBookmarked={feed.bookMark}
+          disableTracking
         />
       )}
     />

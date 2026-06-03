@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -50,6 +51,7 @@ export function useUpdateLogMutation({
       );
     },
     onSuccess: async () => {
+      amplitude.track('log_updated', { post_id: postId });
       onSuccess?.();
       await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
       toast({ type: 'success', description: '기록이 수정되었어요.' });

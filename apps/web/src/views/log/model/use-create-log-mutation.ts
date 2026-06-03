@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -35,6 +36,7 @@ export function useCreateLogMutation({
     mutationFn: (values: CreateLogFormValues) =>
       createPost(createLogForm(values), getNewPhotoFiles(values)),
     onSuccess: async () => {
+      amplitude.track('log_created');
       onSuccess?.();
       await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
       toast({ type: 'success', description: '기록이 등록되었어요.' });

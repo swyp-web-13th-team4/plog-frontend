@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import * as amplitude from '@amplitude/unified';
 import { AppBar, useToast } from '@plog/ui';
 import { useMutation } from '@tanstack/react-query';
 
@@ -34,6 +35,7 @@ export default function ProfileSetupStep({
         imageOption,
       ),
     onSuccess: () => {
+      amplitude.track('signup_completed');
       toast({ type: 'success', description: '회원가입이 완료되었어요.' });
       router.push('/');
     },

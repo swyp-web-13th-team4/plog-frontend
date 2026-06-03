@@ -195,7 +195,11 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
-              <LikeButton postId={post.postId} isLiked={post.like} />
+              <LikeButton
+                postId={post.postId}
+                isLiked={post.like}
+                disableTracking={post.isAuthor}
+              />
               <span className="caption-md text-semantic-object-normal">
                 {post.likes < 1000 ? post.likes : '999+'}
               </span>
@@ -204,6 +208,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
               <BookmarkButton
                 postId={post.postId}
                 isBookmarked={post.bookMark}
+                disableTracking={post.isAuthor}
               />
               <ShareButton
                 postId={post.postId}

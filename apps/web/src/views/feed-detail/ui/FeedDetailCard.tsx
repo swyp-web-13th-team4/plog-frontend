@@ -278,7 +278,11 @@ export default function FeedDetailCard({
           <div className="flex flex-col gap-2.5 px-6 pt-3">
             <div className="flex justify-between">
               <div className="flex items-center gap-1.5">
-                <LikeButton postId={post.postId} isLiked={post.like} />
+                <LikeButton
+                  postId={post.postId}
+                  isLiked={post.like}
+                  disableTracking={isMyPost}
+                />
                 <span className="caption-md text-semantic-object-normal">
                   {post.likes < 1000 ? post.likes : '999+'}
                 </span>
@@ -287,6 +291,7 @@ export default function FeedDetailCard({
                 <BookmarkButton
                   postId={post.postId}
                   isBookmarked={post.bookMark}
+                  disableTracking={isMyPost}
                 />
                 <ShareButton
                   postId={post.postId}

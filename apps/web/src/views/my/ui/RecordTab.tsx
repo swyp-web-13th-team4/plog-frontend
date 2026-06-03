@@ -91,6 +91,7 @@ export default function RecordTab() {
           }
           postId={feed.postId}
           isBookmarked={feed.bookMark}
+          disableTracking
         />
       )}
       renderThumbnailBadge={(feed) =>
