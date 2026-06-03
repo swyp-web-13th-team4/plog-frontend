@@ -214,6 +214,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 postId={post.postId}
                 title={post.title}
                 text={post.contents}
+                isOwner={post.isAuthor}
               />
             </div>
           </div>

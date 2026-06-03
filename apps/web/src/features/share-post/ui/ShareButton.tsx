@@ -1,14 +1,21 @@
 'use client';
 
+import * as amplitude from '@amplitude/unified';
 import { Icon, useToast } from '@plog/ui';
 
 type ShareButtonProps = {
   postId: number;
   title?: string;
   text?: string;
+  isOwner?: boolean;
 };
 
-export default function ShareButton({ postId, title, text }: ShareButtonProps) {
+export default function ShareButton({
+  postId,
+  title,
+  text,
+  isOwner,
+}: ShareButtonProps) {
   const { toast } = useToast();
 
   const url = `${window.location.origin}/feed/${postId}`;
@@ -36,6 +43,10 @@ export default function ShareButton({ postId, title, text }: ShareButtonProps) {
   };
 
   const handleShare = async () => {
+    amplitude.track('share_clicked', {
+      post_id: postId,
+      is_owner: isOwner ?? false,
+    });
     if (!navigator.share) {
       await handleCopy();
       return;

@@ -297,6 +297,7 @@ export default function FeedDetailCard({
                   postId={post.postId}
                   title={post.title}
                   text={post.contents}
+                  isOwner={isMyPost}
                 />
               </div>
             </div>
