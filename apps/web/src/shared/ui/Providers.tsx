@@ -9,10 +9,12 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import GlobalDialog from './GlobalDialog';
 
-amplitude.initAll(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY!, {
-  analytics: { autocapture: true },
-  sessionReplay: { sampleRate: 1 },
-});
+if (process.env.NODE_ENV === 'production') {
+  amplitude.initAll(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY!, {
+    analytics: { autocapture: true },
+    sessionReplay: { sampleRate: 0.1 },
+  });
+}
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
