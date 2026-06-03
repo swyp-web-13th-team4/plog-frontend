@@ -1,5 +1,6 @@
 'use client';
 
+import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import {
   type InfiniteData,
@@ -92,6 +93,7 @@ export type ProfilePostsBookmarkTarget = {
 type ToggleBookmarkVariables = {
   postId: number;
   profilePostsTarget?: ProfilePostsBookmarkTarget;
+  disableTracking?: boolean;
 };
 
 export function useToggleBookmark() {
@@ -157,20 +159,26 @@ export function useToggleBookmark() {
         description: '북마크 처리 중 오류가 발생했어요.',
       });
     },
-    onSuccess: (res, { postId }, context) => {
+    onSuccess: (data, { postId, disableTracking }, context) => {
+      if (!disableTracking) {
+        amplitude.track('bookmark_toggled', {
+          post_id: postId,
+          bookmarked: data.isBookmarked,
+        });
+      }
       queryClient.setQueryData<InfiniteData<FeedPage>>(
         feedQueryKeys.list,
-        (prev) => updateBookmarkInFeedCache(prev, postId, res.isBookmarked),
+        (prev) => updateBookmarkInFeedCache(prev, postId, data.isBookmarked),
       );
       queryClient.setQueryData<FeedPost>(
         feedQueryKeys.detail(postId),
-        (prev) => (prev ? { ...prev, bookMark: res.isBookmarked } : prev),
+        (prev) => (prev ? { ...prev, bookMark: data.isBookmarked } : prev),
       );
       if (context.profilePostsQueryKey) {
         queryClient.setQueryData<FeedProfilePosts>(
           context.profilePostsQueryKey,
           (prev) =>
-            updateBookmarkInProfilePostsCache(prev, postId, res.isBookmarked),
+            updateBookmarkInProfilePostsCache(prev, postId, data.isBookmarked),
         );
       }
       queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all });
@@ -193,6 +201,7 @@ export function useToggleBookmark() {
     postId: number,
     isBookmarked: boolean,
     profilePostsTarget?: ProfilePostsBookmarkTarget,
+    disableTracking?: boolean,
   ): Promise<boolean> => {
     if (isBookmarked) {
       const confirmed = await dialog.confirm({
@@ -203,7 +212,7 @@ export function useToggleBookmark() {
       if (!confirmed) return false;
     }
 
-    mutation.mutate({ postId, profilePostsTarget });
+    mutation.mutate({ postId, profilePostsTarget, disableTracking });
     return true;
   };
 

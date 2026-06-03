@@ -2,7 +2,6 @@
 
 import { type MouseEvent, useEffect, useState } from 'react';
 
-import * as amplitude from '@amplitude/unified';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
@@ -31,14 +30,8 @@ export default function LikeButton({
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (!disableTracking) {
-      amplitude.track('like_toggled', {
-        post_id: postId,
-        liked: !optimisticLiked,
-      });
-    }
     setOptimisticLiked((prev) => !prev);
-    toggleLike(postId);
+    toggleLike(postId, disableTracking);
   };
 
   return (

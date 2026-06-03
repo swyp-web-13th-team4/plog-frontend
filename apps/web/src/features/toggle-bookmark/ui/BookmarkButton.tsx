@@ -2,7 +2,6 @@
 
 import { type MouseEvent, useEffect, useState } from 'react';
 
-import * as amplitude from '@amplitude/unified';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
@@ -41,14 +40,9 @@ export default function BookmarkButton({
       postId,
       optimisticBookmarked,
       profilePostsTarget,
+      disableTracking,
     );
     if (proceeded) {
-      if (!disableTracking) {
-        amplitude.track('bookmark_toggled', {
-          post_id: postId,
-          bookmarked: !optimisticBookmarked,
-        });
-      }
       setOptimisticBookmarked((prev) => !prev);
     }
   };

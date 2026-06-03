@@ -1,5 +1,6 @@
 'use client';
 
+import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import {
   type InfiniteData,
@@ -41,7 +42,8 @@ export function useToggleLike() {
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: ({ postId }: { postId: number }) => postToggleLike(postId),
+    mutationFn: ({ postId }: { postId: number; disableTracking?: boolean }) =>
+      postToggleLike(postId),
     onMutate: async ({ postId }) => {
       await queryClient.cancelQueries({
         queryKey: feedQueryKeys.list,
@@ -61,6 +63,14 @@ export function useToggleLike() {
         (prev) => (prev ? applyLike(prev, !prev.like) : prev),
       );
     },
+    onSuccess: (data, { postId, disableTracking }) => {
+      if (!disableTracking) {
+        amplitude.track('like_toggled', {
+          post_id: postId,
+          liked: data.isLiked,
+        });
+      }
+    },
     onError: () => {
       toast({
         id: 'like-error',
@@ -79,8 +89,8 @@ export function useToggleLike() {
     },
   });
 
-  const toggleLike = (postId: number) => {
-    mutation.mutate({ postId });
+  const toggleLike = (postId: number, disableTracking?: boolean) => {
+    mutation.mutate({ postId, disableTracking });
   };
 
   return { toggleLike, isPending: mutation.isPending };
