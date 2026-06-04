@@ -21,7 +21,7 @@ export function useUpdateProfileMutation({ onSuccess }: Options) {
         imageOption,
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: mypageQueryKeys.info });
+      await queryClient.invalidateQueries({ queryKey: mypageQueryKeys.info() });
       toast({ type: 'success', description: '프로필이 수정되었어요.' });
       onSuccess();
     },

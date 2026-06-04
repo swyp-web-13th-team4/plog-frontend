@@ -10,7 +10,7 @@ async function fetchMyBadges() {
 
 export function useMyBadgesQuery() {
   return useQuery({
-    queryKey: mypageQueryKeys.badges,
+    queryKey: mypageQueryKeys.badges(),
     queryFn: () => fetchMyBadges(),
     select: (data) => data.badges,
   });

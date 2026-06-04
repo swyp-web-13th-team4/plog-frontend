@@ -20,7 +20,7 @@ export function useSetMainBadgeMutation() {
   return useMutation({
     mutationFn: setMainBadge,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: mypageQueryKeys.info });
+      await queryClient.invalidateQueries({ queryKey: mypageQueryKeys.info() });
     },
     onError: () => {
       toast({
@@ -38,7 +38,7 @@ export function useUnsetMainBadgeMutation() {
   return useMutation({
     mutationFn: unsetMainBadge,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: mypageQueryKeys.info });
+      await queryClient.invalidateQueries({ queryKey: mypageQueryKeys.info() });
     },
     onError: () => {
       toast({
