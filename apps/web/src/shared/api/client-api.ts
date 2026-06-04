@@ -1,3 +1,5 @@
+import { type z } from 'zod';
+
 import { dialog } from '@/shared/lib/dialog';
 
 import { CLIENT_BASE_URL } from './constants';
@@ -10,6 +12,7 @@ async function request<T>(
   endpoint: string,
   method: string,
   body?: unknown,
+  schema?: z.ZodType<T>,
   options?: RequestInit,
 ): Promise<T> {
   const bodyOptions = resolveBody(body);
@@ -22,7 +25,8 @@ async function request<T>(
   });
 
   try {
-    return await parseApiResponse<T>(res);
+    const data = await parseApiResponse<T>(res);
+    return schema ? schema.parse(data) : data;
   } catch (error) {
     if (
       error instanceof ApiResponseError &&
@@ -38,14 +42,26 @@ async function request<T>(
 }
 
 export const clientApi = {
-  get: <T>(endpoint: string, options?: RequestInit) =>
-    request<T>(endpoint, 'GET', undefined, options),
-  post: <T>(endpoint: string, body?: unknown, options?: RequestInit) =>
-    request<T>(endpoint, 'POST', body, options),
-  put: <T>(endpoint: string, body?: unknown, options?: RequestInit) =>
-    request<T>(endpoint, 'PUT', body, options),
-  patch: <T>(endpoint: string, body?: unknown, options?: RequestInit) =>
-    request<T>(endpoint, 'PATCH', body, options),
-  delete: <T>(endpoint: string, options?: RequestInit) =>
-    request<T>(endpoint, 'DELETE', undefined, options),
+  get: <T>(endpoint: string, schema?: z.ZodType<T>, options?: RequestInit) =>
+    request<T>(endpoint, 'GET', undefined, schema, options),
+  post: <T>(
+    endpoint: string,
+    body?: unknown,
+    schema?: z.ZodType<T>,
+    options?: RequestInit,
+  ) => request<T>(endpoint, 'POST', body, schema, options),
+  put: <T>(
+    endpoint: string,
+    body?: unknown,
+    schema?: z.ZodType<T>,
+    options?: RequestInit,
+  ) => request<T>(endpoint, 'PUT', body, schema, options),
+  patch: <T>(
+    endpoint: string,
+    body?: unknown,
+    schema?: z.ZodType<T>,
+    options?: RequestInit,
+  ) => request<T>(endpoint, 'PATCH', body, schema, options),
+  delete: <T>(endpoint: string, schema?: z.ZodType<T>, options?: RequestInit) =>
+    request<T>(endpoint, 'DELETE', undefined, schema, options),
 };

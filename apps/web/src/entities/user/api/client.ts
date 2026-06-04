@@ -33,15 +33,11 @@ export const signup = (
   return clientApi.post<string>(endpoint, formData);
 };
 
-export const getMypage = async () => {
-  const data = await clientApi.get<unknown>('/members/mypage');
-  return mypageDataSchema.parse(data);
-};
+export const getMypage = () =>
+  clientApi.get('/members/mypage', mypageDataSchema);
 
-export const getAnalytics = async () => {
-  const data = await clientApi.get<unknown>('/members/analytics');
-  return analyticsDataSchema.parse(data);
-};
+export const getAnalytics = () =>
+  clientApi.get('/members/analytics', analyticsDataSchema);
 
 export const updateProfile = (
   data: SetupProfileRequest,
