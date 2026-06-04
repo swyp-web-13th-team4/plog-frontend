@@ -1,15 +1,6 @@
 import { type StaticImageData } from 'next/image';
 
-export type UserBadge = {
-  id: number;
-  name: string;
-  description: string;
-  imageUrl: string;
-  isAcquired: boolean;
-  acquiredAt: string;
-};
-
-export type TypeCardId = 'LOGI' | 'CHICHI' | 'TORI' | 'HARU' | 'POPO' | 'NAO';
+import { type TypeCardId, type UserBadge } from './schemas';
 
 export type TypeCardTheme =
   | 'green'
@@ -61,34 +52,4 @@ export type UserProfileType = {
   profileImageUrl?: string;
   introduction: string | null;
   mainBadge: UserBadge | null;
-};
-
-export type MypageData = {
-  nickname: string;
-  profileImageUrl: string;
-  introduction: string | null;
-  mainBadge: UserBadge | null;
-};
-
-export type AnalyticsFocusEnvironment = {
-  bestTimePeriod: string;
-  bestTimePeriodAvgFocus: number;
-  bestPlaceTag: string;
-  bestPlaceTagAvgFocus: number;
-  worstPlaceTag: string;
-  worstPlaceTagAvgFocus: number;
-};
-
-export type AnalyticsSpaceRanking = {
-  placeCategoryName: string;
-  postCount: number;
-  averageFocus: number;
-};
-
-export type AnalyticsData = {
-  totalPostCount: number;
-  totalStudyTime: number;
-  workType: TypeCardId | null;
-  focusEnvironment: AnalyticsFocusEnvironment | null;
-  spaceRankings: AnalyticsSpaceRanking[] | null;
 };

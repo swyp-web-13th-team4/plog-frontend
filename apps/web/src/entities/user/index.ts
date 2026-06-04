@@ -16,17 +16,19 @@ export type {
   AnalyticsData,
   AnalyticsFocusEnvironment,
   AnalyticsSpaceRanking,
-  DefaultProfileImage,
   MypageData,
+  TypeCardId,
+  UserBadge,
+} from './model/schemas';
+export type {
+  DefaultProfileImage,
   ProfileImageOption,
   SetupProfileRequest,
   TermId,
   TermsAgreements,
   TypeCardData,
-  TypeCardId,
   TypeCardStat,
   TypeCardTheme,
-  UserBadge,
   UserProfileType,
 } from './model/types';
 export { default as UserProfile } from './ui/UserProfile';
