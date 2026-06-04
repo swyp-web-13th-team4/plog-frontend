@@ -11,7 +11,7 @@ export {
   mypageQueryKeys,
   useAnalyticsQuery,
   useMypageQuery,
-} from './model/queries';
+} from './model/query-keys';
 export type {
   AnalyticsData,
   AnalyticsFocusEnvironment,
