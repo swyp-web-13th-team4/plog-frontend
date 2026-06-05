@@ -6,7 +6,10 @@ import { feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
-import { feedProfileViewResponseSchema } from './schemas';
+import {
+  type FeedProfileViewResponse,
+  feedProfileViewResponseSchema,
+} from './schemas';
 
 function fetchFeedProfileView(memberKey: string) {
   return clientApi.get(
@@ -15,12 +18,16 @@ function fetchFeedProfileView(memberKey: string) {
   );
 }
 
-export function useFeedProfileViewQuery(memberKey: string) {
+export function useFeedProfileViewQuery(
+  memberKey: string,
+  initialData?: FeedProfileViewResponse,
+) {
   const selectedMember = memberKey.trim();
 
   return useQuery({
     queryKey: feedQueryKeys.profileView(selectedMember),
     queryFn: () => fetchFeedProfileView(selectedMember),
     enabled: selectedMember.length > 0,
+    initialData,
   });
 }

@@ -4,10 +4,19 @@ import { useRouter } from 'next/navigation';
 
 import { AppBar } from '@plog/ui';
 
+import { type FeedProfileViewResponse } from '../model/schemas';
 import UserFeedSection from './UserFeedSection';
 import UserProfileSection from './UserProfileSection';
 
-export default function UserProfilePage({ userId }: { userId: string }) {
+type UserProfilePageProps = {
+  userId: string;
+  initialData?: FeedProfileViewResponse;
+};
+
+export default function UserProfilePage({
+  userId,
+  initialData,
+}: UserProfilePageProps) {
   const router = useRouter();
 
   return (
@@ -20,7 +29,7 @@ export default function UserProfilePage({ userId }: { userId: string }) {
         />
       </header>
       <div className="flex flex-col gap-3 pt-[var(--spacing-header)]">
-        <UserProfileSection userId={userId} />
+        <UserProfileSection userId={userId} initialData={initialData} />
         <UserFeedSection userId={userId} />
       </div>
     </>

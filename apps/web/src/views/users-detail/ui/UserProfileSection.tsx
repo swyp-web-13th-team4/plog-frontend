@@ -2,10 +2,22 @@
 
 import { UserProfile } from '@/entities/user';
 
+import { type FeedProfileViewResponse } from '../model/schemas';
 import { useFeedProfileViewQuery } from '../model/use-feed-profile-view-query';
 
-export default function UserProfileSection({ userId }: { userId: string }) {
-  const { data, isPending, isError } = useFeedProfileViewQuery(userId);
+type UserProfileSectionProps = {
+  userId: string;
+  initialData?: FeedProfileViewResponse;
+};
+
+export default function UserProfileSection({
+  userId,
+  initialData,
+}: UserProfileSectionProps) {
+  const { data, isPending, isError } = useFeedProfileViewQuery(
+    userId,
+    initialData,
+  );
 
   if (isPending || isError || !data?.memberInfo) return null;
 
