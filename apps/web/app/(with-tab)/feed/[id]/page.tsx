@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
+import FeedDetailHeader from '@/views/feed-detail/ui/FeedDetailHeader';
 
 import {
   type FeedDetailResponse,
@@ -71,10 +72,20 @@ export default async function Page({ params }: FeedDetailPageProps) {
       notFound();
     }
 
-    return <FeedDetailCard postId={id} />;
+    return (
+      <>
+        <FeedDetailHeader />
+        <FeedDetailCard postId={id} />
+      </>
+    );
   }
 
   if (!initialPost) notFound();
 
-  return <FeedDetailCard initialPost={initialPost} postId={id} />;
+  return (
+    <>
+      <FeedDetailHeader />
+      <FeedDetailCard initialPost={initialPost} postId={id} />
+    </>
+  );
 }
