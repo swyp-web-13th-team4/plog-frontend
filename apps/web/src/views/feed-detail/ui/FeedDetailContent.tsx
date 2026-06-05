@@ -1,13 +1,10 @@
 import { notFound } from 'next/navigation';
 
-import {
-  type FeedDetailResponse,
-  feedDetailResponseSchema,
-} from '@/entities/feed/model/schemas';
+import { type FeedDetailResponse } from '@/entities/feed';
+import { getFeedPost } from '@/entities/feed/api/server';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
-import { serverApi } from '@/shared/api/server-api';
 
 import FeedDetailCard from './FeedDetailCard';
 
@@ -15,7 +12,7 @@ export default async function FeedDetailContent({ id }: { id: string }) {
   let initialPost: FeedDetailResponse | undefined;
 
   try {
-    initialPost = await serverApi.get(`/feed/${id}`, feedDetailResponseSchema);
+    initialPost = await getFeedPost(id);
   } catch (error) {
     if (
       error instanceof ApiResponseError &&

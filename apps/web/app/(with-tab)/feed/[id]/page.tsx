@@ -7,12 +7,7 @@ import FeedDetailContent from '@/views/feed-detail/ui/FeedDetailContent';
 import FeedDetailHeader from '@/views/feed-detail/ui/FeedDetailHeader';
 import FeedDetailSkeleton from '@/views/feed-detail/ui/FeedDetailSkeleton';
 
-import {
-  type FeedDetailResponse,
-  feedDetailResponseSchema,
-} from '@/entities/feed/model/schemas';
-
-import { serverApi } from '@/shared/api/server-api';
+import { getFeedPost } from '@/entities/feed/api/server';
 
 type FeedDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -24,7 +19,7 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const post = await serverApi.get(`/feed/${id}`, feedDetailResponseSchema);
+    const post = await getFeedPost(id);
     const thumbnail = post.postImages[0];
     const title = post.title;
     const description = post.contents;
