@@ -1,16 +1,17 @@
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
+import FeedDetailContent from '@/views/feed-detail/ui/FeedDetailContent';
 import FeedDetailHeader from '@/views/feed-detail/ui/FeedDetailHeader';
+import FeedDetailSkeleton from '@/views/feed-detail/ui/FeedDetailSkeleton';
 
 import {
   type FeedDetailResponse,
   feedDetailResponseSchema,
 } from '@/entities/feed/model/schemas';
 
-import { API_ERROR_CODE } from '@/shared/api/constants';
-import { ApiResponseError } from '@/shared/api/response.utils';
 import { serverApi } from '@/shared/api/server-api';
 
 type FeedDetailPageProps = {
@@ -60,32 +61,12 @@ export default async function Page({ params }: FeedDetailPageProps) {
 
   if (!Number.isInteger(numericPostId) || numericPostId <= 0) notFound();
 
-  let initialPost: FeedDetailResponse | undefined;
-
-  try {
-    initialPost = await serverApi.get(`/feed/${id}`, feedDetailResponseSchema);
-  } catch (error) {
-    if (
-      error instanceof ApiResponseError &&
-      error.errorCode === API_ERROR_CODE.POST_NOT_FOUND
-    ) {
-      notFound();
-    }
-
-    return (
-      <>
-        <FeedDetailHeader />
-        <FeedDetailCard postId={id} />
-      </>
-    );
-  }
-
-  if (!initialPost) notFound();
-
   return (
     <>
       <FeedDetailHeader />
-      <FeedDetailCard initialPost={initialPost} postId={id} />
+      <Suspense fallback={<FeedDetailSkeleton />}>
+        <FeedDetailContent id={id} />
+      </Suspense>
     </>
   );
 }
