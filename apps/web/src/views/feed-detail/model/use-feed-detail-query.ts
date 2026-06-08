@@ -2,14 +2,18 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { type FeedPost, feedQueryKeys } from '@/entities/feed';
+import {
+  feedDetailResponseSchema,
+  type FeedPost,
+  feedQueryKeys,
+} from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
 
-function getFeedDetail(postId: number) {
-  return clientApi.get<FeedPost>(`/feed/${postId}`);
+function getFeedDetail(postId: number): Promise<FeedPost> {
+  return clientApi.get(`/feed/${postId}`, feedDetailResponseSchema);
 }
 
 function isPrivateAccessError(error: unknown) {

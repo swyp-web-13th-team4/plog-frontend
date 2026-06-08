@@ -7,6 +7,7 @@ import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { feedQueryKeys } from '@/entities/feed';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
@@ -38,7 +39,10 @@ export function useCreateLogMutation({
     onSuccess: async () => {
       amplitude.track('log_created');
       onSuccess?.();
-      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.all });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
+      ]);
       toast({ type: 'success', description: '기록이 등록되었어요.' });
       router.replace('/feed');
     },

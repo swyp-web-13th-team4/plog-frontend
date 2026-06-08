@@ -2,15 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { feedQueryKeys } from '@/entities/feed';
+import { feedQueryKeys, feedUserResponseSchema } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
-import { type UserDetailData } from './types';
-
 function fetchFeedProfileView(memberKey: string) {
-  return clientApi.get<UserDetailData>(
+  return clientApi.get(
     `/feed/profileView/${encodeURIComponent(memberKey)}`,
+    feedUserResponseSchema,
   );
 }
 
