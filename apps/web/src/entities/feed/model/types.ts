@@ -1,6 +1,7 @@
 import { type PlaceTagValue } from './place-tag';
+import { type PostScope, type ProfileFeedItem } from './schemas';
 
-export type PostScope = 'PUBLIC' | 'PRIVATE';
+export type { PostScope } from './schemas';
 
 export type FeedPost = {
   postId: number;
@@ -32,7 +33,7 @@ export type FeedPage = {
 };
 
 export type FeedProfilePosts = {
-  posts: FeedPost[];
+  posts: ProfileFeedItem[];
 };
 
 export type PostSortType = 'latest' | 'focus' | 'studyTime';
