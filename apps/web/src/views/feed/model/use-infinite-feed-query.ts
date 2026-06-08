@@ -40,10 +40,10 @@ export function useInfiniteFeedQuery() {
     FeedPage,
     Error,
     { pages: FeedPage[]; pageParams: FeedCursor[] },
-    typeof feedQueryKeys.list,
+    typeof feedQueryKeys.all,
     FeedCursor
   >({
-    queryKey: feedQueryKeys.list,
+    queryKey: feedQueryKeys.all,
     queryFn: ({ pageParam }) => getFeedPage(pageParam),
     initialPageParam: {
       lastPostId: 0,

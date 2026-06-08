@@ -53,7 +53,7 @@ export function useUpdateLogMutation({
     onSuccess: async () => {
       amplitude.track('log_updated', { post_id: postId });
       onSuccess?.();
-      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
+      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.all });
       toast({ type: 'success', description: '기록이 수정되었어요.' });
       if (postId !== null) router.replace(`/feed/${postId}`);
     },

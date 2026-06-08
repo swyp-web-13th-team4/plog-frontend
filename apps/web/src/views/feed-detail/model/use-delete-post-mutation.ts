@@ -46,7 +46,7 @@ export function useDeletePostMutation() {
         exact: true,
       });
       queryClient.setQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
+        feedQueryKeys.all,
         (prev) => removePostFromFeedCache(prev, postId),
       );
 
@@ -54,7 +54,7 @@ export function useDeletePostMutation() {
       router.replace('/feed');
 
       void queryClient.invalidateQueries({
-        queryKey: feedQueryKeys.list,
+        queryKey: feedQueryKeys.all,
         exact: true,
       });
       void queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all });

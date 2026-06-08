@@ -46,7 +46,7 @@ export function useToggleLike() {
       postToggleLike(postId),
     onMutate: async ({ postId }) => {
       await queryClient.cancelQueries({
-        queryKey: feedQueryKeys.list,
+        queryKey: feedQueryKeys.all,
         exact: true,
       });
       await queryClient.cancelQueries({
@@ -54,7 +54,7 @@ export function useToggleLike() {
       });
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
+        feedQueryKeys.all,
         (prev) => toggleLikeInFeedList(prev, postId),
       );
 
@@ -80,7 +80,7 @@ export function useToggleLike() {
     },
     onSettled: (_data, _err, { postId }) => {
       queryClient.invalidateQueries({
-        queryKey: feedQueryKeys.list,
+        queryKey: feedQueryKeys.all,
         exact: true,
       });
       queryClient.invalidateQueries({

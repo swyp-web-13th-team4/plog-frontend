@@ -38,7 +38,7 @@ export function useCreateLogMutation({
     onSuccess: async () => {
       amplitude.track('log_created');
       onSuccess?.();
-      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
+      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.all });
       toast({ type: 'success', description: '기록이 등록되었어요.' });
       router.replace('/feed');
     },
