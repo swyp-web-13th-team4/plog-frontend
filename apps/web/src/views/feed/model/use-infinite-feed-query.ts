@@ -31,7 +31,7 @@ async function getFeedPage(
   return {
     items: data.feedFindResponses,
     lastPostId: data.lastPostId,
-    createAt: null,
+    createAt: data.createdAt,
   };
 }
 

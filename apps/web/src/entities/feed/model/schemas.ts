@@ -46,8 +46,8 @@ export type FeedListsResponse = z.infer<typeof feedListsResponseSchema>;
 
 export const feedResponseSchema = z.object({
   feedFindResponses: z.array(feedListsResponseSchema),
-  lastPostId: z.number(),
-  createdAt: z.string(),
+  lastPostId: z.number().nullable(),
+  createdAt: z.string().nullable(),
 });
 
 export type FeedResponse = z.infer<typeof feedResponseSchema>;
