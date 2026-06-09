@@ -2,14 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { type FeedPost, feedQueryKeys } from '@/entities/feed';
+import { feedQueryKeys, type FeedTypeInDetail } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
 
 function getFeedDetail(postId: number) {
-  return clientApi.get<FeedPost>(`/feed/${postId}`);
+  return clientApi.get<FeedTypeInDetail>(`/feed/${postId}`);
 }
 
 function isPrivateAccessError(error: unknown) {
@@ -19,7 +19,10 @@ function isPrivateAccessError(error: unknown) {
   );
 }
 
-export function useFeedDetailQuery(postId: number, initialData?: FeedPost) {
+export function useFeedDetailQuery(
+  postId: number,
+  initialData?: FeedTypeInDetail,
+) {
   const query = useQuery({
     queryKey: feedQueryKeys.detail(postId),
     queryFn: () => getFeedDetail(postId),

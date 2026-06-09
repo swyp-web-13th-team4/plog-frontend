@@ -2,7 +2,11 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { type FeedPage, type FeedPost, feedQueryKeys } from '@/entities/feed';
+import {
+  type FeedPage,
+  feedQueryKeys,
+  type FeedTypeInFeedList,
+} from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -11,7 +15,7 @@ type FeedCursor = {
 };
 
 type FeedListResponse = {
-  feedFindResponses: FeedPost[];
+  feedFindResponses: FeedTypeInFeedList[];
   lastPostId: number | null;
 };
 

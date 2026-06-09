@@ -15,7 +15,10 @@ import {
 
 import { BookmarkButton } from '@/features/toggle-bookmark';
 
-import { type FeedPost, type PostSortType } from '@/entities/feed';
+import {
+  type FeedTypeInUserPostList,
+  type PostSortType,
+} from '@/entities/feed';
 
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import {
@@ -45,7 +48,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
     refetch,
   } = useFeedProfilePostsQuery(userId, sort);
 
-  const handleFeedClick = (feed: FeedPost) => {
+  const handleFeedClick = (feed: FeedTypeInUserPostList) => {
     router.push(`/feed/${feed.postId}`);
   };
 

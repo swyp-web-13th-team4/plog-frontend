@@ -8,7 +8,12 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { type FeedPage, type FeedPost, feedQueryKeys } from '@/entities/feed';
+import {
+  type FeedPage,
+  feedQueryKeys,
+  type FeedTypeBase,
+  type FeedTypeInDetail,
+} from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -16,7 +21,10 @@ function postToggleLike(postId: number) {
   return clientApi.post<{ isLiked: boolean }>(`/feed/like/${postId}`);
 }
 
-function applyLike(post: FeedPost, isLiked: boolean): FeedPost {
+function applyLike<TFeed extends FeedTypeBase>(
+  post: TFeed,
+  isLiked: boolean,
+): TFeed {
   const countLike = post.like === isLiked ? 0 : isLiked ? 1 : -1;
   return { ...post, like: isLiked, likes: post.likes + countLike };
 }
@@ -58,7 +66,7 @@ export function useToggleLike() {
         (prev) => toggleLikeInFeedList(prev, postId),
       );
 
-      queryClient.setQueryData<FeedPost>(
+      queryClient.setQueryData<FeedTypeInDetail>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? applyLike(prev, !prev.like) : prev),
       );

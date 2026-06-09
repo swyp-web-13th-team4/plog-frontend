@@ -8,11 +8,11 @@ import { cn } from '@plog/utils';
 import { ImageWithFallback } from '@/shared/ui';
 
 import { formatStudyDuration } from '../lib/format';
-import { type FeedPost } from '../model/types';
+import { type FeedTypeBase } from '../model/types';
 import TagBadgeGroup from './TagBadgeGroup';
 
 type FeedGridItemProps = {
-  feed: FeedPost;
+  feed: FeedTypeBase;
   onClick?: () => void;
   action?: ReactNode;
 };

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 
 import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
 
-import { type FeedPost } from '@/entities/feed';
+import { type FeedTypeInDetail } from '@/entities/feed';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
@@ -19,7 +19,7 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const post = await serverApi.get<FeedPost>(`/feed/${id}`);
+    const post = await serverApi.get<FeedTypeInDetail>(`/feed/${id}`);
     const thumbnail = post.postImages[0];
     const title = post.title;
     const description = post.contents;
@@ -56,10 +56,10 @@ export default async function Page({ params }: FeedDetailPageProps) {
 
   if (!Number.isInteger(numericPostId) || numericPostId <= 0) notFound();
 
-  let initialPost: FeedPost | undefined;
+  let initialPost: FeedTypeInDetail | undefined;
 
   try {
-    initialPost = await serverApi.get<FeedPost>(`/feed/${id}`);
+    initialPost = await serverApi.get<FeedTypeInDetail>(`/feed/${id}`);
   } catch (error) {
     if (
       error instanceof ApiResponseError &&

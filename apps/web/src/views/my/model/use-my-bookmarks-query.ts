@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import {
   type BookmarkSortType,
-  type FeedPost,
+  type FeedTypeInUserPostList,
   type PlaceTagValue,
 } from '@/entities/feed';
 import { mypageQueryKeys } from '@/entities/user';
@@ -12,7 +12,7 @@ import { clientApi } from '@/shared/api/client-api';
 async function fetchMyBookmarks(sort: BookmarkSortType, tags: PlaceTagValue[]) {
   const params = new URLSearchParams({ sort });
   tags.forEach((tag) => params.append('tags', tag));
-  return clientApi.get<{ myBookmarks: FeedPost[] }>(
+  return clientApi.get<{ myBookmarks: FeedTypeInUserPostList[] }>(
     `/members/bookmark?${params}`,
   );
 }

@@ -10,9 +10,9 @@ import {
 
 import {
   type FeedPage,
-  type FeedPost,
   type FeedProfilePosts,
   feedQueryKeys,
+  type FeedTypeInDetail,
   type PostSortType,
 } from '@/entities/feed';
 import { mapQueryKeys } from '@/entities/place';
@@ -128,7 +128,7 @@ export function useToggleBookmark() {
         (prev) => toggleBookmarkInFeedCache(prev, postId),
       );
 
-      queryClient.setQueryData<FeedPost>(
+      queryClient.setQueryData<FeedTypeInDetail>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? { ...prev, bookMark: !prev.bookMark } : prev),
       );
@@ -170,7 +170,7 @@ export function useToggleBookmark() {
         feedQueryKeys.list,
         (prev) => updateBookmarkInFeedCache(prev, postId, data.isBookmarked),
       );
-      queryClient.setQueryData<FeedPost>(
+      queryClient.setQueryData<FeedTypeInDetail>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? { ...prev, bookMark: data.isBookmarked } : prev),
       );

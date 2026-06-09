@@ -10,7 +10,7 @@ import { ReviewTagsSheet } from '@/features/select-review-tags';
 import {
   FeedGridItem,
   FeedListItem,
-  type FeedPost,
+  type FeedTypeBase,
   PLACE_TAG_LABELS,
   type PlaceTagValue,
 } from '@/entities/feed';
@@ -22,22 +22,22 @@ import {
 } from '../model/types';
 import { useFeedViewType } from '../model/use-feed-view-type';
 
-type FeedListProps = {
-  feeds: FeedPost[];
+type FeedListProps<TFeed extends FeedTypeBase> = {
+  feeds: TFeed[];
   sort: RecordTypeValue;
   onSortChange: (sort: RecordTypeValue) => void;
   sortItems: { value: RecordTypeValue; label: string }[];
   tags?: PlaceTagValue[];
   onTagsChange?: (tags: PlaceTagValue[]) => void;
-  renderAction?: (feed: FeedPost, viewType: FeedViewType) => ReactNode;
-  renderThumbnailBadge?: (feed: FeedPost) => ReactNode;
-  onFeedClick?: (feed: FeedPost) => void;
+  renderAction?: (feed: TFeed, viewType: FeedViewType) => ReactNode;
+  renderThumbnailBadge?: (feed: TFeed) => ReactNode;
+  onFeedClick?: (feed: TFeed) => void;
   toolbarConfig?: ToolbarConfig;
   emptyView?: ReactNode;
   className?: string;
 };
 
-export default function FeedList({
+export default function FeedList<TFeed extends FeedTypeBase>({
   feeds,
   sort,
   onSortChange,
@@ -50,7 +50,7 @@ export default function FeedList({
   toolbarConfig,
   emptyView,
   className,
-}: FeedListProps) {
+}: FeedListProps<TFeed>) {
   const { viewType, toggleViewType } = useFeedViewType();
 
   return (

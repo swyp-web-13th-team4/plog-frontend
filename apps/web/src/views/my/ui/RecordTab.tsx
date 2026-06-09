@@ -11,7 +11,7 @@ import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 
 import {
-  type FeedPost,
+  type FeedTypeInUserPostList,
   type PlaceTagValue,
   type PostSortType,
 } from '@/entities/feed';
@@ -61,7 +61,7 @@ export default function RecordTab() {
     );
   }
 
-  const handleFeedClick = (feed: FeedPost) => {
+  const handleFeedClick = (feed: FeedTypeInUserPostList) => {
     router.push(`/feed/${feed.postId}`);
   };
 
