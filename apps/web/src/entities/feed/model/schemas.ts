@@ -37,15 +37,15 @@ const feedPostBaseSchema = z.object({
   bookMark: z.boolean(),
 });
 
-export const feedFindResponseSchema = feedPostBaseSchema.extend({
+export const feedListsResponseSchema = feedPostBaseSchema.extend({
   memberKey: z.string(),
   isAuthor: z.boolean(),
 });
 
-export type FeedFindResponse = z.infer<typeof feedFindResponseSchema>;
+export type FeedListsResponse = z.infer<typeof feedListsResponseSchema>;
 
 export const feedResponseSchema = z.object({
-  feedFindResponses: z.array(feedFindResponseSchema),
+  feedFindResponses: z.array(feedListsResponseSchema),
   lastPostId: z.number(),
   createdAt: z.string(),
 });
@@ -93,12 +93,14 @@ export const memberInfoSchema = z.object({
 
 export type MemberInfo = z.infer<typeof memberInfoSchema>;
 
-export const feedUserResponseSchema = z.object({
+export const feedUserProfileResponseSchema = z.object({
   memberInfo: memberInfoSchema,
   posts: z.array(profileFeedItemSchema),
 });
 
-export type FeedUserResponse = z.infer<typeof feedUserResponseSchema>;
+export type FeedUserProfileResponse = z.infer<
+  typeof feedUserProfileResponseSchema
+>;
 
 const timePickerResponseSchema = z.object({
   hour: z.number(),
