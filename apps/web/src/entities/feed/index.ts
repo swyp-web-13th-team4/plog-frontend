@@ -20,8 +20,11 @@ export { feedQueryKeys } from './model/query-keys';
 export type {
   BookmarkSortType,
   FeedPage,
-  FeedPost,
   FeedProfilePosts,
+  FeedTypeBase,
+  FeedTypeInDetail,
+  FeedTypeInFeedList,
+  FeedTypeInUserPostList,
   PostScope,
   PostSortType,
 } from './model/types';

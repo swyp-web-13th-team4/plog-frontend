@@ -1,8 +1,12 @@
+import { TimeValue } from '@plog/ui';
+
 import { type PlaceTagValue } from './place-tag';
 
 export type PostScope = 'PUBLIC' | 'PRIVATE';
+export type PostSortType = 'latest' | 'focus' | 'studyTime';
+export type BookmarkSortType = 'latest' | 'likes';
 
-export type FeedPost = {
+export type FeedTypeBase = {
   postId: number;
   name: string;
   profileImage: string;
@@ -17,23 +21,35 @@ export type FeedPost = {
   tags: PlaceTagValue[];
   like: boolean;
   bookMark: boolean;
-  memberKey?: string;
-  category?: string;
-  address?: string;
-  isPublic?: boolean;
-  isAuthor?: boolean;
-  scope?: PostScope;
+};
+
+export type FeedTypeInFeedList = FeedTypeBase & {
+  memberKey: string;
+  isAuthor: boolean;
+};
+
+export type FeedTypeInDetail = FeedTypeBase & {
+  memberKey: string;
+  isAuthor: boolean;
+  startedAt: TimeValue;
+  endedAt: TimeValue;
+  studyDate: string;
+  category: string;
+  address: string;
+  scope: PostScope;
+};
+
+export type FeedTypeInUserPostList = FeedTypeBase & {
+  placeCategory: string;
+  isPublic: boolean;
 };
 
 export type FeedPage = {
-  items: FeedPost[];
+  items: FeedTypeInFeedList[];
   lastPostId: number | null;
   createAt: string | null;
 };
 
 export type FeedProfilePosts = {
-  posts: FeedPost[];
+  posts: FeedTypeInUserPostList[];
 };
-
-export type PostSortType = 'latest' | 'focus' | 'studyTime';
-export type BookmarkSortType = 'latest' | 'likes';
