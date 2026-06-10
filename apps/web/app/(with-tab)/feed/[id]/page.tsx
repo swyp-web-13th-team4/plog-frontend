@@ -3,10 +3,8 @@ import { notFound } from 'next/navigation';
 
 import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
 
-import {
-  feedDetailResponseSchema,
-  type FeedTypeInDetail,
-} from '@/entities/feed';
+import { feedDetailResponseSchema } from '@/entities/feed/model/schemas';
+import { type FeedTypeInDetail } from '@/entities/feed/model/types';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
