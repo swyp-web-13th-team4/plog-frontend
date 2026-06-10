@@ -3,7 +3,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import {
-  type FeedProfilePosts,
   feedQueryKeys,
   type PostSortType,
   profilePostsResponseSchema,

@@ -72,7 +72,7 @@ export default function FeedDetailCard({
     isPending,
     isPrivateAccessError,
     refetch,
-  } = useFeedDetailQuery(numericPostId);
+  } = useFeedDetailQuery(numericPostId, initialPost);
 
   const deletePostMutation = useDeletePostMutation();
   const privateAccessHandledRef = useRef(false);

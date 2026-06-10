@@ -2,7 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { feedDetailResponseSchema, feedQueryKeys } from '@/entities/feed';
+import {
+  feedDetailResponseSchema,
+  feedQueryKeys,
+  type FeedTypeInDetail,
+} from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 import { API_ERROR_CODE } from '@/shared/api/constants';
@@ -27,6 +31,7 @@ export function useFeedDetailQuery(
     queryKey: feedQueryKeys.detail(postId),
     queryFn: () => getFeedDetail(postId),
     enabled: Number.isInteger(postId) && postId > 0,
+    initialData,
     retry: false,
   });
 

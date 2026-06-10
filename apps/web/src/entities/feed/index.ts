@@ -47,7 +47,6 @@ export type {
   FeedTypeInDetail,
   FeedTypeInFeedList,
   FeedTypeInUserPostList,
-  PostScope,
   PostSortType,
 } from './model/types';
 export { default as FeedGridItem } from './ui/FeedGridItem';
