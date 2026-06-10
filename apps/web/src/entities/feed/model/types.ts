@@ -1,8 +1,9 @@
 import { TimeValue } from '@plog/ui';
 
 import { type PlaceTagValue } from './place-tag';
+import { type PostScope, type ProfileFeedItem } from './schemas';
 
-export type PostScope = 'PUBLIC' | 'PRIVATE';
+export type { PostScope } from './schemas';
 export type PostSortType = 'latest' | 'focus' | 'studyTime';
 export type BookmarkSortType = 'latest' | 'likes';
 

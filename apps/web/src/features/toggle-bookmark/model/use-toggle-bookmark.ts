@@ -113,7 +113,7 @@ export function useToggleBookmark() {
         : undefined;
 
       await queryClient.cancelQueries({
-        queryKey: feedQueryKeys.list,
+        queryKey: feedQueryKeys.all,
         exact: true,
       });
       await queryClient.cancelQueries({
@@ -124,7 +124,7 @@ export function useToggleBookmark() {
       }
 
       queryClient.setQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
+        feedQueryKeys.all,
         (prev) => toggleBookmarkInFeedCache(prev, postId),
       );
 
@@ -144,7 +144,7 @@ export function useToggleBookmark() {
     },
     onError: (_err, { postId }, context) => {
       queryClient.invalidateQueries({
-        queryKey: feedQueryKeys.list,
+        queryKey: feedQueryKeys.all,
         exact: true,
       });
       queryClient.invalidateQueries({ queryKey: feedQueryKeys.detail(postId) });
@@ -167,7 +167,7 @@ export function useToggleBookmark() {
         });
       }
       queryClient.setQueryData<InfiniteData<FeedPage>>(
-        feedQueryKeys.list,
+        feedQueryKeys.all,
         (prev) => updateBookmarkInFeedCache(prev, postId, data.isBookmarked),
       );
       queryClient.setQueryData<FeedTypeInDetail>(

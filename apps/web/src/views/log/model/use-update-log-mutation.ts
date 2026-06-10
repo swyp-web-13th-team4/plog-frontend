@@ -7,6 +7,7 @@ import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { feedQueryKeys } from '@/entities/feed';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
@@ -53,7 +54,10 @@ export function useUpdateLogMutation({
     onSuccess: async () => {
       amplitude.track('log_updated', { post_id: postId });
       onSuccess?.();
-      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.list });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
+      ]);
       toast({ type: 'success', description: '기록이 수정되었어요.' });
       if (postId !== null) router.replace(`/feed/${postId}`);
     },
