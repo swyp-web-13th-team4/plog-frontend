@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 
 import { UserProfilePage } from '@/views/users-detail';
-import { type UserDetailData } from '@/views/users-detail/model/types';
+
+import { MemberInfo } from '@/entities/feed';
 
 import { serverApi } from '@/shared/api/server-api';
 
@@ -15,10 +16,10 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const profile = await serverApi.get<UserDetailData>(
+    const profile = await serverApi.get<MemberInfo>(
       `/feed/profileView/${encodeURIComponent(id)}`,
     );
-    return { title: `${profile.memberInfo.nickname} 님의 프로필` };
+    return { title: `${profile.nickname} 님의 프로필` };
   } catch {
     return { title: '프로필' };
   }
