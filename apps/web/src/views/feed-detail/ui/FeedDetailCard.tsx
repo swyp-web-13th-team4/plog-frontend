@@ -20,7 +20,7 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import {
-  type FeedPost,
+  type FeedDetailResponse,
   FeedStatsSummary,
   formatDate,
   formatTimeAgo,
@@ -48,7 +48,7 @@ const AUTHOR_ACTION_OPTIONS = [
 
 type FeedDetailCardProps = {
   postId: string;
-  initialPost?: FeedPost;
+  initialPost?: FeedDetailResponse;
 };
 
 export default function FeedDetailCard({
@@ -72,7 +72,7 @@ export default function FeedDetailCard({
     isPending,
     isPrivateAccessError,
     refetch,
-  } = useFeedDetailQuery(numericPostId);
+  } = useFeedDetailQuery(numericPostId, initialPost);
 
   const deletePostMutation = useDeletePostMutation();
   const privateAccessHandledRef = useRef(false);
