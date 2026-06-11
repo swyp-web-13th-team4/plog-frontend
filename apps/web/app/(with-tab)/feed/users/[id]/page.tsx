@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { UserProfilePage } from '@/views/users-detail';
 
-import { MemberInfo } from '@/entities/feed';
+import { feedUserProfileResponseSchema } from '@/entities/feed';
 
 import { serverApi } from '@/shared/api/server-api';
 
@@ -16,10 +16,11 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const profile = await serverApi.get<MemberInfo>(
+    const profile = await serverApi.get(
       `/feed/profileView/${encodeURIComponent(id)}`,
+      feedUserProfileResponseSchema,
     );
-    return { title: `${profile.nickname} 님의 프로필` };
+    return { title: `${profile.memberInfo.nickname} 님의 프로필` };
   } catch {
     return { title: '프로필' };
   }
