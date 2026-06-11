@@ -37,15 +37,15 @@ const feedPostBaseSchema = z.object({
   bookMark: z.boolean(),
 });
 
-export const feedListsResponseSchema = feedPostBaseSchema.extend({
+export const feedListResponseSchema = feedPostBaseSchema.extend({
   memberKey: z.string(),
   isAuthor: z.boolean(),
 });
 
-export type FeedListsResponse = z.infer<typeof feedListsResponseSchema>;
+export type FeedListResponse = z.infer<typeof feedListResponseSchema>;
 
 export const feedResponseSchema = z.object({
-  feedFindResponses: z.array(feedListsResponseSchema),
+  feedFindResponses: z.array(feedListResponseSchema),
   lastPostId: z.number().nullable(),
   createdAt: z.string().nullable(),
 });
