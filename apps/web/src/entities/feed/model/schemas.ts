@@ -73,35 +73,6 @@ export type BookmarkedFeedsResponse = z.infer<
   typeof bookmarkedFeedsResponseSchema
 >;
 
-export const userBadgeSchema = z.object({
-  id: z.number(),
-  name: z.string(),
-  description: z.string(),
-  imageUrl: z.string(),
-  isAcquired: z.boolean(),
-  acquiredAt: z.string(),
-});
-
-export type UserBadge = z.infer<typeof userBadgeSchema>;
-
-export const memberInfoSchema = z.object({
-  nickname: z.string(),
-  profileImageUrl: z.string(),
-  introduction: z.string().nullable(),
-  mainBadge: userBadgeSchema.nullable(),
-});
-
-export type MemberInfo = z.infer<typeof memberInfoSchema>;
-
-export const feedUserProfileResponseSchema = z.object({
-  memberInfo: memberInfoSchema,
-  posts: z.array(profileFeedItemSchema),
-});
-
-export type FeedUserProfileResponse = z.infer<
-  typeof feedUserProfileResponseSchema
->;
-
 const timePickerResponseSchema = z.object({
   hour: z.number(),
   minute: z.number(),
