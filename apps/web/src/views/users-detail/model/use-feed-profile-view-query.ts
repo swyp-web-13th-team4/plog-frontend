@@ -1,21 +1,12 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { z } from 'zod';
 
-import { feedQueryKeys, profileFeedItemSchema } from '@/entities/feed';
-import { mypageDataSchema } from '@/entities/user/model/schemas';
+import { feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
-export const feedProfileViewResponseSchema = z.object({
-  memberInfo: mypageDataSchema,
-  posts: z.array(profileFeedItemSchema),
-});
-
-export type FeedProfileViewResponse = z.infer<
-  typeof feedProfileViewResponseSchema
->;
+import { feedProfileViewResponseSchema } from './schemas';
 
 function fetchFeedProfileView(memberKey: string) {
   return clientApi.get(

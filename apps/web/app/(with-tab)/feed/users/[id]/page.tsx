@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import { UserProfilePage } from '@/views/users-detail';
-import { feedProfileViewResponseSchema } from '@/views/users-detail/model/use-feed-profile-view-query';
+import { feedProfileViewResponseSchema } from '@/views/users-detail/model/schemas';
 
 import { serverApi } from '@/shared/api/server-api';
 
