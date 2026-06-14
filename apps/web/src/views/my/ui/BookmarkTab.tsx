@@ -12,7 +12,7 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 
 import {
   type BookmarkSortType,
-  type FeedTypeInUserPostList,
+  type FeedItemProfileView,
   type PlaceTagValue,
 } from '@/entities/feed';
 
@@ -60,7 +60,7 @@ export default function BookmarkTab() {
     );
   }
 
-  const handleFeedClick = (feed: FeedTypeInUserPostList) => {
+  const handleFeedClick = (feed: FeedItemProfileView) => {
     router.push(`/feed/${feed.postId}`);
   };
 

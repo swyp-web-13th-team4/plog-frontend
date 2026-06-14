@@ -7,7 +7,7 @@ export type { PostScope } from './schemas';
 export type PostSortType = 'latest' | 'focus' | 'studyTime';
 export type BookmarkSortType = 'latest' | 'likes';
 
-export type FeedTypeBase = {
+export type FeedItem = {
   postId: number;
   name: string;
   profileImage: string;
@@ -24,12 +24,12 @@ export type FeedTypeBase = {
   bookMark: boolean;
 };
 
-export type FeedTypeInFeedList = FeedTypeBase & {
+export type FeedItemList = FeedItem & {
   memberKey: string;
   isAuthor: boolean;
 };
 
-export type FeedTypeInDetail = FeedTypeBase & {
+export type FeedItemDetail = FeedItem & {
   memberKey: string;
   isAuthor: boolean;
   startedAt: TimeValue;
@@ -40,13 +40,13 @@ export type FeedTypeInDetail = FeedTypeBase & {
   scope: PostScope;
 };
 
-export type FeedTypeInUserPostList = FeedTypeBase & {
+export type FeedItemProfileView = FeedItem & {
   placeCategory: string;
   isPublic: boolean;
 };
 
-export type FeedPage = {
-  items: FeedTypeInFeedList[];
+export type FeedMain = {
+  items: FeedItemList[];
   lastPostId: number | null;
   createAt: string | null;
 };

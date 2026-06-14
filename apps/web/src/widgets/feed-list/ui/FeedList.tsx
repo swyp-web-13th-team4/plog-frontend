@@ -9,8 +9,8 @@ import { ReviewTagsSheet } from '@/features/select-review-tags';
 
 import {
   FeedGridItem,
+  type FeedItem,
   FeedListItem,
-  type FeedTypeBase,
   PLACE_TAG_LABELS,
   type PlaceTagValue,
 } from '@/entities/feed';
@@ -22,7 +22,7 @@ import {
 } from '../model/types';
 import { useFeedViewType } from '../model/use-feed-view-type';
 
-type FeedListProps<TFeed extends FeedTypeBase> = {
+type FeedListProps<TFeed extends FeedItem> = {
   feeds: TFeed[];
   sort: RecordTypeValue;
   onSortChange: (sort: RecordTypeValue) => void;
@@ -37,7 +37,7 @@ type FeedListProps<TFeed extends FeedTypeBase> = {
   className?: string;
 };
 
-export default function FeedList<TFeed extends FeedTypeBase>({
+export default function FeedList<TFeed extends FeedItem>({
   feeds,
   sort,
   onSortChange,

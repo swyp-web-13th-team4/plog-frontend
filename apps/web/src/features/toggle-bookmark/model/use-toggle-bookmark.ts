@@ -9,10 +9,10 @@ import {
 } from '@tanstack/react-query';
 
 import {
-  type FeedPage,
+  type FeedItemDetail,
+  type FeedMain,
   type FeedProfilePosts,
   feedQueryKeys,
-  type FeedTypeInDetail,
   type PostSortType,
 } from '@/entities/feed';
 import { mapQueryKeys } from '@/entities/place';
@@ -26,9 +26,9 @@ export function postToggleBookmark(postId: number) {
 }
 
 function toggleBookmarkInFeedCache(
-  prev: InfiniteData<FeedPage> | undefined,
+  prev: InfiniteData<FeedMain> | undefined,
   postId: number,
-): InfiniteData<FeedPage> | undefined {
+): InfiniteData<FeedMain> | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -42,10 +42,10 @@ function toggleBookmarkInFeedCache(
 }
 
 function updateBookmarkInFeedCache(
-  prev: InfiniteData<FeedPage> | undefined,
+  prev: InfiniteData<FeedMain> | undefined,
   postId: number,
   isBookmarked: boolean,
-): InfiniteData<FeedPage> | undefined {
+): InfiniteData<FeedMain> | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -123,12 +123,12 @@ export function useToggleBookmark() {
         await queryClient.cancelQueries({ queryKey: profilePostsQueryKey });
       }
 
-      queryClient.setQueryData<InfiniteData<FeedPage>>(
+      queryClient.setQueryData<InfiniteData<FeedMain>>(
         feedQueryKeys.all,
         (prev) => toggleBookmarkInFeedCache(prev, postId),
       );
 
-      queryClient.setQueryData<FeedTypeInDetail>(
+      queryClient.setQueryData<FeedItemDetail>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? { ...prev, bookMark: !prev.bookMark } : prev),
       );
@@ -166,11 +166,11 @@ export function useToggleBookmark() {
           bookmarked: data.isBookmarked,
         });
       }
-      queryClient.setQueryData<InfiniteData<FeedPage>>(
+      queryClient.setQueryData<InfiniteData<FeedMain>>(
         feedQueryKeys.all,
         (prev) => updateBookmarkInFeedCache(prev, postId, data.isBookmarked),
       );
-      queryClient.setQueryData<FeedTypeInDetail>(
+      queryClient.setQueryData<FeedItemDetail>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? { ...prev, bookMark: data.isBookmarked } : prev),
       );

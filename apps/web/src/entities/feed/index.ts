@@ -38,12 +38,12 @@ export {
 } from './model/schemas';
 export type {
   BookmarkSortType,
-  FeedPage,
+  FeedItem,
+  FeedItemDetail,
+  FeedItemList,
+  FeedItemProfileView,
+  FeedMain,
   FeedProfilePosts,
-  FeedTypeBase,
-  FeedTypeInDetail,
-  FeedTypeInFeedList,
-  FeedTypeInUserPostList,
   PostSortType,
 } from './model/types';
 export { default as FeedGridItem } from './ui/FeedGridItem';

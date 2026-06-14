@@ -3,7 +3,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import {
-  type FeedPage,
+  type FeedMain,
   feedQueryKeys,
   feedResponseSchema,
 } from '@/entities/feed';
@@ -16,7 +16,7 @@ type FeedCursor = {
 
 async function getFeedPage(
   { lastPostId }: FeedCursor = { lastPostId: null },
-): Promise<FeedPage> {
+): Promise<FeedMain> {
   const params = new URLSearchParams();
   if (lastPostId !== null && lastPostId !== undefined) {
     params.set('lastPostId', String(lastPostId));
@@ -37,9 +37,9 @@ async function getFeedPage(
 
 export function useInfiniteFeedQuery() {
   return useInfiniteQuery<
-    FeedPage,
+    FeedMain,
     Error,
-    { pages: FeedPage[]; pageParams: FeedCursor[] },
+    { pages: FeedMain[]; pageParams: FeedCursor[] },
     typeof feedQueryKeys.all,
     FeedCursor
   >({
