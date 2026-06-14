@@ -20,10 +20,8 @@ export { feedQueryKeys } from './model/query-keys';
 export type {
   BookmarkedFeedsResponse,
   FeedDetailResponse,
-  FeedListsResponse,
+  FeedListItemResponse,
   FeedResponse,
-  FeedUserProfileResponse,
-  MemberInfo,
   PostScope,
   ProfileFeedItem,
   ProfilePostsResponse,
@@ -31,9 +29,8 @@ export type {
 export {
   bookmarkedFeedsResponseSchema,
   feedDetailResponseSchema,
-  feedListsResponseSchema,
+  feedListItemResponseSchema,
   feedResponseSchema,
-  feedUserProfileResponseSchema,
   placeTagValueSchema,
   postScopeSchema,
   profileFeedItemSchema,

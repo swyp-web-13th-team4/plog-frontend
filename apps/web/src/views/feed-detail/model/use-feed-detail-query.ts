@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import {
+  type FeedDetailResponse,
   feedDetailResponseSchema,
   feedQueryKeys,
-  type FeedTypeInDetail,
 } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
@@ -25,7 +25,7 @@ function isPrivateAccessError(error: unknown) {
 
 export function useFeedDetailQuery(
   postId: number,
-  initialData?: FeedTypeInDetail,
+  initialData?: FeedDetailResponse,
 ) {
   const query = useQuery({
     queryKey: feedQueryKeys.detail(postId),

@@ -1,7 +1,7 @@
 import { type TimeValue } from '@plog/ui';
 
 import { type PlaceTagValue } from './place-tag';
-import { type PostScope } from './schemas';
+import { type PostScope, type ProfilePostsResponse } from './schemas';
 
 export type { PostScope } from './schemas';
 export type PostSortType = 'latest' | 'focus' | 'studyTime';
@@ -51,6 +51,7 @@ export type FeedPage = {
   createAt: string | null;
 };
 
-export type FeedProfilePosts = {
-  posts: FeedTypeInUserPostList[];
-};
+export type FeedProfilePosts = ProfilePostsResponse;
+
+export type PostSortType = 'latest' | 'focus' | 'studyTime';
+export type BookmarkSortType = 'latest' | 'likes';

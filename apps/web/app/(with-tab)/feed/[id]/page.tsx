@@ -3,8 +3,10 @@ import { notFound } from 'next/navigation';
 
 import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
 
-import { feedDetailResponseSchema } from '@/entities/feed/model/schemas';
-import { type FeedTypeInDetail } from '@/entities/feed/model/types';
+import {
+  type FeedDetailResponse,
+  feedDetailResponseSchema,
+} from '@/entities/feed';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
@@ -57,7 +59,7 @@ export default async function Page({ params }: FeedDetailPageProps) {
 
   if (!Number.isInteger(numericPostId) || numericPostId <= 0) notFound();
 
-  let initialPost: FeedTypeInDetail | undefined;
+  let initialPost: FeedDetailResponse | undefined;
 
   try {
     initialPost = await serverApi.get(`/feed/${id}`, feedDetailResponseSchema);
