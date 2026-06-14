@@ -2,11 +2,11 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import { feedQueryKeys } from '@/entities/feed';
 import {
   type FeedDetailResponse,
   feedDetailResponseSchema,
-  feedQueryKeys,
-} from '@/entities/feed';
+} from '@/entities/feed/model/schemas';
 
 import { clientApi } from '@/shared/api/client-api';
 import { API_ERROR_CODE } from '@/shared/api/constants';

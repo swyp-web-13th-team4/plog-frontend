@@ -6,7 +6,7 @@ import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
 import {
   type FeedDetailResponse,
   feedDetailResponseSchema,
-} from '@/entities/feed';
+} from '@/entities/feed/model/schemas';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';

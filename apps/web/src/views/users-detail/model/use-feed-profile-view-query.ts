@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { feedQueryKeys, feedUserProfileResponseSchema } from '@/entities/feed';
+import { feedQueryKeys } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 

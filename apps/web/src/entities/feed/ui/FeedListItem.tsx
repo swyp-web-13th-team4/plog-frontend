@@ -8,11 +8,11 @@ import { cn } from '@plog/utils';
 import { ImageWithFallback } from '@/shared/ui';
 
 import { formatStudyDuration } from '../lib/format';
-import { type FeedTypeInUserPostList } from '../model/types';
+import { type FeedTypeBase } from '../model/types';
 import TagBadgeGroup from './TagBadgeGroup';
 
 type FeedListItemProps = {
-  feed: FeedTypeInUserPostList;
+  feed: FeedTypeBase;
   onClick?: () => void;
   action?: ReactNode;
   thumbnailBadge?: ReactNode;
