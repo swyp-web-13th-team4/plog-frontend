@@ -7,16 +7,15 @@ import {
   feedQueryKeys,
   feedResponseSchema,
 } from '@/entities/feed';
-import {
-  type FeedPage,
-  feedQueryKeys,
-  feedResponseSchema,
-} from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
+type FeedCursor = {
+  lastPostId: number | null;
+};
+
 async function getFeedPage(
-  { lastPostId }: { lastPostId: number | null } = { lastPostId: null },
+  { lastPostId }: FeedCursor = { lastPostId: null },
 ): Promise<FeedPage> {
   const params = new URLSearchParams();
   if (lastPostId !== null && lastPostId !== undefined) {
@@ -27,13 +26,11 @@ async function getFeedPage(
   const data = await clientApi.get(
     `/feed/list${query ? `?${query}` : ''}`,
     feedResponseSchema,
-    feedResponseSchema,
   );
 
   return {
     items: data.feedFindResponses,
     lastPostId: data.lastPostId,
-    createAt: data.createdAt,
     createAt: data.createdAt,
   };
 }
@@ -46,7 +43,6 @@ export function useInfiniteFeedQuery() {
     typeof feedQueryKeys.all,
     FeedCursor
   >({
-    queryKey: feedQueryKeys.all,
     queryKey: feedQueryKeys.all,
     queryFn: ({ pageParam }) => getFeedPage(pageParam),
     initialPageParam: {

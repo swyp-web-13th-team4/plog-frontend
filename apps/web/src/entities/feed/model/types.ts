@@ -52,6 +52,3 @@ export type FeedPage = {
 };
 
 export type FeedProfilePosts = ProfilePostsResponse;
-
-export type PostSortType = 'latest' | 'focus' | 'studyTime';
-export type BookmarkSortType = 'latest' | 'likes';
