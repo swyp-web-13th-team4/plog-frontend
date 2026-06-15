@@ -60,6 +60,11 @@ import { useUpdateLogMutation } from './use-update-log-mutation';
 
 export type LogFormController = ReturnType<typeof useCreateLogPage>;
 
+type ReviewConfirmInfo = {
+  imageUrl?: string;
+  placeName: string;
+};
+
 export function useCreateLogPage(editPostId?: string) {
   const router = useRouter();
   const numericEditPostId = editPostId ? Number(editPostId) : null;
@@ -73,6 +78,10 @@ export function useCreateLogPage(editPostId?: string) {
   const hasInvalidEditPostId = editPostId !== undefined && !isEditMode;
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
+  const [createdPostId, setCreatedPostId] = useState<number | null>(null);
+  const [isReviewConfirmOpen, setIsReviewConfirmOpen] = useState(false);
+  const [reviewConfirmInfo, setReviewConfirmInfo] =
+    useState<ReviewConfirmInfo | null>(null);
 
   const invalidFocus = useCreateLogInvalidFocus();
 
@@ -100,8 +109,13 @@ export function useCreateLogPage(editPostId?: string) {
   });
 
   const createLogMutation = useCreateLogMutation({
-    onSuccess: () => {
-      clearPhotos();
+    onSuccess: ({ postId, values }) => {
+      setCreatedPostId(postId);
+      setReviewConfirmInfo({
+        imageUrl: values.photos[0]?.url,
+        placeName: values.place?.name ?? '방문한 장소',
+      });
+      setIsReviewConfirmOpen(true);
     },
   });
 
@@ -322,6 +336,18 @@ export function useCreateLogPage(editPostId?: string) {
     });
   };
 
+  const handleCreateReview = () => {
+    if (createdPostId === null) return;
+
+    clearPhotos();
+    router.push(`/feed/create-review/${createdPostId}`);
+  };
+
+  const handleSkipReview = () => {
+    clearPhotos();
+    router.push('/feed');
+  };
+
   const handleSubmitLog = handleSubmit(handleValidSubmit, handleInvalidSubmit);
   const isSubmitting = isEditMode
     ? updateLogMutation.isPending
@@ -343,16 +369,20 @@ export function useCreateLogPage(editPostId?: string) {
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
     handleRemovePhoto,
+    handleCreateReview,
+    handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
+    isReviewConfirmOpen,
     isPublic,
     isSubmitting,
     photos,
     place,
     placeCategory,
+    reviewConfirmInfo,
     reviewTags,
     setFormValue,
     scope,

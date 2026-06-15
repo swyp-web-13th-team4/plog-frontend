@@ -2,28 +2,33 @@
 
 import { useRouter } from 'next/navigation';
 
-import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { feedQueryKeys } from '@/entities/feed';
-import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
+import { dialog } from '@/shared/lib/dialog';
 
 import { createLogForm, getNewPhotoFiles } from './mapper';
 import { type CreateLogFormValues, type CreateRequest } from './types';
 
+type CreatePostResponse = {
+  texts?: {
+    postId?: number;
+  };
+};
+
 function createPost(data: CreateRequest, images: File[]) {
-  return clientApi.post<unknown>(
+  return clientApi.post<CreatePostResponse>(
     '/post',
     createMultipartRequest(data, { images }),
   );
 }
 
 type UseCreateLogMutationOptions = {
-  onSuccess?: () => void;
+  onSuccess?: (result: { postId: number; values: CreateLogFormValues }) => void;
 };
 
 export function useCreateLogMutation({
@@ -34,17 +39,27 @@ export function useCreateLogMutation({
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (values: CreateLogFormValues) =>
-      createPost(createLogForm(values), getNewPhotoFiles(values)),
-    onSuccess: async () => {
-      amplitude.track('log_created');
-      onSuccess?.();
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
-        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
-      ]);
-      toast({ type: 'success', description: '기록이 등록되었어요.' });
-      router.replace('/feed');
+    mutationFn: async (values: CreateLogFormValues) => {
+      const response = await createPost(
+        createLogForm(values),
+        getNewPhotoFiles(values),
+      );
+
+      return { postId: response.texts?.postId ?? null, values };
+    },
+    onSuccess: async ({ postId, values }) => {
+      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.all });
+
+      if (!postId) {
+        await dialog.alert({
+          message: '기록은 등록됐지만 리뷰 화면을 열 수 없어요.',
+          description: '게시글 생성 응답에서 postId를 찾지 못했어요.',
+        });
+        router.replace('/feed');
+        return;
+      }
+
+      onSuccess?.({ postId, values });
     },
     onError: () => {
       toast({

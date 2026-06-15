@@ -3,6 +3,7 @@
 import { AppBar, Button, Spinner } from '@plog/ui';
 
 import { useCreateLogPage } from '../model/use-create-log-page';
+import DecisionReviewModal from './DecisionReviewModal';
 import LogBasicSection from './LogBasicSection';
 import LogPlaceFields from './LogPlaceFields';
 import LogPrivacySection from './LogPrivacySection';
@@ -24,13 +25,17 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     editLogQuery,
     handleBack,
     handleClosePlaceSearch,
+    handleCreateReview,
     handleInvalidEditBack,
+    handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
+    isReviewConfirmOpen,
     isSubmitting,
+    reviewConfirmInfo,
   } = controller;
 
   const logHeader = (
@@ -125,6 +130,13 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           />
         </div>
       )}
+      <DecisionReviewModal
+        open={isReviewConfirmOpen}
+        imageUrl={reviewConfirmInfo?.imageUrl}
+        placeName={reviewConfirmInfo?.placeName ?? '방문한 장소'}
+        onReview={handleCreateReview}
+        onSkip={handleSkipReview}
+      />
     </>
   );
 }
