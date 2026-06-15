@@ -17,6 +17,7 @@ export {
   WorkConvenience,
 } from './model/place-tag';
 export { feedQueryKeys } from './model/query-keys';
+export { useFeedDetailQuery } from './model/use-feed-detail-query';
 export type {
   BookmarkedFeedsResponse,
   FeedDetailResponse,

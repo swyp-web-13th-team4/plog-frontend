@@ -13,14 +13,13 @@ import { useRouter } from 'next/navigation';
 
 import { type DateValue, type TimeValue, useToast } from '@plog/ui';
 
-import { useFeedDetailQuery } from '@/views/feed-detail/model/use-feed-detail-query';
-
 import {
   type PhotoPreview,
   usePhotoUpload,
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
+import { useFeedDetailQuery } from '@/entities/feed';
 import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
