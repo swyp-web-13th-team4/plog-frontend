@@ -1,20 +1,20 @@
 import { clientApi } from '@/shared/api/client-api';
 
 import {
-  type RecentPlaceDeleteResponse,
-  type RecentPlaceSaveResponse,
-  type RecentPlacesResponse,
-  type SaveRecentPlaceRequest,
-} from '../model/types';
+  recentPlaceDeleteResponseSchema,
+  recentPlaceSaveResponseSchema,
+  recentPlacesResponseSchema,
+} from '../model/schemas';
+import { type SaveRecentPlaceRequest } from '../model/types';
 
 export const getRecentPlaces = () =>
-  clientApi.get<RecentPlacesResponse>('/place/recent');
+  clientApi.get('/place/recent', recentPlacesResponseSchema);
 
 export const saveRecentPlace = (data: SaveRecentPlaceRequest) =>
-  clientApi.post<RecentPlaceSaveResponse>('/place/recent', data);
+  clientApi.post('/place/recent', data, recentPlaceSaveResponseSchema);
 
 export const deleteRecentPlaces = () =>
-  clientApi.delete<RecentPlaceDeleteResponse>('/place/recent');
+  clientApi.delete('/place/recent', recentPlaceDeleteResponseSchema);
 
 export const deleteRecentPlace = (id: number) =>
-  clientApi.delete<RecentPlaceDeleteResponse>(`/place/recent/${id}`);
+  clientApi.delete(`/place/recent/${id}`, recentPlaceDeleteResponseSchema);

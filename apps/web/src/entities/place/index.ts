@@ -9,12 +9,14 @@ export type { PlaceCategory, PlaceCategoryValue } from './model/place-category';
 export { PLACE_CATEGORIES } from './model/place-category';
 export { mapQueryKeys, placeQueryKeys } from './model/query-keys';
 export type {
-  MapSortType,
   Place,
-  PlaceLayer,
   RecentPlace,
   RecentPlaceDeleteResponse,
   RecentPlaceSaveResponse,
   RecentPlacesResponse,
+} from './model/schemas';
+export type {
+  MapSortType,
+  PlaceLayer,
   SaveRecentPlaceRequest,
 } from './model/types';
