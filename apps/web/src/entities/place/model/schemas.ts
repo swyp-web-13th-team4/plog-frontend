@@ -1,21 +1,5 @@
 import { z } from 'zod';
 
-export const placeSchema = z.object({
-  id: z.number(),
-  lat: z.number(),
-  lng: z.number(),
-  name: z.string(),
-  address: z.string(),
-  imageUrl: z.string(),
-  category: z.string(),
-  recordCount: z.number().optional(),
-  bookmarkCount: z.number().optional(),
-  totalWorkHours: z.number(),
-  averageFocus: z.number(),
-});
-
-export type Place = z.infer<typeof placeSchema>;
-
 export const recentPlaceSchema = z.object({
   id: z.number(),
   placeName: z.string(),
