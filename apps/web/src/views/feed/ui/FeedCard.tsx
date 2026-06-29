@@ -14,7 +14,7 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import {
-  type FeedItemList,
+  type FeedMainItem,
   formatStudyDuration,
   formatTimeAgo,
   TagBadgeGroup,
@@ -28,7 +28,7 @@ type FeedCarouselController = {
 };
 
 type FeedCardProps = {
-  post: FeedItemList;
+  post: FeedMainItem;
   isLast: boolean;
 };
 

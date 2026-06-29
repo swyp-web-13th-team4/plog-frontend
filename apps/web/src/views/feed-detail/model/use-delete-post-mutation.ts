@@ -9,7 +9,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { type FeedMain, feedQueryKeys } from '@/entities/feed';
+import { type FeedMainPage, feedQueryKeys } from '@/entities/feed';
 import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
@@ -19,9 +19,9 @@ function deletePost(postId: number) {
 }
 
 function removePostFromFeedCache(
-  prev: InfiniteData<FeedMain> | undefined,
+  prev: InfiniteData<FeedMainPage> | undefined,
   postId: number,
-): InfiniteData<FeedMain> | undefined {
+): InfiniteData<FeedMainPage> | undefined {
   if (!prev) return prev;
 
   return {
@@ -45,7 +45,7 @@ export function useDeletePostMutation() {
         queryKey: feedQueryKeys.detail(postId),
         exact: true,
       });
-      queryClient.setQueryData<InfiniteData<FeedMain>>(
+      queryClient.setQueryData<InfiniteData<FeedMainPage>>(
         feedQueryKeys.all,
         (prev) => removePostFromFeedCache(prev, postId),
       );

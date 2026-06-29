@@ -9,9 +9,9 @@ import {
 } from '@tanstack/react-query';
 
 import {
-  type FeedItem,
-  type FeedItemDetail,
-  type FeedMain,
+  type FeedDetailItem,
+  type FeedItemBase,
+  type FeedMainPage,
   feedQueryKeys,
 } from '@/entities/feed';
 
@@ -21,7 +21,7 @@ function postToggleLike(postId: number) {
   return clientApi.post<{ isLiked: boolean }>(`/feed/like/${postId}`);
 }
 
-function applyLike<TFeed extends FeedItem>(
+function applyLike<TFeed extends FeedItemBase>(
   post: TFeed,
   isLiked: boolean,
 ): TFeed {
@@ -30,9 +30,9 @@ function applyLike<TFeed extends FeedItem>(
 }
 
 function toggleLikeInFeedList(
-  prev: InfiniteData<FeedMain> | undefined,
+  prev: InfiniteData<FeedMainPage> | undefined,
   postId: number,
-): InfiniteData<FeedMain> | undefined {
+): InfiniteData<FeedMainPage> | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -61,12 +61,12 @@ export function useToggleLike() {
         queryKey: feedQueryKeys.detail(postId),
       });
 
-      queryClient.setQueryData<InfiniteData<FeedMain>>(
+      queryClient.setQueryData<InfiniteData<FeedMainPage>>(
         feedQueryKeys.all,
         (prev) => toggleLikeInFeedList(prev, postId),
       );
 
-      queryClient.setQueryData<FeedItemDetail>(
+      queryClient.setQueryData<FeedDetailItem>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? applyLike(prev, !prev.like) : prev),
       );

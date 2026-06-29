@@ -10,7 +10,7 @@ export type { PostScope } from './schemas';
 export type PostSortType = 'latest' | 'focus' | 'studyTime';
 export type BookmarkSortType = 'latest' | 'likes';
 
-export type FeedItem = Pick<
+export type FeedItemBase = Pick<
   FeedListItemResponse,
   | 'postId'
   | 'name'
@@ -28,16 +28,16 @@ export type FeedItem = Pick<
   | 'bookMark'
 >;
 
-export type FeedItemList = FeedListItemResponse;
+export type FeedMainItem = FeedListItemResponse;
 
-export type FeedItemDetail = FeedDetailResponse;
+export type FeedDetailItem = FeedDetailResponse;
 
-export type FeedItemProfileView = ProfileFeedItem;
+export type FeedProfileItem = ProfileFeedItem;
 
-export type FeedMain = {
+export type FeedMainPage = {
   items: FeedResponse['feedFindResponses'];
   lastPostId: FeedResponse['lastPostId'];
   createAt: FeedResponse['createdAt'];
 };
 
-export type FeedProfilePosts = ProfilePostsResponse;
+export type FeedProfilePostsResponse = ProfilePostsResponse;
