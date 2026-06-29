@@ -1,54 +1,43 @@
-import { type TimeValue } from '@plog/ui';
-
-import { type PlaceTagValue } from './place-tag';
-import { type PostScope, type ProfilePostsResponse } from './schemas';
+import {
+  type FeedDetailResponse,
+  type FeedListItemResponse,
+  type FeedResponse,
+  type ProfileFeedItem,
+  type ProfilePostsResponse,
+} from './schemas';
 
 export type { PostScope } from './schemas';
 export type PostSortType = 'latest' | 'focus' | 'studyTime';
 export type BookmarkSortType = 'latest' | 'likes';
 
-export type FeedItem = {
-  postId: number;
-  name: string;
-  profileImage: string;
-  createAt: string;
-  postImages: string[];
-  likes: number;
-  title: string;
-  contents: string;
-  placeName: string;
-  studyTime: number;
-  focus: number;
-  tags: PlaceTagValue[];
-  like: boolean;
-  bookMark: boolean;
-};
+export type FeedItem = Pick<
+  FeedListItemResponse,
+  | 'postId'
+  | 'name'
+  | 'profileImage'
+  | 'createAt'
+  | 'postImages'
+  | 'likes'
+  | 'title'
+  | 'contents'
+  | 'placeName'
+  | 'studyTime'
+  | 'focus'
+  | 'tags'
+  | 'like'
+  | 'bookMark'
+>;
 
-export type FeedItemList = FeedItem & {
-  memberKey: string;
-  isAuthor: boolean;
-};
+export type FeedItemList = FeedListItemResponse;
 
-export type FeedItemDetail = FeedItem & {
-  memberKey: string;
-  isAuthor: boolean;
-  startedAt: TimeValue;
-  endedAt: TimeValue;
-  studyDate: string;
-  category: string;
-  address: string;
-  scope: PostScope;
-};
+export type FeedItemDetail = FeedDetailResponse;
 
-export type FeedItemProfileView = FeedItem & {
-  placeCategory: string;
-  isPublic: boolean;
-};
+export type FeedItemProfileView = ProfileFeedItem;
 
 export type FeedMain = {
-  items: FeedItemList[];
-  lastPostId: number | null;
-  createAt: string | null;
+  items: FeedResponse['feedFindResponses'];
+  lastPostId: FeedResponse['lastPostId'];
+  createAt: FeedResponse['createdAt'];
 };
 
 export type FeedProfilePosts = ProfilePostsResponse;
