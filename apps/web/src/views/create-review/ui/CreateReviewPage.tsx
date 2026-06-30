@@ -17,6 +17,7 @@ export default function CreateReviewPage({ postId }: { postId: string }) {
     handleCancelLeave,
     handleConfirmLeave,
     handleSubmitReview,
+    isSubmittingReview,
     leaveConfirmOpen,
     rating,
   } = controller;
@@ -40,8 +41,13 @@ export default function CreateReviewPage({ postId }: { postId: string }) {
         <ReviewContentSection controller={controller} />
 
         <section className="px-6 pt-6 pb-18">
-          <Button type="submit" size="large" fullWidth>
-            리뷰 등록하기
+          <Button
+            type="submit"
+            size="large"
+            fullWidth
+            disabled={isSubmittingReview}
+          >
+            {isSubmittingReview ? '등록 중...' : '리뷰 등록하기'}
           </Button>
         </section>
       </form>

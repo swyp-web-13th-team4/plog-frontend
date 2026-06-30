@@ -29,6 +29,7 @@ import { parseStudyDate } from '@/shared/lib/study-date';
 
 import { reviewResolver } from './resolver';
 import { type ReviewFormValues, type ReviewRatingScore } from './types';
+import { useCreateReviewMutation } from './use-create-review-mutation';
 import {
   getInvalidSubmitFeedback,
   useReviewInvalidFocus,
@@ -57,6 +58,9 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
   const numericPostId = Number(postId);
   const reviewPostQuery = useFeedDetailQuery(numericPostId);
   const post = reviewPostQuery.data;
+  const createReviewMutation = useCreateReviewMutation({
+    postId: numericPostId,
+  });
 
   const [visitDate, setVisitDate] = useState<DateValue | null>(null);
   const [startTime, setStartTime] = useState<TimeValue | null>(null);
@@ -145,8 +149,8 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     }
   };
 
-  const handleValidSubmit = () => {
-    // TODO: 리뷰 생성 API 연결 시 submit mutation을 호출합니다.
+  const handleValidSubmit = (values: ReviewFormValues) => {
+    createReviewMutation.mutate(values);
   };
 
   const handleSubmitReview = handleSubmit(
@@ -169,6 +173,7 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     handlePhotoFileSizeExceeded,
     handleRemovePhoto,
     handleSubmitReview,
+    isSubmittingReview: createReviewMutation.isPending,
     leaveConfirmOpen,
     photos,
     placeImageSrc: post?.postImages?.[0] ?? null,
