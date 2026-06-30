@@ -8,4 +8,5 @@ export {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
 } from './model/environment';
-export { type CreateReviewRequest, type ReviewResponse } from './model/types';
+export { type ReviewResponse, reviewResponseSchema } from './model/schemas';
+export { type CreateReviewRequest } from './model/types';
