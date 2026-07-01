@@ -18,7 +18,7 @@ export default function DecisionReviewModal({
   onSkip,
 }: DecisionReviewModalProps) {
   return (
-    <Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onSkip()}>
+    <Dialog open={open} disablePointerDismissal>
       <Dialog.Content>
         <Dialog.Header>
           {imageUrl && (
