@@ -33,8 +33,11 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
   } = focusTargets;
   const { ref: contentsFormRef } = contentsField;
   const { ref: titleFormRef } = titleField;
-  const { handlePhotoFileSizeExceeded, handlePhotoConversionFailed } =
-    usePhotoUploadFeedback();
+  const {
+    handlePhotoConversionFailed,
+    handlePhotoFileSizeExceeded,
+    handlePhotoMaxCountExceeded,
+  } = usePhotoUploadFeedback();
   const setTitleRef = useCallback(
     (element: HTMLElement | null) => {
       titleFormRef(element);
@@ -61,6 +64,7 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
             onAdd={handleAddPhotos}
             onRemove={handleRemovePhoto}
             onFileSizeExceeded={handlePhotoFileSizeExceeded}
+            onMaxCountExceeded={handlePhotoMaxCountExceeded}
             onConversionFailed={handlePhotoConversionFailed}
           />
         </Field>

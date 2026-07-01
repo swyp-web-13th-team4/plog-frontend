@@ -16,6 +16,7 @@ export default function ReviewContentSection({
     handleAddPhotos,
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
+    handlePhotoMaxCountExceeded,
     handleRemovePhoto,
     photos,
     reviewText,
@@ -53,6 +54,7 @@ export default function ReviewContentSection({
             onAdd={handleAddPhotos}
             onRemove={handleRemovePhoto}
             onFileSizeExceeded={handlePhotoFileSizeExceeded}
+            onMaxCountExceeded={handlePhotoMaxCountExceeded}
             onConversionFailed={handlePhotoConversionFailed}
           />
         </Field>

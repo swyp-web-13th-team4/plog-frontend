@@ -50,8 +50,11 @@ const initialReviewValues: ReviewFormValues = {
 export function useCreateReviewPage({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
-  const { handlePhotoConversionFailed, handlePhotoFileSizeExceeded } =
-    usePhotoUploadFeedback();
+  const {
+    handlePhotoConversionFailed,
+    handlePhotoFileSizeExceeded,
+    handlePhotoMaxCountExceeded,
+  } = usePhotoUploadFeedback();
 
   const invalidFocus = useReviewInvalidFocus();
 
@@ -171,6 +174,7 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     handleEnvironmentChange,
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
+    handlePhotoMaxCountExceeded,
     handleRemovePhoto,
     handleSubmitReview,
     isSubmittingReview: createReviewMutation.isPending,
