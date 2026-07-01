@@ -20,6 +20,7 @@ export default function SelectTriggerButton({
   value,
   ...props
 }: SelectTriggerButtonProps) {
+  const hasValue = value !== null && value !== '';
   return (
     <button
       ref={ref}
@@ -33,12 +34,12 @@ export default function SelectTriggerButton({
       <span
         className={cn(
           'min-w-0 flex-1 truncate',
-          value
+          hasValue
             ? 'text-semantic-object-boldest'
             : 'text-semantic-object-subtle',
         )}
       >
-        {value ?? placeholder}
+        {hasValue ? value : placeholder}
       </span>
       {icon}
     </button>
