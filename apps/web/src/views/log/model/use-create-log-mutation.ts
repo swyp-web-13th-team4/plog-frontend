@@ -6,6 +6,7 @@ import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { feedQueryKeys } from '@/entities/feed';
+import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
@@ -48,7 +49,10 @@ export function useCreateLogMutation({
       return { postId: response.texts?.postId ?? null, values };
     },
     onSuccess: async ({ postId, values }) => {
-      await queryClient.invalidateQueries({ queryKey: feedQueryKeys.all });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
+      ]);
 
       if (!postId) {
         await dialog.alert({
