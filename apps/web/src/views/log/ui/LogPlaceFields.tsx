@@ -1,11 +1,11 @@
 import { Field, Icon, Input } from '@plog/ui';
 
 import { PlaceCategorySheet } from '@/features/select-place-category';
+import { SelectTriggerButton } from '@/features/select-trigger-button';
 
 import { PLACE_CATEGORIES } from '@/entities/place';
 
 import { type LogFormController } from '../model/use-create-log-page';
-import SelectTriggerButton from './SelectTriggerButton';
 
 type LogPlaceFieldsProps = {
   controller: LogFormController;
