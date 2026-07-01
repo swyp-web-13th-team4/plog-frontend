@@ -20,7 +20,7 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import {
-  type FeedDetailResponse,
+  type FeedDetailItem,
   FeedStatsSummary,
   formatDate,
   formatTimeAgo,
@@ -48,7 +48,7 @@ const AUTHOR_ACTION_OPTIONS = [
 
 type FeedDetailCardProps = {
   postId: string;
-  initialPost?: FeedDetailResponse;
+  initialPost?: FeedDetailItem;
 };
 
 export default function FeedDetailCard({

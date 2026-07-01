@@ -13,7 +13,7 @@ import {
 
 export function useRecentPlacesQuery() {
   return useQuery({
-    queryKey: placeQueryKeys.recent,
+    queryKey: placeQueryKeys.recent(),
     queryFn: getRecentPlaces,
     select: (data) => data.places,
   });
@@ -25,7 +25,7 @@ export function useSaveRecentPlaceMutation() {
   return useMutation({
     mutationFn: (place: SaveRecentPlaceRequest) => saveRecentPlace(place),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: placeQueryKeys.recent });
+      queryClient.invalidateQueries({ queryKey: placeQueryKeys.recent() });
     },
   });
 }
@@ -36,7 +36,7 @@ export function useDeleteRecentPlaceMutation() {
   return useMutation({
     mutationFn: (id: number) => deleteRecentPlace(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: placeQueryKeys.recent });
+      queryClient.invalidateQueries({ queryKey: placeQueryKeys.recent() });
     },
   });
 }
@@ -47,7 +47,7 @@ export function useDeleteRecentPlacesMutation() {
   return useMutation({
     mutationFn: deleteRecentPlaces,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: placeQueryKeys.recent });
+      queryClient.invalidateQueries({ queryKey: placeQueryKeys.recent() });
     },
   });
 }

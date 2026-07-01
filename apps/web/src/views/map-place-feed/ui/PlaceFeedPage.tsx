@@ -9,7 +9,7 @@ import { AppBar, Spinner, TabGroup } from '@plog/ui';
 
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
-import { type FeedPost, type PlaceTagValue } from '@/entities/feed';
+import { type FeedItemBase, type PlaceTagValue } from '@/entities/feed';
 import { type MapSortType, type PlaceLayer } from '@/entities/place';
 
 import {
@@ -57,7 +57,7 @@ function PlaceFeedList({
 
   const posts = data?.pages.flatMap((p) => p.content) ?? [];
 
-  const feeds: FeedPost[] = posts.map((post) => ({
+  const feeds: FeedItemBase[] = posts.map((post) => ({
     postId: post.postId,
     name: '',
     profileImage: '',
@@ -72,7 +72,6 @@ function PlaceFeedList({
     tags: post.tags,
     like: false,
     bookMark: false,
-    placeCategory: post.categoryCode,
   }));
 
   useEffect(() => {

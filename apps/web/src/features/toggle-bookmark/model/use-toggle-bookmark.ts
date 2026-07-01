@@ -9,9 +9,9 @@ import {
 } from '@tanstack/react-query';
 
 import {
-  type FeedPage,
-  type FeedPost,
-  type FeedProfilePosts,
+  type FeedDetailItem,
+  type FeedMainPage,
+  type FeedProfilePostsResponse,
   feedQueryKeys,
   type PostSortType,
 } from '@/entities/feed';
@@ -26,9 +26,9 @@ export function postToggleBookmark(postId: number) {
 }
 
 function toggleBookmarkInFeedCache(
-  prev: InfiniteData<FeedPage> | undefined,
+  prev: InfiniteData<FeedMainPage> | undefined,
   postId: number,
-): InfiniteData<FeedPage> | undefined {
+): InfiniteData<FeedMainPage> | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -42,10 +42,10 @@ function toggleBookmarkInFeedCache(
 }
 
 function updateBookmarkInFeedCache(
-  prev: InfiniteData<FeedPage> | undefined,
+  prev: InfiniteData<FeedMainPage> | undefined,
   postId: number,
   isBookmarked: boolean,
-): InfiniteData<FeedPage> | undefined {
+): InfiniteData<FeedMainPage> | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -59,9 +59,9 @@ function updateBookmarkInFeedCache(
 }
 
 function toggleBookmarkInProfilePostsCache(
-  prev: FeedProfilePosts | undefined,
+  prev: FeedProfilePostsResponse | undefined,
   postId: number,
-): FeedProfilePosts | undefined {
+): FeedProfilePostsResponse | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -72,10 +72,10 @@ function toggleBookmarkInProfilePostsCache(
 }
 
 function updateBookmarkInProfilePostsCache(
-  prev: FeedProfilePosts | undefined,
+  prev: FeedProfilePostsResponse | undefined,
   postId: number,
   isBookmarked: boolean,
-): FeedProfilePosts | undefined {
+): FeedProfilePostsResponse | undefined {
   if (!prev) return prev;
   return {
     ...prev,
@@ -123,18 +123,18 @@ export function useToggleBookmark() {
         await queryClient.cancelQueries({ queryKey: profilePostsQueryKey });
       }
 
-      queryClient.setQueryData<InfiniteData<FeedPage>>(
+      queryClient.setQueryData<InfiniteData<FeedMainPage>>(
         feedQueryKeys.all,
         (prev) => toggleBookmarkInFeedCache(prev, postId),
       );
 
-      queryClient.setQueryData<FeedPost>(
+      queryClient.setQueryData<FeedDetailItem>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? { ...prev, bookMark: !prev.bookMark } : prev),
       );
 
       if (profilePostsQueryKey) {
-        queryClient.setQueryData<FeedProfilePosts>(
+        queryClient.setQueryData<FeedProfilePostsResponse>(
           profilePostsQueryKey,
           (prev) => toggleBookmarkInProfilePostsCache(prev, postId),
         );
@@ -166,16 +166,16 @@ export function useToggleBookmark() {
           bookmarked: data.isBookmarked,
         });
       }
-      queryClient.setQueryData<InfiniteData<FeedPage>>(
+      queryClient.setQueryData<InfiniteData<FeedMainPage>>(
         feedQueryKeys.all,
         (prev) => updateBookmarkInFeedCache(prev, postId, data.isBookmarked),
       );
-      queryClient.setQueryData<FeedPost>(
+      queryClient.setQueryData<FeedDetailItem>(
         feedQueryKeys.detail(postId),
         (prev) => (prev ? { ...prev, bookMark: data.isBookmarked } : prev),
       );
       if (context.profilePostsQueryKey) {
-        queryClient.setQueryData<FeedProfilePosts>(
+        queryClient.setQueryData<FeedProfilePostsResponse>(
           context.profilePostsQueryKey,
           (prev) =>
             updateBookmarkInProfilePostsCache(prev, postId, data.isBookmarked),

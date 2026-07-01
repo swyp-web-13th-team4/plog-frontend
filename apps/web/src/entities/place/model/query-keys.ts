@@ -1,7 +1,8 @@
 import { type MapSortType, type PlaceLayer } from './types';
 
 export const placeQueryKeys = {
-  recent: ['place', 'recent'] as const,
+  all: ['place'] as const,
+  recent: () => ['place', 'recent'] as const,
 };
 
 export const mapQueryKeys = {
