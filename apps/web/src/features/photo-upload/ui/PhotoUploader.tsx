@@ -37,12 +37,13 @@ export default function PhotoUploader({
   const canAddMoreImages = photos.length < MAX_PHOTO_COUNT;
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const remainImageCount = MAX_PHOTO_COUNT - photos.length;
     const acceptedFiles = Array.from(event.target.files ?? []).filter((file) =>
       ACCEPTED_IMAGE_TYPES.has(file.type),
     );
-    const selectedFiles = acceptedFiles.filter(
-      (file) => file.size <= IMAGE_UPLOAD_MAX_FILE_SIZE,
-    );
+    const selectedFiles = acceptedFiles
+      .filter((file) => file.size <= IMAGE_UPLOAD_MAX_FILE_SIZE)
+      .slice(0, remainImageCount);
 
     if (acceptedFiles.length !== selectedFiles.length) {
       onFileSizeExceeded?.();

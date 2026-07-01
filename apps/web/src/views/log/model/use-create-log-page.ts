@@ -323,20 +323,6 @@ export function useCreateLogPage(editPostId?: string) {
     router.push('/map');
   };
 
-  const handlePhotoFileSizeExceeded = () => {
-    toast({
-      type: 'error',
-      description: `${IMAGE_UPLOAD_MAX_FILE_SIZE / (1024 * 1024)}MB 이하의 이미지 파일만 등록 가능해요.`,
-    });
-  };
-
-  const handlePhotoConversionFailed = () => {
-    toast({
-      type: 'error',
-      description: '사진 업로드에 실패했어요. 다시 시도해 주세요.',
-    });
-  };
-
   const handleCreateReview = () => {
     if (createdPostId === null) return;
 
@@ -367,8 +353,6 @@ export function useCreateLogPage(editPostId?: string) {
     handleClosePlaceSearch,
     handleInvalidEditBack: router.back,
     handleOpenPlaceSearch,
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
     handleRemovePhoto,
     handleCreateReview,
     handleSkipReview,
