@@ -17,7 +17,6 @@ export {
   WorkConvenience,
 } from './model/place-tag';
 export { feedQueryKeys } from './model/query-keys';
-export { useFeedDetailQuery } from './model/use-feed-detail-query';
 export type {
   BookmarkedFeedsResponse,
   FeedDetailResponse,
@@ -47,6 +46,7 @@ export type {
   FeedProfilePostsResponse,
   PostSortType,
 } from './model/types';
+export { useFeedDetailQuery } from './model/use-feed-detail-query';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';
 export { default as FeedStatsSummary } from './ui/FeedStatsSummary';
