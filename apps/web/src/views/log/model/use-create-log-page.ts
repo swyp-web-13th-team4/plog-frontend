@@ -43,6 +43,8 @@ function readMapInitialPlace(): CreateLogPlace | null {
   }
 }
 
+import { usePhotoUpload } from '@/features/photo-upload';
+
 import { dialog } from '@/shared/lib/dialog';
 import { IMAGE_UPLOAD_MAX_FILE_SIZE } from '@/shared/lib/image-upload-policy';
 
@@ -55,7 +57,6 @@ import {
   getInvalidSubmitFeedback,
   useCreateLogInvalidFocus,
 } from './use-invalid-form-focus';
-import { usePhotoUpload } from './use-photo-upload';
 import { useUpdateLogMutation } from './use-update-log-mutation';
 
 export type LogFormController = ReturnType<typeof useCreateLogPage>;

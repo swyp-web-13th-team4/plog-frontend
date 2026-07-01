@@ -1,3 +1,9 @@
+import {
+  type ExistingPhotoPreview,
+  isNewPhotoPreview,
+  type PhotoPreview,
+} from '@/features/photo-upload';
+
 import { type PlaceCategoryValue } from '@/entities/place';
 
 import {
@@ -7,11 +13,6 @@ import {
   type PostImage,
   type UpdateRequest,
 } from './types';
-import {
-  type ExistingPhotoPreview,
-  isNewPhotoPreview,
-  type PhotoPreview,
-} from './use-photo-upload';
 
 function padDatePart(value: number) {
   return String(value).padStart(2, '0');

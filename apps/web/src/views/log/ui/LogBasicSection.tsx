@@ -2,8 +2,9 @@ import { useCallback } from 'react';
 
 import { Field, Input, Textarea } from '@plog/ui';
 
+import { PhotoUploader } from '@/features/photo-upload';
+
 import { type LogFormController } from '../model/use-create-log-page';
-import PhotoUploader from './PhotoUploader';
 
 type LogBasicSectionProps = {
   controller: LogFormController;
