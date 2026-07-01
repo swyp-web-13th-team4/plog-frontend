@@ -1,8 +1,8 @@
 export {
   type ExistingPhotoPreview,
+  isNewPhotoPreview,
   type NewPhotoPreview,
   type PhotoPreview,
-  isNewPhotoPreview,
   usePhotoUpload,
 } from './model/use-photo-upload';
 export { usePhotoUploadFeedback } from './model/use-photo-upload-feedback';
