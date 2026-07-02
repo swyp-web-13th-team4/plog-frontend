@@ -18,8 +18,10 @@ export default function ShareButton({
 }: ShareButtonProps) {
   const { toast } = useToast();
 
+  const buildShareUrl = () => `${window.location.origin}/feed/${postId}`;
+
   const handleCopy = async () => {
-    const url = `${window.location.origin}/feed/${postId}`;
+    const url = buildShareUrl();
     if (!navigator.clipboard) {
       toast({
         type: 'error',
@@ -42,7 +44,7 @@ export default function ShareButton({
   };
 
   const handleShare = async () => {
-    const url = `${window.location.origin}/feed/${postId}`;
+    const url = buildShareUrl();
     amplitude.track('share_clicked', {
       post_id: postId,
       is_owner: isOwner ?? false,
