@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Spinner } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import {
@@ -25,6 +24,7 @@ import {
 } from '@/shared/ui';
 
 import { useFeedProfilePostsQuery } from '../model/use-feed-profile-posts-query';
+import UserFeedListSkeleton from './UserFeedListSkeleton';
 
 const SORT_ITEMS: { value: PostSortType; label: string }[] = [
   { value: 'latest', label: '최신순' },
@@ -49,12 +49,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
     router.push(`/feed/${feed.postId}`);
   };
 
-  if (isPending)
-    return (
-      <section className="flex flex-1 items-center justify-center pt-3">
-        <Spinner size="large" />
-      </section>
-    );
+  if (isPending) return <UserFeedListSkeleton />;
 
   if (isError) {
     return (

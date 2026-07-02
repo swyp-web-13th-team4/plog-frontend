@@ -1,18 +1,11 @@
-import { cache } from 'react';
+import { Suspense } from 'react';
 
 import type { Metadata } from 'next';
 
-import { UserProfilePage } from '@/views/users-detail';
-import { feedProfileViewResponseSchema } from '@/views/users-detail/model/schemas';
-
-import { serverApi } from '@/shared/api/server-api';
-
-const getUserProfile = cache((id: string) =>
-  serverApi.get(
-    `/feed/profileView/${encodeURIComponent(id)}`,
-    feedProfileViewResponseSchema,
-  ),
-);
+import { getUserProfile } from '@/views/users-detail/api/server';
+import UserProfileContent from '@/views/users-detail/ui/UserProfileContent';
+import UserProfileHeader from '@/views/users-detail/ui/UserProfileHeader';
+import UserProfileSkeleton from '@/views/users-detail/ui/UserProfileSkeleton';
 
 type UserProfilePageProps = {
   params: Promise<{ id: string }>;
@@ -33,6 +26,13 @@ export async function generateMetadata({
 
 export default async function Page({ params }: UserProfilePageProps) {
   const { id } = await params;
-  const initialData = await getUserProfile(id).catch(() => undefined);
-  return <UserProfilePage userId={id} initialData={initialData} />;
+
+  return (
+    <>
+      <UserProfileHeader />
+      <Suspense fallback={<UserProfileSkeleton />}>
+        <UserProfileContent userId={id} />
+      </Suspense>
+    </>
+  );
 }
