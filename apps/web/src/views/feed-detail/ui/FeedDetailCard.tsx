@@ -38,6 +38,28 @@ const AUTHOR_ACTION_OPTIONS = [
   { label: '수정하기', value: 'edit' },
 ];
 
+type CarouselNavButtonProps = {
+  label: string;
+  icon: 'chevron-left' | 'chevron-right';
+  onNavigate: () => void;
+};
+
+function CarouselNavButton({ label, icon, onNavigate }: CarouselNavButtonProps) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
+      onClick={(event) => {
+        event.stopPropagation();
+        onNavigate();
+      }}
+    >
+      <Icon name={icon} className="text-semantic-object-inverse" />
+    </button>
+  );
+}
+
 type FeedDetailCardProps = {
   postId: string;
   initialPost?: FeedDetailItem;
@@ -214,38 +236,20 @@ export default function FeedDetailCard({
           {hasMultipleImages && (
             <div className="pointer-events-none absolute inset-y-0 z-10 flex w-full items-center justify-between px-3 opacity-0 transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100">
               {!carouselState.isBeginning ? (
-                <button
-                  type="button"
-                  aria-label="이전 이미지 보기"
-                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    carouselRef.current?.slidePrev();
-                  }}
-                >
-                  <Icon
-                    name="chevron-left"
-                    className="text-semantic-object-inverse"
-                  />
-                </button>
+                <CarouselNavButton
+                  label="이전 이미지 보기"
+                  icon="chevron-left"
+                  onNavigate={() => carouselRef.current?.slidePrev()}
+                />
               ) : (
                 <div aria-hidden="true" className="size-11" />
               )}
               {!carouselState.isEnd ? (
-                <button
-                  type="button"
-                  aria-label="다음 이미지 보기"
-                  className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full bg-semantic-system-black/40 transition-colors hover:bg-semantic-system-black/50 active:bg-semantic-system-black/60"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    carouselRef.current?.slideNext();
-                  }}
-                >
-                  <Icon
-                    name="chevron-right"
-                    className="text-semantic-object-inverse"
-                  />
-                </button>
+                <CarouselNavButton
+                  label="다음 이미지 보기"
+                  icon="chevron-right"
+                  onNavigate={() => carouselRef.current?.slideNext()}
+                />
               ) : (
                 <div aria-hidden="true" className="size-11" />
               )}
