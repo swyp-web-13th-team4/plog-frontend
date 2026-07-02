@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import FeedDetailContent from '@/views/feed-detail/ui/FeedDetailContent';
-import FeedDetailHeader from '@/views/feed-detail/ui/FeedDetailHeader';
 import FeedDetailSkeleton from '@/views/feed-detail/ui/FeedDetailSkeleton';
 
 import { getFeedPost } from '@/entities/feed/api/server';
@@ -57,11 +56,8 @@ export default async function Page({ params }: FeedDetailPageProps) {
   if (!Number.isInteger(numericPostId) || numericPostId <= 0) notFound();
 
   return (
-    <>
-      <FeedDetailHeader />
-      <Suspense fallback={<FeedDetailSkeleton />}>
-        <FeedDetailContent id={id} />
-      </Suspense>
-    </>
+    <Suspense fallback={<FeedDetailSkeleton />}>
+      <FeedDetailContent id={id} />
+    </Suspense>
   );
 }
