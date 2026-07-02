@@ -35,7 +35,7 @@ async function getFeedPage(
   };
 }
 
-export function useInfiniteFeedQuery() {
+export function useInfiniteFeedQuery(initialData?: FeedMainPage) {
   return useInfiniteQuery<
     FeedMainPage,
     Error,
@@ -45,6 +45,9 @@ export function useInfiniteFeedQuery() {
   >({
     queryKey: feedQueryKeys.all,
     queryFn: ({ pageParam }) => getFeedPage(pageParam),
+    initialData: initialData
+      ? { pages: [initialData], pageParams: [{ lastPostId: 0 }] }
+      : undefined,
     initialPageParam: {
       lastPostId: 0,
     },

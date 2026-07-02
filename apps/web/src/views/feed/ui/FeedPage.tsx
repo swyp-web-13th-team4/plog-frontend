@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 
 import { AppBar, Button, Spinner } from '@plog/ui';
 
+import { type FeedMainPage } from '@/entities/feed';
+
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import {
   FetchErrorEmptyState,
@@ -23,7 +25,11 @@ const header = (
   </header>
 );
 
-export default function FeedPage() {
+export default function FeedPage({
+  initialData,
+}: {
+  initialData?: FeedMainPage;
+}) {
   const { topRef, visible: scrollToTopVisible } = useScrollToTop();
 
   const {
@@ -35,7 +41,7 @@ export default function FeedPage() {
     isPending,
     isFetchNextPageError,
     refetch,
-  } = useInfiniteFeedQuery();
+  } = useInfiniteFeedQuery(initialData);
 
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
