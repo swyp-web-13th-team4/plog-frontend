@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useToast } from '@plog/ui';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -12,9 +12,12 @@ export function useLogoutMutation() {
 
   const { toast } = useToast();
 
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
+      queryClient.clear();
       toast({ type: 'success', description: '로그아웃되었어요.' });
       router.push('/login');
     },
