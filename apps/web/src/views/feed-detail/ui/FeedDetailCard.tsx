@@ -44,7 +44,11 @@ type CarouselNavButtonProps = {
   onNavigate: () => void;
 };
 
-function CarouselNavButton({ label, icon, onNavigate }: CarouselNavButtonProps) {
+function CarouselNavButton({
+  label,
+  icon,
+  onNavigate,
+}: CarouselNavButtonProps) {
   return (
     <button
       type="button"
