@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter } from 'next/navigation';
 
-import { AppBar, Button, Spinner } from '@plog/ui';
+import { Button, Spinner } from '@plog/ui';
 
 import { type FeedMainPage } from '@/entities/feed';
 
@@ -18,12 +18,7 @@ import {
 
 import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
-
-const header = (
-  <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-    <AppBar variant="navigation" title="피드" />
-  </header>
-);
+import FeedListHeader from './FeedListHeader';
 
 export default function FeedPage({
   initialData,
@@ -72,7 +67,7 @@ export default function FeedPage({
   if (isPending) {
     return (
       <>
-        {header}
+        <FeedListHeader />
         <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
           <Spinner size="large" />
         </section>
@@ -83,7 +78,7 @@ export default function FeedPage({
   if (isError && posts.length === 0) {
     return (
       <>
-        {header}
+        <FeedListHeader />
         <div className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
           <FetchErrorEmptyState
             description="네트워크 연결 상태를 확인한 뒤 다시 시도해 주세요."
@@ -97,7 +92,7 @@ export default function FeedPage({
   if (posts.length === 0) {
     return (
       <>
-        {header}
+        <FeedListHeader />
         <div className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
           <RecordEmptyState
             actions={
@@ -117,7 +112,7 @@ export default function FeedPage({
 
   return (
     <>
-      {header}
+      <FeedListHeader />
       <section className="relative pt-[var(--spacing-header)]">
         <div ref={topRef} aria-hidden="true" className="h-px w-full" />
         {posts.map((post, index) => (

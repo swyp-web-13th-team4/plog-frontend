@@ -4,7 +4,7 @@ export default function FeedDetailSkeleton() {
       <section className="relative pt-[var(--spacing-header)]">
         <div className="flex items-center gap-3 px-6 py-3">
           <div className="size-12 shrink-0 rounded-full bg-semantic-object-subtler" />
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1">
             <div className="h-[22px] w-20 rounded bg-semantic-object-subtler" />
             <div className="h-4 w-14 rounded bg-semantic-object-subtler" />
           </div>
@@ -12,10 +12,7 @@ export default function FeedDetailSkeleton() {
         <div className="aspect-square w-full bg-semantic-object-subtler" />
         <div className="flex flex-col gap-2.5 px-6 pt-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <div className="size-6 rounded bg-semantic-object-subtler" />
-              <div className="h-4 w-6 rounded bg-semantic-object-subtler" />
-            </div>
+            <div className="size-6 rounded bg-semantic-object-subtler" />
             <div className="flex items-center gap-3">
               <div className="size-6 rounded bg-semantic-object-subtler" />
               <div className="size-6 rounded bg-semantic-object-subtler" />
