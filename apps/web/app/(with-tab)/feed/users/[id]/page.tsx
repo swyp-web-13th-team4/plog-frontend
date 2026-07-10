@@ -4,7 +4,6 @@ import type { Metadata } from 'next';
 
 import { getUserProfile } from '@/views/users-detail/api/server';
 import UserProfileContent from '@/views/users-detail/ui/UserProfileContent';
-import UserProfileHeader from '@/views/users-detail/ui/UserProfileHeader';
 import UserProfileSkeleton from '@/views/users-detail/ui/UserProfileSkeleton';
 
 type UserProfilePageProps = {
@@ -28,11 +27,8 @@ export default async function Page({ params }: UserProfilePageProps) {
   const { id } = await params;
 
   return (
-    <>
-      <UserProfileHeader />
-      <Suspense fallback={<UserProfileSkeleton />}>
-        <UserProfileContent userId={id} />
-      </Suspense>
-    </>
+    <Suspense fallback={<UserProfileSkeleton />}>
+      <UserProfileContent userId={id} />
+    </Suspense>
   );
 }
