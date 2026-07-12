@@ -19,6 +19,7 @@ export {
 export { feedQueryKeys } from './model/query-keys';
 export type {
   BookmarkedFeedsResponse,
+  CreatePostResponse,
   FeedDetailResponse,
   FeedListItemResponse,
   FeedResponse,
@@ -28,6 +29,7 @@ export type {
 } from './model/schemas';
 export {
   bookmarkedFeedsResponseSchema,
+  createPostResponseSchema,
   feedDetailResponseSchema,
   feedListItemResponseSchema,
   feedResponseSchema,

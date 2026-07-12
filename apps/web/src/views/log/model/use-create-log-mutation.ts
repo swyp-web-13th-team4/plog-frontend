@@ -6,7 +6,7 @@ import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { feedQueryKeys } from '@/entities/feed';
+import { createPostResponseSchema, feedQueryKeys } from '@/entities/feed';
 import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
@@ -16,16 +16,11 @@ import { dialog } from '@/shared/lib/dialog';
 import { createLogForm, getNewPhotoFiles } from './mapper';
 import { type CreateLogFormValues, type CreateRequest } from './types';
 
-type CreatePostResponse = {
-  texts?: {
-    postId?: number;
-  };
-};
-
 function createPost(data: CreateRequest, images: File[]) {
-  return clientApi.post<CreatePostResponse>(
+  return clientApi.post(
     '/post',
     createMultipartRequest(data, { images }),
+    createPostResponseSchema,
   );
 }
 

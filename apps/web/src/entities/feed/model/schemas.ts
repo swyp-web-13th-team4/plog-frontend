@@ -90,3 +90,13 @@ export const feedDetailResponseSchema = feedPostBaseSchema.extend({
 });
 
 export type FeedDetailResponse = z.infer<typeof feedDetailResponseSchema>;
+
+export const createPostResponseSchema = z.object({
+  texts: z
+    .object({
+      postId: z.number().nullable(),
+    })
+    .nullable(),
+});
+
+export type CreatePostResponse = z.infer<typeof createPostResponseSchema>;
