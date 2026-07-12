@@ -1,7 +1,16 @@
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
 
-import { FeedPage } from '@/views/feed';
+import FeedListContent from '@/views/feed/ui/FeedListContent';
+import FeedListSkeleton from '@/views/feed/ui/FeedListSkeleton';
 
 export const metadata: Metadata = { title: '피드' };
 
-export default FeedPage;
+export default function Page() {
+  return (
+    <Suspense fallback={<FeedListSkeleton />}>
+      <FeedListContent />
+    </Suspense>
+  );
+}

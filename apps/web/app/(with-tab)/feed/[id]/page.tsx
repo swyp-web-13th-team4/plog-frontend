@@ -1,16 +1,12 @@
+import { Suspense } from 'react';
+
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import FeedDetailCard from '@/views/feed-detail/ui/FeedDetailCard';
+import FeedDetailContent from '@/views/feed-detail/ui/FeedDetailContent';
+import FeedDetailSkeleton from '@/views/feed-detail/ui/FeedDetailSkeleton';
 
-import {
-  type FeedDetailResponse,
-  feedDetailResponseSchema,
-} from '@/entities/feed/model/schemas';
-
-import { API_ERROR_CODE } from '@/shared/api/constants';
-import { ApiResponseError } from '@/shared/api/response.utils';
-import { serverApi } from '@/shared/api/server-api';
+import { getFeedPost } from '@/entities/feed/api/server';
 
 type FeedDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -22,7 +18,7 @@ export async function generateMetadata({
   const { id } = await params;
 
   try {
-    const post = await serverApi.get(`/feed/${id}`, feedDetailResponseSchema);
+    const post = await getFeedPost(id);
     const thumbnail = post.postImages[0];
     const title = post.title;
     const description = post.contents;
@@ -59,22 +55,9 @@ export default async function Page({ params }: FeedDetailPageProps) {
 
   if (!Number.isInteger(numericPostId) || numericPostId <= 0) notFound();
 
-  let initialPost: FeedDetailResponse | undefined;
-
-  try {
-    initialPost = await serverApi.get(`/feed/${id}`, feedDetailResponseSchema);
-  } catch (error) {
-    if (
-      error instanceof ApiResponseError &&
-      error.errorCode === API_ERROR_CODE.POST_NOT_FOUND
-    ) {
-      notFound();
-    }
-
-    return <FeedDetailCard postId={id} />;
-  }
-
-  if (!initialPost) notFound();
-
-  return <FeedDetailCard initialPost={initialPost} postId={id} />;
+  return (
+    <Suspense fallback={<FeedDetailSkeleton />}>
+      <FeedDetailContent id={id} />
+    </Suspense>
+  );
 }

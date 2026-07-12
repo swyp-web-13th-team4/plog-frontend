@@ -3,10 +3,18 @@ import './globals.css';
 import { type ReactNode } from 'react';
 
 import type { Metadata, Viewport } from 'next';
+import localFont from 'next/font/local';
 
 import { BadgeNotification } from '@/features/badge-notification';
 
 import Providers from '@/shared/ui/Providers';
+
+const pretendard = localFont({
+  src: '../public/fonts/PretendardVariable.woff2',
+  display: 'swap',
+  variable: '--font-pretendard',
+  weight: '45 920',
+});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -49,7 +57,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={pretendard.variable}>
       <body>
         <Providers>
           <main className="mx-auto min-h-dvh w-full max-w-layout shadow-[0px_0px_12px_0px_rgba(0,0,0,0.08)]">
