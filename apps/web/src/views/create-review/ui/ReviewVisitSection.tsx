@@ -1,23 +1,14 @@
-import { type DateValue, Field, Icon, type TimeValue } from '@plog/ui';
+import { Field, Icon, type TimeValue } from '@plog/ui';
 
 import { SelectTriggerButton } from '@/features/select-trigger-button';
+import { formatTimeValue } from '@/features/select-work-time';
+
+import { formatStudyDate } from '@/shared/lib/study-date';
 
 import { type ReviewFormController } from '../model/use-create-review-page';
 
-function formatKoreanDate(value: DateValue) {
-  return `${value.year}년 ${value.month}월 ${value.date}일`;
-}
-
 function padTimePart(value: number) {
   return String(value).padStart(2, '0');
-}
-
-function serializeDateValue(value: DateValue) {
-  return `${value.year}-${padTimePart(value.month)}-${padTimePart(value.date)}`;
-}
-
-function serializeTimeValue(value: TimeValue) {
-  return `${padTimePart(value.hour)}:${padTimePart(value.minute)}`;
 }
 
 function formatKoreanTime(value: TimeValue) {
@@ -41,10 +32,10 @@ export default function ReviewVisitSection({
           <input
             type="hidden"
             name="workDate"
-            value={visitDate ? serializeDateValue(visitDate) : ''}
+            value={visitDate ? formatStudyDate(visitDate) : ''}
           />
           <SelectTriggerButton
-            value={visitDate ? formatKoreanDate(visitDate) : null}
+            value={visitDate ? formatStudyDate(visitDate) : null}
             placeholder="방문 날짜 선택"
             icon={
               <Icon
@@ -65,7 +56,7 @@ export default function ReviewVisitSection({
               <input
                 type="hidden"
                 name="startedAt"
-                value={startTime ? serializeTimeValue(startTime) : ''}
+                value={startTime ? formatTimeValue(startTime) : ''}
               />
               <SelectTriggerButton
                 value={startTime ? formatKoreanTime(startTime) : null}
@@ -86,7 +77,7 @@ export default function ReviewVisitSection({
               <input
                 type="hidden"
                 name="endedAt"
-                value={endTime ? serializeTimeValue(endTime) : ''}
+                value={endTime ? formatTimeValue(endTime) : ''}
               />
               <SelectTriggerButton
                 value={endTime ? formatKoreanTime(endTime) : null}
