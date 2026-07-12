@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { Field, Textarea } from '@plog/ui';
 
@@ -21,14 +21,7 @@ export default function ReviewContentSection({
     photos,
     reviewText,
   } = controller;
-  const { ref: contentsFormRef } = contentsField;
-
-  const setContentsRef = useCallback(
-    (element: HTMLTextAreaElement | null) => {
-      contentsFormRef(element);
-    },
-    [contentsFormRef],
-  );
+  const contentsFormRef = useRef<HTMLTextAreaElement | null>(null);
 
   return (
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
@@ -36,7 +29,7 @@ export default function ReviewContentSection({
         <Field label="더 자세한 후기를 남겨주세요">
           <Textarea
             {...contentsField}
-            ref={setContentsRef}
+            ref={contentsFormRef}
             value={reviewText}
             maxLength={300}
             placeholder={
