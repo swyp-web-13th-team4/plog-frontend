@@ -37,14 +37,6 @@ export const REVIEW_ENVIRONMENT_GROUPS: ReviewEnvironmentGroup[] = [
   },
 ];
 
-export const REVIEW_ENVIRONMENT_GROUP_MAP = REVIEW_ENVIRONMENT_GROUPS.reduce(
-  (groups, group) => ({
-    ...groups,
-    [group.name]: group,
-  }),
-  {} as Record<ReviewEnvironmentName, ReviewEnvironmentGroup>,
-);
-
 export const REVIEW_ENVIRONMENT_SCORES: ReviewEnvironmentScore[] = [
   5, 4, 3, 2, 1,
 ];
