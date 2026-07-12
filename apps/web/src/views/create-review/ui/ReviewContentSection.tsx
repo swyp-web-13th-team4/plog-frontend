@@ -21,7 +21,8 @@ export default function ReviewContentSection({
     photos,
     reviewText,
   } = controller;
-  const contentsFormRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const { ref: contentsFormRef } = contentsField;
 
   return (
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
