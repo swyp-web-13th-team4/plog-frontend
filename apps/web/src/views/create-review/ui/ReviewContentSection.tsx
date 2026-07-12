@@ -1,5 +1,3 @@
-import { useCallback, useRef } from 'react';
-
 import { Field, Textarea } from '@plog/ui';
 
 import { PhotoUploader } from '@/features/photo-upload';

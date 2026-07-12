@@ -41,7 +41,7 @@ export default function ReviewVisitSection({
 
   return (
     <section className="flex flex-col px-6 pt-6 pb-10">
-      <Field label="해당 장소를 언제 방문하셨나요?" className="gap-4" required>
+      <Field label="해당 장소를 언제 방문하셨나요?" className="gap-4">
         <Field label="방문 날짜">
           <ReadOnlyValueForm
             iconName="calendar"
