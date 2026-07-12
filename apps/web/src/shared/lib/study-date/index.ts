@@ -8,9 +8,9 @@ export function formatStudyDate({ year, month, date }: DateValue) {
   return `${year}-${padDatePart(month)}-${padDatePart(date)}`;
 }
 
-export function parseStudyDate(value: string): DateValue {
+export function parseStudyDate(value: string): DateValue | null {
   const parts = value.split('-');
-  if (parts.length !== 3) return { year: 0, month: 0, date: 0 };
+  if (parts.length !== 3) return null;
 
   const [year, month, date] = parts.map((part) => Number(part));
   const isValid =
@@ -22,5 +22,13 @@ export function parseStudyDate(value: string): DateValue {
     date >= 1 &&
     date <= 31;
 
-  return isValid ? { year, month, date } : { year: 0, month: 0, date: 0 };
+  if (!isValid) return null;
+
+  const parsed = new Date(year, month - 1, date);
+  const isCalendarDate =
+    parsed.getFullYear() === year &&
+    parsed.getMonth() === month - 1 &&
+    parsed.getDate() === date;
+
+  return isCalendarDate ? { year, month, date } : null;
 }
