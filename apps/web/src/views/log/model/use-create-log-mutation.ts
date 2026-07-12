@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -49,6 +50,8 @@ export function useCreateLogMutation({
       return { postId: response.texts?.postId ?? null, values };
     },
     onSuccess: async ({ postId, values }) => {
+      amplitude.track('log_created');
+
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
         queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
