@@ -11,7 +11,7 @@ import {
 
 import { useRouter } from 'next/navigation';
 
-import { type DateValue, type TimeValue, useToast } from '@plog/ui';
+import { useToast } from '@plog/ui';
 
 import {
   type PhotoPreview,
@@ -65,9 +65,6 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     postId: numericPostId,
   });
 
-  const [visitDate, setVisitDate] = useState<DateValue | null>(null);
-  const [startTime, setStartTime] = useState<TimeValue | null>(null);
-  const [endTime, setEndTime] = useState<TimeValue | null>(null);
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
   const {
@@ -163,7 +160,7 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
 
   return {
     contentsField,
-    endTime: endTime ?? post?.endedAt ?? null,
+    endTime: post?.endedAt ?? null,
     environmentValues,
     errors,
     focusTargets: invalidFocus.focusTargets,
@@ -186,13 +183,9 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     rating,
     reviewPostQuery,
     reviewText,
-    setEndTime,
     setRating: handleRatingChange,
-    setStartTime,
-    setVisitDate,
-    startTime: startTime ?? post?.startedAt ?? null,
-    visitDate:
-      visitDate ?? (post?.studyDate ? parseStudyDate(post.studyDate) : null),
+    startTime: post?.startedAt ?? null,
+    visitDate: post?.studyDate ? parseStudyDate(post.studyDate) : null,
   };
 }
 
