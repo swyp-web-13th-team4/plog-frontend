@@ -1,7 +1,8 @@
 import { type FieldErrors } from 'react-hook-form';
 
+import { useScrollFocusTarget } from '@/shared/lib/scroll-focus-target';
+
 import { type CreateLogFormValues } from './types';
-import { useScrollFocusTarget } from './use-scroll-focus-target';
 
 export type LogFormFields =
   | 'photos'
