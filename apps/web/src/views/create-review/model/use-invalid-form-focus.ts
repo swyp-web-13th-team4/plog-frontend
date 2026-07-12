@@ -31,7 +31,6 @@ export function getInvalidSubmitFeedback(
 export function useReviewInvalidFocus() {
   const rating = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const environment = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
-
   const focusField = (field: ReviewFormFields) => {
     switch (field) {
       case 'rating':
