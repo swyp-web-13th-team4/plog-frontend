@@ -17,6 +17,27 @@ import {
   type CreateLogPlace,
   initialCreateLogValues,
 } from '@/features/create-log';
+import { usePhotoUpload } from '@/features/photo-upload';
+
+import { dialog } from '@/shared/lib/dialog';
+
+import { createLogFormSnapshot, editFormValues } from './mapper';
+import { createLogResolver } from './resolver';
+import { type CreateLogFormValues } from './types';
+import { useCreateLogMutation } from './use-create-log-mutation';
+import { useEditLogQuery } from './use-edit-log-query';
+import {
+  getInvalidSubmitFeedback,
+  useCreateLogInvalidFocus,
+} from './use-invalid-form-focus';
+import { useUpdateLogMutation } from './use-update-log-mutation';
+
+export type LogFormController = ReturnType<typeof useCreateLogPage>;
+
+type ReviewConfirmInfo = {
+  imageUrl?: string;
+  placeName: string;
+};
 
 const MAP_INITIAL_PLACE_KEY = 'map:initial-place';
 
@@ -42,29 +63,6 @@ function readMapInitialPlace(): CreateLogPlace | null {
     return null;
   }
 }
-
-import { usePhotoUpload } from '@/features/photo-upload';
-
-import { dialog } from '@/shared/lib/dialog';
-import { IMAGE_UPLOAD_MAX_FILE_SIZE } from '@/shared/lib/image-upload-policy';
-
-import { createLogFormSnapshot, editFormValues } from './mapper';
-import { createLogResolver } from './resolver';
-import { type CreateLogFormValues } from './types';
-import { useCreateLogMutation } from './use-create-log-mutation';
-import { useEditLogQuery } from './use-edit-log-query';
-import {
-  getInvalidSubmitFeedback,
-  useCreateLogInvalidFocus,
-} from './use-invalid-form-focus';
-import { useUpdateLogMutation } from './use-update-log-mutation';
-
-export type LogFormController = ReturnType<typeof useCreateLogPage>;
-
-type ReviewConfirmInfo = {
-  imageUrl?: string;
-  placeName: string;
-};
 
 export function useCreateLogPage(editPostId?: string) {
   const router = useRouter();
