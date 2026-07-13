@@ -29,9 +29,6 @@ export default function CreateReviewPage({ postId }: { postId: string }) {
       </header>
 
       <form className="flex flex-col" noValidate onSubmit={handleSubmitReview}>
-        <input type="hidden" name="postId" value={postId} />
-        <input type="hidden" name="rating" value={rating ?? ''} />
-
         <ReviewHeroSection controller={controller} />
         <SectionDivider />
         <ReviewVisitSection controller={controller} />
