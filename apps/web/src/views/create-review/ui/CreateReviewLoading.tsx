@@ -1,3 +1,5 @@
+'use client';
+
 import { Spinner } from '@plog/ui';
 
 export default function CreateReviewLoading() {
