@@ -18,17 +18,12 @@ export function useCreateReviewMutation({ postId }: { postId: number }) {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (values: ReviewFormValues) => {
-      if (!Number.isInteger(postId) || postId <= 0) {
-        throw new Error('리뷰를 등록할 게시글을 찾을 수 없습니다.');
-      }
-
-      return createReview(
+    mutationFn: (values: ReviewFormValues) =>
+      createReview(
         postId,
         createReviewForm(values),
         getReviewPhotoFiles(values),
-      );
-    },
+      ),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),

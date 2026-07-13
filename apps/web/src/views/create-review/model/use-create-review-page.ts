@@ -19,7 +19,7 @@ import {
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
-import { useFeedDetailQuery } from '@/entities/feed';
+import { type FeedDetailResponse, useFeedDetailQuery } from '@/entities/feed';
 import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
@@ -47,7 +47,13 @@ const initialReviewValues: ReviewFormValues = {
   photos: [],
 };
 
-export function useCreateReviewPage({ postId }: { postId: string }) {
+export function useCreateReviewPage({
+  postId,
+  initialPost,
+}: {
+  postId: string;
+  initialPost?: FeedDetailResponse;
+}) {
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -59,7 +65,7 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
   const invalidFocus = useReviewInvalidFocus();
 
   const numericPostId = Number(postId);
-  const reviewPostQuery = useFeedDetailQuery(numericPostId);
+  const reviewPostQuery = useFeedDetailQuery(numericPostId, initialPost);
   const post = reviewPostQuery.data;
   const createReviewMutation = useCreateReviewMutation({
     postId: numericPostId,
@@ -179,7 +185,6 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     photos,
     placeImageSrc: post?.postImages?.[0] ?? null,
     placeName: post?.placeName ?? '방문한 장소',
-    postId,
     rating,
     reviewPostQuery,
     reviewText,

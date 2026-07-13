@@ -1,1 +1,1 @@
-export { default as CreateReviewPage } from './ui/CreateReviewPage';
+export { default as CreateReviewContent } from './ui/CreateReviewContent';
