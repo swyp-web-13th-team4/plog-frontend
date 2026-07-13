@@ -20,15 +20,12 @@ export default function ReviewContentSection({
     reviewText,
   } = controller;
 
-  const { ref: contentsFormRef } = contentsField;
-
   return (
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
       <div>
         <Field label="더 자세한 후기를 남겨주세요">
           <Textarea
             {...contentsField}
-            ref={contentsFormRef}
             value={reviewText}
             maxLength={300}
             placeholder={
