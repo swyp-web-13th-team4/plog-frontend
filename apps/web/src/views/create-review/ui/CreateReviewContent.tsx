@@ -18,6 +18,7 @@ export default async function CreateReviewContent({
   try {
     initialPost = await getFeedPost(postId);
   } catch (error) {
+    console.error('[CreateReviewContent] 서버 게시글 조회 실패', error);
     if (
       error instanceof ApiResponseError &&
       error.errorCode === API_ERROR_CODE.POST_NOT_FOUND
