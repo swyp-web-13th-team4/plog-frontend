@@ -1,19 +1,25 @@
-import { type RefObject, useEffect } from 'react';
+import { type RefObject, useEffect, useRef } from 'react';
 
 export function useOutsideDismiss(
   ref: RefObject<HTMLElement | null>,
   onDismiss: () => void,
   enabled: boolean,
 ) {
+  const onDismissRef = useRef(onDismiss);
+
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  }, [onDismiss]);
+
   useEffect(() => {
     if (!enabled) return;
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!ref.current?.contains(event.target as Node)) onDismiss();
+      if (!ref.current?.contains(event.target as Node)) onDismissRef.current();
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onDismiss();
+      if (event.key === 'Escape') onDismissRef.current();
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
@@ -23,5 +29,5 @@ export function useOutsideDismiss(
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [ref, onDismiss, enabled]);
+  }, [ref, enabled]);
 }
