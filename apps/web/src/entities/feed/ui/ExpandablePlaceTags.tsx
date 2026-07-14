@@ -1,9 +1,11 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 
 import { Badge } from '@plog/ui';
 import { cn } from '@plog/utils';
+
+import { useOutsideDismiss } from '@/shared/lib/outside-dismiss';
 
 import { PLACE_TAG_LABELS, type PlaceTagValue } from '../model/place-tag';
 
@@ -23,8 +25,13 @@ export default function ExpandablePlaceTags({
   maxVisible = 3,
   popoverSide = 'bottom',
 }: ExpandablePlaceTagsProps) {
-  const hiddenTagsId = useId();
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const hiddenTagsId = useId();
+
+  useOutsideDismiss(containerRef, () => setIsExpanded(false), isExpanded);
 
   const visibleTags = tags.slice(0, maxVisible);
   const hiddenTags = tags.slice(maxVisible);
@@ -43,7 +50,7 @@ export default function ExpandablePlaceTags({
         </Badge>
       ))}
       {hasHiddenTags && (
-        <div className="relative">
+        <div className="relative" ref={containerRef}>
           <button
             className="block"
             type="button"
