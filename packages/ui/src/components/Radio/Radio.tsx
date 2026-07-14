@@ -23,7 +23,7 @@ function Radio({ ref, className, ...props }: RadioProps) {
       ref={ref}
       className={(state) =>
         cn(
-          'inline-flex size-5 shrink-0 items-center justify-center rounded-full border transition-colors',
+          'inline-flex size-5 shrink-0 items-center justify-center rounded-full border',
           'focus-visible:outline-2 focus-visible:outline-offset-2',
           getRadioStateClass(state),
           className,
@@ -31,7 +31,7 @@ function Radio({ ref, className, ...props }: RadioProps) {
       }
       {...props}
     >
-      <BasicRadio.Indicator className="pointer-events-none size-2 rounded-full bg-current data-[unchecked]:hidden" />
+      <BasicRadio.Indicator className="pointer-events-none size-2 rounded-full bg-current" />
     </BasicRadio.Root>
   );
 }
