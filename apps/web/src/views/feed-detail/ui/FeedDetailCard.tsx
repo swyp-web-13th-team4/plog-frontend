@@ -12,12 +12,12 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import {
+  ExpandablePlaceTags,
   type FeedDetailItem,
   FeedStatsSummary,
   formatDate,
   formatTimeAgo,
   PrivacySettingSection,
-  TagBadgeGroup,
 } from '@/entities/feed';
 
 import { dialog } from '@/shared/lib/dialog';
@@ -308,7 +308,7 @@ export default function FeedDetailCard({
             totalWorkTime={post.studyTime}
             focusLevel={post.focus}
           />
-          <TagBadgeGroup tags={post.tags} />
+          <ExpandablePlaceTags tags={post.tags} />
         </div>
         <div className="mt-7 flex flex-col border-t border-semantic-object-subtler px-6 py-7">
           <span className="title-xs mb-1 text-semantic-object-boldest">

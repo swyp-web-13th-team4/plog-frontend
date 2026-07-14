@@ -14,10 +14,10 @@ import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
 import {
+  ExpandablePlaceTags,
   type FeedMainItem,
   formatStudyDuration,
   formatTimeAgo,
-  TagBadgeGroup,
 } from '@/entities/feed';
 
 type FeedCarouselController = {
@@ -257,7 +257,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                 </div>
               </div>
             </Link>
-            <TagBadgeGroup tags={post.tags} />
+            <ExpandablePlaceTags tags={post.tags} />
           </div>
         </div>
       </div>

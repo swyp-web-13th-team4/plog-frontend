@@ -9,7 +9,7 @@ import { ImageWithFallback } from '@/shared/ui';
 
 import { formatStudyDuration } from '../lib/format';
 import { type FeedItemBase } from '../model/types';
-import TagBadgeGroup from './TagBadgeGroup';
+import ExpandablePlaceTags from './ExpandablePlaceTags';
 
 type FeedListItemProps = {
   feed: FeedItemBase;
@@ -57,7 +57,7 @@ export default function FeedListItem({
       <div className="flex min-w-0 flex-1 flex-col gap-2">
         <div className="relative">
           <div onClick={(event) => event.stopPropagation()}>
-            <TagBadgeGroup
+            <ExpandablePlaceTags
               tags={feed.tags}
               maxVisible={1}
               popoverSide="right"

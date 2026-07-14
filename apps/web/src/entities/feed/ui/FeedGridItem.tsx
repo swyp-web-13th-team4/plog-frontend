@@ -9,7 +9,7 @@ import { ImageWithFallback } from '@/shared/ui';
 
 import { formatStudyDuration } from '../lib/format';
 import { type FeedItemBase } from '../model/types';
-import TagBadgeGroup from './TagBadgeGroup';
+import ExpandablePlaceTags from './ExpandablePlaceTags';
 
 type FeedGridItemProps = {
   feed: FeedItemBase;
@@ -60,7 +60,7 @@ export default function FeedGridItem({
           {feed.title}
         </span>
         <div onClick={(event) => event.stopPropagation()}>
-          <TagBadgeGroup tags={feed.tags} maxVisible={1} />
+          <ExpandablePlaceTags tags={feed.tags} maxVisible={1} />
         </div>
       </div>
     </div>

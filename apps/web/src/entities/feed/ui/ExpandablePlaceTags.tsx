@@ -7,7 +7,7 @@ import { cn } from '@plog/utils';
 
 import { PLACE_TAG_LABELS, type PlaceTagValue } from '../model/place-tag';
 
-type TagBadgeGroupProps = {
+type ExpandablePlaceTagsProps = {
   tags: PlaceTagValue[];
   maxVisible?: number;
   popoverSide?: 'bottom' | 'right';
@@ -18,11 +18,11 @@ const POPOVER_SIDE_CLASS = {
   right: 'left-full top-0 ml-2',
 } as const;
 
-export default function TagBadgeGroup({
+export default function ExpandablePlaceTags({
   tags,
   maxVisible = 3,
   popoverSide = 'bottom',
-}: TagBadgeGroupProps) {
+}: ExpandablePlaceTagsProps) {
   const hiddenTagsId = useId();
   const [isExpanded, setIsExpanded] = useState(false);
 

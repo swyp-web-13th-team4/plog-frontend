@@ -46,8 +46,8 @@ export type {
   FeedProfilePostsResponse,
   PostSortType,
 } from './model/types';
+export { default as ExpandablePlaceTags } from './ui/ExpandablePlaceTags';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';
 export { default as FeedStatsSummary } from './ui/FeedStatsSummary';
 export { default as PrivacySettingSection } from './ui/PrivacySettingSection';
-export { default as TagBadgeGroup } from './ui/TagBadgeGroup';
