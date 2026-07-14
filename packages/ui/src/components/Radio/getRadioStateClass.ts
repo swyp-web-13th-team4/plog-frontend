@@ -1,4 +1,4 @@
-import type { Radio } from '@base-ui/react';
+import type { Radio } from '@base-ui/react/radio';
 
 type RadioState = Pick<Radio.Root.State, 'checked' | 'disabled'>;
 
