@@ -25,9 +25,9 @@ function ReadOnlyValueForm({
   value: string;
 }) {
   return (
-    <div className="bg-semantic-background-subtle flex h-12 items-center gap-2 rounded-lg px-4">
+    <div className="bg-semantic-background-subtle flex items-center justify-between gap-2 rounded-xl border border-semantic-stroke-subtle px-4 py-3">
+      <span className="body-md text-semantic-object-normal">{value}</span>
       <Icon name={iconName} size={20} className="text-semantic-object-subtle" />
-      <span className="text-semantic-object-normal">{value}</span>
     </div>
   );
 }
