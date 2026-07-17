@@ -24,7 +24,14 @@ const meta: Meta<typeof RadioGroup> = {
     },
   },
   argTypes: {
-    items: { table: { disable: true } },
+    items: {
+      description:
+        '라디오 목록을 구성하는 항목 배열입니다. 각 항목의 `value`는 그룹 내에서 고유해야 합니다.',
+      control: false,
+      table: {
+        type: { summary: 'RadioGroupOption[]' },
+      },
+    },
     value: { table: { disable: true } },
     defaultValue: { table: { disable: true } },
     onValueChange: { table: { disable: true } },

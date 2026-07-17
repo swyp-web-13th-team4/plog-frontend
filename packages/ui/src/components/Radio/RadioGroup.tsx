@@ -31,6 +31,24 @@ function RadioGroup({
 }: RadioGroupProps) {
   const groupId = useId();
 
+  if (process.env.NODE_ENV !== 'production') {
+    const uniqueValues = new Set<string>();
+    const duplicates = new Set<string>();
+
+    for (const { value } of items) {
+      if (uniqueValues.has(value)) duplicates.add(value);
+      uniqueValues.add(value);
+    }
+
+    if (duplicates.size > 0) {
+      console.error(
+        `RadioGroup item의 value는 그룹 내에서 고유해야 합니다. 중복된 value: ${[
+          ...duplicates,
+        ].join(', ')}`,
+      );
+    }
+  }
+
   return (
     <BaseRadioGroup
       value={value}
