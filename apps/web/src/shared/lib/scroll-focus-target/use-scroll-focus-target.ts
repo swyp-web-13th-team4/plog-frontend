@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type FocusTarget = 'primary' | 'secondary';
-
 type FeedbackTarget = {
+  focusIndex: number;
   id: number;
-  focusTarget: FocusTarget;
 };
 
 export function useScrollFocusTarget<
@@ -12,8 +10,7 @@ export function useScrollFocusTarget<
   TFocus extends HTMLElement,
 >() {
   const fieldElementRef = useRef<TField | null>(null);
-  const primaryFocusElementRef = useRef<TFocus | null>(null);
-  const secondaryFocusElementRef = useRef<TFocus | null>(null);
+  const focusElementRefs = useRef<Array<TFocus | null>>([]);
   const [target, setTarget] = useState<FeedbackTarget | null>(null);
 
   const fieldRef = useCallback((element: TField | null) => {
@@ -21,17 +18,21 @@ export function useScrollFocusTarget<
   }, []);
 
   const focusRef = useCallback((element: TFocus | null) => {
-    primaryFocusElementRef.current = element;
+    focusElementRefs.current[0] = element;
   }, []);
 
-  const secondaryFocusRef = useCallback((element: TFocus | null) => {
-    secondaryFocusElementRef.current = element;
-  }, []);
+  const getFocusRef = useCallback(
+    (focusIndex = 0) =>
+      (element: TFocus | null) => {
+        focusElementRefs.current[focusIndex] = element;
+      },
+    [],
+  );
 
-  const trigger = useCallback((focusTarget: FocusTarget = 'primary') => {
+  const trigger = useCallback((focusIndex = 0) => {
     setTarget((currentTarget) => ({
+      focusIndex,
       id: (currentTarget?.id ?? 0) + 1,
-      focusTarget,
     }));
   }, []);
 
@@ -44,16 +45,13 @@ export function useScrollFocusTarget<
     });
 
     const timeoutId = window.setTimeout(() => {
-      const focusElement =
-        target.focusTarget === 'primary'
-          ? primaryFocusElementRef.current
-          : secondaryFocusElementRef.current;
-
-      focusElement?.focus({ preventScroll: true });
+      focusElementRefs.current[target.focusIndex]?.focus({
+        preventScroll: true,
+      });
     }, 300);
 
     return () => window.clearTimeout(timeoutId);
   }, [target]);
 
-  return { fieldRef, focusRef, secondaryFocusRef, trigger };
+  return { fieldRef, focusRef, getFocusRef, trigger };
 }

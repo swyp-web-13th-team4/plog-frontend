@@ -17,6 +17,27 @@ import {
   type CreateLogPlace,
   initialCreateLogValues,
 } from '@/features/create-log';
+import { usePhotoUpload } from '@/features/photo-upload';
+
+import { dialog } from '@/shared/lib/dialog';
+
+import { createLogFormSnapshot, editFormValues } from './mapper';
+import { createLogResolver } from './resolver';
+import { type CreateLogFormValues } from './types';
+import { useCreateLogMutation } from './use-create-log-mutation';
+import { useEditLogQuery } from './use-edit-log-query';
+import {
+  getInvalidSubmitFeedback,
+  useCreateLogInvalidFocus,
+} from './use-invalid-form-focus';
+import { useUpdateLogMutation } from './use-update-log-mutation';
+
+export type LogFormController = ReturnType<typeof useCreateLogPage>;
+
+type ReviewConfirmInfo = {
+  imageUrl?: string;
+  placeName: string;
+};
 
 const MAP_INITIAL_PLACE_KEY = 'map:initial-place';
 
@@ -43,23 +64,6 @@ function readMapInitialPlace(): CreateLogPlace | null {
   }
 }
 
-import { dialog } from '@/shared/lib/dialog';
-import { IMAGE_UPLOAD_MAX_FILE_SIZE } from '@/shared/lib/image-upload-policy';
-
-import { createLogFormSnapshot, editFormValues } from './mapper';
-import { createLogResolver } from './resolver';
-import { type CreateLogFormValues } from './types';
-import { useCreateLogMutation } from './use-create-log-mutation';
-import { useEditLogQuery } from './use-edit-log-query';
-import {
-  getInvalidSubmitFeedback,
-  useCreateLogInvalidFocus,
-} from './use-invalid-form-focus';
-import { usePhotoUpload } from './use-photo-upload';
-import { useUpdateLogMutation } from './use-update-log-mutation';
-
-export type LogFormController = ReturnType<typeof useCreateLogPage>;
-
 export function useCreateLogPage(editPostId?: string) {
   const router = useRouter();
   const numericEditPostId = editPostId ? Number(editPostId) : null;
@@ -73,6 +77,10 @@ export function useCreateLogPage(editPostId?: string) {
   const hasInvalidEditPostId = editPostId !== undefined && !isEditMode;
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
+  const [createdPostId, setCreatedPostId] = useState<number | null>(null);
+  const [isReviewConfirmOpen, setIsReviewConfirmOpen] = useState(false);
+  const [reviewConfirmInfo, setReviewConfirmInfo] =
+    useState<ReviewConfirmInfo | null>(null);
 
   const invalidFocus = useCreateLogInvalidFocus();
 
@@ -100,8 +108,13 @@ export function useCreateLogPage(editPostId?: string) {
   });
 
   const createLogMutation = useCreateLogMutation({
-    onSuccess: () => {
-      clearPhotos();
+    onSuccess: ({ postId, values }) => {
+      setCreatedPostId(postId);
+      setReviewConfirmInfo({
+        imageUrl: values.photos[0]?.url,
+        placeName: values.place?.name ?? '방문한 장소',
+      });
+      setIsReviewConfirmOpen(true);
     },
   });
 
@@ -308,18 +321,16 @@ export function useCreateLogPage(editPostId?: string) {
     router.push('/map');
   };
 
-  const handlePhotoFileSizeExceeded = () => {
-    toast({
-      type: 'error',
-      description: `${IMAGE_UPLOAD_MAX_FILE_SIZE / (1024 * 1024)}MB 이하의 이미지 파일만 등록 가능해요.`,
-    });
+  const handleCreateReview = () => {
+    if (createdPostId === null) return;
+
+    clearPhotos();
+    router.push(`/feed/create-review/${createdPostId}`);
   };
 
-  const handlePhotoConversionFailed = () => {
-    toast({
-      type: 'error',
-      description: '사진 업로드에 실패했어요. 다시 시도해 주세요.',
-    });
+  const handleSkipReview = () => {
+    clearPhotos();
+    router.push('/feed');
   };
 
   const handleSubmitLog = handleSubmit(handleValidSubmit, handleInvalidSubmit);
@@ -340,19 +351,21 @@ export function useCreateLogPage(editPostId?: string) {
     handleClosePlaceSearch,
     handleInvalidEditBack: router.back,
     handleOpenPlaceSearch,
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
     handleRemovePhoto,
+    handleCreateReview,
+    handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
+    isReviewConfirmOpen,
     isPublic,
     isSubmitting,
     photos,
     place,
     placeCategory,
+    reviewConfirmInfo,
     reviewTags,
     setFormValue,
     scope,

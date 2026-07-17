@@ -1,0 +1,42 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+
+import { useToast } from '@plog/ui';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { feedQueryKeys } from '@/entities/feed';
+import { createReview } from '@/entities/review';
+import { mypageQueryKeys } from '@/entities/user';
+
+import { createReviewForm, getReviewPhotoFiles } from './mapper';
+import { type ReviewFormValues } from './types';
+
+export function useCreateReviewMutation({ postId }: { postId: number }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (values: ReviewFormValues) =>
+      createReview(
+        postId,
+        createReviewForm(values),
+        getReviewPhotoFiles(values),
+      ),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
+      ]);
+      toast({ type: 'success', description: '리뷰가 등록되었어요.' });
+      router.replace(`/feed/${postId}`);
+    },
+    onError: () => {
+      toast({
+        type: 'error',
+        description: '리뷰를 등록하지 못했어요. 다시 시도해 주세요.',
+      });
+    },
+  });
+}

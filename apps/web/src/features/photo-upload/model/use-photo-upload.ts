@@ -97,8 +97,8 @@ export function usePhotoUpload({
   }, [onPhotosChange]);
 
   return {
+    clearPhotos,
     handleAddPhotos,
     handleRemovePhoto,
-    clearPhotos,
   };
 }

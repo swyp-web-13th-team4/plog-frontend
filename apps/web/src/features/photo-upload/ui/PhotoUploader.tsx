@@ -21,6 +21,7 @@ type PhotoUploaderProps = {
   onAdd: (files: File[]) => void;
   onRemove: (id: string) => void;
   onFileSizeExceeded?: () => void;
+  onMaxCountExceeded?: () => void;
   onConversionFailed?: () => void;
   uploadButtonRef?: Ref<HTMLButtonElement>;
 };
@@ -30,6 +31,7 @@ export default function PhotoUploader({
   onAdd,
   onRemove,
   onFileSizeExceeded,
+  onMaxCountExceeded,
   onConversionFailed,
   uploadButtonRef,
 }: PhotoUploaderProps) {
@@ -37,15 +39,22 @@ export default function PhotoUploader({
   const canAddMoreImages = photos.length < MAX_PHOTO_COUNT;
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const remainImageCount = MAX_PHOTO_COUNT - photos.length;
     const acceptedFiles = Array.from(event.target.files ?? []).filter((file) =>
       ACCEPTED_IMAGE_TYPES.has(file.type),
     );
-    const selectedFiles = acceptedFiles.filter(
+
+    const sizeFilteredFiles = acceptedFiles.filter(
       (file) => file.size <= IMAGE_UPLOAD_MAX_FILE_SIZE,
     );
 
-    if (acceptedFiles.length !== selectedFiles.length) {
+    if (sizeFilteredFiles.length !== acceptedFiles.length) {
       onFileSizeExceeded?.();
+    }
+
+    const selectedFiles = sizeFilteredFiles.slice(0, remainImageCount);
+    if (selectedFiles.length !== sizeFilteredFiles.length) {
+      onMaxCountExceeded?.();
     }
 
     event.target.value = '';

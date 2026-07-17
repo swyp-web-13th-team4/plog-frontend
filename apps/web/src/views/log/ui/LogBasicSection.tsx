@@ -2,8 +2,9 @@ import { useCallback } from 'react';
 
 import { Field, Input, Textarea } from '@plog/ui';
 
+import { PhotoUploader, usePhotoUploadFeedback } from '@/features/photo-upload';
+
 import { type LogFormController } from '../model/use-create-log-page';
-import PhotoUploader from './PhotoUploader';
 
 type LogBasicSectionProps = {
   controller: LogFormController;
@@ -15,8 +16,6 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
     contentsField,
     errors,
     handleAddPhotos,
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
     handleRemovePhoto,
     photos,
     focusTargets,
@@ -34,7 +33,11 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
   } = focusTargets;
   const { ref: contentsFormRef } = contentsField;
   const { ref: titleFormRef } = titleField;
-
+  const {
+    handlePhotoConversionFailed,
+    handlePhotoFileSizeExceeded,
+    handlePhotoMaxCountExceeded,
+  } = usePhotoUploadFeedback();
   const setTitleRef = useCallback(
     (element: HTMLElement | null) => {
       titleFormRef(element);
@@ -61,6 +64,7 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
             onAdd={handleAddPhotos}
             onRemove={handleRemovePhoto}
             onFileSizeExceeded={handlePhotoFileSizeExceeded}
+            onMaxCountExceeded={handlePhotoMaxCountExceeded}
             onConversionFailed={handlePhotoConversionFailed}
           />
         </Field>

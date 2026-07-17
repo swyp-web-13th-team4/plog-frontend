@@ -19,6 +19,7 @@ export {
 export { feedQueryKeys } from './model/query-keys';
 export type {
   BookmarkedFeedsResponse,
+  CreatePostResponse,
   FeedDetailResponse,
   FeedListItemResponse,
   FeedResponse,
@@ -28,6 +29,7 @@ export type {
 } from './model/schemas';
 export {
   bookmarkedFeedsResponseSchema,
+  createPostResponseSchema,
   feedDetailResponseSchema,
   feedListItemResponseSchema,
   feedResponseSchema,
@@ -46,6 +48,7 @@ export type {
   FeedProfilePostsResponse,
   PostSortType,
 } from './model/types';
+export { useFeedDetailQuery } from './model/use-feed-detail-query';
 export { default as ExpandablePlaceTags } from './ui/ExpandablePlaceTags';
 export { default as FeedGridItem } from './ui/FeedGridItem';
 export { default as FeedListItem } from './ui/FeedListItem';

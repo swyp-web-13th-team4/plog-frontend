@@ -100,6 +100,8 @@ import SearchIcon from './icons/search.svg?react';
 import SearchThickIcon from './icons/search-thick.svg?react';
 import SettingIcon from './icons/setting.svg?react';
 import ShareIcon from './icons/share.svg?react';
+import SmileIcon from './icons/smile.svg?react';
+import SmileFilledIcon from './icons/smile-filled.svg?react';
 import StarIcon from './icons/star.svg?react';
 import StarFilledIcon from './icons/star-filled.svg?react';
 import SunIcon from './icons/sun.svg?react';
@@ -260,6 +262,8 @@ export const iconMap = {
   upload: { Component: UploadIcon, width: 24, height: 24 },
   user: { Component: UserIcon, width: 24, height: 24 },
   write: { Component: WriteIcon, width: 24, height: 24 },
+  smile: { Component: SmileIcon, width: 24, height: 24 },
+  'smile-filled': { Component: SmileFilledIcon, width: 24, height: 24 },
 } as const;
 
 export type IconName = keyof typeof iconMap;

@@ -1,7 +1,8 @@
 import { type FieldErrors } from 'react-hook-form';
 
+import { useScrollFocusTarget } from '@/shared/lib/scroll-focus-target';
+
 import { type CreateLogFormValues } from './types';
-import { useScrollFocusTarget } from './use-scroll-focus-target';
 
 export type LogFormFields =
   | 'photos'
@@ -58,6 +59,8 @@ export function useCreateLogInvalidFocus() {
   const focus = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const placeTags = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
 
+  const endTimeButtonRef = workTime.getFocusRef(1);
+
   const focusField = (field: LogFormFields) => {
     switch (field) {
       case 'photos':
@@ -79,7 +82,7 @@ export function useCreateLogInvalidFocus() {
         studyDate.trigger();
         break;
       case 'endedAt':
-        workTime.trigger('secondary');
+        workTime.trigger(1);
         break;
       case 'startedAt':
         workTime.trigger();
@@ -98,7 +101,7 @@ export function useCreateLogInvalidFocus() {
     focusTargets: {
       contentsFieldRef: contents.fieldRef,
       contentsInputRef: contents.focusRef,
-      endTimeButtonRef: workTime.secondaryFocusRef,
+      endTimeButtonRef,
       focusFieldRef: focus.fieldRef,
       focusFirstButtonRef: focus.focusRef,
       photoFieldRef: photos.fieldRef,
