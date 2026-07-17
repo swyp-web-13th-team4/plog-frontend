@@ -15,7 +15,9 @@ export function useOutsideDismiss(
     if (!enabled) return;
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!ref.current?.contains(event.target as Node)) onDismissRef.current();
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        onDismissRef.current();
+      }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
