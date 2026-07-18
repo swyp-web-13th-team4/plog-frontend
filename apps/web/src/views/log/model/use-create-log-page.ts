@@ -325,7 +325,7 @@ export function useCreateLogPage(editPostId?: string) {
     if (createdPostId === null) return;
 
     clearPhotos();
-    router.push(`/feed/create-review/${createdPostId}`);
+    router.push(`/review/${createdPostId}/create`);
   };
 
   const handleSkipReview = () => {
