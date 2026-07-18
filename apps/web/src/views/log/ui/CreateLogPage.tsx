@@ -1,6 +1,8 @@
 'use client';
 
-import { AppBar, Button, Spinner } from '@plog/ui';
+import { Button, Spinner } from '@plog/ui';
+
+import { NavigationHeader } from '@/shared/ui';
 
 import { useCreateLogPage } from '../model/use-create-log-page';
 import DecisionReviewModal from './DecisionReviewModal';
@@ -38,11 +40,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     reviewConfirmInfo,
   } = controller;
 
-  const logHeader = (
-    <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-      <AppBar variant="navigation" title="환경 기록" onBack={handleBack} />
-    </header>
-  );
+  const logHeader = <NavigationHeader title="환경 기록" onBack={handleBack} />;
 
   if (hasInvalidEditPostId) {
     return (

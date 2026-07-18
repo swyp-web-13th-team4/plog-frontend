@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { AppBar, Icon, TabGroup } from '@plog/ui';
 
+import { NavigationHeader } from '@/shared/ui';
+
 import AnalysisTab from './analysis/AnalysisTab';
 import BadgeTab from './BadgeTab';
 import BookmarkTab from './BookmarkTab';
@@ -52,19 +54,17 @@ export default function MyPage() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title="마이페이지"
-          actions={
-            <AppBar.Action
-              icon={<Icon name="setting" size={28} />}
-              aria-label="설정"
-              onClick={() => router.push('/my/settings')}
-            />
-          }
-        />
-      </header>
+      <NavigationHeader
+        title="마이페이지"
+        onBack={null}
+        actions={
+          <AppBar.Action
+            icon={<Icon name="setting" size={28} />}
+            aria-label="설정"
+            onClick={() => router.push('/my/settings')}
+          />
+        }
+      />
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col pt-[var(--spacing-header)]">
         <ProfileSection />
         <TabGroup

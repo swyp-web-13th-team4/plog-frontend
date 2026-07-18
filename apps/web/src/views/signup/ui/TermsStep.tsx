@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
-import { AppBar, Button, Checkbox, Divider, Icon } from '@plog/ui';
+import { Button, Checkbox, Divider, Icon } from '@plog/ui';
 
 import { type TermsAgreements } from '@/entities/user';
+
+import { NavigationHeader } from '@/shared/ui';
 
 import { TERM_LIST, useTermsAgreement } from '../model/use-terms-agreement';
 
@@ -14,7 +15,6 @@ type TermsStepProps = {
 };
 
 export default function TermsStep({ onNext }: TermsStepProps) {
-  const router = useRouter();
   const {
     agreed,
     allAgreed,
@@ -28,13 +28,7 @@ export default function TermsStep({ onNext }: TermsStepProps) {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title="약관 동의"
-          onBack={() => router.push('/login')}
-        />
-      </header>
+      <NavigationHeader title="약관 동의" backTo="/login" />
       <div className="flex h-dvh w-full flex-col p-6 pt-[calc(24px+var(--spacing-header))]">
         <p className="title-xl mb-3 text-semantic-object-boldest">
           PLOG 서비스 이용약관에

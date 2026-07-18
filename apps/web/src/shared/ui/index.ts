@@ -3,6 +3,7 @@ export { default as BottomTab } from './BottomTab';
 export { default as FetchErrorEmptyState } from './FetchErrorEmptyState';
 export { default as GlobalDialog } from './GlobalDialog';
 export { default as ImageWithFallback } from './ImageWithFallback';
+export { default as NavigationHeader } from './NavigationHeader';
 export { default as PlaceSearchIdleState } from './PlaceSearchIdleState';
 export { default as Providers } from './Providers';
 export { default as RecordEmptyState } from './RecordEmptyState';

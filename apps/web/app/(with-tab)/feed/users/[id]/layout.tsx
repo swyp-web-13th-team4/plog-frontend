@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import UserProfileHeader from '@/views/users-detail/ui/UserProfileHeader';
+import NavigationHeader from '@/shared/ui/NavigationHeader';
 
 export default function UserProfileLayout({
   children,
@@ -9,7 +9,7 @@ export default function UserProfileLayout({
 }) {
   return (
     <>
-      <UserProfileHeader />
+      <NavigationHeader title="피드" backTo="/feed" />
       {children}
     </>
   );

@@ -2,8 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 
-import { AppBar } from '@plog/ui';
-
 import { ProfileForm } from '@/widgets/profile-form';
 
 import { type DefaultProfileImage, useMypageQuery } from '@/entities/user';
@@ -30,25 +28,16 @@ export default function ProfileEditPage({
   if (isMypagePending) return null;
 
   return (
-    <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title="프로필 편집"
-          onBack={() => router.back()}
-        />
-      </header>
-      <ProfileForm
-        defaultImages={defaultImages}
-        initialAvatarSrc={mypageData?.profileImageUrl}
-        initialImageOption={{ type: 'unchanged' }}
-        ownNickname={mypageData?.nickname}
-        initialIntroduction={mypageData?.introduction ?? undefined}
-        submitLabel="저장"
-        isSubmitting={isUpdatePending}
-        hasBottomTab
-        onSubmit={submit}
-      />
-    </>
+    <ProfileForm
+      defaultImages={defaultImages}
+      initialAvatarSrc={mypageData?.profileImageUrl}
+      initialImageOption={{ type: 'unchanged' }}
+      ownNickname={mypageData?.nickname}
+      initialIntroduction={mypageData?.introduction ?? undefined}
+      submitLabel="저장"
+      isSubmitting={isUpdatePending}
+      hasBottomTab
+      onSubmit={submit}
+    />
   );
 }

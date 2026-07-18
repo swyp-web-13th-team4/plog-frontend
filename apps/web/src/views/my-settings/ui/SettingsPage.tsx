@@ -1,8 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
-import { AppBar, Icon, type IconName } from '@plog/ui';
+import { Icon, type IconName } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { useLogoutMutation } from '@/entities/auth/model/use-logout-mutation';
@@ -65,8 +63,6 @@ function MenuItem({
 }
 
 export default function SettingsPage() {
-  const router = useRouter();
-
   const logoutMutation = useLogoutMutation();
   const deleteAccountMutation = useDeleteAccountMutation();
 
@@ -93,31 +89,22 @@ export default function SettingsPage() {
   };
 
   return (
-    <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title="설정"
-          onBack={() => router.back()}
+    <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col divide-y divide-semantic-stroke-subtle pt-[var(--spacing-header)]">
+      <section aria-label="계정">
+        <MenuItem
+          title="로그아웃"
+          iconName="logout"
+          onClick={handleLogout}
+          disabled={isMutating}
         />
-      </header>
-      <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col divide-y divide-semantic-stroke-subtle pt-[var(--spacing-header)]">
-        <section aria-label="계정">
-          <MenuItem
-            title="로그아웃"
-            iconName="logout"
-            onClick={handleLogout}
-            disabled={isMutating}
-          />
-          <MenuItem
-            title="탈퇴하기"
-            iconName="block"
-            onClick={handleDeleteAccount}
-            destructive
-            disabled={isMutating}
-          />
-        </section>
-      </div>
-    </>
+        <MenuItem
+          title="탈퇴하기"
+          iconName="block"
+          onClick={handleDeleteAccount}
+          destructive
+          disabled={isMutating}
+        />
+      </section>
+    </div>
   );
 }

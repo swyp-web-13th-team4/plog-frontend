@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { AppBar, Button } from '@plog/ui';
+import { Button } from '@plog/ui';
 
 import { type FeedDetailResponse } from '@/entities/feed';
 
-import { FetchErrorEmptyState } from '@/shared/ui';
+import { FetchErrorEmptyState, NavigationHeader } from '@/shared/ui';
 
 import { useCreateReviewPage } from '../model/use-create-review-page';
 import CreateReviewLoading from './CreateReviewLoading';
@@ -60,11 +60,13 @@ export default function CreateReviewPage({
 
   return (
     <>
-      <header>
-        <AppBar variant="navigation" title="장소 리뷰" onBack={handleBack} />
-      </header>
+      <NavigationHeader title="장소 리뷰" onBack={handleBack} />
 
-      <form className="flex flex-col" noValidate onSubmit={handleSubmitReview}>
+      <form
+        className="flex flex-col pt-[var(--spacing-header)]"
+        noValidate
+        onSubmit={handleSubmitReview}
+      >
         <ReviewHeroSection controller={controller} />
         <SectionDivider />
         <ReviewVisitSection controller={controller} />
@@ -73,7 +75,7 @@ export default function CreateReviewPage({
         <SectionDivider />
         <ReviewContentSection controller={controller} />
 
-        <section className="px-6 pt-6 pb-18">
+        <section className="px-6 pt-6 pb-10">
           <Button
             type="submit"
             size="large"
