@@ -62,6 +62,7 @@ function CarouselRoot({
       }}
     >
       <Swiper
+        key={isSingle ? 'single' : 'multiple'}
         className="w-full"
         modules={[A11y, Keyboard, Pagination]}
         a11y={{
