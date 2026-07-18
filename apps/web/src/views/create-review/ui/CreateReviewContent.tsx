@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { type FeedDetailResponse } from '@/entities/feed';
 import { getFeedPost } from '@/entities/feed/api/server';
@@ -30,6 +30,10 @@ export default async function CreateReviewContent({
   }
 
   if (!initialPost) notFound();
+
+  if (!initialPost.isAuthor) {
+    redirect('/feed');
+  }
 
   return <CreateReviewPage postId={postId} initialPost={initialPost} />;
 }
