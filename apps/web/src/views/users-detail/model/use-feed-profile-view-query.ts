@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { feedQueryKeys } from '@/entities/feed';
+import { feedQueryKeys, toMemberKey } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
@@ -22,7 +22,7 @@ export function useFeedProfileViewQuery(
   memberKey: string,
   initialData?: FeedProfileViewResponse,
 ) {
-  const selectedMember = memberKey.trim();
+  const selectedMember = toMemberKey(memberKey);
 
   return useQuery({
     queryKey: feedQueryKeys.profileView(selectedMember),

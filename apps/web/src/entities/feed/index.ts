@@ -16,7 +16,7 @@ export {
   type TagCategory,
   WorkConvenience,
 } from './model/place-tag';
-export { feedQueryKeys } from './model/query-keys';
+export { feedQueryKeys, toMemberKey, toPostId } from './model/query-keys';
 export type {
   BookmarkedFeedsResponse,
   CreatePostResponse,

@@ -6,6 +6,7 @@ import {
   feedQueryKeys,
   type PostSortType,
   profilePostsResponseSchema,
+  toMemberKey,
 } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
@@ -22,7 +23,7 @@ export function useFeedProfilePostsQuery(
   memberKey: string,
   sort: PostSortType,
 ) {
-  const selectedMember = memberKey.trim();
+  const selectedMember = toMemberKey(memberKey);
 
   return useQuery({
     queryKey: feedQueryKeys.profileViewPosts(selectedMember, sort),
