@@ -5,7 +5,7 @@ export function proxy(request: NextRequest) {
   const accessToken = request.cookies.get('accessToken');
   const pathname = request.nextUrl.pathname;
 
-  const pathSegments = pathname.split('/').filter(Boolean);
+  const pathSegments = pathname.split('/').filter((segment) => segment !== '');
 
   const isReviewCreatePage =
     pathSegments.length === 3 &&
