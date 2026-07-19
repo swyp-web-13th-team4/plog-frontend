@@ -8,7 +8,8 @@ export function proxy(request: NextRequest) {
   const isProtectedPage =
     pathname.startsWith('/map') ||
     pathname.startsWith('/log') ||
-    pathname.startsWith('/my');
+    pathname.startsWith('/my') ||
+    pathname.startsWith('/review');
 
   const isGuestOnlyPage = pathname.startsWith('/signup');
 
@@ -24,5 +25,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/map/:path*', '/log/:path*', '/my/:path*', '/signup/:path*'],
+  matcher: [
+    '/map/:path*',
+    '/log/:path*',
+    '/my/:path*',
+    '/signup/:path*',
+    '/review/:path*',
+  ],
 };
