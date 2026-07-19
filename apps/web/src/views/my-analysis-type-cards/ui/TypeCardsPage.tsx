@@ -9,7 +9,7 @@ import {
 
 import { useRouter } from 'next/navigation';
 
-import { AppBar, Button, Icon } from '@plog/ui';
+import { Button, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import {
@@ -18,6 +18,8 @@ import {
   useAnalyticsQuery,
   useMypageQuery,
 } from '@/entities/user';
+
+import { NavigationHeader } from '@/shared/ui';
 
 import CoachMark from '../ui/CoachMark';
 import TypeCard from '../ui/TypeCard';
@@ -44,9 +46,7 @@ function PageLayout({
 }) {
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar variant="navigation" title={title} onBack={onBack} />
-      </header>
+      <NavigationHeader title={title} onBack={onBack} />
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col items-center justify-center gap-10 p-6 pt-[calc(24px+var(--spacing-header))] mobile:gap-5">
         {children}
       </div>

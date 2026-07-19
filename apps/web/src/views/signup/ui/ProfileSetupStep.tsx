@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import * as amplitude from '@amplitude/unified';
-import { AppBar, useToast } from '@plog/ui';
+import { useToast } from '@plog/ui';
 import { useMutation } from '@tanstack/react-query';
 
 import { ProfileForm, type ProfileFormData } from '@/widgets/profile-form';
@@ -13,6 +13,8 @@ import {
   signup,
   type TermsAgreements,
 } from '@/entities/user';
+
+import { NavigationHeader } from '@/shared/ui';
 
 type ProfileSetupStepProps = {
   defaultImages: DefaultProfileImage[];
@@ -49,9 +51,7 @@ export default function ProfileSetupStep({
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar variant="navigation" title="프로필 설정" onBack={onBack} />
-      </header>
+      <NavigationHeader title="프로필 설정" onBack={onBack} />
       <ProfileForm
         defaultImages={defaultImages}
         submitLabel="시작하기"

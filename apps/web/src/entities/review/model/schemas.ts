@@ -10,8 +10,8 @@ export const reviewResponseSchema = z.object({
   visitStartTime: z.string(),
   visitEndTime: z.string(),
   environments: z.record(z.string(), z.number()),
-  content: z.string().optional(),
-  imageUrls: z.array(z.string()).optional(),
+  content: z.string().nullable(),
+  imageUrls: z.array(z.string()).nullable(),
 });
 
 export type ReviewResponse = z.infer<typeof reviewResponseSchema>;

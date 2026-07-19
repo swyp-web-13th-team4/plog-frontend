@@ -4,7 +4,7 @@ import { type ReactNode, useCallback, useRef, useState } from 'react';
 
 import Script from 'next/script';
 
-import { AppBar, useToast } from '@plog/ui';
+import { useToast } from '@plog/ui';
 
 import { PlaceSearchContent } from '@/widgets/place-search';
 
@@ -25,6 +25,7 @@ import { useUserLocation } from '@/shared/lib/geolocation';
 import { useScrollLock } from '@/shared/lib/scroll-lock';
 import {
   FetchErrorEmptyState,
+  NavigationHeader,
   PlaceSearchIdleState,
   SearchEmptyState,
 } from '@/shared/ui';
@@ -139,9 +140,7 @@ export default function PlaceSearchOverlay({
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar variant="navigation" title="장소 검색" onBack={onClose} />
-      </header>
+      <NavigationHeader title="장소 검색" onBack={onClose} />
       <Script
         src={KAKAO_MAP_SDK_URL}
         strategy="afterInteractive"

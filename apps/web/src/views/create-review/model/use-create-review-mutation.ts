@@ -30,7 +30,7 @@ export function useCreateReviewMutation({ postId }: { postId: number }) {
         queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
       ]);
       toast({ type: 'success', description: '리뷰가 등록되었어요.' });
-      router.replace(`/feed/${postId}`);
+      router.replace(`/feed`);
     },
     onError: () => {
       toast({

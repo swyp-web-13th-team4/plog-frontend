@@ -2,14 +2,10 @@ import { type ReactNode } from 'react';
 
 import NavigationHeader from '@/shared/ui/NavigationHeader';
 
-export default function FeedDetailLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <NavigationHeader title="피드" />
+      <NavigationHeader title="설정" />
       {children}
     </>
   );

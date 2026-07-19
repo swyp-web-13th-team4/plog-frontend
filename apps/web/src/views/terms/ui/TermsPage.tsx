@@ -1,9 +1,6 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
-
-import { AppBar } from '@plog/ui';
 import { cn } from '@plog/utils';
+
+import NavigationHeader from '@/shared/ui/NavigationHeader';
 
 type TermsPageProps = {
   title: string;
@@ -11,17 +8,9 @@ type TermsPageProps = {
 };
 
 export default function TermsPage({ title, content }: TermsPageProps) {
-  const router = useRouter();
-
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title={title}
-          onBack={() => router.back()}
-        />
-      </header>
+      <NavigationHeader title={title} />
       <article
         lang="ko"
         dangerouslySetInnerHTML={{ __html: content }}

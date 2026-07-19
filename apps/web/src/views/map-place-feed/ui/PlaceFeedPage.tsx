@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { AppBar, Spinner, TabGroup } from '@plog/ui';
+import { Spinner, TabGroup } from '@plog/ui';
 
 import { FeedList, type RecordTypeValue } from '@/widgets/feed-list';
 
@@ -15,6 +15,7 @@ import { type MapSortType, type PlaceLayer } from '@/entities/place';
 import {
   BookmarkEmptyState,
   FetchErrorEmptyState,
+  NavigationHeader,
   RecordEmptyState,
 } from '@/shared/ui';
 
@@ -136,8 +137,6 @@ function PlaceFeedList({
 }
 
 export default function PlaceFeedPage({ placeId }: { placeId: number }) {
-  const router = useRouter();
-
   const searchParams = useSearchParams();
 
   const placeName = searchParams.get('name') || '장소 상세';
@@ -160,13 +159,7 @@ export default function PlaceFeedPage({ placeId }: { placeId: number }) {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 mx-auto max-w-layout">
-        <AppBar
-          variant="navigation"
-          title={placeName}
-          onBack={() => router.back()}
-        />
-      </header>
+      <NavigationHeader title={placeName} />
       <div className="flex min-h-[calc(100dvh-var(--spacing-bottom-tab))] flex-col pt-[var(--spacing-header)]">
         <TabGroup
           items={tabs}
