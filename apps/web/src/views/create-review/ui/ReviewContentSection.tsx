@@ -21,7 +21,7 @@ export default function ReviewContentSection({
   } = controller;
 
   return (
-    <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
+    <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
       <div>
         <Field label="더 자세한 후기를 남겨주세요">
           <Textarea
@@ -35,9 +35,8 @@ export default function ReviewContentSection({
           />
         </Field>
       </div>
-
       <div>
-        <Field label="이미지">
+        <Field label="사진 등록">
           <PhotoUploader
             photos={photos}
             onAdd={handleAddPhotos}

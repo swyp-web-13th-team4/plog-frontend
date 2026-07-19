@@ -40,17 +40,13 @@ export default function ReviewVisitSection({
   const { endTime, startTime, visitDate } = controller;
 
   return (
-    <section className="flex flex-col gap-4 px-6 pt-6 pb-10">
-      <h2 className="title-xs text-semantic-object-boldest">
-        해당 장소를 언제 방문하셨나요?
-      </h2>
+    <section className="flex flex-col gap-4 p-6">
       <Field label="방문 날짜">
         <ReadOnlyValueForm
           iconName="calendar"
           value={visitDate ? formatKoreanDate(visitDate) : '-'}
         />
       </Field>
-
       <Field label="방문 시간">
         <div className="grid grid-cols-2 gap-4">
           <ReadOnlyValueForm
