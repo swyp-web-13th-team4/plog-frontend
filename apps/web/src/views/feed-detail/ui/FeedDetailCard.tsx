@@ -13,7 +13,6 @@ import { LikeButton } from '@/features/toggle-like';
 
 import {
   ExpandablePlaceTags,
-  type FeedDetailItem,
   FeedStatsSummary,
   formatDate,
   formatTimeAgo,
@@ -64,15 +63,7 @@ function CarouselNavButton({
   );
 }
 
-type FeedDetailCardProps = {
-  postId: string;
-  initialPost?: FeedDetailItem;
-};
-
-export default function FeedDetailCard({
-  postId,
-  initialPost,
-}: FeedDetailCardProps) {
+export default function FeedDetailCard({ postId }: { postId: string }) {
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
     isEnd: true,
@@ -89,7 +80,7 @@ export default function FeedDetailCard({
     isPending,
     isPrivateAccessError,
     refetch,
-  } = useFeedDetailQuery(numericPostId, initialPost);
+  } = useFeedDetailQuery(numericPostId);
 
   const deletePostMutation = useDeletePostMutation();
   const privateAccessHandledRef = useRef(false);

@@ -19,7 +19,7 @@ import {
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
-import { type FeedDetailResponse, useFeedDetailQuery } from '@/entities/feed';
+import { useFeedDetailQuery } from '@/entities/feed';
 import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
@@ -47,13 +47,7 @@ const initialReviewValues: ReviewFormValues = {
   photos: [],
 };
 
-export function useCreateReviewPage({
-  postId,
-  initialPost,
-}: {
-  postId: string;
-  initialPost?: FeedDetailResponse;
-}) {
+export function useCreateReviewPage({ postId }: { postId: string }) {
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -65,7 +59,7 @@ export function useCreateReviewPage({
   const invalidFocus = useReviewInvalidFocus();
 
   const numericPostId = Number(postId);
-  const reviewPostQuery = useFeedDetailQuery(numericPostId, initialPost);
+  const reviewPostQuery = useFeedDetailQuery(numericPostId);
   const post = reviewPostQuery.data;
   const createReviewMutation = useCreateReviewMutation({
     postId: numericPostId,

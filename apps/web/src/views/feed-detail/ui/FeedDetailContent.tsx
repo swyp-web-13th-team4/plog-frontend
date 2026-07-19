@@ -1,18 +1,26 @@
 import { notFound } from 'next/navigation';
 
-import { type FeedDetailResponse } from '@/entities/feed';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+
 import { getFeedPost } from '@/entities/feed/api/server';
+import { feedQueryKeys } from '@/entities/feed/model/query-keys';
+import { type FeedDetailResponse } from '@/entities/feed/model/schemas';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
+import { getQueryClient } from '@/shared/lib/query-client';
 
 import FeedDetailCard from './FeedDetailCard';
 
 export default async function FeedDetailContent({ id }: { id: string }) {
-  let initialPost: FeedDetailResponse | undefined;
+  const queryClient = getQueryClient();
+  let post: FeedDetailResponse;
 
   try {
-    initialPost = await getFeedPost(id);
+    post = await queryClient.fetchQuery({
+      queryKey: feedQueryKeys.detail(id),
+      queryFn: () => getFeedPost(id),
+    });
   } catch (error) {
     if (
       error instanceof ApiResponseError &&
@@ -24,7 +32,11 @@ export default async function FeedDetailContent({ id }: { id: string }) {
     return <FeedDetailCard postId={id} />;
   }
 
-  if (!initialPost) notFound();
+  if (!post) notFound();
 
-  return <FeedDetailCard initialPost={initialPost} postId={id} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <FeedDetailCard postId={id} />
+    </HydrationBoundary>
+  );
 }
