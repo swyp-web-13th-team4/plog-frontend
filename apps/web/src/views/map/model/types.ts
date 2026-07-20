@@ -27,6 +27,8 @@ export type MapPinDetail = {
   totalStudyTime: number;
   thumbnailUrl: string;
   placeCategory: string;
+  averageRating: number;
+  reviewCount: number;
 };
 
 export type MapBounds = {

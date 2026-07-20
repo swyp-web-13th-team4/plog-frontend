@@ -50,6 +50,10 @@
   --font-weight-semantic-body-sm: var(--font-weight-primitive-regular);
   --leading-semantic-body-sm: var(--leading-primitive-22);
 
+  --text-semantic-body-xs: var(--text-primitive-12);
+  --font-weight-semantic-body-xs: var(--font-weight-primitive-regular);
+  --leading-semantic-body-xs: var(--leading-primitive-20);
+
   /* label */
   --text-semantic-label-xl: var(--text-primitive-18);
   --font-weight-semantic-label-xl: var(--font-weight-primitive-semibold);
