@@ -38,7 +38,7 @@ export function getPlaceReviews({
   }
 
   return clientApi.get(
-    `/feed/${placeType}/${placeId}?${params}`,
+    `/reviews/${placeType}/${placeId}?${params}`,
     placeReviewPageResponseSchema,
   );
 }
