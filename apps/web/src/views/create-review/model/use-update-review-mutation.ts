@@ -5,9 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { feedQueryKeys } from '@/entities/feed';
 import { reviewQueryKeys, updateReview } from '@/entities/review';
-import { mypageQueryKeys } from '@/entities/user';
 
 import { getReviewPhotoFiles, updateReviewForm } from './mapper';
 import { type ReviewSubmitValues } from './types';
@@ -40,12 +38,7 @@ export function useUpdateReviewMutation({
     onSuccess: async () => {
       onSuccess?.();
 
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: reviewQueryKeys.all }),
-        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
-        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
-      ]);
-
+      await queryClient.invalidateQueries({ queryKey: reviewQueryKeys.all });
       toast({ type: 'success', description: '리뷰가 수정되었어요.' });
       router.back();
     },

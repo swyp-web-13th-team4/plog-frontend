@@ -17,9 +17,9 @@ export function useDeleteReviewMutation() {
         exact: true,
       });
 
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: reviewQueryKeys.lists() }),
-      ]);
+      await queryClient.invalidateQueries({
+        queryKey: reviewQueryKeys.lists(),
+      });
 
       toast({ type: 'success', description: '리뷰가 삭제되었어요.' });
     },
