@@ -81,8 +81,8 @@ export default function ReviewOverview({
         <div className="flex items-center gap-0.5">
           <Icon
             name="star-filled"
-            size={22}
-            className="text-semantic-object-bold"
+            boxed={false}
+            className="size-5.5 text-semantic-object-bold mobile:size-4.5"
           />
           <span className="label-xl text-semantic-object-bold mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
             {summary?.averageRating.toFixed(2) ?? Number(0).toFixed(1)}
