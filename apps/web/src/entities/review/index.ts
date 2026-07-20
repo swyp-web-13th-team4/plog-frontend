@@ -1,4 +1,4 @@
-export { createReview } from './api/client';
+export { createReview, getPlaceReviews } from './api/client';
 export {
   REVIEW_ENVIRONMENT_GROUPS,
   REVIEW_ENVIRONMENT_ICON_NAMES,
