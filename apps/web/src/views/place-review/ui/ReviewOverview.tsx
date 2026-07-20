@@ -5,48 +5,20 @@ import { cn } from '@plog/utils';
 
 import { type PlaceLayer } from '@/entities/place';
 import {
-  type ReviewEnvironmentIconName,
-  type ReviewEnvironmentName,
+  type PlaceReviewEnvironmentSummary,
+  type PlaceReviewSummary,
+  REVIEW_ENVIRONMENT_GROUPS,
 } from '@/entities/review';
 
-type ReviewEnvironmentSummaryItem = {
-  environmentName: ReviewEnvironmentName;
-  title: string;
-  iconName: ReviewEnvironmentIconName;
-  label: string;
-  score: number;
-};
-
-const MOCK_REVIEW_ENVIRONMENTS: ReviewEnvironmentSummaryItem[] = [
-  {
-    environmentName: 'spaceSize',
-    title: '공간 크기',
-    iconName: 'company-filled',
-    label: '넓은 편이에요',
+const EMPTY_REVIEW_ENVIRONMENTS: PlaceReviewEnvironmentSummary[] =
+  REVIEW_ENVIRONMENT_GROUPS.map((environment) => ({
+    environmentName: environment.name,
+    title: environment.title,
+    iconName: environment.iconName,
     score: 0,
-  },
-  {
-    environmentName: 'noiseLevel',
-    title: '소음 수준',
-    iconName: 'megaphone-filled',
-    label: '조용한 편이에요',
-    score: 0,
-  },
-  {
-    environmentName: 'congestionLevel',
-    title: '혼잡도',
-    iconName: 'smile-filled',
-    label: '여유 있는 편이에요',
-    score: 0,
-  },
-  {
-    environmentName: 'focusLevel',
-    title: '집중도',
-    iconName: 'fire-filled',
-    label: '보통이에요',
-    score: 0,
-  },
-];
+    label: '-',
+    count: 0,
+  }));
 
 const RECORD_BAR_COLORS = [
   'bg-semantic-accent-neutral',
@@ -64,22 +36,27 @@ const BOOKMARK_BAR_COLORS = [
 
 export default function ReviewOverview({
   placeType,
+  summary,
 }: {
   placeType: PlaceLayer;
+  summary: PlaceReviewSummary | null;
 }) {
   const isRecord = placeType === 'record';
+  const isEmptyEnvironment = !summary || summary.environments.length === 0;
+  const environments = isEmptyEnvironment
+    ? EMPTY_REVIEW_ENVIRONMENTS
+    : summary.environments;
   const maxCount = Math.max(
-    ...MOCK_REVIEW_ENVIRONMENTS.map((environment) => environment.score),
+    ...environments.map((environment) => environment.count),
     1,
   );
   const countRanks = [
     ...new Set(
-      MOCK_REVIEW_ENVIRONMENTS.map((environment) => environment.score).sort(
-        (a, b) => b - a,
-      ),
+      environments
+        .map((environment) => environment.count)
+        .sort((a, b) => b - a),
     ),
   ];
-
   const barColors = isRecord ? RECORD_BAR_COLORS : BOOKMARK_BAR_COLORS;
 
   return (
@@ -97,7 +74,8 @@ export default function ReviewOverview({
                 : 'text-semantic-theme-sky-normal',
             )}
           >
-            9,999<span className="text-semantic-object-boldest">개</span>
+            {(summary?.reviewCount ?? 0).toLocaleString()}
+            <span className="text-semantic-object-boldest">개</span>
           </p>
         </div>
         <div className="flex items-center gap-0.5">
@@ -107,14 +85,14 @@ export default function ReviewOverview({
             className="text-semantic-object-bold"
           />
           <span className="label-xl text-semantic-object-bold mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
-            4.27
+            {summary?.averageRating.toFixed(2) ?? Number(0).toFixed(1)}
           </span>
         </div>
       </div>
       <div className="flex flex-col justify-center gap-2.5">
-        {MOCK_REVIEW_ENVIRONMENTS.map((environment) => {
-          const percentage = (environment.score / maxCount) * 100;
-          const rank = countRanks.indexOf(environment.score);
+        {environments.map((environment) => {
+          const percentage = (environment.count / maxCount) * 100;
+          const rank = countRanks.indexOf(environment.count);
           const colorIndex = Math.min(rank, barColors.length - 1);
 
           return (
@@ -133,7 +111,14 @@ export default function ReviewOverview({
                 </span>
               </div>
 
-              <div className="relative overflow-hidden rounded-xl bg-primitive-gray-20">
+              <div
+                className={cn(
+                  'relative overflow-hidden rounded-xl',
+                  isEmptyEnvironment
+                    ? 'bg-semantic-object-subtler'
+                    : 'bg-primitive-gray-20',
+                )}
+              >
                 <div
                   className={cn(
                     'absolute inset-y-0 left-0 rounded-xl',
@@ -145,8 +130,8 @@ export default function ReviewOverview({
                   <span className="label-sm text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
                     {environment.label}
                   </span>
-                  <span className="labem-sm shrink-0 text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
-                    {environment.score.toLocaleString()}명
+                  <span className="label-sm shrink-0 text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+                    {environment.count.toLocaleString()}명
                   </span>
                 </div>
               </div>

@@ -3,10 +3,7 @@
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import {
-  type ReviewEnvironmentIconName,
-  type ReviewEnvironmentName,
-} from '@/entities/review';
+import { PlaceReviewListItem } from '@/entities/review';
 
 import { ImageWithFallback } from '@/shared/ui';
 
@@ -14,25 +11,6 @@ const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
   { label: '수정하기', value: 'edit' },
 ];
-
-type ReviewEnvironmentItem = {
-  environmentName: ReviewEnvironmentName;
-  title: string;
-  iconName: ReviewEnvironmentIconName;
-  label: string;
-};
-
-export type ReviewItemData = {
-  reviewId: number;
-  nickname: string;
-  profileImageUrl?: string;
-  isAuthor: boolean;
-  rating: number;
-  createdAt: string;
-  environments: ReviewEnvironmentItem[];
-  content: string | null;
-  imageUrls: string[];
-};
 
 function RatingStars({ rating }: { rating: number }) {
   return (
@@ -54,7 +32,11 @@ function RatingStars({ rating }: { rating: number }) {
   );
 }
 
-export default function ReviewItem({ review }: { review: ReviewItemData }) {
+export default function ReviewItem({
+  review,
+}: {
+  review: PlaceReviewListItem;
+}) {
   const visibleImages = review.imageUrls.slice(0, 3);
 
   return (

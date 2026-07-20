@@ -32,7 +32,7 @@ export default function ReviewToolbar({
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 px-6 py-3">
       <Select
         aria-label="리뷰 정렬"
         items={REVIEW_SORT_OPTIONS}

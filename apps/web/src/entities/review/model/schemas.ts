@@ -78,7 +78,7 @@ export const placeReviewSummarySchema = z.object({
 export type PlaceReviewSummary = z.infer<typeof placeReviewSummarySchema>;
 
 export const placeReviewPageResponseSchema = z.object({
-  summary: placeReviewSummarySchema,
+  summary: placeReviewSummarySchema.nullable(),
   reviews: placeReviewPageItemsSchema,
 });
 
