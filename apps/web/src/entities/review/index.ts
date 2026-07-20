@@ -10,6 +10,7 @@ export {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
 } from './model/environment';
+export { reviewQueryKeys } from './model/query-keys';
 export {
   type PlaceReviewEnvironmentItem,
   type PlaceReviewEnvironmentSummary,
