@@ -10,11 +10,17 @@ function pad(value: number) {
 }
 
 export function parseServerTime(value: string | number | Date) {
-  if (typeof value === 'string' && !HAS_TIMEZONE.test(value)) {
-    return new Date(`${value}+09:00`);
+  if (typeof value !== 'string' || HAS_TIMEZONE.test(value)) {
+    return new Date(value);
   }
 
-  return new Date(value);
+  const separated = value.includes('T') ? value : value.replace(' ', 'T');
+  const withTime = separated.includes('T')
+    ? separated
+    : `${separated}T00:00:00`;
+  const normalized = withTime.replace(/(\.\d{3})\d+/, '$1');
+
+  return new Date(`${normalized}+09:00`);
 }
 
 function toDateValue(input: DateInput): DateValue | null {
@@ -95,12 +101,7 @@ export function formatDate(
 
 type TimePreset = '24h' | 'ko';
 
-export function formatTime(input: TimeValue | Date, preset: TimePreset) {
-  const { hour, minute } =
-    input instanceof Date
-      ? { hour: input.getHours(), minute: input.getMinutes() }
-      : input;
-
+export function formatTime({ hour, minute }: TimeValue, preset: TimePreset) {
   if (preset === '24h') return `${pad(hour)}:${pad(minute)}`;
 
   const meridiem = hour < 12 ? '오전' : '오후';
