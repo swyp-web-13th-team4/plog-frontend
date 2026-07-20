@@ -26,7 +26,10 @@ async function getFeedPage({
   return toFeedMainPage(data);
 }
 
-export function useInfiniteFeedQuery() {
+export function useInfiniteFeedQuery(
+  initialData?: FeedMainPage,
+  initialDataUpdatedAt?: number,
+) {
   return useInfiniteQuery<
     FeedMainPage,
     Error,
@@ -36,6 +39,10 @@ export function useInfiniteFeedQuery() {
   >({
     queryKey: feedQueryKeys.all,
     queryFn: ({ pageParam }) => getFeedPage(pageParam),
+    initialData: initialData
+      ? { pages: [initialData], pageParams: [FEED_INITIAL_CURSOR] }
+      : undefined,
+    initialDataUpdatedAt,
     initialPageParam: FEED_INITIAL_CURSOR,
     getNextPageParam: (lastPage, _allPages, lastPageParam) =>
       getFeedNextCursor(lastPage, lastPageParam),

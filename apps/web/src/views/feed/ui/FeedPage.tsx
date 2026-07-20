@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 
 import { Button, Spinner } from '@plog/ui';
 
+import { type FeedMainPage } from '@/entities/feed';
+
 import { useScrollToTop } from '@/shared/lib/scroll-to-top';
 import {
   FetchErrorEmptyState,
@@ -18,7 +20,13 @@ import { useInfiniteFeedQuery } from '../model/use-infinite-feed-query';
 import FeedCard from './FeedCard';
 import FeedListHeader from './FeedListHeader';
 
-export default function FeedPage() {
+export default function FeedPage({
+  initialData,
+  initialDataUpdatedAt,
+}: {
+  initialData?: FeedMainPage;
+  initialDataUpdatedAt?: number;
+}) {
   const { topRef, visible: scrollToTopVisible } = useScrollToTop();
 
   const {
@@ -30,7 +38,7 @@ export default function FeedPage() {
     isPending,
     isFetchNextPageError,
     refetch,
-  } = useInfiniteFeedQuery();
+  } = useInfiniteFeedQuery(initialData, initialDataUpdatedAt);
 
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',
