@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
@@ -11,6 +13,7 @@ import { dialog } from '@/shared/lib/dialog';
 import { ImageWithFallback } from '@/shared/ui';
 
 import { useDeleteReviewMutation } from '../model/use-delete-review-mutation';
+import ImagesModal from './ImagesModal';
 
 const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
@@ -44,6 +47,9 @@ export default function ReviewItem({
 }) {
   const router = useRouter();
   const deleteReviewMutation = useDeleteReviewMutation();
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
   const visibleImages = review.imageUrls.slice(0, 3);
 
   const handleAuthorAction = async (value: string) => {
@@ -147,9 +153,12 @@ export default function ReviewItem({
             const showRemainingCount = remainingCount > 0 && index === 2;
 
             return (
-              <div
+              <button
+                type="button"
                 key={`${review.reviewId}-${imageUrl}-${index}`}
-                className="relative size-20 overflow-hidden rounded-xl bg-semantic-object-subtler"
+                aria-label={`${review.nickname} 리뷰 이미지 ${index + 1} 크게 보기`}
+                onClick={() => setSelectedImageIndex(index)}
+                className="relative size-20 cursor-pointer overflow-hidden rounded-xl bg-semantic-object-subtler"
               >
                 <ImageWithFallback
                   src={imageUrl}
@@ -163,10 +172,21 @@ export default function ReviewItem({
                     +{remainingCount}
                   </span>
                 )}
-              </div>
+              </button>
             );
           })}
         </div>
+      )}
+
+      {selectedImageIndex !== null && (
+        <ImagesModal
+          open
+          images={review.imageUrls}
+          initialIndex={selectedImageIndex}
+          onOpenChange={(open) => {
+            if (!open) setSelectedImageIndex(null);
+          }}
+        />
       )}
     </div>
   );
