@@ -6,6 +6,8 @@ import {
 
 import { type PlaceCategoryValue } from '@/entities/place';
 
+import { parseDate, serializeDate } from '@/shared/lib/datetime';
+
 import {
   type CreateLogFormValues,
   type CreateRequest,
@@ -13,26 +15,6 @@ import {
   type PostImage,
   type UpdateRequest,
 } from './types';
-
-function padDatePart(value: number) {
-  return String(value).padStart(2, '0');
-}
-
-function formatStudyDate({
-  year,
-  month,
-  date,
-}: NonNullable<CreateLogFormValues['studyDate']>) {
-  return `${year}-${padDatePart(month)}-${padDatePart(date)}`;
-}
-
-function parseStudyDate(value: string) {
-  const [year = 0, month = 0, date = 0] = value
-    .split('-')
-    .map((part) => Number(part));
-
-  return { year, month, date };
-}
 
 function existingPhoto(image: PostImage): ExistingPhotoPreview {
   return {
@@ -69,7 +51,7 @@ export function createLogForm(values: CreateLogFormValues): CreateRequest {
     contents: values.contents.trim(),
     startedAt: values.startedAt,
     endedAt: values.endedAt,
-    studyDate: formatStudyDate(values.studyDate),
+    studyDate: serializeDate(values.studyDate),
     focus: values.focus,
     scope: values.scope,
     place: {
@@ -109,7 +91,7 @@ export function editFormValues({
     contents: post.contents,
     place,
     categoryCode: post.categoryCode as PlaceCategoryValue,
-    studyDate: parseStudyDate(post.studyDate),
+    studyDate: parseDate(post.studyDate),
     startedAt: post.startedAt,
     endedAt: post.endedAt,
     focus: post.focus,
@@ -141,7 +123,7 @@ export function createLogFormSnapshot(values: CreateLogFormValues) {
     contents: values.contents.trim(),
     startedAt: values.startedAt,
     endedAt: values.endedAt,
-    studyDate: values.studyDate ? formatStudyDate(values.studyDate) : null,
+    studyDate: values.studyDate ? serializeDate(values.studyDate) : null,
     focus: values.focus,
     scope: values.scope,
     place: values.place

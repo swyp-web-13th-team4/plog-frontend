@@ -5,9 +5,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Button, Dialog, Icon, Spinner, useToast } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { formatDate } from '@/entities/feed';
 import { useMypageQuery, type UserBadge } from '@/entities/user';
 
+import { formatDate } from '@/shared/lib/datetime';
 import { FetchErrorEmptyState } from '@/shared/ui';
 
 import {
@@ -263,7 +263,7 @@ function BadgeDetailDialog({
         <Dialog.Header>
           <Dialog.Title>{badge.name}</Dialog.Title>
           <Dialog.Description>
-            {formatDate(badge.acquiredAt)}
+            {formatDate(badge.acquiredAt, 'ko')}
           </Dialog.Description>
         </Dialog.Header>
         <Dialog.Graphic>

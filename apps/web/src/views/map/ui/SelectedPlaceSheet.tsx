@@ -5,9 +5,9 @@ import { Fragment } from 'react';
 import { Badge, BottomSheet, Button, Divider, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { formatStudyDurationShort } from '@/entities/feed';
 import { getCategoryLabel, type PlaceLayer } from '@/entities/place';
 
+import { formatDuration } from '@/shared/lib/datetime';
 import { ImageWithFallback } from '@/shared/ui';
 
 import { type MapPinDetail } from '../model/types';
@@ -34,7 +34,7 @@ function PlaceStatBar({
       label: isRecord ? '내 기록' : '북마크 수',
     },
     {
-      value: formatStudyDurationShort(place.totalStudyTime),
+      value: formatDuration(place.totalStudyTime, 'en'),
       label: '총 작업시간',
     },
     { value: String(place.avgFocus), label: '평균 집중도' },

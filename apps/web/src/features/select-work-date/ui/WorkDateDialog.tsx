@@ -4,6 +4,8 @@ import { type ReactElement, useState } from 'react';
 
 import { Button, DatePicker, type DateValue, Dialog } from '@plog/ui';
 
+import { serializeDate } from '@/shared/lib/datetime';
+
 type WorkDateDialogProps = {
   value: DateValue | null;
   onChange: (value: DateValue) => void;
@@ -19,18 +21,6 @@ function getTodayValue(): DateValue {
     month: today.getMonth() + 1,
     date: today.getDate(),
   };
-}
-
-function padDatePart(value: number) {
-  return String(value).padStart(2, '0');
-}
-
-export function formatDisplayDate(value: DateValue) {
-  return `${value.year}.${padDatePart(value.month)}.${padDatePart(value.date)}`;
-}
-
-function serializeDateValue(value: DateValue) {
-  return `${value.year}-${padDatePart(value.month)}-${padDatePart(value.date)}`;
 }
 
 export default function WorkDateDialog({
@@ -62,7 +52,7 @@ export default function WorkDateDialog({
       <input
         type="hidden"
         name={name}
-        value={value ? serializeDateValue(value) : ''}
+        value={value ? serializeDate(value) : ''}
       />
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <Dialog.Trigger render={children} />

@@ -14,12 +14,11 @@ import { LikeButton } from '@/features/toggle-like';
 import {
   ExpandablePlaceTags,
   FeedStatsSummary,
-  formatDate,
-  formatTimeAgo,
   PrivacySettingSection,
   useFeedDetailQuery,
 } from '@/entities/feed';
 
+import { formatDate, formatTimeAgo } from '@/shared/lib/datetime';
 import { dialog } from '@/shared/lib/dialog';
 import { FetchErrorEmptyState } from '@/shared/ui';
 
@@ -309,7 +308,7 @@ export default function FeedDetailCard({ postId }: { postId: string }) {
             {post.contents}
           </p>
           <span className="caption-md self-end text-semantic-object-subtle">
-            {formatDate(post.createAt)}
+            {formatDate(post.createAt, 'ko')}
           </span>
         </div>
       </div>

@@ -13,12 +13,9 @@ import { ShareButton } from '@/features/share-post';
 import { BookmarkButton } from '@/features/toggle-bookmark';
 import { LikeButton } from '@/features/toggle-like';
 
-import {
-  ExpandablePlaceTags,
-  type FeedMainItem,
-  formatStudyDuration,
-  formatTimeAgo,
-} from '@/entities/feed';
+import { ExpandablePlaceTags, type FeedMainItem } from '@/entities/feed';
+
+import { formatDuration, formatTimeAgo } from '@/shared/lib/datetime';
 
 type FeedCarouselController = {
   slidePrev: () => void;
@@ -241,7 +238,7 @@ export default function FeedCard({ post, isLast }: FeedCardProps) {
                       className="text-semantic-object-normal"
                     />
                     <p className="caption-md text-semantic-object-normal">
-                      {formatStudyDuration(post.studyTime)}
+                      {formatDuration(post.studyTime, 'ko')}
                     </p>
                   </div>
                   <div className="flex items-center gap-1.5">

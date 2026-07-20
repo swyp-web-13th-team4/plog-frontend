@@ -5,13 +5,7 @@ export {
   getFeedNextCursor,
   toFeedMainPage,
 } from './lib/feed-page';
-export {
-  formatDate,
-  formatLikeCount,
-  formatStudyDuration,
-  formatStudyDurationShort,
-  formatTimeAgo,
-} from './lib/format';
+export { formatLikeCount } from './lib/format';
 export {
   AtmosphereAndFocus,
   EnvironmentAndComfort,

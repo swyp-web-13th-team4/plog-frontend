@@ -25,7 +25,7 @@ import {
   type ReviewEnvironmentScore,
 } from '@/entities/review';
 
-import { parseStudyDate } from '@/shared/lib/study-date';
+import { parseDate } from '@/shared/lib/datetime';
 
 import { reviewResolver } from './resolver';
 import { type ReviewFormValues, type ReviewRatingScore } from './types';
@@ -184,7 +184,7 @@ export function useCreateReviewPage({ postId }: { postId: string }) {
     reviewText,
     setRating: handleRatingChange,
     startTime: post?.startedAt ?? null,
-    visitDate: post?.studyDate ? parseStudyDate(post.studyDate) : null,
+    visitDate: post?.studyDate ? parseDate(post.studyDate) : null,
   };
 }
 

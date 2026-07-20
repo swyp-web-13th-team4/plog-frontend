@@ -5,9 +5,9 @@ import { type ReactNode } from 'react';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { formatDuration } from '@/shared/lib/datetime';
 import { ImageWithFallback } from '@/shared/ui';
 
-import { formatStudyDuration } from '../lib/format';
 import { type FeedItemBase } from '../model/types';
 import ExpandablePlaceTags from './ExpandablePlaceTags';
 
@@ -49,7 +49,7 @@ export default function FeedGridItem({
           <div className="mt-1 flex items-center gap-1 text-semantic-object-subtler [&_path]:fill-semantic-object-subtler">
             <Icon name="clock" size={16} />
             <span className="caption-md">
-              {formatStudyDuration(feed.studyTime)}
+              {formatDuration(feed.studyTime, 'ko')}
             </span>
           </div>
           {action}

@@ -1,4 +1,1 @@
-export {
-  formatTimeValue,
-  default as WorkTimeDialog,
-} from './ui/WorkTimeDialog';
+export { default as WorkTimeDialog } from './ui/WorkTimeDialog';

@@ -1,8 +1,10 @@
 import { Field, Icon } from '@plog/ui';
 
 import { SelectTriggerButton } from '@/features/select-trigger-button';
-import { formatDisplayDate, WorkDateDialog } from '@/features/select-work-date';
-import { formatTimeValue, WorkTimeDialog } from '@/features/select-work-time';
+import { WorkDateDialog } from '@/features/select-work-date';
+import { WorkTimeDialog } from '@/features/select-work-time';
+
+import { formatDate, formatTime } from '@/shared/lib/datetime';
 
 import { type LogFormController } from '../model/use-create-log-page';
 
@@ -35,7 +37,7 @@ export default function LogWorkSessionFields({
           >
             <SelectTriggerButton
               ref={workDateButtonRef}
-              value={workDate ? formatDisplayDate(workDate) : null}
+              value={workDate ? formatDate(workDate, 'dot') : null}
               placeholder="YYYY.MM.DD"
               icon={
                 <Icon
@@ -62,7 +64,7 @@ export default function LogWorkSessionFields({
           >
             <SelectTriggerButton
               ref={startTimeButtonRef}
-              value={startTime ? formatTimeValue(startTime) : null}
+              value={startTime ? formatTime(startTime, '24h') : null}
               placeholder="--:--"
               icon={
                 <Icon
@@ -86,7 +88,7 @@ export default function LogWorkSessionFields({
           >
             <SelectTriggerButton
               ref={endTimeButtonRef}
-              value={endTime ? formatTimeValue(endTime) : null}
+              value={endTime ? formatTime(endTime, '24h') : null}
               placeholder="--:--"
               icon={
                 <Icon

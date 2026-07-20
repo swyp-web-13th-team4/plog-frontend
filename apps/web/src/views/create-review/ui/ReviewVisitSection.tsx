@@ -1,21 +1,8 @@
-import { type DateValue, Field, Icon, type TimeValue } from '@plog/ui';
+import { Field, Icon } from '@plog/ui';
+
+import { formatDate, formatTime } from '@/shared/lib/datetime';
 
 import { type ReviewFormController } from '../model/use-create-review-page';
-
-function padTimePart(value: number) {
-  return String(value).padStart(2, '0');
-}
-
-function formatKoreanDate(value: DateValue) {
-  return `${value.year}년 ${value.month}월 ${value.date}일`;
-}
-
-function formatKoreanTime(value: TimeValue) {
-  const meridiem = value.hour < 12 ? '오전' : '오후';
-  const displayHour = value.hour % 12 || 12;
-
-  return `${meridiem} ${padTimePart(displayHour)}:${padTimePart(value.minute)}`;
-}
 
 function ReadOnlyValueForm({
   iconName,
@@ -44,18 +31,18 @@ export default function ReviewVisitSection({
       <Field label="방문 날짜">
         <ReadOnlyValueForm
           iconName="calendar"
-          value={visitDate ? formatKoreanDate(visitDate) : '-'}
+          value={visitDate ? formatDate(visitDate, 'ko') : '-'}
         />
       </Field>
       <Field label="방문 시간">
         <div className="grid grid-cols-2 gap-4">
           <ReadOnlyValueForm
             iconName="clock"
-            value={startTime ? formatKoreanTime(startTime) : '--:--'}
+            value={startTime ? formatTime(startTime, 'ko') : '--:--'}
           />
           <ReadOnlyValueForm
             iconName="clock"
-            value={endTime ? formatKoreanTime(endTime) : '--:--'}
+            value={endTime ? formatTime(endTime, 'ko') : '--:--'}
           />
         </div>
       </Field>
