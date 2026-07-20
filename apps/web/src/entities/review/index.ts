@@ -1,4 +1,5 @@
 export { createReview, getPlaceReviews } from './api/client';
+export { formatReviewDateTime } from './lib/format-review-date-time';
 export {
   REVIEW_ENVIRONMENT_GROUPS,
   REVIEW_ENVIRONMENT_ICON_NAMES,

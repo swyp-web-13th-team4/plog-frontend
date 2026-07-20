@@ -3,7 +3,7 @@
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { PlaceReviewListItem } from '@/entities/review';
+import { formatReviewDateTime, PlaceReviewListItem } from '@/entities/review';
 
 import { ImageWithFallback } from '@/shared/ui';
 
@@ -77,7 +77,7 @@ export default function ReviewItem({
               </span>
               <Divider orientation="vertical" className="h-2.5" />
               <span className="caption-md text-semantic-object-normal">
-                {review.createdAt}
+                {formatReviewDateTime(review.createdAt)}
               </span>
             </div>
           </div>
