@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import { Spinner } from '@plog/ui';
+import { Button, Spinner } from '@plog/ui';
 
 import { type PlaceLayer } from '@/entities/place';
 import { type ReviewSortType } from '@/entities/review';
@@ -36,6 +36,7 @@ export default function PlaceReviewPage({
     refetch,
     fetchNextPage,
     hasNextPage,
+    isFetchNextPageError,
     isFetchingNextPage,
   } = usePlaceReviewsQuery({
     placeId,
@@ -44,11 +45,21 @@ export default function PlaceReviewPage({
     imageOnly,
   });
 
+  const handleRetryNextPage = () => {
+    void fetchNextPage();
+  };
+
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
+    if (inView && hasNextPage && !isFetchingNextPage && !isFetchNextPageError) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [
+    inView,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetchNextPageError,
+    fetchNextPage,
+  ]);
 
   if (isPending) {
     return (
@@ -100,6 +111,25 @@ export default function PlaceReviewPage({
           {isFetchingNextPage && (
             <div className="flex items-center justify-center py-6">
               <Spinner size="large" />
+            </div>
+          )}
+
+          {isFetchNextPageError && (
+            <div
+              role="alert"
+              className="flex flex-col items-center justify-center gap-3 py-6"
+            >
+              <p className="body-sm text-semantic-object-normal">
+                리뷰를 더 불러오지 못했어요.
+              </p>
+              <Button
+                type="button"
+                size="small"
+                variant="outline"
+                onClick={handleRetryNextPage}
+              >
+                다시 시도
+              </Button>
             </div>
           )}
         </div>
