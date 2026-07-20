@@ -7,6 +7,7 @@ import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { createPostResponseSchema, feedQueryKeys } from '@/entities/feed';
+import { mapQueryKeys } from '@/entities/place';
 import { mypageQueryKeys } from '@/entities/user';
 
 import { clientApi } from '@/shared/api/client-api';
@@ -50,6 +51,7 @@ export function useCreateLogMutation({
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
         queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
+        queryClient.invalidateQueries({ queryKey: mapQueryKeys.all }),
       ]);
 
       if (!postId) {
