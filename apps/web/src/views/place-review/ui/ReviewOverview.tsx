@@ -4,13 +4,15 @@ import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { type PlaceLayer } from '@/entities/place';
-
-import { type EnvironmentIconName, type EnvironmentName } from '../model/types';
+import {
+  type ReviewEnvironmentIconName,
+  type ReviewEnvironmentName,
+} from '@/entities/review';
 
 type ReviewEnvironmentSummaryItem = {
-  environmentName: EnvironmentName;
+  environmentName: ReviewEnvironmentName;
   title: string;
-  iconName: EnvironmentIconName;
+  iconName: ReviewEnvironmentIconName;
   label: string;
   score: number;
 };

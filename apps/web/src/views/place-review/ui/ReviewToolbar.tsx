@@ -1,7 +1,7 @@
 import { Button, Icon, Select, type SelectOption } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { type ReviewSortType } from '../model/types';
+import { type ReviewSortType } from '@/entities/review';
 
 const REVIEW_SORT_OPTIONS = [
   { label: '최신순', value: 'LATEST' },

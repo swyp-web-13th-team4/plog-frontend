@@ -3,9 +3,12 @@
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { ImageWithFallback } from '@/shared/ui';
+import {
+  type ReviewEnvironmentIconName,
+  type ReviewEnvironmentName,
+} from '@/entities/review';
 
-import { type EnvironmentIconName, type EnvironmentName } from '../model/types';
+import { ImageWithFallback } from '@/shared/ui';
 
 const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
@@ -13,9 +16,9 @@ const AUTHOR_ACTION_OPTIONS = [
 ];
 
 type ReviewEnvironmentItem = {
-  environmentName: EnvironmentName;
+  environmentName: ReviewEnvironmentName;
   title: string;
-  iconName: EnvironmentIconName;
+  iconName: ReviewEnvironmentIconName;
   label: string;
 };
 

@@ -8,3 +8,16 @@ export type CreateReviewRequest = {
   environments: Record<ReviewEnvironmentName, ReviewEnvironmentScore>;
   content?: string;
 };
+
+export type ReviewSortType = 'LATEST' | 'OLDEST' | 'RATING_HIGH' | 'RATING_LOW';
+
+export type ReviewPlaceType = 'record' | 'bookmark';
+
+export type GetPlaceReviewsRequest = {
+  placeId: number;
+  placeType: ReviewPlaceType;
+  cursor?: string;
+  limit: number;
+  imageOnly: boolean;
+  sortType: ReviewSortType;
+};

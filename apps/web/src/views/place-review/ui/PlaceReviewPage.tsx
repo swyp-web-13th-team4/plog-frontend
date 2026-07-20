@@ -3,10 +3,10 @@
 import { useState } from 'react';
 
 import { type PlaceLayer } from '@/entities/place';
+import { type ReviewSortType } from '@/entities/review';
 
 import { NavigationHeader } from '@/shared/ui';
 
-import { type ReviewSortType } from '../model/types';
 import ReviewList from './ReviewList';
 import ReviewOverview from './ReviewOverview';
 import ReviewToolbar from './ReviewToolbar';
@@ -19,6 +19,7 @@ type PlaceReviewPageProps = {
 export default function PlaceReviewPage({ placeType }: PlaceReviewPageProps) {
   const [sortType, setSortType] = useState<ReviewSortType>('LATEST');
   const [imageOnly, setImageOnly] = useState(false);
+
   return (
     <>
       <NavigationHeader title="리뷰" />
