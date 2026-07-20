@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 import { Spinner } from '@plog/ui';
 
@@ -25,20 +26,39 @@ export default function PlaceReviewPage({
 }: PlaceReviewPageProps) {
   const [sortType, setSortType] = useState<ReviewSortType>('LATEST');
   const [imageOnly, setImageOnly] = useState(false);
-  const { data, isPending, isError, refetch } = usePlaceReviewsQuery({
+  const { ref, inView } = useInView({
+    rootMargin: '0px 0px 200px 0px',
+  });
+  const {
+    data,
+    isPending,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = usePlaceReviewsQuery({
     placeId,
     placeType,
     sortType,
     imageOnly,
   });
 
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
   if (isPending) {
     return (
       <>
         <NavigationHeader title="리뷰" />
-        <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
-          <Spinner size="large" />
-        </section>
+        <main className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
+          <section className="flex flex-1 items-center justify-center">
+            <Spinner size="large" />
+          </section>
+        </main>
       </>
     );
   }
@@ -47,9 +67,11 @@ export default function PlaceReviewPage({
     return (
       <>
         <NavigationHeader title="리뷰" />
-        <section className="flex min-h-screen items-center justify-center pt-[var(--spacing-header)]">
-          <FetchErrorEmptyState onRetry={refetch} />
-        </section>
+        <main className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
+          <section className="flex flex-1 items-center justify-center">
+            <FetchErrorEmptyState onRetry={refetch} />
+          </section>
+        </main>
       </>
     );
   }
@@ -72,6 +94,14 @@ export default function PlaceReviewPage({
             onShowImageChange={setImageOnly}
           />
           <ReviewList reviews={reviews} imageOnly={imageOnly} />
+
+          {hasNextPage && <div ref={ref} aria-hidden="true" />}
+
+          {isFetchingNextPage && (
+            <div className="flex items-center justify-center py-6">
+              <Spinner size="large" />
+            </div>
+          )}
         </div>
       </div>
     </>
