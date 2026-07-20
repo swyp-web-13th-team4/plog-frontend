@@ -66,3 +66,7 @@ export function updateReview(
     reviewResponseSchema,
   );
 }
+
+export function deleteReview(reviewId: number) {
+  return clientApi.delete<unknown>(`/feed/review/${reviewId}`);
+}

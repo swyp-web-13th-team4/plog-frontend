@@ -1,5 +1,6 @@
 export {
   createReview,
+  deleteReview,
   getPlaceReviews,
   getReviewForEdit,
   updateReview,

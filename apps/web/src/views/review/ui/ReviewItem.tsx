@@ -7,7 +7,10 @@ import { cn } from '@plog/utils';
 
 import { formatReviewDateTime, PlaceReviewListItem } from '@/entities/review';
 
+import { dialog } from '@/shared/lib/dialog';
 import { ImageWithFallback } from '@/shared/ui';
+
+import { useDeleteReviewMutation } from '../model/use-delete-review-mutation';
 
 const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
@@ -40,9 +43,22 @@ export default function ReviewItem({
   review: PlaceReviewListItem;
 }) {
   const router = useRouter();
+  const deleteReviewMutation = useDeleteReviewMutation();
   const visibleImages = review.imageUrls.slice(0, 3);
 
-  const handleAuthorAction = (value: string) => {
+  const handleAuthorAction = async (value: string) => {
+    if (value === 'delete') {
+      const confirmed = await dialog.confirm({
+        message: '리뷰를 삭제하시겠어요?',
+        description: '삭제한 리뷰는 복구할 수 없어요.',
+        confirmLabel: '삭제',
+        cancelLabel: '취소',
+      });
+
+      if (confirmed) deleteReviewMutation.mutate(review.reviewId);
+      return;
+    }
+
     if (value === 'edit') {
       router.push(`/review/${review.reviewId}/edit`);
     }
@@ -74,6 +90,7 @@ export default function ReviewItem({
                       className="text-semantic-object-normal"
                     />
                   }
+                  disabled={deleteReviewMutation.isPending}
                   onSelect={handleAuthorAction}
                 />
               )}
