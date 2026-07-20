@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 
-import { PlaceReview } from '@/views/place-review';
+import { PlaceReview } from '@/views/review';
 
 type Props = {
   params: Promise<{ placeId: string }>;
