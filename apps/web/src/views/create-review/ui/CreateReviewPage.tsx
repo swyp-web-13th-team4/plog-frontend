@@ -20,37 +20,66 @@ import ReviewVisitSection from './ReviewVisitSection';
 import SectionDivider from './SectionDivider';
 
 export default function CreateReviewPage({
+  editReviewId,
   postId,
   initialPost,
 }: {
+  editReviewId?: string;
   postId: string;
   initialPost?: FeedDetailResponse;
 }) {
   const router = useRouter();
-  const controller = useCreateReviewPage({ postId, initialPost });
+  const controller = useCreateReviewPage({
+    editReviewId,
+    postId,
+    initialPost,
+  });
   const {
+    editReviewQuery,
     handleBack,
     handleCancelLeave,
     handleConfirmLeave,
     handleSubmitReview,
+    hasInvalidEditReviewId,
+    isEditMode,
     isSubmittingReview,
     leaveConfirmOpen,
     reviewPostQuery,
   } = controller;
 
   useEffect(() => {
-    if (!reviewPostQuery.isPrivateAccessError) return;
+    if (isEditMode || !reviewPostQuery.isPrivateAccessError) return;
 
     router.replace('/feed');
-  }, [reviewPostQuery.isPrivateAccessError, router]);
+  }, [isEditMode, reviewPostQuery.isPrivateAccessError, router]);
 
-  if (reviewPostQuery.isPending) {
+  if (hasInvalidEditReviewId) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center px-6">
+        <FetchErrorEmptyState onRetry={() => router.back()} />
+      </div>
+    );
+  }
+
+  if (isEditMode && editReviewQuery.isPending) {
     return <CreateReviewLoading />;
   }
 
-  if (reviewPostQuery.isPrivateAccessError) return null;
+  if (isEditMode && editReviewQuery.isError) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center px-6">
+        <FetchErrorEmptyState onRetry={() => editReviewQuery.refetch()} />
+      </div>
+    );
+  }
 
-  if (reviewPostQuery.isError) {
+  if (!isEditMode && reviewPostQuery.isPending) {
+    return <CreateReviewLoading />;
+  }
+
+  if (!isEditMode && reviewPostQuery.isPrivateAccessError) return null;
+
+  if (!isEditMode && reviewPostQuery.isError) {
     return (
       <div className="flex min-h-screen items-center justify-center px-6 pt-[var(--spacing-header)]">
         <FetchErrorEmptyState onRetry={() => reviewPostQuery.refetch()} />
@@ -82,11 +111,18 @@ export default function CreateReviewPage({
             fullWidth
             disabled={isSubmittingReview}
           >
-            {isSubmittingReview ? '등록 중...' : '리뷰 등록하기'}
+            {isSubmittingReview
+              ? isEditMode
+                ? '저장 중...'
+                : '등록 중...'
+              : isEditMode
+                ? '저장'
+                : '리뷰 등록하기'}
           </Button>
         </section>
       </form>
       <LeaveReviewDialog
+        isEditMode={isEditMode}
         open={leaveConfirmOpen}
         onCancel={handleCancelLeave}
         onConfirm={handleConfirmLeave}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   type FieldErrors,
   type FieldPath,
@@ -27,13 +27,20 @@ import {
 
 import { parseStudyDate } from '@/shared/lib/study-date';
 
+import { editReviewFormValues } from './mapper';
 import { reviewResolver } from './resolver';
-import { type ReviewFormValues, type ReviewRatingScore } from './types';
+import {
+  type ReviewFormValues,
+  type ReviewRatingScore,
+  type ReviewSubmitValues,
+} from './types';
 import { useCreateReviewMutation } from './use-create-review-mutation';
+import { useEditReviewQuery } from './use-edit-review-query';
 import {
   getInvalidSubmitFeedback,
   useReviewInvalidFocus,
 } from './use-invalid-form-focus';
+import { useUpdateReviewMutation } from './use-update-review-mutation';
 
 const initialReviewValues: ReviewFormValues = {
   rating: null,
@@ -48,9 +55,11 @@ const initialReviewValues: ReviewFormValues = {
 };
 
 export function useCreateReviewPage({
+  editReviewId,
   postId,
   initialPost,
 }: {
+  editReviewId?: string;
   postId: string;
   initialPost?: FeedDetailResponse;
 }) {
@@ -65,10 +74,25 @@ export function useCreateReviewPage({
   const invalidFocus = useReviewInvalidFocus();
 
   const numericPostId = Number(postId);
+  const numericEditReviewId = editReviewId ? Number(editReviewId) : null;
+  const normalizedEditReviewId =
+    numericEditReviewId !== null &&
+    Number.isInteger(numericEditReviewId) &&
+    numericEditReviewId > 0
+      ? numericEditReviewId
+      : null;
+  const isEditMode = normalizedEditReviewId !== null;
+  const hasInvalidEditReviewId = editReviewId !== undefined && !isEditMode;
   const reviewPostQuery = useFeedDetailQuery(numericPostId, initialPost);
   const post = reviewPostQuery.data;
+  const editReviewQuery = useEditReviewQuery(normalizedEditReviewId);
+  const editReview = editReviewQuery.data?.review;
+  const hasRestoredEditFormRef = useRef(false);
   const createReviewMutation = useCreateReviewMutation({
     postId: numericPostId,
+  });
+  const updateReviewMutation = useUpdateReviewMutation({
+    reviewId: normalizedEditReviewId,
   });
 
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
@@ -76,10 +100,11 @@ export function useCreateReviewPage({
   const {
     register,
     handleSubmit,
+    reset,
     setValue,
     control,
     formState: { errors, isSubmitted },
-  } = useForm<ReviewFormValues>({
+  } = useForm<ReviewFormValues, unknown, ReviewSubmitValues>({
     resolver: reviewResolver,
     defaultValues: initialReviewValues,
     mode: 'onChange',
@@ -116,6 +141,19 @@ export function useCreateReviewPage({
     onPhotosChange: handlePhotosChange,
   });
 
+  useEffect(() => {
+    if (
+      !isEditMode ||
+      !editReviewQuery.data ||
+      hasRestoredEditFormRef.current
+    ) {
+      return;
+    }
+
+    hasRestoredEditFormRef.current = true;
+    reset(editReviewFormValues(editReviewQuery.data));
+  }, [editReviewQuery.data, isEditMode, reset]);
+
   const handleBack = () => {
     setLeaveConfirmOpen(true);
   };
@@ -125,6 +163,11 @@ export function useCreateReviewPage({
   };
 
   const handleConfirmLeave = () => {
+    if (isEditMode) {
+      router.back();
+      return;
+    }
+
     router.push('/feed');
   };
 
@@ -155,7 +198,12 @@ export function useCreateReviewPage({
     }
   };
 
-  const handleValidSubmit = (values: ReviewFormValues) => {
+  const handleValidSubmit = (values: ReviewSubmitValues) => {
+    if (isEditMode) {
+      updateReviewMutation.mutate(values);
+      return;
+    }
+
     createReviewMutation.mutate(values);
   };
 
@@ -166,7 +214,8 @@ export function useCreateReviewPage({
 
   return {
     contentsField,
-    endTime: post?.endedAt ?? null,
+    editReviewQuery,
+    endTime: post?.endedAt ?? editReview?.endedAt ?? null,
     environmentValues,
     errors,
     focusTargets: invalidFocus.focusTargets,
@@ -180,17 +229,25 @@ export function useCreateReviewPage({
     handlePhotoMaxCountExceeded,
     handleRemovePhoto,
     handleSubmitReview,
-    isSubmittingReview: createReviewMutation.isPending,
+    hasInvalidEditReviewId,
+    isEditMode,
+    isSubmittingReview: isEditMode
+      ? updateReviewMutation.isPending
+      : createReviewMutation.isPending,
     leaveConfirmOpen,
     photos,
-    placeImageSrc: post?.postImages?.[0] ?? null,
-    placeName: post?.placeName ?? '방문한 장소',
+    placeImageSrc: post?.postImages?.[0] ?? editReview?.placeProfileUrl ?? null,
+    placeName: post?.placeName ?? editReview?.placeName ?? '방문한 장소',
     rating,
     reviewPostQuery,
     reviewText,
     setRating: handleRatingChange,
-    startTime: post?.startedAt ?? null,
-    visitDate: post?.studyDate ? parseStudyDate(post.studyDate) : null,
+    startTime: post?.startedAt ?? editReview?.startedAt ?? null,
+    visitDate: post?.studyDate
+      ? parseStudyDate(post.studyDate)
+      : editReview?.studyDate
+        ? parseStudyDate(editReview.studyDate)
+        : null,
   };
 }
 

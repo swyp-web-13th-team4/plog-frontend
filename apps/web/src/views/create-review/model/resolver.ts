@@ -1,7 +1,7 @@
 import { type FieldErrors, type Resolver } from 'react-hook-form';
 
 import { reviewSchema } from './schema';
-import { type ReviewFormValues } from './types';
+import { type ReviewFormValues, type ReviewSubmitValues } from './types';
 
 type ReviewParseError = Extract<
   ReturnType<typeof reviewSchema.safeParse>,
@@ -29,7 +29,11 @@ function getFieldErrors(
   );
 }
 
-export const reviewResolver: Resolver<ReviewFormValues> = async (values) => {
+export const reviewResolver: Resolver<
+  ReviewFormValues,
+  unknown,
+  ReviewSubmitValues
+> = async (values) => {
   const result = reviewSchema.safeParse(values);
 
   if (result.success) {

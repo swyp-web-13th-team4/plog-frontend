@@ -9,6 +9,10 @@ export type CreateReviewRequest = {
   content?: string;
 };
 
+export type UpdateReviewRequest = CreateReviewRequest & {
+  keepImageIds: number[];
+};
+
 export type ReviewSortType = 'LATEST' | 'OLDEST' | 'RATING_HIGH' | 'RATING_LOW';
 
 export type ReviewPlaceType = 'record' | 'bookmark';

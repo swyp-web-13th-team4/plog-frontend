@@ -1,4 +1,9 @@
-export { createReview, getPlaceReviews } from './api/client';
+export {
+  createReview,
+  getPlaceReviews,
+  getReviewForEdit,
+  updateReview,
+} from './api/client';
 export { formatReviewDateTime } from './lib/format-review-date-time';
 export {
   REVIEW_ENVIRONMENT_GROUPS,
@@ -13,6 +18,7 @@ export {
 } from './model/environment';
 export { reviewQueryKeys } from './model/query-keys';
 export {
+  type EditReviewResponse,
   type PlaceReviewEnvironmentItem,
   type PlaceReviewEnvironmentSummary,
   type PlaceReviewListItem,
@@ -22,6 +28,7 @@ export {
   type ReviewResponse,
 } from './model/schemas';
 export {
+  editReviewResponseSchema,
   placeReviewEnvironmentItemSchema,
   placeReviewEnvironmentSummarySchema,
   placeReviewListItemSchema,
@@ -37,4 +44,5 @@ export type {
   GetPlaceReviewsRequest,
   ReviewPlaceType,
   ReviewSortType,
+  UpdateReviewRequest,
 } from './model/types';

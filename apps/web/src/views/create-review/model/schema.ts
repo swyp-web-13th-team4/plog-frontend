@@ -32,6 +32,9 @@ const environmentValuesSchema = z
 export const reviewSchema = z.object({
   rating: ratingScoreSchema,
   environmentValues: environmentValuesSchema,
-  contents: z.string().trim(),
+  contents: z
+    .string()
+    .trim()
+    .max(300, { message: '리뷰는 300자 이하로 작성해 주세요.' }),
   photos: z.array(z.custom<PhotoPreview>()),
 });

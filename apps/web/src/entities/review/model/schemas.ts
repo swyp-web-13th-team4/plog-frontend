@@ -26,6 +26,53 @@ export const reviewResponseSchema = z.object({
 
 export type ReviewResponse = z.infer<typeof reviewResponseSchema>;
 
+const reviewEditTimeSchema = z.object({
+  hour: z.number(),
+  minute: z.number(),
+});
+
+const reviewEditImageSchema = z.object({
+  id: z.number(),
+  url: z.string(),
+});
+
+const reviewScoreSchema = z.union([
+  z.literal(1),
+  z.literal(2),
+  z.literal(3),
+  z.literal(4),
+  z.literal(5),
+]);
+
+export const editReviewResponseSchema = z.object({
+  review: z.object({
+    placeProfileUrl: z.string(),
+    placeName: z.string(),
+    rating: reviewScoreSchema,
+    studyDate: z.string(),
+    startedAt: reviewEditTimeSchema,
+    endedAt: reviewEditTimeSchema,
+    environments: z.object({
+      spaceSize: reviewScoreSchema,
+      noiseLevel: reviewScoreSchema,
+      congestionLevel: reviewScoreSchema,
+      focusLevel: reviewScoreSchema,
+    }),
+    content: z.string().nullable(),
+  }),
+  images: z
+    .union([
+      z.array(reviewEditImageSchema),
+      z.object({
+        images: z.array(reviewEditImageSchema),
+        total: z.number(),
+      }),
+    ])
+    .optional(),
+});
+
+export type EditReviewResponse = z.infer<typeof editReviewResponseSchema>;
+
 export const placeReviewEnvironmentItemSchema = z.object({
   environmentName: reviewEnvironmentNameSchema,
   title: z.string(),

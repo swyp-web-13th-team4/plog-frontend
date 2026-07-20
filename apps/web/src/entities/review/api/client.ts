@@ -2,10 +2,15 @@ import { clientApi } from '@/shared/api/client-api';
 import { createMultipartRequest } from '@/shared/api/create-multipart-request';
 
 import {
+  editReviewResponseSchema,
   placeReviewPageResponseSchema,
   reviewResponseSchema,
 } from '../model/schemas';
-import { CreateReviewRequest, GetPlaceReviewsRequest } from '../model/types';
+import {
+  CreateReviewRequest,
+  GetPlaceReviewsRequest,
+  UpdateReviewRequest,
+} from '../model/types';
 
 export function createReview(
   postId: number,
@@ -40,5 +45,24 @@ export function getPlaceReviews({
   return clientApi.get(
     `/reviews/${placeType}/${placeId}?${params}`,
     placeReviewPageResponseSchema,
+  );
+}
+
+export function getReviewForEdit(reviewId: number) {
+  return clientApi.get(
+    `/feed/review/${reviewId}/edit`,
+    editReviewResponseSchema,
+  );
+}
+
+export function updateReview(
+  reviewId: number,
+  data: UpdateReviewRequest,
+  images: File[] = [],
+) {
+  return clientApi.put(
+    `/feed/review/${reviewId}`,
+    createMultipartRequest(data, images.length ? { images } : undefined),
+    reviewResponseSchema,
   );
 }

@@ -1,5 +1,7 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
@@ -37,7 +39,14 @@ export default function ReviewItem({
 }: {
   review: PlaceReviewListItem;
 }) {
+  const router = useRouter();
   const visibleImages = review.imageUrls.slice(0, 3);
+
+  const handleAuthorAction = (value: string) => {
+    if (value === 'edit') {
+      router.push(`/review/${review.reviewId}/edit`);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtle py-6 last:border-b-0">
@@ -65,7 +74,7 @@ export default function ReviewItem({
                       className="text-semantic-object-normal"
                     />
                   }
-                  onSelect={() => {}}
+                  onSelect={handleAuthorAction}
                 />
               )}
             </div>
