@@ -47,7 +47,7 @@ function ReviewStatBar({
         <Divider orientation="vertical" className="h-3" />
         <button
           type="button"
-          className="caption-md text-semantic-object-normal underline"
+          className="caption-md cursor-pointer text-semantic-object-normal underline"
           onClick={showAllReviews}
         >
           리뷰 {hasReview ? reviewCount.toLocaleString() : 0}개
