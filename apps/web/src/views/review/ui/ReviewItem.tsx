@@ -7,7 +7,11 @@ import { useRouter } from 'next/navigation';
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { formatReviewDateTime, PlaceReviewListItem } from '@/entities/review';
+import {
+  formatReviewDateTime,
+  isReviewEditable,
+  PlaceReviewListItem,
+} from '@/entities/review';
 
 import { dialog } from '@/shared/lib/dialog';
 import { ImageWithFallback } from '@/shared/ui';
@@ -19,6 +23,8 @@ const AUTHOR_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
   { label: '수정하기', value: 'edit' },
 ];
+
+const DELETE_ACTION_OPTIONS = [{ label: '삭제하기', value: 'delete' }];
 
 function RatingStars({ rating }: { rating: number }) {
   return (
@@ -50,6 +56,10 @@ export default function ReviewItem({
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null,
   );
+  const canEdit = isReviewEditable(review.createdAt);
+  const authorActionOptions = canEdit
+    ? AUTHOR_ACTION_OPTIONS
+    : DELETE_ACTION_OPTIONS;
   const visibleImages = review.imageUrls.slice(0, 3);
 
   const handleAuthorAction = async (value: string) => {
@@ -65,7 +75,7 @@ export default function ReviewItem({
       return;
     }
 
-    if (value === 'edit') {
+    if (value === 'edit' && canEdit) {
       router.push(`/review/${review.reviewId}/edit`);
     }
   };
@@ -89,7 +99,7 @@ export default function ReviewItem({
               {review.isAuthor && (
                 <Dropdown
                   aria-label="리뷰 관리 메뉴"
-                  items={AUTHOR_ACTION_OPTIONS}
+                  items={authorActionOptions}
                   trigger={
                     <Icon
                       name="more-vertical"

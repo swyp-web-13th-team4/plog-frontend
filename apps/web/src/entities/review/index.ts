@@ -6,6 +6,7 @@ export {
   updateReview,
 } from './api/client';
 export { formatReviewDateTime } from './lib/format-review-date-time';
+export { isReviewEditable } from './lib/is-review-editable';
 export {
   REVIEW_ENVIRONMENT_GROUPS,
   REVIEW_ENVIRONMENT_ICON_NAMES,
