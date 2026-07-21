@@ -25,7 +25,7 @@ export default function CreateReviewPage({
   initialPost,
 }: {
   editReviewId?: string;
-  postId: string;
+  postId?: string;
   initialPost?: FeedDetailResponse;
 }) {
   const router = useRouter();
@@ -41,6 +41,7 @@ export default function CreateReviewPage({
     handleConfirmLeave,
     handleSubmitReview,
     hasInvalidEditReviewId,
+    hasInvalidPostId,
     isEditMode,
     isSubmittingReview,
     leaveConfirmOpen,
@@ -54,6 +55,14 @@ export default function CreateReviewPage({
   }, [isEditMode, reviewPostQuery.isPrivateAccessError, router]);
 
   if (hasInvalidEditReviewId) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center px-6">
+        <FetchErrorEmptyState onRetry={() => router.back()} />
+      </div>
+    );
+  }
+
+  if (hasInvalidPostId) {
     return (
       <div className="flex min-h-dvh items-center justify-center px-6">
         <FetchErrorEmptyState onRetry={() => router.back()} />

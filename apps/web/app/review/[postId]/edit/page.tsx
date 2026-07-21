@@ -17,5 +17,5 @@ export default async function Page({
     notFound();
   }
 
-  return <CreateReviewPage postId="" editReviewId={reviewId} />;
+  return <CreateReviewPage editReviewId={reviewId} />;
 }

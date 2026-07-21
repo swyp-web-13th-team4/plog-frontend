@@ -60,7 +60,7 @@ export function useCreateReviewPage({
   initialPost,
 }: {
   editReviewId?: string;
-  postId: string;
+  postId?: string;
   initialPost?: FeedDetailResponse;
 }) {
   const router = useRouter();
@@ -73,7 +73,13 @@ export function useCreateReviewPage({
 
   const invalidFocus = useReviewInvalidFocus();
 
-  const numericPostId = Number(postId);
+  const numericPostId = postId === undefined ? null : Number(postId);
+  const normalizedPostId =
+    numericPostId !== null &&
+    Number.isInteger(numericPostId) &&
+    numericPostId > 0
+      ? numericPostId
+      : null;
   const numericEditReviewId = editReviewId ? Number(editReviewId) : null;
   const normalizedEditReviewId =
     numericEditReviewId !== null &&
@@ -83,13 +89,17 @@ export function useCreateReviewPage({
       : null;
   const isEditMode = normalizedEditReviewId !== null;
   const hasInvalidEditReviewId = editReviewId !== undefined && !isEditMode;
-  const reviewPostQuery = useFeedDetailQuery(numericPostId, initialPost);
+  const hasInvalidPostId = !isEditMode && normalizedPostId === null;
+  const reviewPostQuery = useFeedDetailQuery(
+    isEditMode ? null : normalizedPostId,
+    initialPost,
+  );
   const post = reviewPostQuery.data;
   const editReviewQuery = useEditReviewQuery(normalizedEditReviewId);
   const editReview = editReviewQuery.data?.review;
   const hasRestoredEditFormRef = useRef(false);
   const createReviewMutation = useCreateReviewMutation({
-    postId: numericPostId,
+    postId: normalizedPostId,
   });
   const updateReviewMutation = useUpdateReviewMutation({
     reviewId: normalizedEditReviewId,
@@ -230,6 +240,7 @@ export function useCreateReviewPage({
     handleRemovePhoto,
     handleSubmitReview,
     hasInvalidEditReviewId,
+    hasInvalidPostId,
     isEditMode,
     isSubmittingReview: isEditMode
       ? updateReviewMutation.isPending
