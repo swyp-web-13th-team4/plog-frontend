@@ -25,7 +25,7 @@ export default function LeaveReviewDialog({
           <Dialog.Description>
             {isEditMode
               ? '수정 중인 내용은 저장되지 않고 사라져요.'
-              : '한 번 나가면 리뷰를 다시 작성할 수 없어요'}
+              : '한 번 나가면 리뷰를 다시 작성할 수 없어요.'}
           </Dialog.Description>
         </Dialog.Header>
         <Dialog.Actions>
