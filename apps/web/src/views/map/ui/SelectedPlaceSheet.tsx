@@ -25,10 +25,12 @@ export type SelectedPlaceSheetProps = {
 function ReviewStatBar({
   reviewCount,
   averageRating,
+  hasReview,
   showAllReviews,
 }: {
   reviewCount: number;
   averageRating: number;
+  hasReview: boolean;
   showAllReviews: () => void;
 }) {
   return (
@@ -36,11 +38,11 @@ function ReviewStatBar({
       <Icon
         name="star-filled"
         size={16}
-        className="text-semantic-theme-amber-neutral"
+        className={`${hasReview ? 'text-semantic-theme-amber-neutral' : 'text-semantic-object-subtle'}`}
       />
       <div className="flex items-center gap-1.5">
         <span className="label-sm text-semantic-object-bold">
-          {averageRating?.toFixed(2)}
+          {hasReview ? averageRating.toFixed(2) : '0.0'}
         </span>
         <Divider orientation="vertical" className="h-3" />
         <button
@@ -48,7 +50,7 @@ function ReviewStatBar({
           className="caption-md text-semantic-object-normal underline"
           onClick={showAllReviews}
         >
-          리뷰 {reviewCount?.toLocaleString()}개
+          리뷰 {hasReview ? reviewCount.toLocaleString() : 0}개
         </button>
       </div>
     </div>
@@ -185,6 +187,7 @@ export default function SelectedPlaceSheet({
                 <ReviewStatBar
                   reviewCount={place.reviewCount}
                   averageRating={place.averageRating}
+                  hasReview={place.reviewCount > 0}
                   showAllReviews={onViewReviews}
                 />
                 <PlaceStatBar place={place} isRecord={isRecord} />
