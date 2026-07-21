@@ -3,6 +3,7 @@
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { mapQueryKeys } from '@/entities/place';
 import { deleteReview, reviewQueryKeys } from '@/entities/review';
 
 export function useDeleteReviewMutation() {
@@ -17,9 +18,14 @@ export function useDeleteReviewMutation() {
         exact: true,
       });
 
-      await queryClient.invalidateQueries({
-        queryKey: reviewQueryKeys.lists(),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: reviewQueryKeys.lists(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: mapQueryKeys.pinDetailAll(),
+        }),
+      ]);
 
       toast({ type: 'success', description: '리뷰가 삭제되었어요.' });
     },

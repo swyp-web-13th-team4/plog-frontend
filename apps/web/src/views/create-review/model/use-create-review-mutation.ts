@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { mapQueryKeys } from '@/entities/place';
 import { createReview, reviewQueryKeys } from '@/entities/review';
 
 import { createReviewForm, getReviewPhotoFiles } from './mapper';
@@ -23,9 +24,15 @@ export function useCreateReviewMutation({ postId }: { postId: number }) {
         getReviewPhotoFiles(values),
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: reviewQueryKeys.lists(),
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: reviewQueryKeys.lists(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: mapQueryKeys.pinDetailAll(),
+        }),
+      ]);
+
       toast({ type: 'success', description: '리뷰가 등록되었어요.' });
       router.replace(`/feed`);
     },
