@@ -3,6 +3,7 @@ import { z } from 'zod';
 import {
   REVIEW_ENVIRONMENT_ICON_NAMES,
   REVIEW_ENVIRONMENT_NAMES,
+  REVIEW_ENVIRONMENT_SCORES,
 } from './environment';
 
 export const reviewEnvironmentNameSchema = z.enum(REVIEW_ENVIRONMENT_NAMES);
@@ -36,13 +37,9 @@ const reviewEditImageSchema = z.object({
   url: z.string(),
 });
 
-const reviewScoreSchema = z.union([
-  z.literal(1),
-  z.literal(2),
-  z.literal(3),
-  z.literal(4),
-  z.literal(5),
-]);
+const reviewScoreSchema = z.union(
+  REVIEW_ENVIRONMENT_SCORES.map((score) => z.literal(score)),
+);
 
 export const editReviewResponseSchema = z.object({
   review: z.object({
@@ -53,11 +50,13 @@ export const editReviewResponseSchema = z.object({
     startedAt: reviewEditTimeSchema,
     endedAt: reviewEditTimeSchema,
     environments: z.object({
-      spaceSize: reviewScoreSchema,
-      noiseLevel: reviewScoreSchema,
-      congestionLevel: reviewScoreSchema,
-      focusLevel: reviewScoreSchema,
-    }),
+      ...Object.fromEntries(
+        REVIEW_ENVIRONMENT_NAMES.map((name) => [name, reviewScoreSchema]),
+      ),
+    } as Record<
+      (typeof REVIEW_ENVIRONMENT_NAMES)[number],
+      typeof reviewScoreSchema
+    >),
     content: z.string().nullable(),
   }),
   images: z
