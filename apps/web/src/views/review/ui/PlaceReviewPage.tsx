@@ -65,11 +65,11 @@ export default function PlaceReviewPage({
     return (
       <>
         <NavigationHeader title="리뷰" />
-        <main className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
-          <section className="flex flex-1 items-center justify-center">
+        <section className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
+          <div className="flex flex-1 items-center justify-center">
             <Spinner size="large" />
-          </section>
-        </main>
+          </div>
+        </section>
       </>
     );
   }
@@ -78,11 +78,11 @@ export default function PlaceReviewPage({
     return (
       <>
         <NavigationHeader title="리뷰" />
-        <main className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
-          <section className="flex flex-1 items-center justify-center">
+        <section className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
+          <div className="flex flex-1 items-center justify-center">
             <FetchErrorEmptyState onRetry={refetch} />
-          </section>
-        </main>
+          </div>
+        </section>
       </>
     );
   }
@@ -93,7 +93,7 @@ export default function PlaceReviewPage({
   return (
     <>
       <NavigationHeader title="리뷰" />
-      <div className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
+      <section className="flex min-h-dvh flex-col pt-[var(--spacing-header)]">
         <ReviewOverview placeType={placeType} summary={summary} />
         <div className="h-2 w-full bg-semantic-bg-deep" />
 
@@ -133,7 +133,7 @@ export default function PlaceReviewPage({
             </div>
           )}
         </div>
-      </div>
+      </section>
     </>
   );
 }
