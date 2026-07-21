@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { CreateReviewContent } from '@/views/create-review';
-import CreateReviewLoading from '@/views/create-review/ui/CreateReviewLoading';
+import { CreateReviewContent } from '@/views/review-create';
+import CreateReviewLoading from '@/views/review-create/ui/CreateReviewLoading';
 
 export const metadata: Metadata = { title: '리뷰 작성' };
 

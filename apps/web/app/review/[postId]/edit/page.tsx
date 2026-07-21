@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { CreateReviewPage } from '@/views/create-review';
+import { CreateReviewPage } from '@/views/review-create';
 
 export const metadata: Metadata = { title: '리뷰 수정' };
 
