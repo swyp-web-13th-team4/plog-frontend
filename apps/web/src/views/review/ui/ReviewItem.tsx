@@ -7,12 +7,9 @@ import { useRouter } from 'next/navigation';
 import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import {
-  formatReviewDateTime,
-  isReviewEditable,
-  PlaceReviewListItem,
-} from '@/entities/review';
+import { isReviewEditable, PlaceReviewListItem } from '@/entities/review';
 
+import { formatShortDateTime } from '@/shared/lib/datetime';
 import { dialog } from '@/shared/lib/dialog';
 import { ImageWithFallback } from '@/shared/ui';
 
@@ -119,7 +116,7 @@ export default function ReviewItem({
               </span>
               <Divider orientation="vertical" className="h-2.5" />
               <span className="caption-md text-semantic-object-normal">
-                {formatReviewDateTime(review.createdAt)}
+                {formatShortDateTime(review.createdAt) ?? review.createdAt}
               </span>
             </div>
           </div>

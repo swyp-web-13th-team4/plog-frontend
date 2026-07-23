@@ -109,6 +109,20 @@ export function formatTime({ hour, minute }: TimeValue, preset: TimePreset) {
   return `${meridiem} ${pad(hour % 12 || 12)}:${pad(minute)}`;
 }
 
+export function formatShortDateTime(input: string | number | Date) {
+  const parsed = parseServerTime(input);
+  if (Number.isNaN(parsed.getTime())) return null;
+
+  const kst = new Date(parsed.getTime() + KST_OFFSET_MS);
+  const year = String(kst.getUTCFullYear()).slice(-2);
+  const month = pad(kst.getUTCMonth() + 1);
+  const date = pad(kst.getUTCDate());
+  const hour = pad(kst.getUTCHours());
+  const minute = pad(kst.getUTCMinutes());
+
+  return `${year}.${month}.${date} ${hour}:${minute}`;
+}
+
 export function formatTimeAgo(time: Date | string | number) {
   const start = parseServerTime(time);
   if (Number.isNaN(start.getTime())) return '';
