@@ -7,19 +7,13 @@ import { ToastProvider } from '@plog/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+import { QUERY_CLIENT_DEFAULT_OPTIONS } from '@/shared/lib/query-client';
+
 import GlobalDialog from './GlobalDialog';
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 60 * 1000,
-            refetchOnWindowFocus: false,
-          },
-        },
-      }),
+    () => new QueryClient({ defaultOptions: QUERY_CLIENT_DEFAULT_OPTIONS }),
   );
 
   useEffect(() => {

@@ -1,10 +1,14 @@
 import { notFound, redirect } from 'next/navigation';
 
-import { type FeedDetailResponse } from '@/entities/feed';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+
 import { getFeedPost } from '@/entities/feed/api/server';
+import { feedQueryKeys } from '@/entities/feed/model/query-keys';
+import { type FeedDetailResponse } from '@/entities/feed/model/schemas';
 
 import { API_ERROR_CODE } from '@/shared/api/constants';
 import { ApiResponseError } from '@/shared/api/response.utils';
+import { getQueryClient } from '@/shared/lib/query-client';
 
 import CreateReviewPage from './CreateReviewPage';
 
@@ -13,10 +17,14 @@ export default async function CreateReviewContent({
 }: {
   postId: string;
 }) {
-  let initialPost: FeedDetailResponse | undefined;
+  const queryClient = getQueryClient();
+  let post: FeedDetailResponse;
 
   try {
-    initialPost = await getFeedPost(postId);
+    post = await queryClient.fetchQuery({
+      queryKey: feedQueryKeys.detail(postId),
+      queryFn: () => getFeedPost(postId),
+    });
   } catch (error) {
     console.error('[CreateReviewContent] 서버 게시글 조회 실패', error);
     if (
@@ -29,11 +37,15 @@ export default async function CreateReviewContent({
     return <CreateReviewPage postId={postId} />;
   }
 
-  if (!initialPost) notFound();
+  if (!post) notFound();
 
-  if (!initialPost.isAuthor) {
+  if (!post.isAuthor) {
     redirect('/feed');
   }
 
-  return <CreateReviewPage postId={postId} initialPost={initialPost} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CreateReviewPage postId={postId} />
+    </HydrationBoundary>
+  );
 }

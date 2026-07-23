@@ -5,9 +5,9 @@ import { type ReactNode } from 'react';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
+import { formatDuration } from '@/shared/lib/datetime';
 import { ImageWithFallback } from '@/shared/ui';
 
-import { formatStudyDuration } from '../lib/format';
 import { type FeedItemBase } from '../model/types';
 import ExpandablePlaceTags from './ExpandablePlaceTags';
 
@@ -81,7 +81,7 @@ export default function FeedListItem({
               className="text-semantic-object-subtle"
             />
             <span className="caption-md text-semantic-object-bold">
-              {formatStudyDuration(feed.studyTime)}
+              {formatDuration(feed.studyTime, 'ko')}
             </span>
           </div>
           <div className="flex items-center gap-1">

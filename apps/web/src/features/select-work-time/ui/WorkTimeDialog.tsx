@@ -4,6 +4,8 @@ import { type ReactElement, useState } from 'react';
 
 import { Button, Dialog, TimePicker, type TimeValue } from '@plog/ui';
 
+import { formatTime } from '@/shared/lib/datetime';
+
 type WorkTimeDialogProps = {
   value: TimeValue | null;
   onChange: (value: TimeValue) => void;
@@ -11,14 +13,6 @@ type WorkTimeDialogProps = {
   label: string;
   name: string;
 };
-
-function padTimePart(value: number) {
-  return String(value).padStart(2, '0');
-}
-
-export function formatTimeValue(value: TimeValue) {
-  return `${padTimePart(value.hour)}:${padTimePart(value.minute)}`;
-}
 
 function getCurrentTimeValue(): TimeValue {
   const now = new Date();
@@ -59,7 +53,7 @@ export default function WorkTimeDialog({
       <input
         type="hidden"
         name={name}
-        value={value ? formatTimeValue(value) : ''}
+        value={value ? formatTime(value, '24h') : ''}
       />
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <Dialog.Trigger render={children} />

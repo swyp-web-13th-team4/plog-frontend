@@ -6,8 +6,6 @@ import { useRouter } from 'next/navigation';
 
 import { Button } from '@plog/ui';
 
-import { type FeedDetailResponse } from '@/entities/feed';
-
 import { FetchErrorEmptyState, NavigationHeader } from '@/shared/ui';
 
 import { useCreateReviewPage } from '../model/use-create-review-page';
@@ -22,17 +20,14 @@ import SectionDivider from './SectionDivider';
 export default function CreateReviewPage({
   editReviewId,
   postId,
-  initialPost,
 }: {
   editReviewId?: string;
   postId?: string;
-  initialPost?: FeedDetailResponse;
 }) {
   const router = useRouter();
   const controller = useCreateReviewPage({
     editReviewId,
     postId,
-    initialPost,
   });
   const {
     editReviewQuery,

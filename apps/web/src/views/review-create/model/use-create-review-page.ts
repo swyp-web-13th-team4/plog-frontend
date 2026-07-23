@@ -19,13 +19,13 @@ import {
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
 
-import { type FeedDetailResponse, useFeedDetailQuery } from '@/entities/feed';
+import { useFeedDetailQuery } from '@/entities/feed';
 import {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
 } from '@/entities/review';
 
-import { parseStudyDate } from '@/shared/lib/study-date';
+import { parseDate } from '@/shared/lib/datetime';
 
 import { editReviewFormValues } from './mapper';
 import { reviewResolver } from './resolver';
@@ -57,11 +57,9 @@ const initialReviewValues: ReviewFormValues = {
 export function useCreateReviewPage({
   editReviewId,
   postId,
-  initialPost,
 }: {
   editReviewId?: string;
   postId?: string;
-  initialPost?: FeedDetailResponse;
 }) {
   const router = useRouter();
   const { toast } = useToast();
@@ -92,7 +90,6 @@ export function useCreateReviewPage({
   const hasInvalidPostId = !isEditMode && normalizedPostId === null;
   const reviewPostQuery = useFeedDetailQuery(
     isEditMode ? null : normalizedPostId,
-    initialPost,
   );
   const post = reviewPostQuery.data;
   const editReviewQuery = useEditReviewQuery(normalizedEditReviewId);
@@ -255,9 +252,9 @@ export function useCreateReviewPage({
     setRating: handleRatingChange,
     startTime: post?.startedAt ?? editReview?.startedAt ?? null,
     visitDate: post?.studyDate
-      ? parseStudyDate(post.studyDate)
+      ? parseDate(post.studyDate)
       : editReview?.studyDate
-        ? parseStudyDate(editReview.studyDate)
+        ? parseDate(editReview.studyDate)
         : null,
   };
 }

@@ -13,14 +13,12 @@ import { LikeButton } from '@/features/toggle-like';
 
 import {
   ExpandablePlaceTags,
-  type FeedDetailItem,
   FeedStatsSummary,
-  formatDate,
-  formatTimeAgo,
   PrivacySettingSection,
   useFeedDetailQuery,
 } from '@/entities/feed';
 
+import { formatDate, formatTimeAgo } from '@/shared/lib/datetime';
 import { dialog } from '@/shared/lib/dialog';
 import { FetchErrorEmptyState } from '@/shared/ui';
 
@@ -64,15 +62,7 @@ function CarouselNavButton({
   );
 }
 
-type FeedDetailCardProps = {
-  postId: string;
-  initialPost?: FeedDetailItem;
-};
-
-export default function FeedDetailCard({
-  postId,
-  initialPost,
-}: FeedDetailCardProps) {
+export default function FeedDetailCard({ postId }: { postId: string }) {
   const [carouselState, setCarouselState] = useState({
     isBeginning: true,
     isEnd: true,
@@ -89,7 +79,7 @@ export default function FeedDetailCard({
     isPending,
     isPrivateAccessError,
     refetch,
-  } = useFeedDetailQuery(numericPostId, initialPost);
+  } = useFeedDetailQuery(numericPostId);
 
   const deletePostMutation = useDeletePostMutation();
   const privateAccessHandledRef = useRef(false);
@@ -318,7 +308,7 @@ export default function FeedDetailCard({
             {post.contents}
           </p>
           <span className="caption-md self-end text-semantic-object-subtle">
-            {formatDate(post.createAt)}
+            {formatDate(post.createAt, 'ko')}
           </span>
         </div>
       </div>

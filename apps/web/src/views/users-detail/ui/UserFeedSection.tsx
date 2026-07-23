@@ -23,6 +23,7 @@ import {
   ScrollToTopButton,
 } from '@/shared/ui';
 
+import { DEFAULT_POST_SORT } from '../model/constants';
 import { useFeedProfilePostsQuery } from '../model/use-feed-profile-posts-query';
 import UserFeedListSkeleton from './UserFeedListSkeleton';
 
@@ -36,7 +37,7 @@ export default function UserFeedSection({ userId }: { userId: string }) {
   const router = useRouter();
 
   const { topRef, visible: scrollToTopVisible } = useScrollToTop();
-  const [sort, setSort] = useState<PostSortType>('latest');
+  const [sort, setSort] = useState<PostSortType>(DEFAULT_POST_SORT);
 
   const {
     data: feeds = [],

@@ -2,10 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import {
-  type FeedDetailResponse,
-  feedDetailResponseSchema,
-} from '@/entities/feed/model/schemas';
+import { feedDetailResponseSchema } from '@/entities/feed/model/schemas';
 
 import { clientApi } from '@/shared/api/client-api';
 import { API_ERROR_CODE } from '@/shared/api/constants';
@@ -24,10 +21,7 @@ function isPrivateAccessError(error: unknown) {
   );
 }
 
-export function useFeedDetailQuery(
-  postId: number | null,
-  initialData?: FeedDetailResponse,
-) {
+export function useFeedDetailQuery(postId: number | null) {
   const query = useQuery({
     queryKey: feedQueryKeys.detail(postId),
     queryFn: () => {
@@ -38,7 +32,6 @@ export function useFeedDetailQuery(
       return getFeedDetail(postId);
     },
     enabled: postId !== null && Number.isInteger(postId) && postId > 0,
-    initialData,
     retry: false,
   });
 

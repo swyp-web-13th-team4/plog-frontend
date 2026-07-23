@@ -22,8 +22,10 @@ import FeedListHeader from './FeedListHeader';
 
 export default function FeedPage({
   initialData,
+  initialDataUpdatedAt,
 }: {
   initialData?: FeedMainPage;
+  initialDataUpdatedAt?: number;
 }) {
   const { topRef, visible: scrollToTopVisible } = useScrollToTop();
 
@@ -36,7 +38,7 @@ export default function FeedPage({
     isPending,
     isFetchNextPageError,
     refetch,
-  } = useInfiniteFeedQuery(initialData);
+  } = useInfiniteFeedQuery(initialData, initialDataUpdatedAt);
 
   const { ref, inView } = useInView({
     rootMargin: '0px 0px 200px 0px',

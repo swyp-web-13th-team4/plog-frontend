@@ -3,39 +3,33 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 import {
+  buildFeedListPath,
+  FEED_INITIAL_CURSOR,
+  type FeedCursor,
   type FeedMainPage,
   feedQueryKeys,
   feedResponseSchema,
+  getFeedNextCursor,
+  toFeedMainPage,
 } from '@/entities/feed';
 
 import { clientApi } from '@/shared/api/client-api';
 
-type FeedCursor = {
-  lastPostId: number | null;
-};
-
-async function getFeedPage(
-  { lastPostId }: FeedCursor = { lastPostId: null },
-): Promise<FeedMainPage> {
-  const params = new URLSearchParams();
-  if (lastPostId !== null && lastPostId !== undefined) {
-    params.set('lastPostId', String(lastPostId));
-  }
-
-  const query = params.toString();
+async function getFeedPage({
+  lastPostId,
+}: FeedCursor = FEED_INITIAL_CURSOR): Promise<FeedMainPage> {
   const data = await clientApi.get(
-    `/feed/list${query ? `?${query}` : ''}`,
+    buildFeedListPath(lastPostId),
     feedResponseSchema,
   );
 
-  return {
-    items: data.feedFindResponses,
-    lastPostId: data.lastPostId,
-    createAt: data.createdAt,
-  };
+  return toFeedMainPage(data);
 }
 
-export function useInfiniteFeedQuery(initialData?: FeedMainPage) {
+export function useInfiniteFeedQuery(
+  initialData?: FeedMainPage,
+  initialDataUpdatedAt?: number,
+) {
   return useInfiniteQuery<
     FeedMainPage,
     Error,
@@ -46,19 +40,11 @@ export function useInfiniteFeedQuery(initialData?: FeedMainPage) {
     queryKey: feedQueryKeys.all,
     queryFn: ({ pageParam }) => getFeedPage(pageParam),
     initialData: initialData
-      ? { pages: [initialData], pageParams: [{ lastPostId: 0 }] }
+      ? { pages: [initialData], pageParams: [FEED_INITIAL_CURSOR] }
       : undefined,
-    initialPageParam: {
-      lastPostId: 0,
-    },
-    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
-      if (lastPage.items.length === 0) return undefined;
-      if (lastPage.lastPostId === null) return undefined;
-      if (lastPage.lastPostId === lastPageParam.lastPostId) return undefined;
-
-      return {
-        lastPostId: lastPage.lastPostId,
-      };
-    },
+    initialDataUpdatedAt,
+    initialPageParam: FEED_INITIAL_CURSOR,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) =>
+      getFeedNextCursor(lastPage, lastPageParam),
   });
 }

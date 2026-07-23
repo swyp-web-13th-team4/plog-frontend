@@ -1,10 +1,11 @@
 export {
-  formatDate,
-  formatLikeCount,
-  formatStudyDuration,
-  formatStudyDurationShort,
-  formatTimeAgo,
-} from './lib/format';
+  buildFeedListPath,
+  FEED_INITIAL_CURSOR,
+  type FeedCursor,
+  getFeedNextCursor,
+  toFeedMainPage,
+} from './lib/feed-page';
+export { formatLikeCount } from './lib/format';
 export {
   AtmosphereAndFocus,
   EnvironmentAndComfort,
@@ -16,7 +17,7 @@ export {
   type TagCategory,
   WorkConvenience,
 } from './model/place-tag';
-export { feedQueryKeys } from './model/query-keys';
+export { feedQueryKeys, toMemberKey, toPostId } from './model/query-keys';
 export type {
   BookmarkedFeedsResponse,
   CreatePostResponse,
