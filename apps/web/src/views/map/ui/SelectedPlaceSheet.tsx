@@ -38,7 +38,11 @@ function ReviewStatBar({
       <Icon
         name="star-filled"
         size={16}
-        className={`${hasReview ? 'text-semantic-theme-amber-neutral' : 'text-semantic-object-subtle'}`}
+        className={
+          hasReview
+            ? 'text-semantic-theme-amber-neutral'
+            : 'text-semantic-object-subtle'
+        }
       />
       <div className="flex items-center gap-1.5">
         <span className="label-sm text-semantic-object-bold">
