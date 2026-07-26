@@ -12,39 +12,35 @@ import { getReviewPhotoFiles, updateReviewForm } from './mapper';
 import { type ReviewSubmitValues } from './types';
 
 type UseUpdateReviewMutationOptions = {
-  reviewId: number | null;
   onSuccess?: () => void;
 };
 
+type UpdateReviewVariables = {
+  reviewId: number;
+  values: ReviewSubmitValues;
+};
+
 export function useUpdateReviewMutation({
-  reviewId,
   onSuccess,
-}: UseUpdateReviewMutationOptions) {
+}: UseUpdateReviewMutationOptions = {}) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (values: ReviewSubmitValues) => {
-      if (reviewId === null || !Number.isFinite(reviewId)) {
-        throw new Error('수정할 리뷰를 찾을 수 없습니다.');
-      }
-
-      return updateReview(
+    mutationFn: ({ reviewId, values }: UpdateReviewVariables) =>
+      updateReview(
         reviewId,
         updateReviewForm(values),
         getReviewPhotoFiles(values),
-      );
-    },
-    onSuccess: async () => {
+      ),
+    onSuccess: async (_data, { reviewId }) => {
       onSuccess?.();
 
-      if (reviewId !== null) {
-        queryClient.removeQueries({
-          queryKey: reviewQueryKeys.edit(reviewId),
-          exact: true,
-        });
-      }
+      queryClient.removeQueries({
+        queryKey: reviewQueryKeys.edit(reviewId),
+        exact: true,
+      });
 
       await Promise.all([
         queryClient.invalidateQueries({

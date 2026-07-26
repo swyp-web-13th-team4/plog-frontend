@@ -13,9 +13,9 @@ export default async function Page({
 }: {
   params: Promise<{ postId: string }>;
 }) {
-  const { postId } = await params;
-  const id = Number(postId);
-  if (!Number.isInteger(id) || id <= 0) notFound();
+  const { postId: postIdParam } = await params;
+  const postId = Number(postIdParam);
+  if (!Number.isInteger(postId) || postId <= 0) notFound();
 
   return (
     <Suspense fallback={<CreateReviewLoading />}>

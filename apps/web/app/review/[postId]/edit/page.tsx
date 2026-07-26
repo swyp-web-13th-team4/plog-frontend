@@ -10,10 +10,10 @@ export default async function Page({
 }: {
   params: Promise<{ postId: string }>;
 }) {
-  const { postId: reviewId } = await params;
-  const numericReviewId = Number(reviewId);
+  const { postId: reviewIdParam } = await params;
+  const reviewId = Number(reviewIdParam);
 
-  if (!Number.isInteger(numericReviewId) || numericReviewId <= 0) {
+  if (!Number.isInteger(reviewId) || reviewId <= 0) {
     notFound();
   }
 

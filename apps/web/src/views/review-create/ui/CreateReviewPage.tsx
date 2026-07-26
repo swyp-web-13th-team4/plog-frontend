@@ -8,7 +8,10 @@ import { Button } from '@plog/ui';
 
 import { FetchErrorEmptyState, NavigationHeader } from '@/shared/ui';
 
-import { useCreateReviewPage } from '../model/use-create-review-page';
+import {
+  useCreateReviewPage,
+  type UseCreateReviewPageOptions,
+} from '../model/use-create-review-page';
 import CreateReviewLoading from './CreateReviewLoading';
 import LeaveReviewDialog from './LeaveReviewDialog';
 import ReviewContentSection from './ReviewContentSection';
@@ -17,26 +20,15 @@ import ReviewHeroSection from './ReviewHeroSection';
 import ReviewVisitSection from './ReviewVisitSection';
 import SectionDivider from './SectionDivider';
 
-export default function CreateReviewPage({
-  editReviewId,
-  postId,
-}: {
-  editReviewId?: string;
-  postId?: string;
-}) {
+export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
   const router = useRouter();
-  const controller = useCreateReviewPage({
-    editReviewId,
-    postId,
-  });
+  const controller = useCreateReviewPage(options);
   const {
     editReviewQuery,
     handleBack,
     handleCancelLeave,
     handleConfirmLeave,
     handleSubmitReview,
-    hasInvalidEditReviewId,
-    hasInvalidPostId,
     isEditMode,
     isSubmittingReview,
     leaveConfirmOpen,
@@ -48,22 +40,6 @@ export default function CreateReviewPage({
 
     router.replace('/feed');
   }, [isEditMode, reviewPostQuery.isPrivateAccessError, router]);
-
-  if (hasInvalidEditReviewId) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center px-6">
-        <FetchErrorEmptyState onRetry={() => router.back()} />
-      </div>
-    );
-  }
-
-  if (hasInvalidPostId) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center px-6">
-        <FetchErrorEmptyState onRetry={() => router.back()} />
-      </div>
-    );
-  }
 
   if (isEditMode && editReviewQuery.isPending) {
     return <CreateReviewLoading />;

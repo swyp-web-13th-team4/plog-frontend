@@ -54,13 +54,17 @@ const initialReviewValues: ReviewFormValues = {
   photos: [],
 };
 
-export function useCreateReviewPage({
-  editReviewId,
-  postId,
-}: {
-  editReviewId?: string;
-  postId?: string;
-}) {
+export type UseCreateReviewPageOptions =
+  | {
+      editReviewId: number;
+      postId?: undefined;
+    }
+  | {
+      editReviewId?: undefined;
+      postId: number;
+    };
+
+export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
   const router = useRouter();
   const { toast } = useToast();
   const {
@@ -71,36 +75,16 @@ export function useCreateReviewPage({
 
   const invalidFocus = useReviewInvalidFocus();
 
-  const numericPostId = postId === undefined ? null : Number(postId);
-  const normalizedPostId =
-    numericPostId !== null &&
-    Number.isInteger(numericPostId) &&
-    numericPostId > 0
-      ? numericPostId
-      : null;
-  const numericEditReviewId = editReviewId ? Number(editReviewId) : null;
-  const normalizedEditReviewId =
-    numericEditReviewId !== null &&
-    Number.isInteger(numericEditReviewId) &&
-    numericEditReviewId > 0
-      ? numericEditReviewId
-      : null;
-  const isEditMode = normalizedEditReviewId !== null;
-  const hasInvalidEditReviewId = editReviewId !== undefined && !isEditMode;
-  const hasInvalidPostId = !isEditMode && normalizedPostId === null;
-  const reviewPostQuery = useFeedDetailQuery(
-    isEditMode ? null : normalizedPostId,
-  );
+  const isEditMode = options.editReviewId !== undefined;
+  const postId = options.postId ?? null;
+  const editReviewId = options.editReviewId ?? null;
+  const reviewPostQuery = useFeedDetailQuery(postId);
   const post = reviewPostQuery.data;
-  const editReviewQuery = useEditReviewQuery(normalizedEditReviewId);
+  const editReviewQuery = useEditReviewQuery(editReviewId);
   const editReview = editReviewQuery.data?.review;
   const hasRestoredEditFormRef = useRef(false);
-  const createReviewMutation = useCreateReviewMutation({
-    postId: normalizedPostId,
-  });
-  const updateReviewMutation = useUpdateReviewMutation({
-    reviewId: normalizedEditReviewId,
-  });
+  const createReviewMutation = useCreateReviewMutation();
+  const updateReviewMutation = useUpdateReviewMutation();
 
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
@@ -206,12 +190,18 @@ export function useCreateReviewPage({
   };
 
   const handleValidSubmit = (values: ReviewSubmitValues) => {
-    if (isEditMode) {
-      updateReviewMutation.mutate(values);
+    if (options.editReviewId !== undefined) {
+      updateReviewMutation.mutate({
+        reviewId: options.editReviewId,
+        values,
+      });
       return;
     }
 
-    createReviewMutation.mutate(values);
+    createReviewMutation.mutate({
+      postId: options.postId,
+      values,
+    });
   };
 
   const handleSubmitReview = handleSubmit(
@@ -236,8 +226,6 @@ export function useCreateReviewPage({
     handlePhotoMaxCountExceeded,
     handleRemovePhoto,
     handleSubmitReview,
-    hasInvalidEditReviewId,
-    hasInvalidPostId,
     isEditMode,
     isSubmittingReview: isEditMode
       ? updateReviewMutation.isPending

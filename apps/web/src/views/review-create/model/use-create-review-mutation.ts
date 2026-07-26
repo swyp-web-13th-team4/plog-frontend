@@ -9,25 +9,25 @@ import { mapQueryKeys } from '@/entities/place';
 import { createReview, reviewQueryKeys } from '@/entities/review';
 
 import { createReviewForm, getReviewPhotoFiles } from './mapper';
-import { type ReviewFormValues } from './types';
+import { type ReviewSubmitValues } from './types';
 
-export function useCreateReviewMutation({ postId }: { postId: number | null }) {
+type CreateReviewVariables = {
+  postId: number;
+  values: ReviewSubmitValues;
+};
+
+export function useCreateReviewMutation() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (values: ReviewFormValues) => {
-      if (postId === null) {
-        throw new Error('리뷰를 등록할 게시글을 찾을 수 없습니다.');
-      }
-
-      return createReview(
+    mutationFn: ({ postId, values }: CreateReviewVariables) =>
+      createReview(
         postId,
         createReviewForm(values),
         getReviewPhotoFiles(values),
-      );
-    },
+      ),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
