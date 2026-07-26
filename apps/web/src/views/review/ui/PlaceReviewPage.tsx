@@ -10,7 +10,7 @@ import { type ReviewSortType } from '@/entities/review';
 
 import { FetchErrorEmptyState, NavigationHeader } from '@/shared/ui';
 
-import usePlaceReviewsQuery from '../model/use-place-reviews-query';
+import { usePlaceReviewsQuery } from '../model/use-place-reviews-query';
 import ReviewList from './ReviewList';
 import ReviewOverview from './ReviewOverview';
 import ReviewToolbar from './ReviewToolbar';
