@@ -16,7 +16,7 @@ type PlaceReviewQueryProps = {
 
 const LIMIT = 20;
 
-export default function usePlaceReviewsQuery({
+export function usePlaceReviewsQuery({
   placeId,
   imageOnly,
   sortType,
