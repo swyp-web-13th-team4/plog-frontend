@@ -37,9 +37,7 @@ const reviewEditImageSchema = z.object({
   url: z.string(),
 });
 
-const reviewScoreSchema = z.union(
-  REVIEW_ENVIRONMENT_SCORES.map((score) => z.literal(score)),
-);
+const reviewScoreSchema = z.literal(REVIEW_ENVIRONMENT_SCORES);
 
 export const editReviewResponseSchema = z.object({
   review: z.object({
@@ -49,14 +47,7 @@ export const editReviewResponseSchema = z.object({
     studyDate: z.string(),
     startedAt: reviewEditTimeSchema,
     endedAt: reviewEditTimeSchema,
-    environments: z.object({
-      ...Object.fromEntries(
-        REVIEW_ENVIRONMENT_NAMES.map((name) => [name, reviewScoreSchema]),
-      ),
-    } as Record<
-      (typeof REVIEW_ENVIRONMENT_NAMES)[number],
-      typeof reviewScoreSchema
-    >),
+    environments: z.record(z.enum(REVIEW_ENVIRONMENT_NAMES), reviewScoreSchema),
     content: z.string().nullable(),
   }),
   images: z
