@@ -84,9 +84,7 @@ export function editReviewFormValues({
   review,
   images,
 }: EditReviewResponse): ReviewFormValues {
-  const existingImages = Array.isArray(images)
-    ? images
-    : (images?.images ?? []);
+  const existingImages = images?.images ?? [];
 
   return {
     rating: review.rating,

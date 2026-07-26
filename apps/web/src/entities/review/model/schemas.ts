@@ -60,13 +60,10 @@ export const editReviewResponseSchema = z.object({
     content: z.string().nullable(),
   }),
   images: z
-    .union([
-      z.array(reviewEditImageSchema),
-      z.object({
-        images: z.array(reviewEditImageSchema),
-        total: z.number(),
-      }),
-    ])
+    .object({
+      images: z.array(reviewEditImageSchema),
+      total: z.number(),
+    })
     .optional(),
 });
 
