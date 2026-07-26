@@ -9,7 +9,7 @@ import { cn } from '@plog/utils';
 
 import { isReviewEditable, PlaceReviewListItem } from '@/entities/review';
 
-import { formatShortDateTime } from '@/shared/lib/datetime';
+import { formatDate } from '@/shared/lib/datetime';
 import { dialog } from '@/shared/lib/dialog';
 import { ImageWithFallback } from '@/shared/ui';
 
@@ -116,7 +116,7 @@ export default function ReviewItem({
               </span>
               <Divider orientation="vertical" className="h-2.5" />
               <span className="caption-md text-semantic-object-normal">
-                {formatShortDateTime(review.createdAt) ?? review.createdAt}
+                {formatDate(review.createdAt, 'dot') ?? review.createdAt}
               </span>
             </div>
           </div>
