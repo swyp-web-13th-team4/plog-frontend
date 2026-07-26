@@ -25,14 +25,14 @@ export type SelectedPlaceSheetProps = {
 function ReviewStatBar({
   reviewCount,
   averageRating,
-  hasReview,
   showAllReviews,
 }: {
   reviewCount: number;
   averageRating: number;
-  hasReview: boolean;
   showAllReviews: () => void;
 }) {
+  const hasReview = reviewCount > 0;
+
   return (
     <div className="flex items-center gap-1">
       <Icon
@@ -191,7 +191,6 @@ export default function SelectedPlaceSheet({
                 <ReviewStatBar
                   reviewCount={place.reviewCount}
                   averageRating={place.averageRating}
-                  hasReview={place.reviewCount > 0}
                   showAllReviews={onViewReviews}
                 />
                 <PlaceStatBar place={place} isRecord={isRecord} />
