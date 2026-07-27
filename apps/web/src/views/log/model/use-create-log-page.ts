@@ -95,6 +95,7 @@ export function useCreateLogPage(editPostId?: string) {
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
+    shouldFocusError: false,
   });
 
   const { handleSubmit, reset, setValue, getValues, trigger, control } = form;
