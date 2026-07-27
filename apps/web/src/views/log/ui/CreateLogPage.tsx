@@ -116,7 +116,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           </section>
           <SectionDivider />
           <LogReviewSection controller={controller} />
-          <LogPrivacySection controller={controller} />
+          <LogPrivacySection />
           <section className="px-6 pt-6 pb-10">
             <Button fullWidth size="large" type="submit" loading={isSubmitting}>
               {isEditMode ? '저장' : '기록하기'}

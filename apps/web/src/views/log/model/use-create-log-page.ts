@@ -6,7 +6,6 @@ import {
   type FieldPath,
   type FieldPathValue,
   useForm,
-  useWatch,
 } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
@@ -98,7 +97,7 @@ export function useCreateLogPage(editPostId?: string) {
     shouldFocusError: false,
   });
 
-  const { handleSubmit, reset, setValue, getValues, control } = form;
+  const { handleSubmit, reset, setValue, getValues } = form;
 
   const createLogMutation = useCreateLogMutation({
     onSuccess: ({ postId, values }) => {
@@ -123,12 +122,6 @@ export function useCreateLogPage(editPostId?: string) {
 
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
-
-  const [scope] = useWatch({
-    control,
-    name: ['scope'],
-  });
-  const isPublic = scope === 'PUBLIC';
 
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
     fieldName: TFieldName,
@@ -305,12 +298,9 @@ export function useCreateLogPage(editPostId?: string) {
     isEditMode,
     isPlaceSearchOpen,
     isReviewConfirmOpen,
-    isPublic,
     isSubmitting,
     reviewConfirmInfo,
     setFormValue,
-    scope,
-
     focusTargets: invalidFocus.focusTargets,
   };
 }

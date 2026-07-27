@@ -1,18 +1,18 @@
+import { useController, useFormContext } from 'react-hook-form';
+
 import { Field, Switch } from '@plog/ui';
 
 import { PrivacySettingSection } from '@/entities/feed';
 
-import { type LogFormController } from '../model/use-create-log-page';
+import { CreateLogFormValues } from '../model/types';
 
-type LogPrivacySectionProps = {
-  controller: LogFormController;
-};
-
-export default function LogPrivacySection({
-  controller,
-}: LogPrivacySectionProps) {
-  const { scope, setFormValue } = controller;
-  const isPublic = scope === 'PUBLIC';
+export default function LogPrivacySection() {
+  const { control } = useFormContext<CreateLogFormValues>();
+  const { field } = useController({
+    control,
+    name: 'scope',
+  });
+  const isPublic = field.value === 'PUBLIC';
 
   return (
     <section className="flex flex-col gap-4 px-6 pt-6 pb-10">
@@ -23,13 +23,14 @@ export default function LogPrivacySection({
       >
         <Switch
           checked={isPublic}
-          onCheckedChange={(value) =>
-            setFormValue('scope', value ? 'PUBLIC' : 'PRIVATE')
+          onCheckedChange={(checked) =>
+            field.onChange(checked ? 'PUBLIC' : 'PRIVATE')
           }
           aria-label="공개 설정"
         />
       </Field>
-      <PrivacySettingSection scope={scope} />
+
+      <PrivacySettingSection scope={field.value} />
     </section>
   );
 }
