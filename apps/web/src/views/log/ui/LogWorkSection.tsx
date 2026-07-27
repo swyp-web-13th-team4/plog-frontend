@@ -6,7 +6,7 @@ type LogWorkSessionFieldsProps = {
   controller: LogFormController;
 };
 
-export default function LogWorkSessionFields({
+export default function LogWorkSection({
   controller,
 }: LogWorkSessionFieldsProps) {
   const { focusTargets } = controller;

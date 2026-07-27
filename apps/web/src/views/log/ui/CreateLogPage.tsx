@@ -12,7 +12,7 @@ import LogBasicSection from './LogBasicSection';
 import LogPlaceSection from './LogPlaceSection';
 import LogPrivacySection from './LogPrivacySection';
 import LogReviewSection from './LogReviewSection';
-import LogWorkSessionFields from './LogWorkSessionFields';
+import LogWorkSection from './LogWorkSection';
 import PlaceSearchOverlay from './PlaceSearchOverlay';
 
 type CreateLogPageProps = {
@@ -112,7 +112,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           <SectionDivider />
           <section className="flex flex-col gap-6 px-6 py-6">
             <LogPlaceSection controller={controller} />
-            <LogWorkSessionFields controller={controller} />
+            <LogWorkSection controller={controller} />
           </section>
           <SectionDivider />
           <LogReviewSection controller={controller} />
