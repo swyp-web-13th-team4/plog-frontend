@@ -1,4 +1,4 @@
-import { RefCallback, useCallback } from 'react';
+import { type RefCallback, useCallback } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Field, Textarea } from '@plog/ui';
@@ -10,7 +10,7 @@ type LogContentFieldProps = {
   textareaRef: RefCallback<HTMLTextAreaElement>;
 };
 
-export default function LogContenetsField({
+export default function LogContentsField({
   fieldRef,
   textareaRef,
 }: LogContentFieldProps) {
@@ -20,7 +20,7 @@ export default function LogContenetsField({
     fieldState: { error },
   } = useController({ control, name: 'contents' });
   const { ref: rhfRef } = field;
-  const setTextaeaRef = useCallback(
+  const setTextareaRef = useCallback(
     (element: HTMLTextAreaElement | null) => {
       rhfRef(element);
       textareaRef(element);
@@ -33,7 +33,7 @@ export default function LogContenetsField({
       <Field label="환경 기록을 작성해 주세요" required error={error?.message}>
         <Textarea
           name={field.name}
-          ref={setTextaeaRef}
+          ref={setTextareaRef}
           value={field.value}
           onChange={(event) => {
             field.onChange(event.currentTarget.value.trimStart());

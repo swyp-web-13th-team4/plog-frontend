@@ -17,7 +17,6 @@ import {
   type CreateLogPlace,
   initialCreateLogValues,
 } from '@/features/create-log';
-import { usePhotoUpload } from '@/features/photo-upload';
 
 import { dialog } from '@/shared/lib/dialog';
 
@@ -98,16 +97,7 @@ export function useCreateLogPage(editPostId?: string) {
     reValidateMode: 'onChange',
   });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    getValues,
-    trigger,
-    control,
-    formState: { isSubmitted },
-  } = form;
+  const { handleSubmit, reset, setValue, getValues, trigger, control } = form;
 
   const createLogMutation = useCreateLogMutation({
     onSuccess: ({ postId, values }) => {
@@ -142,7 +132,6 @@ export function useCreateLogPage(editPostId?: string) {
     focusScore,
     reviewTags,
     scope,
-    photos,
   ] = useWatch({
     control,
     name: [
@@ -154,7 +143,6 @@ export function useCreateLogPage(editPostId?: string) {
       'focus',
       'placeTags',
       'scope',
-      'photos',
     ],
   });
   const isPublic = scope === 'PUBLIC';
@@ -168,19 +156,9 @@ export function useCreateLogPage(editPostId?: string) {
     });
   };
 
-  const setPhotos = useCallback(
-    (nextPhotos: CreateLogFormValues['photos']) => {
-      setValue('photos', nextPhotos, {
-        shouldValidate: isSubmitted,
-      });
-    },
-    [isSubmitted, setValue],
-  );
-
-  const { handleAddPhotos, handleRemovePhoto, clearPhotos } = usePhotoUpload({
-    photos,
-    onPhotosChange: setPhotos,
-  });
+  const clearPhotos = useCallback(() => {
+    setValue('photos', []);
+  }, [setValue]);
 
   useEffect(() => {
     if (!isEditMode || !editLogQuery.data || hasRestoredFormRef.current) return;
@@ -338,13 +316,11 @@ export function useCreateLogPage(editPostId?: string) {
     editLogQuery,
     endTime,
     focusScore,
-    handleAddPhotos,
     handleBack,
     handleClearPlaceName,
     handleClosePlaceSearch,
     handleInvalidEditBack: router.back,
     handleOpenPlaceSearch,
-    handleRemovePhoto,
     handleCreateReview,
     handleSkipReview,
     handleSelectPlaceFromSearch,
@@ -355,7 +331,6 @@ export function useCreateLogPage(editPostId?: string) {
     isReviewConfirmOpen,
     isPublic,
     isSubmitting,
-    photos,
     place,
     placeCategory,
     reviewConfirmInfo,
