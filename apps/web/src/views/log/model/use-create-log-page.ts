@@ -98,7 +98,7 @@ export function useCreateLogPage(editPostId?: string) {
     shouldFocusError: false,
   });
 
-  const { handleSubmit, reset, setValue, getValues, trigger, control } = form;
+  const { handleSubmit, reset, setValue, getValues, control } = form;
 
   const createLogMutation = useCreateLogMutation({
     onSuccess: ({ postId, values }) => {
@@ -124,18 +124,10 @@ export function useCreateLogPage(editPostId?: string) {
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
 
-  const [workDate, startTime, endTime, focusScore, reviewTags, scope] =
-    useWatch({
-      control,
-      name: [
-        'studyDate',
-        'startedAt',
-        'endedAt',
-        'focus',
-        'placeTags',
-        'scope',
-      ],
-    });
+  const [focusScore, reviewTags, scope] = useWatch({
+    control,
+    name: ['focus', 'placeTags', 'scope'],
+  });
   const isPublic = scope === 'PUBLIC';
 
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
@@ -301,7 +293,6 @@ export function useCreateLogPage(editPostId?: string) {
   return {
     form,
     editLogQuery,
-    endTime,
     focusScore,
     handleBack,
     handleClosePlaceSearch,
@@ -321,9 +312,7 @@ export function useCreateLogPage(editPostId?: string) {
     reviewTags,
     setFormValue,
     scope,
-    startTime,
-    trigger,
-    workDate,
+
     focusTargets: invalidFocus.focusTargets,
   };
 }
