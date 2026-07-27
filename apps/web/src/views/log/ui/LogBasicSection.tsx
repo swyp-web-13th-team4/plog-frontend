@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 
-import { Field, Input, Textarea } from '@plog/ui';
+import { Field, Textarea } from '@plog/ui';
 
 import { PhotoUploader, usePhotoUploadFeedback } from '@/features/photo-upload';
 
 import { type LogFormController } from '../model/use-create-log-page';
+import LogTitleField from './LogTitleField';
 
 type LogBasicSectionProps = {
   controller: LogFormController;
@@ -14,14 +15,11 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
   const {
     contents,
     contentsField,
-    errors,
     handleAddPhotos,
     handleRemovePhoto,
     photos,
     focusTargets,
     setFormValue,
-    title,
-    titleField,
   } = controller;
   const {
     contentsFieldRef,
@@ -32,19 +30,12 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
     titleInputRef,
   } = focusTargets;
   const { ref: contentsFormRef } = contentsField;
-  const { ref: titleFormRef } = titleField;
+
   const {
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
     handlePhotoMaxCountExceeded,
   } = usePhotoUploadFeedback();
-  const setTitleRef = useCallback(
-    (element: HTMLElement | null) => {
-      titleFormRef(element);
-      titleInputRef(element);
-    },
-    [titleFormRef, titleInputRef],
-  );
 
   const setContentsRef = useCallback(
     (element: HTMLTextAreaElement | null) => {
@@ -69,27 +60,14 @@ export default function LogBasicSection({ controller }: LogBasicSectionProps) {
           />
         </Field>
       </div>
-      <div ref={titleFieldRef}>
-        <Field label="제목" required error={errors.title?.message}>
-          <Input
-            {...titleField}
-            ref={setTitleRef}
-            onChange={titleField.onChange}
-            onClear={() => {
-              setFormValue('title', '');
-            }}
-            onBlur={() => setFormValue('title', (title ?? '').trim())}
-            value={(title ?? '').trimStart()}
-            placeholder="제목을 입력해 주세요."
-            maxLength={20}
-          />
-        </Field>
-      </div>
+
+      <LogTitleField fieldRef={titleFieldRef} inputRef={titleInputRef} />
+
       <div ref={contentsFieldRef}>
         <Field
           label="환경 기록을 작성해 주세요"
           required
-          error={errors.contents?.message}
+          // error={errors.contents?.message}
         >
           <Textarea
             {...contentsField}

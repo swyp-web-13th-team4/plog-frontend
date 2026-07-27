@@ -87,26 +87,6 @@ export function useCreateLogPage(editPostId?: string) {
   const { toast } = useToast();
   const hasRestoredFormRef = useRef(false);
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   reset,
-  //   setValue,
-  //   getValues,
-  //   trigger,
-  //   control,
-  //   formState: { errors, isSubmitted },
-  // } = useForm<CreateLogFormValues>({
-  //   resolver: createLogResolver,
-  //   defaultValues: {
-  //     ...initialCreateLogValues,
-  //     photos: [],
-  //     place: !isEditMode ? readMapInitialPlace() : null,
-  //   },
-  //   mode: 'onChange',
-  //   reValidateMode: 'onChange',
-  // });
-
   const form = useForm<CreateLogFormValues>({
     resolver: createLogResolver,
     defaultValues: {
@@ -126,7 +106,7 @@ export function useCreateLogPage(editPostId?: string) {
     getValues,
     trigger,
     control,
-    formState: { errors, isSubmitted },
+    formState: { isSubmitted },
   } = form;
 
   const createLogMutation = useCreateLogMutation({
@@ -153,11 +133,9 @@ export function useCreateLogPage(editPostId?: string) {
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
 
-  const titleField = register('title');
   const contentsField = register('contents');
 
   const [
-    title,
     contents,
     place,
     placeCategory,
@@ -171,7 +149,6 @@ export function useCreateLogPage(editPostId?: string) {
   ] = useWatch({
     control,
     name: [
-      'title',
       'contents',
       'place',
       'categoryCode',
@@ -366,7 +343,6 @@ export function useCreateLogPage(editPostId?: string) {
     contentsField,
     editLogQuery,
     endTime,
-    errors,
     focusScore,
     handleAddPhotos,
     handleBack,
@@ -393,8 +369,6 @@ export function useCreateLogPage(editPostId?: string) {
     setFormValue,
     scope,
     startTime,
-    title,
-    titleField,
     trigger,
     workDate,
     focusTargets: invalidFocus.focusTargets,
