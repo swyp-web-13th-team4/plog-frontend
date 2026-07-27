@@ -100,7 +100,7 @@ export function useCreateLogInvalidFocus() {
     focusField,
     focusTargets: {
       contentsFieldRef: contents.fieldRef,
-      contentsInputRef: contents.focusRef,
+      contentsTextareaRef: contents.focusRef,
       endTimeButtonRef,
       focusFieldRef: focus.fieldRef,
       focusFirstButtonRef: focus.focusRef,

@@ -133,10 +133,7 @@ export function useCreateLogPage(editPostId?: string) {
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
 
-  const contentsField = register('contents');
-
   const [
-    contents,
     place,
     placeCategory,
     workDate,
@@ -149,7 +146,6 @@ export function useCreateLogPage(editPostId?: string) {
   ] = useWatch({
     control,
     name: [
-      'contents',
       'place',
       'categoryCode',
       'studyDate',
@@ -338,9 +334,7 @@ export function useCreateLogPage(editPostId?: string) {
     : createLogMutation.isPending;
 
   return {
-    contents,
     form,
-    contentsField,
     editLogQuery,
     endTime,
     focusScore,
