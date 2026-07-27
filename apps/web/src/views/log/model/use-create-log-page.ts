@@ -124,9 +124,9 @@ export function useCreateLogPage(editPostId?: string) {
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
 
-  const [focusScore, reviewTags, scope] = useWatch({
+  const [scope] = useWatch({
     control,
-    name: ['focus', 'placeTags', 'scope'],
+    name: ['scope'],
   });
   const isPublic = scope === 'PUBLIC';
 
@@ -293,7 +293,6 @@ export function useCreateLogPage(editPostId?: string) {
   return {
     form,
     editLogQuery,
-    focusScore,
     handleBack,
     handleClosePlaceSearch,
     handleInvalidEditBack: router.back,
@@ -309,7 +308,6 @@ export function useCreateLogPage(editPostId?: string) {
     isPublic,
     isSubmitting,
     reviewConfirmInfo,
-    reviewTags,
     setFormValue,
     scope,
 

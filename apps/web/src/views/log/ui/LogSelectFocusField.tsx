@@ -1,6 +1,15 @@
 'use client';
 
-import { type KeyboardEvent, type Ref, useRef } from 'react';
+import {
+  type KeyboardEvent,
+  type Ref,
+  type RefCallback,
+  useCallback,
+  useRef,
+} from 'react';
+import { useController, useFormContext } from 'react-hook-form';
+
+import { Field } from '@plog/ui';
 
 import { type FocusLevel } from '@/features/create-log';
 
@@ -14,6 +23,8 @@ import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
+
+import { CreateLogFormValues } from '../model/types';
 
 const FOCUS_LEVEL_OPTIONS = [
   {
@@ -66,11 +77,7 @@ function assignRef<TElement>(
   }
 }
 
-export default function RatingPicker({
-  value,
-  onChange,
-  firstButtonRef,
-}: RatingPickerProps) {
+function RatingPicker({ value, onChange, firstButtonRef }: RatingPickerProps) {
   const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -130,6 +137,42 @@ export default function RatingPicker({
           );
         },
       )}
+    </div>
+  );
+}
+
+type LogSelectFocusFieldProps = {
+  fieldRef: RefCallback<HTMLDivElement>;
+  buttonRef: RefCallback<HTMLButtonElement>;
+};
+
+export default function LogSelectFocusField({
+  fieldRef,
+  buttonRef,
+}: LogSelectFocusFieldProps) {
+  const { control } = useFormContext<CreateLogFormValues>();
+  const { field } = useController({
+    control,
+    name: 'focus',
+  });
+  const { ref: rhfRef } = field;
+  const setButtonRef = useCallback(
+    (element: HTMLButtonElement | null) => {
+      rhfRef(element);
+      buttonRef(element);
+    },
+    [rhfRef, buttonRef],
+  );
+
+  return (
+    <div ref={fieldRef} className="flex flex-col gap-4">
+      <Field label="집중도를 평가해 주세요" required>
+        <RatingPicker
+          value={field.value}
+          firstButtonRef={setButtonRef}
+          onChange={field.onChange}
+        />
+      </Field>
     </div>
   );
 }
