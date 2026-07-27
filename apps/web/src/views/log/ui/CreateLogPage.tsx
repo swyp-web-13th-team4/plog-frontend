@@ -1,5 +1,7 @@
 'use client';
 
+import { FormProvider } from 'react-hook-form';
+
 import { Button, Spinner } from '@plog/ui';
 
 import { NavigationHeader } from '@/shared/ui';
@@ -100,26 +102,28 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   return (
     <>
       {logHeader}
-      <form
-        className="bg-semantic-bg-standard pt-[var(--spacing-header)]"
-        noValidate
-        onSubmit={handleSubmitLog}
-      >
-        <LogBasicSection controller={controller} />
-        <SectionDivider />
-        <section className="flex flex-col gap-6 px-6 py-6">
-          <LogPlaceFields controller={controller} />
-          <LogWorkSessionFields controller={controller} />
-        </section>
-        <SectionDivider />
-        <LogReviewSection controller={controller} />
-        <LogPrivacySection controller={controller} />
-        <section className="px-6 pt-6 pb-10">
-          <Button fullWidth size="large" type="submit" loading={isSubmitting}>
-            {isEditMode ? '저장' : '기록하기'}
-          </Button>
-        </section>
-      </form>
+      <FormProvider {...controller.form}>
+        <form
+          className="bg-semantic-bg-standard pt-[var(--spacing-header)]"
+          noValidate
+          onSubmit={handleSubmitLog}
+        >
+          <LogBasicSection controller={controller} />
+          <SectionDivider />
+          <section className="flex flex-col gap-6 px-6 py-6">
+            <LogPlaceFields controller={controller} />
+            <LogWorkSessionFields controller={controller} />
+          </section>
+          <SectionDivider />
+          <LogReviewSection controller={controller} />
+          <LogPrivacySection controller={controller} />
+          <section className="px-6 pt-6 pb-10">
+            <Button fullWidth size="large" type="submit" loading={isSubmitting}>
+              {isEditMode ? '저장' : '기록하기'}
+            </Button>
+          </section>
+        </form>
+      </FormProvider>
       {isPlaceSearchOpen && (
         <div className="fixed inset-0 z-10 mx-auto max-w-layout">
           <PlaceSearchOverlay
