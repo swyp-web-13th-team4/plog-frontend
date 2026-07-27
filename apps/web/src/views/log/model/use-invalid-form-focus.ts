@@ -49,7 +49,7 @@ export function useCreateLogInvalidFocus() {
   const photos = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const title = useScrollFocusTarget<HTMLDivElement, HTMLInputElement>();
   const contents = useScrollFocusTarget<HTMLDivElement, HTMLTextAreaElement>();
-  const place = useScrollFocusTarget<HTMLDivElement, HTMLElement>();
+  const place = useScrollFocusTarget<HTMLDivElement, HTMLInputElement>();
   const categoryCode = useScrollFocusTarget<
     HTMLDivElement,
     HTMLButtonElement

@@ -124,28 +124,18 @@ export function useCreateLogPage(editPostId?: string) {
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
 
-  const [
-    place,
-    placeCategory,
-    workDate,
-    startTime,
-    endTime,
-    focusScore,
-    reviewTags,
-    scope,
-  ] = useWatch({
-    control,
-    name: [
-      'place',
-      'categoryCode',
-      'studyDate',
-      'startedAt',
-      'endedAt',
-      'focus',
-      'placeTags',
-      'scope',
-    ],
-  });
+  const [workDate, startTime, endTime, focusScore, reviewTags, scope] =
+    useWatch({
+      control,
+      name: [
+        'studyDate',
+        'startedAt',
+        'endedAt',
+        'focus',
+        'placeTags',
+        'scope',
+      ],
+    });
   const isPublic = scope === 'PUBLIC';
 
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
@@ -167,10 +157,6 @@ export function useCreateLogPage(editPostId?: string) {
     hasRestoredFormRef.current = true;
     reset(editFormValues(editLogQuery.data));
   }, [editLogQuery.data, isEditMode, reset]);
-
-  const handleClearPlaceName = () => {
-    setFormValue('place', null);
-  };
 
   const handleOpenPlaceSearch = () => {
     setIsPlaceSearchOpen(true);
@@ -318,7 +304,6 @@ export function useCreateLogPage(editPostId?: string) {
     endTime,
     focusScore,
     handleBack,
-    handleClearPlaceName,
     handleClosePlaceSearch,
     handleInvalidEditBack: router.back,
     handleOpenPlaceSearch,
@@ -332,8 +317,6 @@ export function useCreateLogPage(editPostId?: string) {
     isReviewConfirmOpen,
     isPublic,
     isSubmitting,
-    place,
-    placeCategory,
     reviewConfirmInfo,
     reviewTags,
     setFormValue,
