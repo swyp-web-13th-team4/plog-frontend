@@ -6,7 +6,7 @@ type LogPlaceFieldsProps = {
   controller: LogFormController;
 };
 
-export default function LogPlaceFields({ controller }: LogPlaceFieldsProps) {
+export default function LogPlaceSection({ controller }: LogPlaceFieldsProps) {
   const { handleOpenPlaceSearch, focusTargets } = controller;
   const {
     placeCategoryButtonRef,

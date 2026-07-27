@@ -9,7 +9,7 @@ import { NavigationHeader } from '@/shared/ui';
 import { useCreateLogPage } from '../model/use-create-log-page';
 import DecisionReviewModal from './DecisionReviewModal';
 import LogBasicSection from './LogBasicSection';
-import LogPlaceFields from './LogPlaceFields';
+import LogPlaceSection from './LogPlaceSection';
 import LogPrivacySection from './LogPrivacySection';
 import LogReviewSection from './LogReviewSection';
 import LogWorkSessionFields from './LogWorkSessionFields';
@@ -111,7 +111,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           <LogBasicSection controller={controller} />
           <SectionDivider />
           <section className="flex flex-col gap-6 px-6 py-6">
-            <LogPlaceFields controller={controller} />
+            <LogPlaceSection controller={controller} />
             <LogWorkSessionFields controller={controller} />
           </section>
           <SectionDivider />
