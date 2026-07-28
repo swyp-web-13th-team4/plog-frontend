@@ -1,5 +1,5 @@
 import { type RefCallback, useCallback } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field, Icon } from '@plog/ui';
 
@@ -8,7 +8,7 @@ import { SelectTriggerButton } from '@/features/select-trigger-button';
 
 import { PLACE_CATEGORIES } from '@/entities/place';
 
-import { CreateLogFormValues } from '../../model/types';
+import { type CreateLogFormValues } from '../../model/types';
 
 type PlaceCategoryFieldProps = {
   buttonRef: RefCallback<HTMLButtonElement>;

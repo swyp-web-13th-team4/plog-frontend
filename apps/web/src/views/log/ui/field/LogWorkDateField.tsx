@@ -1,4 +1,4 @@
-import { RefCallback, useCallback } from 'react';
+import { type RefCallback, useCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Field, Icon } from '@plog/ui';
@@ -8,7 +8,7 @@ import { WorkDateDialog } from '@/features/select-work-date';
 
 import { formatDate } from '@/shared/lib/datetime';
 
-import { CreateLogFormValues } from '../../model/types';
+import { type CreateLogFormValues } from '../../model/types';
 
 type LogWorkDateFieldProps = {
   inputRef: RefCallback<HTMLDivElement>;

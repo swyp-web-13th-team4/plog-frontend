@@ -24,7 +24,7 @@ import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
 
-import { CreateLogFormValues } from '../../model/types';
+import { type CreateLogFormValues } from '../../model/types';
 
 const FOCUS_LEVEL_OPTIONS = [
   {

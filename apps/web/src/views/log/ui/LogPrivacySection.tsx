@@ -4,7 +4,7 @@ import { Field, Switch } from '@plog/ui';
 
 import { PrivacySettingSection } from '@/entities/feed';
 
-import { CreateLogFormValues } from '../model/types';
+import { type CreateLogFormValues } from '../model/types';
 
 export default function LogPrivacySection() {
   const { field } = useController<CreateLogFormValues, 'scope'>({
