@@ -150,9 +150,7 @@ export default function LogSelectFocusField({
   fieldRef,
   buttonRef,
 }: LogSelectFocusFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
-  const { field } = useController({
-    control,
+  const { field } = useController<CreateLogFormValues, 'focus'>({
     name: 'focus',
   });
   const { ref: rhfRef } = field;

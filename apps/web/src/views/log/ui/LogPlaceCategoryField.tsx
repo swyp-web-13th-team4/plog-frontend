@@ -19,9 +19,7 @@ export default function LogPlaceCategoryField({
   buttonRef,
   fieldRef,
 }: PlaceCategoryFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
-  const { field } = useController({
-    control,
+  const { field } = useController<CreateLogFormValues, 'categoryCode'>({
     name: 'categoryCode',
   });
   const { ref: rhfRef } = field;

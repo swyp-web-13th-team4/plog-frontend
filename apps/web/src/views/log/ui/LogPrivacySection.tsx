@@ -1,4 +1,4 @@
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field, Switch } from '@plog/ui';
 
@@ -7,9 +7,7 @@ import { PrivacySettingSection } from '@/entities/feed';
 import { CreateLogFormValues } from '../model/types';
 
 export default function LogPrivacySection() {
-  const { control } = useFormContext<CreateLogFormValues>();
-  const { field } = useController({
-    control,
+  const { field } = useController<CreateLogFormValues, 'scope'>({
     name: 'scope',
   });
   const isPublic = field.value === 'PUBLIC';

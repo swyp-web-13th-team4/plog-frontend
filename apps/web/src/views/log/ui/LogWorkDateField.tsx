@@ -1,5 +1,5 @@
 import { RefCallback, useCallback } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field, Icon } from '@plog/ui';
 
@@ -19,9 +19,7 @@ export default function LogWorkDateField({
   inputRef,
   buttonRef,
 }: LogWorkDateFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
-  const { field } = useController({
-    control,
+  const { field } = useController<CreateLogFormValues, 'studyDate'>({
     name: 'studyDate',
   });
   const { ref: rhfRef } = field;

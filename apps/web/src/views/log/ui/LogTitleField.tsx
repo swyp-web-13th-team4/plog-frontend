@@ -1,5 +1,5 @@
 import { type RefCallback, useCallback } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field, Input } from '@plog/ui';
 
@@ -14,11 +14,10 @@ export default function LogTitleField({
   fieldRef,
   inputRef,
 }: LogTitleFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
   const {
     field,
     fieldState: { error },
-  } = useController({ control, name: 'title' });
+  } = useController<CreateLogFormValues, 'title'>({ name: 'title' });
   const { ref: rhfRef } = field;
   const setInputRef = useCallback(
     (element: HTMLInputElement | null) => {

@@ -1,5 +1,5 @@
 import { RefCallback, useCallback } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Button, Chip, Field, Icon } from '@plog/ui';
 
@@ -20,9 +20,7 @@ export default function LogSelectReviewTagsField({
   fieldRef,
   buttonRef,
 }: LogSelectReviewTagsFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
-  const { field } = useController({
-    control,
+  const { field } = useController<CreateLogFormValues, 'placeTags'>({
     name: 'placeTags',
   });
   const { ref: rhfRef } = field;

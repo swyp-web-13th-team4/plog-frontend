@@ -1,5 +1,5 @@
 import { type RefCallback, useCallback } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field, Textarea } from '@plog/ui';
 
@@ -14,11 +14,10 @@ export default function LogContentsField({
   fieldRef,
   textareaRef,
 }: LogContentFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
   const {
     field,
     fieldState: { error },
-  } = useController({ control, name: 'contents' });
+  } = useController<CreateLogFormValues, 'contents'>({ name: 'contents' });
   const { ref: rhfRef } = field;
   const setTextareaRef = useCallback(
     (element: HTMLTextAreaElement | null) => {

@@ -1,5 +1,5 @@
 import { type RefCallback, useCallback } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field, Input } from '@plog/ui';
 
@@ -16,9 +16,7 @@ export default function LogPlaceField({
   inputRef,
   onOpenPlaceSearch,
 }: PlaceFieldProps) {
-  const { control } = useFormContext<CreateLogFormValues>();
-  const { field } = useController({
-    control,
+  const { field } = useController<CreateLogFormValues, 'place'>({
     name: 'place',
   });
   const { ref: rhfRef } = field;
