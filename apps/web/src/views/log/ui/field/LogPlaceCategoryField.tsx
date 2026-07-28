@@ -8,7 +8,7 @@ import { SelectTriggerButton } from '@/features/select-trigger-button';
 
 import { PLACE_CATEGORIES } from '@/entities/place';
 
-import { CreateLogFormValues } from '../model/types';
+import { CreateLogFormValues } from '../../model/types';
 
 type PlaceCategoryFieldProps = {
   buttonRef: RefCallback<HTMLButtonElement>;

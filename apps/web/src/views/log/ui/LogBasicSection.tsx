@@ -1,7 +1,7 @@
 import { type LogFormController } from '../model/use-create-log-page';
-import LogContentsField from './LogContentsField';
-import LogPhotoField from './LogPhotoField';
-import LogTitleField from './LogTitleField';
+import LogPhotoField from './field//LogPhotoField';
+import LogContentsField from './field/LogContentsField';
+import LogTitleField from './field/LogTitleField';
 
 type LogBasicSectionProps = {
   controller: LogFormController;

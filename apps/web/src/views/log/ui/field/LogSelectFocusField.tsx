@@ -7,7 +7,7 @@ import {
   useCallback,
   useRef,
 } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 import { Field } from '@plog/ui';
 
@@ -24,7 +24,7 @@ import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
 
-import { CreateLogFormValues } from '../model/types';
+import { CreateLogFormValues } from '../../model/types';
 
 const FOCUS_LEVEL_OPTIONS = [
   {

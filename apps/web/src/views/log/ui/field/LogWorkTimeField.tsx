@@ -8,7 +8,7 @@ import { WorkTimeDialog } from '@/features/select-work-time';
 
 import { formatTime } from '@/shared/lib/datetime';
 
-import { CreateLogFormValues } from '../model/types';
+import { CreateLogFormValues } from '../../model/types';
 
 type LogWorkTimeName = 'startedAt' | 'endedAt';
 

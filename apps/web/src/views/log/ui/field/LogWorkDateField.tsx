@@ -8,7 +8,7 @@ import { WorkDateDialog } from '@/features/select-work-date';
 
 import { formatDate } from '@/shared/lib/datetime';
 
-import { CreateLogFormValues } from '../model/types';
+import { CreateLogFormValues } from '../../model/types';
 
 type LogWorkDateFieldProps = {
   inputRef: RefCallback<HTMLDivElement>;

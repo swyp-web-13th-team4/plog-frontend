@@ -7,7 +7,7 @@ import { ReviewTagsSheet } from '@/features/select-review-tags';
 
 import { PLACE_TAG_LABELS } from '@/entities/feed';
 
-import { CreateLogFormValues } from '../model/types';
+import { CreateLogFormValues } from '../../model/types';
 
 type ReviewTag = CreateLogFormValues['placeTags'][number];
 

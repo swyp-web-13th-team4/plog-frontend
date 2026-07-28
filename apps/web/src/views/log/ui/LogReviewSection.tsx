@@ -1,6 +1,6 @@
 import { type LogFormController } from '../model/use-create-log-page';
-import LogSelectFocusField from './LogSelectFocusField';
-import LogSelectReviewTagsField from './LogSelectReviewTagsField';
+import LogSelectFocusField from './field/LogSelectFocusField';
+import LogSelectReviewTagsField from './field/LogSelectReviewTagsField';
 
 type LogReviewSectionProps = {
   controller: LogFormController;

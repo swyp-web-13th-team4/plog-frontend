@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form';
 
 import { Field, Input } from '@plog/ui';
 
-import { CreateLogFormValues } from '../model/types';
+import { CreateLogFormValues } from '../../model/types';
 
 type PlaceFieldProps = {
   fieldRef: RefCallback<HTMLDivElement>;

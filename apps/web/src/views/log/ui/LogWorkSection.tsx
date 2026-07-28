@@ -1,6 +1,6 @@
 import { type LogFormController } from '../model/use-create-log-page';
-import LogWorkDateField from './LogWorkDateField';
-import LogWorkTimeField from './LogWorkTimeField';
+import LogWorkDateField from './field/LogWorkDateField';
+import LogWorkTimeField from './field/LogWorkTimeField';
 
 type LogWorkSessionFieldsProps = {
   controller: LogFormController;

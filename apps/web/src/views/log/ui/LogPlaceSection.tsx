@@ -1,6 +1,6 @@
 import { type LogFormController } from '../model/use-create-log-page';
-import LogPlaceCategoryField from './LogPlaceCategoryField';
-import LogPlaceField from './LogPlaceField';
+import LogPlaceCategoryField from './field/LogPlaceCategoryField';
+import LogPlaceField from './field/LogPlaceField';
 
 type LogPlaceFieldsProps = {
   controller: LogFormController;
