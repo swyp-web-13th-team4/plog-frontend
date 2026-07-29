@@ -13,7 +13,7 @@ export default function ReviewList({
 }) {
   if (reviews.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center bg-semantic-bg-deep">
+      <div className="flex min-h-dvw flex-1 items-center justify-center bg-semantic-bg-deep">
         {imageOnly ? <ReviewImageDataEmptyState /> : <ReviewDataEmptyState />}
       </div>
     );
