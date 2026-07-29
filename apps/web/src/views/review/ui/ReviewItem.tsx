@@ -32,7 +32,7 @@ function RatingStars({ rating }: { rating: number }) {
           name="star-filled"
           boxed={false}
           className={cn(
-            'size-4 mobile:size-3.5',
+            'size-4',
             index < rating
               ? 'text-semantic-theme-amber-normal'
               : 'text-semantic-object-subtler',
@@ -89,7 +89,7 @@ export default function ReviewItem({
 
           <div className="flex flex-1 flex-col gap-1.5">
             <div className="flex items-center justify-between gap-2">
-              <p className="label-lg text-semantic-object-boldest mobile:text-semantic-label-md mobile:leading-semantic-label-md mobile:font-semantic-label-md">
+              <p className="label-lg text-semantic-object-boldest">
                 {review.nickname}
               </p>
 
@@ -111,7 +111,7 @@ export default function ReviewItem({
 
             <div className="flex items-center gap-1">
               <RatingStars rating={review.rating} />
-              <span className="label-md text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+              <span className="label-md text-semantic-object-boldest">
                 {review.rating.toFixed(1)}
               </span>
               <Divider orientation="vertical" className="h-2.5" />
@@ -122,23 +122,23 @@ export default function ReviewItem({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 rounded-xl border border-semantic-stroke-subtle bg-primitive-gray-20 px-6 py-5 mobile:gap-4 mobile:p-4">
+        <div className="grid grid-cols-2 gap-3 rounded-xl border border-semantic-stroke-subtle bg-primitive-gray-20 px-6 py-5">
           {review.environments.map((environment) => (
             <div
               key={environment.environmentName}
-              className="flex items-center gap-2.5 mobile:gap-1.5"
+              className="flex items-center gap-2.5"
             >
               <div className="flex items-center gap-1">
                 <Icon
                   name={environment.iconName}
                   boxed={false}
-                  className="size-3.5 text-semantic-object-subtle mobile:size-3"
+                  className="size-3.5 text-semantic-object-subtle"
                 />
-                <span className="label-sm mobile:leading-semantic-caption-sm mobile:font-semantic-caption-sm text-semantic-object-boldest mobile:text-primitive-11">
+                <span className="label-sm text-semantic-object-boldest">
                   {environment.title}
                 </span>
               </div>
-              <span className="label-sm mobile:leading-semantic-caption-sm mobile:font-semantic-caption-sm text-semantic-object-bold mobile:text-primitive-11">
+              <span className="label-sm text-semantic-object-bold">
                 {environment.label}
               </span>
             </div>
@@ -146,7 +146,7 @@ export default function ReviewItem({
         </div>
 
         {review.content && (
-          <p className="body-sm whitespace-pre-wrap text-semantic-object-bold mobile:text-semantic-body-xs mobile:leading-semantic-body-xs mobile:font-semantic-body-xs">
+          <p className="body-sm whitespace-pre-wrap text-semantic-object-bold">
             {review.content}
           </p>
         )}

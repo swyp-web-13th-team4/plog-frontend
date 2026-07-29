@@ -63,12 +63,12 @@ export default function ReviewOverview({
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="title-xs text-semantic-object-boldest mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
+          <span className="title-xs text-semantic-object-boldest">
             방문자 리뷰
           </span>
           <p
             className={cn(
-              'title-xs mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg',
+              'title-xs',
               isRecord
                 ? 'text-semantic-accent-normal'
                 : 'text-semantic-theme-sky-normal',
@@ -82,9 +82,9 @@ export default function ReviewOverview({
           <Icon
             name="star-filled"
             boxed={false}
-            className="size-5.5 text-semantic-object-bold mobile:size-4.5"
+            className="size-5.5 text-semantic-object-bold"
           />
-          <span className="label-xl text-semantic-object-bold mobile:text-semantic-label-lg mobile:leading-semantic-label-lg mobile:font-semantic-label-lg">
+          <span className="label-xl text-semantic-object-bold">
             {summary?.averageRating.toFixed(2) ?? Number(0).toFixed(1)}
           </span>
         </div>
@@ -106,7 +106,7 @@ export default function ReviewOverview({
                   size={16}
                   className="text-semantic-object-subtle"
                 />
-                <span className="label-sm text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+                <span className="label-sm text-semantic-object-boldest">
                   {environment.title}
                 </span>
               </div>
@@ -127,10 +127,10 @@ export default function ReviewOverview({
                   style={{ width: `${percentage}%` }}
                 />
                 <div className="relative flex h-full items-center justify-between gap-2 px-4 py-3">
-                  <span className="label-sm text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+                  <span className="label-sm text-semantic-object-boldest">
                     {environment.label}
                   </span>
-                  <span className="label-sm shrink-0 text-semantic-object-boldest mobile:text-semantic-caption-md mobile:leading-semantic-caption-md mobile:font-semantic-caption-md">
+                  <span className="label-sm shrink-0 text-semantic-object-boldest">
                     {environment.count.toLocaleString()}명
                   </span>
                 </div>
