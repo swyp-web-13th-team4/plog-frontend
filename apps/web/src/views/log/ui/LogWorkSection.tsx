@@ -1,15 +1,21 @@
-import { type LogFormController } from '../model/use-create-log-page';
+import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogWorkDateField from './field/LogWorkDateField';
 import LogWorkTimeField from './field/LogWorkTimeField';
 
 type LogWorkSessionFieldsProps = {
-  controller: LogFormController;
+  focusTargets: Pick<
+    LogFocusTargets,
+    | 'endTimeButtonRef'
+    | 'startTimeButtonRef'
+    | 'workDateButtonRef'
+    | 'workDateFieldRef'
+    | 'workTimeFieldRef'
+  >;
 };
 
 export default function LogWorkSection({
-  controller,
+  focusTargets,
 }: LogWorkSessionFieldsProps) {
-  const { focusTargets } = controller;
   const {
     endTimeButtonRef,
     startTimeButtonRef,

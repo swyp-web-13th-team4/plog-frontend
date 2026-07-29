@@ -115,7 +115,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
               focusTargets={controller.focusTargets}
               opOpenPlaceSearch={controller.handleOpenPlaceSearch}
             />
-            <LogWorkSection controller={controller} />
+            <LogWorkSection focusTargets={controller.focusTargets} />
           </section>
           <SectionDivider />
           <LogReviewSection controller={controller} />
