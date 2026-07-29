@@ -113,7 +113,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           <section className="flex flex-col gap-6 px-6 py-6">
             <LogPlaceSection
               focusTargets={controller.focusTargets}
-              opOpenPlaceSearch={controller.handleOpenPlaceSearch}
+              onOpenPlaceSearch={controller.handleOpenPlaceSearch}
             />
             <LogWorkSection focusTargets={controller.focusTargets} />
           </section>

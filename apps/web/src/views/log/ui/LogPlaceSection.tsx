@@ -2,7 +2,7 @@ import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogPlaceCategoryField from './field/LogPlaceCategoryField';
 import LogPlaceField from './field/LogPlaceField';
 
-type LogPlaceFieldsProps = {
+type LogPlaceSectionProps = {
   focusTargets: Pick<
     LogFocusTargets,
     | 'placeCategoryButtonRef'
@@ -10,13 +10,13 @@ type LogPlaceFieldsProps = {
     | 'placeFieldRef'
     | 'placeInputRef'
   >;
-  opOpenPlaceSearch: () => void;
+  onOpenPlaceSearch: () => void;
 };
 
 export default function LogPlaceSection({
   focusTargets,
-  opOpenPlaceSearch,
-}: LogPlaceFieldsProps) {
+  onOpenPlaceSearch,
+}: LogPlaceSectionProps) {
   const {
     placeCategoryButtonRef,
     placeCategoryFieldRef,
@@ -29,7 +29,7 @@ export default function LogPlaceSection({
       <LogPlaceField
         fieldRef={placeFieldRef}
         inputRef={placeInputRef}
-        onOpenPlaceSearch={opOpenPlaceSearch}
+        onOpenPlaceSearch={onOpenPlaceSearch}
       />
       <LogPlaceCategoryField
         fieldRef={placeCategoryFieldRef}

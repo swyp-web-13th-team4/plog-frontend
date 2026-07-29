@@ -2,7 +2,7 @@ import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogWorkDateField from './field/LogWorkDateField';
 import LogWorkTimeField from './field/LogWorkTimeField';
 
-type LogWorkSessionFieldsProps = {
+type LogWorkSectionprops = {
   focusTargets: Pick<
     LogFocusTargets,
     | 'endTimeButtonRef'
@@ -13,9 +13,7 @@ type LogWorkSessionFieldsProps = {
   >;
 };
 
-export default function LogWorkSection({
-  focusTargets,
-}: LogWorkSessionFieldsProps) {
+export default function LogWorkSection({ focusTargets }: LogWorkSectionprops) {
   const {
     endTimeButtonRef,
     startTimeButtonRef,
