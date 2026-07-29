@@ -187,8 +187,7 @@ export default function MapPage() {
 
   const handleViewReviews = () => {
     if (!selectedPlaceId) return;
-    const params = new URLSearchParams({ type: selectedType });
-    router.push(`/review/places/${selectedPlaceId}?${params}`);
+    router.push(`/review/places/${selectedPlaceId}`);
   };
 
   const handleCreatePost = () => {

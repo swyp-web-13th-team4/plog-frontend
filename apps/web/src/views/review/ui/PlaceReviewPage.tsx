@@ -5,7 +5,6 @@ import { useInView } from 'react-intersection-observer';
 
 import { Button, Spinner } from '@plog/ui';
 
-import { type PlaceLayer } from '@/entities/place';
 import { type ReviewSortType } from '@/entities/review';
 
 import { FetchErrorEmptyState, NavigationHeader } from '@/shared/ui';
@@ -17,7 +16,6 @@ import ReviewToolbar from './ReviewToolbar';
 
 type PlaceReviewPageProps = {
   placeId: number;
-  placeType: PlaceLayer;
 };
 
 function ReviewPageLayout({ children }: { children: ReactNode }) {
@@ -31,10 +29,7 @@ function ReviewPageLayout({ children }: { children: ReactNode }) {
   );
 }
 
-export default function PlaceReviewPage({
-  placeId,
-  placeType,
-}: PlaceReviewPageProps) {
+export default function PlaceReviewPage({ placeId }: PlaceReviewPageProps) {
   const [sortType, setSortType] = useState<ReviewSortType>('LATEST');
   const [imageOnly, setImageOnly] = useState(false);
   const { ref, inView } = useInView({
@@ -51,7 +46,6 @@ export default function PlaceReviewPage({
     isFetchingNextPage,
   } = usePlaceReviewsQuery({
     placeId,
-    placeType,
     sortType,
     imageOnly,
   });
@@ -97,7 +91,7 @@ export default function PlaceReviewPage({
 
   return (
     <ReviewPageLayout>
-      <ReviewOverview placeType={placeType} summary={summary} />
+      <ReviewOverview summary={summary} />
       <div className="h-2 w-full bg-semantic-bg-deep" />
 
       <div className="flex flex-1 flex-col">

@@ -1,4 +1,4 @@
-import { ReviewPlaceType, ReviewSortType } from './types';
+import { ReviewSortType } from './types';
 
 export const reviewQueryKeys = {
   all: ['reviews'] as const,
@@ -8,12 +8,9 @@ export const reviewQueryKeys = {
     placeId,
     imageOnly,
     sortType,
-    placeType,
   }: {
     placeId: number;
     imageOnly: boolean;
     sortType: ReviewSortType;
-    placeType: ReviewPlaceType;
-  }) =>
-    ['reviews', 'list', placeType, placeId, { sortType, imageOnly }] as const,
+  }) => ['reviews', 'list', placeId, { sortType, imageOnly }] as const,
 };

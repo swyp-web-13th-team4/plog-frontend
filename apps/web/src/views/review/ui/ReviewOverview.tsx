@@ -5,7 +5,6 @@ import { Fragment } from 'react';
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { type PlaceLayer } from '@/entities/place';
 import {
   type PlaceReviewEnvironmentSummary,
   type PlaceReviewSummary,
@@ -22,28 +21,18 @@ const EMPTY_REVIEW_ENVIRONMENTS: PlaceReviewEnvironmentSummary[] =
     count: 0,
   }));
 
-const RECORD_BAR_COLORS = [
+const BAR_COLORS = [
   'bg-semantic-accent-neutral',
   'bg-semantic-accent-alternative',
   'bg-semantic-accent-subtle',
   'bg-semantic-accent-subtler',
 ] as const;
 
-const BOOKMARK_BAR_COLORS = [
-  'bg-semantic-theme-sky-neutral',
-  'bg-semantic-theme-sky-alternative',
-  'bg-semantic-theme-sky-assistive',
-  'bg-semantic-theme-sky-subtle',
-] as const;
-
 export default function ReviewOverview({
-  placeType,
   summary,
 }: {
-  placeType: PlaceLayer;
   summary: PlaceReviewSummary | null;
 }) {
-  const isRecord = placeType === 'record';
   const isEmptyEnvironment = !summary || summary.environments.length === 0;
   const environments = isEmptyEnvironment
     ? EMPTY_REVIEW_ENVIRONMENTS
@@ -59,7 +48,6 @@ export default function ReviewOverview({
         .sort((a, b) => b - a),
     ),
   ];
-  const barColors = isRecord ? RECORD_BAR_COLORS : BOOKMARK_BAR_COLORS;
 
   return (
     <section className="flex flex-col gap-5 px-6 pt-6 pb-10">
@@ -68,14 +56,7 @@ export default function ReviewOverview({
           <span className="title-xs text-semantic-object-boldest">
             방문자 리뷰
           </span>
-          <p
-            className={cn(
-              'title-xs',
-              isRecord
-                ? 'text-semantic-accent-normal'
-                : 'text-semantic-theme-sky-normal',
-            )}
-          >
+          <p className="title-xs text-semantic-accent-normal">
             {(summary?.reviewCount ?? 0).toLocaleString()}
             <span className="text-semantic-object-boldest">개</span>
           </p>
@@ -95,7 +76,7 @@ export default function ReviewOverview({
         {environments.map((environment) => {
           const percentage = (environment.count / maxCount) * 100;
           const rank = countRanks.indexOf(environment.count);
-          const colorIndex = Math.min(rank, barColors.length - 1);
+          const colorIndex = Math.min(rank, BAR_COLORS.length - 1);
 
           return (
             <Fragment key={environment.environmentName}>
@@ -121,7 +102,7 @@ export default function ReviewOverview({
                 <div
                   className={cn(
                     'absolute inset-y-0 left-0 rounded-xl',
-                    barColors[colorIndex],
+                    BAR_COLORS[colorIndex],
                   )}
                   style={{ width: `${percentage}%` }}
                 />

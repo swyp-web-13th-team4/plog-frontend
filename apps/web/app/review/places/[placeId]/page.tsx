@@ -4,12 +4,10 @@ import { PlaceReview } from '@/views/review';
 
 type Props = {
   params: Promise<{ placeId: string }>;
-  searchParams: Promise<{ type?: string }>;
 };
 
-export default async function Page({ params, searchParams }: Props) {
+export default async function Page({ params }: Props) {
   const { placeId } = await params;
-  const { type } = await searchParams;
 
   const numericPlaceId = Number(placeId);
 
@@ -17,9 +15,5 @@ export default async function Page({ params, searchParams }: Props) {
     notFound();
   }
 
-  if (type !== 'record' && type !== 'bookmark') {
-    notFound();
-  }
-
-  return <PlaceReview placeId={numericPlaceId} placeType={type} />;
+  return <PlaceReview placeId={numericPlaceId} />;
 }

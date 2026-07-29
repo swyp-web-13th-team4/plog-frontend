@@ -43,7 +43,6 @@ export {
 export type {
   CreateReviewRequest,
   GetPlaceReviewsRequest,
-  ReviewPlaceType,
   ReviewSortType,
   UpdateReviewRequest,
 } from './model/types';

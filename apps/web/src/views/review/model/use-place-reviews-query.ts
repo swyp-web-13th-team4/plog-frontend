@@ -2,7 +2,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import {
   getPlaceReviews,
-  ReviewPlaceType,
   reviewQueryKeys,
   ReviewSortType,
 } from '@/entities/review';
@@ -11,7 +10,6 @@ type PlaceReviewQueryProps = {
   placeId: number;
   imageOnly: boolean;
   sortType: ReviewSortType;
-  placeType: ReviewPlaceType;
 };
 
 const LIMIT = 20;
@@ -20,12 +18,10 @@ export function usePlaceReviewsQuery({
   placeId,
   imageOnly,
   sortType,
-  placeType,
 }: PlaceReviewQueryProps) {
   return useInfiniteQuery({
     queryKey: reviewQueryKeys.place({
       placeId,
-      placeType,
       sortType,
       imageOnly,
     }),
@@ -33,7 +29,6 @@ export function usePlaceReviewsQuery({
     queryFn: ({ pageParam }) =>
       getPlaceReviews({
         placeId,
-        placeType,
         cursor: pageParam,
         limit: LIMIT,
         sortType,

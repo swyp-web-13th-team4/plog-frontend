@@ -26,7 +26,6 @@ export function createReview(
 
 export function getPlaceReviews({
   placeId,
-  placeType,
   cursor,
   limit,
   imageOnly,
@@ -43,7 +42,7 @@ export function getPlaceReviews({
   }
 
   return clientApi.get(
-    `/reviews/${placeType}/${placeId}?${params}`,
+    `/reviews/record/${placeId}?${params}`,
     placeReviewPageResponseSchema,
   );
 }

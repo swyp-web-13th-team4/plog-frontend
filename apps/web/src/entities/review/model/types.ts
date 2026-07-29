@@ -15,11 +15,8 @@ export type UpdateReviewRequest = CreateReviewRequest & {
 
 export type ReviewSortType = 'LATEST' | 'OLDEST' | 'RATING_HIGH' | 'RATING_LOW';
 
-export type ReviewPlaceType = 'record' | 'bookmark';
-
 export type GetPlaceReviewsRequest = {
   placeId: number;
-  placeType: ReviewPlaceType;
   cursor?: string;
   limit: number;
   imageOnly: boolean;
