@@ -1,13 +1,22 @@
-import { type LogFormController } from '../model/use-create-log-page';
+import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogPlaceCategoryField from './field/LogPlaceCategoryField';
 import LogPlaceField from './field/LogPlaceField';
 
 type LogPlaceFieldsProps = {
-  controller: LogFormController;
+  focusTargets: Pick<
+    LogFocusTargets,
+    | 'placeCategoryButtonRef'
+    | 'placeCategoryFieldRef'
+    | 'placeFieldRef'
+    | 'placeInputRef'
+  >;
+  opOpenPlaceSearch: () => void;
 };
 
-export default function LogPlaceSection({ controller }: LogPlaceFieldsProps) {
-  const { handleOpenPlaceSearch, focusTargets } = controller;
+export default function LogPlaceSection({
+  focusTargets,
+  opOpenPlaceSearch,
+}: LogPlaceFieldsProps) {
   const {
     placeCategoryButtonRef,
     placeCategoryFieldRef,
@@ -20,7 +29,7 @@ export default function LogPlaceSection({ controller }: LogPlaceFieldsProps) {
       <LogPlaceField
         fieldRef={placeFieldRef}
         inputRef={placeInputRef}
-        onOpenPlaceSearch={handleOpenPlaceSearch}
+        onOpenPlaceSearch={opOpenPlaceSearch}
       />
       <LogPlaceCategoryField
         fieldRef={placeCategoryFieldRef}
