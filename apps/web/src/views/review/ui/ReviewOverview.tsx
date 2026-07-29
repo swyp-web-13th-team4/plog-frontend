@@ -1,5 +1,7 @@
 'use client';
 
+import { Fragment } from 'react';
+
 import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
@@ -78,29 +80,26 @@ export default function ReviewOverview({
             <span className="text-semantic-object-boldest">개</span>
           </p>
         </div>
-        <div className="flex items-center gap-0.5">
+        <div className="flex items-center gap-1">
           <Icon
             name="star-filled"
             boxed={false}
-            className="size-5.5 text-semantic-object-bold"
+            className="size-5 text-semantic-theme-amber-neutral"
           />
           <span className="label-xl text-semantic-object-bold">
-            {summary?.averageRating.toFixed(2) ?? Number(0).toFixed(1)}
+            {(summary?.averageRating ?? 0).toFixed(1)}
           </span>
         </div>
       </div>
-      <div className="flex flex-col justify-center gap-2.5">
+      <div className="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-2 gap-y-2.5">
         {environments.map((environment) => {
           const percentage = (environment.count / maxCount) * 100;
           const rank = countRanks.indexOf(environment.count);
           const colorIndex = Math.min(rank, barColors.length - 1);
 
           return (
-            <div
-              key={environment.environmentName}
-              className="grid grid-cols-[104px_minmax(0,1fr)] gap-2"
-            >
-              <div className="flex items-center gap-2 rounded-xl border border-semantic-stroke-subtle px-2.5 py-3">
+            <Fragment key={environment.environmentName}>
+              <div className="flex items-center gap-2 rounded-xl border border-semantic-stroke-subtle p-3">
                 <Icon
                   name={environment.iconName}
                   size={16}
@@ -135,7 +134,7 @@ export default function ReviewOverview({
                   </span>
                 </div>
               </div>
-            </div>
+            </Fragment>
           );
         })}
       </div>

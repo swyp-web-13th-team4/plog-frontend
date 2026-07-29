@@ -41,12 +41,12 @@ function ReviewStatBar({
         className={
           hasReview
             ? 'text-semantic-theme-amber-neutral'
-            : 'text-semantic-object-subtle'
+            : 'text-semantic-object-subtler'
         }
       />
       <div className="flex items-center gap-1.5">
         <span className="label-sm text-semantic-object-bold">
-          {hasReview ? averageRating.toFixed(2) : '0.0'}
+          {hasReview ? averageRating.toFixed(1) : '0.0'}
         </span>
         <Divider orientation="vertical" className="h-3" />
         <button

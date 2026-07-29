@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Avatar, Divider, Dropdown, Icon } from '@plog/ui';
+import { Avatar, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import { isReviewEditable, PlaceReviewListItem } from '@/entities/review';
@@ -16,12 +16,14 @@ import { ImageWithFallback } from '@/shared/ui';
 import { useDeleteReviewMutation } from '../model/use-delete-review-mutation';
 import ImagesModal from './ImagesModal';
 
-const AUTHOR_ACTION_OPTIONS = [
+const EDITABLE_ACTION_OPTIONS = [
   { label: '삭제하기', value: 'delete' },
   { label: '수정하기', value: 'edit' },
 ];
 
-const DELETE_ACTION_OPTIONS = [{ label: '삭제하기', value: 'delete' }];
+const DELETE_ONLY_ACTION_OPTIONS = [{ label: '삭제하기', value: 'delete' }];
+
+const MAX_VISIBLE_IMAGES = 3;
 
 function RatingStars({ rating }: { rating: number }) {
   return (
@@ -32,9 +34,9 @@ function RatingStars({ rating }: { rating: number }) {
           name="star-filled"
           boxed={false}
           className={cn(
-            'size-4',
+            'size-3.5',
             index < rating
-              ? 'text-semantic-theme-amber-normal'
+              ? 'text-semantic-theme-amber-neutral'
               : 'text-semantic-object-subtler',
           )}
         />
@@ -55,9 +57,10 @@ export default function ReviewItem({
   );
   const canEdit = isReviewEditable(review.createdAt);
   const authorActionOptions = canEdit
-    ? AUTHOR_ACTION_OPTIONS
-    : DELETE_ACTION_OPTIONS;
-  const visibleImages = review.imageUrls.slice(0, 3);
+    ? EDITABLE_ACTION_OPTIONS
+    : DELETE_ONLY_ACTION_OPTIONS;
+  const visibleImages = review.imageUrls.slice(0, MAX_VISIBLE_IMAGES);
+  const hiddenImageCount = review.imageUrls.length - visibleImages.length;
 
   const handleAuthorAction = async (value: string) => {
     if (value === 'delete') {
@@ -78,66 +81,58 @@ export default function ReviewItem({
   };
 
   return (
-    <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtle py-6 last:border-b-0">
+    <div className="flex flex-col gap-4 border-b border-semantic-stroke-subtle py-6 first:pt-0 last:border-b-0">
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2.5">
+        <div className="relative flex items-center gap-2.5">
           <Avatar
             size="xsmall"
             src={review.profileImageUrl}
             alt={`${review.nickname} 프로필`}
           />
 
-          <div className="flex flex-1 flex-col gap-1.5">
-            <div className="flex items-center justify-between gap-2">
-              <p className="label-lg text-semantic-object-boldest">
-                {review.nickname}
-              </p>
+          <div className="flex flex-1 flex-col gap-1 pr-8">
+            <p className="label-md text-semantic-object-boldest">
+              {review.nickname}
+            </p>
 
-              {review.isAuthor && (
-                <Dropdown
-                  aria-label="리뷰 관리 메뉴"
-                  items={authorActionOptions}
-                  trigger={
-                    <Icon
-                      name="more-vertical"
-                      className="text-semantic-object-normal"
-                    />
-                  }
-                  disabled={deleteReviewMutation.isPending}
-                  onSelect={handleAuthorAction}
-                />
-              )}
-            </div>
-
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <RatingStars rating={review.rating} />
-              <span className="label-md text-semantic-object-boldest">
-                {review.rating.toFixed(1)}
-              </span>
-              <Divider orientation="vertical" className="h-2.5" />
-              <span className="caption-md text-semantic-object-normal">
+              <span className="caption-md mt-[1px] text-semantic-object-normal">
                 {formatDate(review.createdAt, 'dot') ?? review.createdAt}
               </span>
             </div>
           </div>
+
+          {review.isAuthor && (
+            <div className="absolute top-0 right-0">
+              <Dropdown
+                aria-label="리뷰 관리 메뉴"
+                items={authorActionOptions}
+                trigger={
+                  <Icon
+                    name="more-vertical"
+                    className="text-semantic-object-normal"
+                    size={20}
+                  />
+                }
+                disabled={deleteReviewMutation.isPending}
+                onSelect={handleAuthorAction}
+              />
+            </div>
+          )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3 rounded-xl border border-semantic-stroke-subtle bg-primitive-gray-20 px-6 py-5">
+        <div className="grid grid-cols-2 gap-3 rounded-xl border border-semantic-stroke-subtle bg-primitive-gray-20 p-4">
           {review.environments.map((environment) => (
             <div
               key={environment.environmentName}
               className="flex items-center gap-2.5"
             >
-              <div className="flex items-center gap-1">
-                <Icon
-                  name={environment.iconName}
-                  boxed={false}
-                  className="size-3.5 text-semantic-object-subtle"
-                />
-                <span className="label-sm text-semantic-object-boldest">
-                  {environment.title}
-                </span>
-              </div>
+              <Icon
+                name={environment.iconName}
+                boxed={false}
+                className="size-3.5 text-semantic-object-subtle"
+              />
               <span className="label-sm text-semantic-object-bold">
                 {environment.label}
               </span>
@@ -146,18 +141,15 @@ export default function ReviewItem({
         </div>
 
         {review.content && (
-          <p className="body-sm whitespace-pre-wrap text-semantic-object-bold">
-            {review.content}
-          </p>
+          <p className="body-sm text-semantic-object-bold">{review.content}</p>
         )}
       </div>
 
       {visibleImages.length > 0 && (
         <div className="flex gap-2">
           {visibleImages.map((imageUrl, index) => {
-            const remainingCount =
-              review.imageUrls.length - visibleImages.length;
-            const showRemainingCount = remainingCount > 0 && index === 2;
+            const showHiddenImageCount =
+              hiddenImageCount > 0 && index === visibleImages.length - 1;
 
             return (
               <button
@@ -165,18 +157,18 @@ export default function ReviewItem({
                 key={`${review.reviewId}-${imageUrl}-${index}`}
                 aria-label={`${review.nickname} 리뷰 이미지 ${index + 1} 크게 보기`}
                 onClick={() => setSelectedImageIndex(index)}
-                className="relative size-20 cursor-pointer overflow-hidden rounded-xl bg-semantic-object-subtler"
+                className="relative size-25 cursor-pointer overflow-hidden rounded-xl bg-semantic-object-subtler"
               >
                 <ImageWithFallback
                   src={imageUrl}
                   alt={`${review.nickname} 리뷰 이미지 ${index + 1}`}
                   fill
-                  sizes="80px"
+                  sizes="100px"
                   className="object-cover"
                 />
-                {showRemainingCount && (
+                {showHiddenImageCount && (
                   <span className="label-lg absolute inset-0 flex items-center justify-center bg-semantic-system-black/45 text-semantic-object-inverse">
-                    +{remainingCount}
+                    +{hiddenImageCount}
                   </span>
                 )}
               </button>

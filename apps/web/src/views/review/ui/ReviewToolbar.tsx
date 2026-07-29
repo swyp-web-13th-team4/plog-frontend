@@ -32,7 +32,7 @@ export default function ReviewToolbar({
   };
 
   return (
-    <div className="flex items-center gap-3 px-6 py-3">
+    <div className="flex items-center gap-3 p-6">
       <Select
         aria-label="리뷰 정렬"
         items={REVIEW_SORT_OPTIONS}
@@ -48,7 +48,7 @@ export default function ReviewToolbar({
         aria-pressed={imageOnly}
         onClick={handleShowImageOnly}
         className={cn(
-          'label-sm rounded-xl text-semantic-object-bold',
+          'label-sm rounded-xl border border-semantic-stroke-subtle text-semantic-object-bold',
           imageOnly &&
             'bg-semantic-object-boldest text-semantic-object-inverse hover:bg-semantic-object-boldest',
         )}
