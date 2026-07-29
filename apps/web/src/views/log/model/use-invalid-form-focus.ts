@@ -16,6 +16,10 @@ export type LogFormFields =
   | 'focus'
   | 'placeTags';
 
+export type LogFocusTargets = ReturnType<
+  typeof useCreateLogInvalidFocus
+>['focusTargets'];
+
 export function getInvalidSubmitFeedback(
   fieldErrors: FieldErrors<CreateLogFormValues>,
   values: CreateLogFormValues,

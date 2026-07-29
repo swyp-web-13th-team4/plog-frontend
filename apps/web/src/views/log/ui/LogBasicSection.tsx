@@ -1,14 +1,23 @@
-import { type LogFormController } from '../model/use-create-log-page';
-import LogPhotoField from './field//LogPhotoField';
+import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogContentsField from './field/LogContentsField';
+import LogPhotoField from './field/LogPhotoField';
 import LogTitleField from './field/LogTitleField';
 
 type LogBasicSectionProps = {
-  controller: LogFormController;
+  focusTargets: Pick<
+    LogFocusTargets,
+    | 'photoFieldRef'
+    | 'photoUploadButtonRef'
+    | 'contentsFieldRef'
+    | 'contentsTextareaRef'
+    | 'titleFieldRef'
+    | 'titleInputRef'
+  >;
 };
 
-export default function LogBasicSection({ controller }: LogBasicSectionProps) {
-  const { focusTargets } = controller;
+export default function LogBasicSection({
+  focusTargets,
+}: LogBasicSectionProps) {
   const {
     contentsFieldRef,
     contentsTextareaRef,

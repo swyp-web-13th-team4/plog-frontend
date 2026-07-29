@@ -108,7 +108,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           noValidate
           onSubmit={handleSubmitLog}
         >
-          <LogBasicSection controller={controller} />
+          <LogBasicSection focusTargets={controller.focusTargets} />
           <SectionDivider />
           <section className="flex flex-col gap-6 px-6 py-6">
             <LogPlaceSection controller={controller} />
