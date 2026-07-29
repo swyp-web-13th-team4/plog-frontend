@@ -118,7 +118,7 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
             <LogWorkSection focusTargets={controller.focusTargets} />
           </section>
           <SectionDivider />
-          <LogReviewSection controller={controller} />
+          <LogReviewSection focusTargets={controller.focusTargets} />
           <LogPrivacySection />
           <section className="px-6 pt-6 pb-10">
             <Button fullWidth size="large" type="submit" loading={isSubmitting}>

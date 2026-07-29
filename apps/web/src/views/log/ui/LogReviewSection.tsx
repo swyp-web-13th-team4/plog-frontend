@@ -1,15 +1,20 @@
-import { type LogFormController } from '../model/use-create-log-page';
+import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogSelectFocusField from './field/LogSelectFocusField';
 import LogSelectReviewTagsField from './field/LogSelectReviewTagsField';
 
 type LogReviewSectionProps = {
-  controller: LogFormController;
+  focusTargets: Pick<
+    LogFocusTargets,
+    | 'focusFieldRef'
+    | 'focusFirstButtonRef'
+    | 'reviewTagsButtonRef'
+    | 'reviewTagsFieldRef'
+  >;
 };
 
 export default function LogReviewSection({
-  controller,
+  focusTargets,
 }: LogReviewSectionProps) {
-  const { focusTargets } = controller;
   const {
     focusFieldRef,
     focusFirstButtonRef,
