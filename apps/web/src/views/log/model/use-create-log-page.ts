@@ -30,8 +30,6 @@ import {
 } from './use-invalid-form-focus';
 import { useUpdateLogMutation } from './use-update-log-mutation';
 
-export type LogFormController = ReturnType<typeof useCreateLogPage>;
-
 type ReviewConfirmInfo = {
   imageUrl?: string;
   placeName: string;
