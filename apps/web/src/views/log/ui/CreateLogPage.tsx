@@ -110,13 +110,11 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
         >
           <LogBasicSection focusTargets={controller.focusTargets} />
           <SectionDivider />
-          <section className="flex flex-col gap-6 px-6 py-6">
-            <LogPlaceSection
-              focusTargets={controller.focusTargets}
-              onOpenPlaceSearch={controller.handleOpenPlaceSearch}
-            />
-            <LogWorkSection focusTargets={controller.focusTargets} />
-          </section>
+          <LogPlaceSection
+            focusTargets={controller.focusTargets}
+            onOpenPlaceSearch={controller.handleOpenPlaceSearch}
+          />
+          <LogWorkSection focusTargets={controller.focusTargets} />
           <SectionDivider />
           <LogReviewSection focusTargets={controller.focusTargets} />
           <LogPrivacySection />
