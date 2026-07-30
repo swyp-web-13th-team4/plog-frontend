@@ -1,7 +1,7 @@
 import { type RefCallback, useCallback } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-import { Field, Icon } from '@plog/ui';
+import { Field, Icon, type TimeValue } from '@plog/ui';
 
 import { SelectTriggerButton } from '@/features/select-trigger-button';
 import { WorkTimeDialog } from '@/features/select-work-time';
@@ -18,8 +18,6 @@ type LogWorkTimeFieldProps = {
   buttonRef: RefCallback<HTMLButtonElement>;
   revalidateField?: LogWorkTimeName;
 };
-
-type LogWorkTimeValue = NonNullable<CreateLogFormValues[LogWorkTimeName]>;
 
 export default function LogWorkTimeField({
   name,
@@ -40,7 +38,7 @@ export default function LogWorkTimeField({
     },
     [rhfRef, buttonRef],
   );
-  const handleChange = (value: LogWorkTimeValue) => {
+  const handleChange = (value: TimeValue) => {
     field.onChange(value);
 
     if (revalidateField) {
