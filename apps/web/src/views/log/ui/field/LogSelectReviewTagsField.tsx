@@ -1,4 +1,4 @@
-import { type RefCallback, useCallback } from 'react';
+import { type RefCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Button, Chip, Field, Icon } from '@plog/ui';
@@ -6,6 +6,8 @@ import { Button, Chip, Field, Icon } from '@plog/ui';
 import { ReviewTagsSheet } from '@/features/select-review-tags';
 
 import { PLACE_TAG_LABELS } from '@/entities/feed';
+
+import { useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -23,14 +25,7 @@ export default function LogSelectReviewTagsField({
   const { field } = useController<CreateLogFormValues, 'placeTags'>({
     name: 'placeTags',
   });
-  const { ref: rhfRef } = field;
-  const setButtonRef = useCallback(
-    (element: HTMLButtonElement | null) => {
-      buttonRef(element);
-      rhfRef(element);
-    },
-    [rhfRef, buttonRef],
-  );
+  const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
   const handleRemoveTag = (tag: ReviewTag) => {
     field.onChange(field.value.filter((selectedTag) => selectedTag !== tag));
   };
@@ -61,7 +56,7 @@ export default function LogSelectReviewTagsField({
 
           <ReviewTagsSheet value={field.value} onChange={field.onChange}>
             <Button
-              ref={setButtonRef}
+              ref={buttonMergedRef}
               variant="outline"
               size="large"
               fullWidth

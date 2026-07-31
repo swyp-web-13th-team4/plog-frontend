@@ -1,7 +1,9 @@
-import { type RefCallback, useCallback } from 'react';
+import { type RefCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Field, Input } from '@plog/ui';
+
+import { useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -19,21 +21,14 @@ export default function LogPlaceField({
   const { field } = useController<CreateLogFormValues, 'place'>({
     name: 'place',
   });
-  const { ref: rhfRef } = field;
-  const setInputRef = useCallback(
-    (element: HTMLInputElement | null) => {
-      rhfRef(element);
-      inputRef(element);
-    },
-    [inputRef, rhfRef],
-  );
+  const inputMergedRef = useMergedRef<HTMLInputElement>(field.ref, inputRef);
 
   return (
     <div ref={fieldRef}>
       <Field label="작업 장소" required>
         <Input
           name={field.name}
-          ref={setInputRef}
+          ref={inputMergedRef}
           value={field.value?.name ?? ''}
           placeholder="위치를 입력해 주세요."
           readOnly

@@ -1,7 +1,9 @@
-import { type RefCallback, useCallback } from 'react';
+import { type RefCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Field, Input } from '@plog/ui';
+
+import { useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -18,21 +20,14 @@ export default function LogTitleField({
     field,
     fieldState: { error },
   } = useController<CreateLogFormValues, 'title'>({ name: 'title' });
-  const { ref: rhfRef } = field;
-  const setInputRef = useCallback(
-    (element: HTMLInputElement | null) => {
-      rhfRef(element);
-      inputRef(element);
-    },
-    [rhfRef, inputRef],
-  );
+  const inputMergedRef = useMergedRef<HTMLInputElement>(field.ref, inputRef);
 
   return (
     <div ref={fieldRef}>
       <Field label="제목" required error={error?.message}>
         <Input
           name={field.name}
-          ref={setInputRef}
+          ref={inputMergedRef}
           value={field.value}
           onChange={(event) => {
             field.onChange(event.currentTarget.value.trimStart());

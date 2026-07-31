@@ -1,4 +1,4 @@
-import { type RefCallback, useCallback } from 'react';
+import { type RefCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Field, Icon } from '@plog/ui';
@@ -7,6 +7,8 @@ import { PlaceCategorySheet } from '@/features/select-place-category';
 import { SelectTriggerButton } from '@/features/select-trigger-button';
 
 import { PLACE_CATEGORIES } from '@/entities/place';
+
+import { useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -22,21 +24,14 @@ export default function LogPlaceCategoryField({
   const { field } = useController<CreateLogFormValues, 'categoryCode'>({
     name: 'categoryCode',
   });
-  const { ref: rhfRef } = field;
-  const setButtonRef = useCallback(
-    (element: HTMLButtonElement | null) => {
-      rhfRef(element);
-      buttonRef(element);
-    },
-    [buttonRef, rhfRef],
-  );
+  const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
 
   return (
     <div ref={fieldRef}>
       <Field>
         <PlaceCategorySheet value={field.value} onChange={field.onChange}>
           <SelectTriggerButton
-            ref={setButtonRef}
+            ref={buttonMergedRef}
             value={
               PLACE_CATEGORIES.find(
                 (category) => category.value === field.value,

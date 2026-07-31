@@ -1,4 +1,4 @@
-import { type RefCallback, useCallback } from 'react';
+import { type RefCallback } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import { Field, Icon, type TimeValue } from '@plog/ui';
@@ -7,6 +7,7 @@ import { SelectTriggerButton } from '@/features/select-trigger-button';
 import { WorkTimeDialog } from '@/features/select-work-time';
 
 import { formatTime } from '@/shared/lib/datetime';
+import { useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -29,14 +30,7 @@ export default function LogWorkTimeField({
   const { field } = useController<CreateLogFormValues, LogWorkTimeName>({
     name,
   });
-  const { ref: rhfRef } = field;
-  const setButtonRef = useCallback(
-    (element: HTMLButtonElement | null) => {
-      rhfRef(element);
-      buttonRef(element);
-    },
-    [rhfRef, buttonRef],
-  );
+  const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
   const handleChange = (value: TimeValue) => {
     field.onChange(value);
 
@@ -49,7 +43,7 @@ export default function LogWorkTimeField({
     <Field label={label} required>
       <WorkTimeDialog label={label} value={field.value} onChange={handleChange}>
         <SelectTriggerButton
-          ref={setButtonRef}
+          ref={buttonMergedRef}
           value={field.value ? formatTime(field.value, '24h') : null}
           placeholder="--:--"
           aria-label={`${label} 선택`}

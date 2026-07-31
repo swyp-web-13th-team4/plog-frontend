@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  type KeyboardEvent,
-  type Ref,
-  type RefCallback,
-  useCallback,
-  useRef,
-} from 'react';
+import { type KeyboardEvent, type Ref, type RefCallback, useRef } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Field } from '@plog/ui';
@@ -23,6 +17,7 @@ import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
+import { assignRef, useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -64,18 +59,6 @@ type RatingPickerProps = {
   onChange: (score: FocusLevel) => void;
   firstButtonRef?: Ref<HTMLButtonElement>;
 };
-
-function assignRef<TElement>(
-  ref: Ref<TElement> | undefined,
-  value: TElement | null,
-) {
-  if (!ref) return;
-  if (typeof ref === 'function') {
-    ref(value);
-  } else {
-    ref.current = value;
-  }
-}
 
 function RatingPicker({ value, onChange, firstButtonRef }: RatingPickerProps) {
   const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -153,13 +136,9 @@ export default function LogSelectFocusField({
   const { field } = useController<CreateLogFormValues, 'focus'>({
     name: 'focus',
   });
-  const { ref: rhfRef } = field;
-  const setButtonRef = useCallback(
-    (element: HTMLButtonElement | null) => {
-      rhfRef(element);
-      buttonRef(element);
-    },
-    [rhfRef, buttonRef],
+  const firstButtonMergedRef = useMergedRef<HTMLButtonElement>(
+    field.ref,
+    buttonRef,
   );
 
   return (
@@ -167,7 +146,7 @@ export default function LogSelectFocusField({
       <Field label="집중도를 평가해 주세요" required>
         <RatingPicker
           value={field.value}
-          firstButtonRef={setButtonRef}
+          firstButtonRef={firstButtonMergedRef}
           onChange={field.onChange}
         />
       </Field>

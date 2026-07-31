@@ -1,7 +1,9 @@
-import { type RefCallback, useCallback } from 'react';
+import { type RefCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Field, Textarea } from '@plog/ui';
+
+import { useMergedRef } from '@/shared/lib/merge-ref';
 
 import { type CreateLogFormValues } from '../../model/types';
 
@@ -18,13 +20,9 @@ export default function LogContentsField({
     field,
     fieldState: { error },
   } = useController<CreateLogFormValues, 'contents'>({ name: 'contents' });
-  const { ref: rhfRef } = field;
-  const setTextareaRef = useCallback(
-    (element: HTMLTextAreaElement | null) => {
-      rhfRef(element);
-      textareaRef(element);
-    },
-    [rhfRef, textareaRef],
+  const textareaMergeRef = useMergedRef<HTMLTextAreaElement>(
+    field.ref,
+    textareaRef,
   );
 
   return (
@@ -32,7 +30,7 @@ export default function LogContentsField({
       <Field label="환경 기록을 작성해 주세요" required error={error?.message}>
         <Textarea
           name={field.name}
-          ref={setTextareaRef}
+          ref={textareaMergeRef}
           value={field.value}
           onChange={(event) => {
             field.onChange(event.currentTarget.value.trimStart());
