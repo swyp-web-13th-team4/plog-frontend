@@ -26,7 +26,7 @@ export default function LogWorkSection({ focusTargets }: LogWorkSectionProps) {
     <div className="flex flex-col gap-3 px-6 pb-6">
       <LogWorkDateField
         buttonRef={workDateButtonRef}
-        inputRef={workDateFieldRef}
+        fieldRef={workDateFieldRef}
       />
       <div ref={workTimeFieldRef} className="grid grid-cols-2 gap-4">
         <LogWorkTimeField
