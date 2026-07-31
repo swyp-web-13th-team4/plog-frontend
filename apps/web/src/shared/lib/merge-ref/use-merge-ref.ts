@@ -3,10 +3,10 @@ import { type Ref, useCallback } from 'react';
 export function assignRef<TElement>(
   ref: Ref<TElement> | undefined,
   value: TElement | null,
-) {
+): void | (() => void) {
   if (!ref) return;
   if (typeof ref === 'function') {
-    ref(value);
+    return ref(value);
   } else {
     ref.current = value;
   }
@@ -18,8 +18,20 @@ export function useMergedRef<TElement>(
 ) {
   return useCallback(
     (element: TElement | null) => {
-      assignRef(refA, element);
-      assignRef(refB, element);
+      const cleanupA = assignRef(refA, element);
+      const cleanupB = assignRef(refB, element);
+
+      if (typeof cleanupA !== 'function' && typeof cleanupB !== 'function') {
+        return;
+      }
+
+      return () => {
+        if (typeof cleanupA === 'function') cleanupA();
+        else assignRef(refA, null);
+
+        if (typeof cleanupB === 'function') cleanupB();
+        else assignRef(refB, null);
+      };
     },
     [refA, refB],
   );
