@@ -5,7 +5,7 @@ import { Field, Textarea } from '@plog/ui';
 
 import { type CreateLogFormValues } from '../../model/types';
 
-type LogContentFieldProps = {
+type LogContentsFieldProps = {
   fieldRef: RefCallback<HTMLDivElement>;
   textareaRef: RefCallback<HTMLTextAreaElement>;
 };
@@ -13,7 +13,7 @@ type LogContentFieldProps = {
 export default function LogContentsField({
   fieldRef,
   textareaRef,
-}: LogContentFieldProps) {
+}: LogContentsFieldProps) {
   const {
     field,
     fieldState: { error },

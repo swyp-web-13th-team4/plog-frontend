@@ -5,7 +5,7 @@ import { Field, Input } from '@plog/ui';
 
 import { type CreateLogFormValues } from '../../model/types';
 
-type PlaceFieldProps = {
+type LogPlaceFieldProps = {
   fieldRef: RefCallback<HTMLDivElement>;
   inputRef: RefCallback<HTMLInputElement>;
   onOpenPlaceSearch: () => void;
@@ -15,7 +15,7 @@ export default function LogPlaceField({
   fieldRef,
   inputRef,
   onOpenPlaceSearch,
-}: PlaceFieldProps) {
+}: LogPlaceFieldProps) {
   const { field } = useController<CreateLogFormValues, 'place'>({
     name: 'place',
   });

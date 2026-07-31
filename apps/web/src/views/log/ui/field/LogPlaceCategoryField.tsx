@@ -10,7 +10,7 @@ import { PLACE_CATEGORIES } from '@/entities/place';
 
 import { type CreateLogFormValues } from '../../model/types';
 
-type PlaceCategoryFieldProps = {
+type LogPlaceCategoryFieldProps = {
   buttonRef: RefCallback<HTMLButtonElement>;
   fieldRef: RefCallback<HTMLDivElement>;
 };
@@ -18,7 +18,7 @@ type PlaceCategoryFieldProps = {
 export default function LogPlaceCategoryField({
   buttonRef,
   fieldRef,
-}: PlaceCategoryFieldProps) {
+}: LogPlaceCategoryFieldProps) {
   const { field } = useController<CreateLogFormValues, 'categoryCode'>({
     name: 'categoryCode',
   });
