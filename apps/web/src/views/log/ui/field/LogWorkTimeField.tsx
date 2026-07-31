@@ -25,9 +25,8 @@ export default function LogWorkTimeField({
   buttonRef,
   revalidateField,
 }: LogWorkTimeFieldProps) {
-  const { control, trigger } = useFormContext<CreateLogFormValues>();
+  const { trigger } = useFormContext<CreateLogFormValues>();
   const { field } = useController<CreateLogFormValues, LogWorkTimeName>({
-    control,
     name,
   });
   const { ref: rhfRef } = field;
