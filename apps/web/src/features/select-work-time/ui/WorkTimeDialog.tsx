@@ -4,14 +4,11 @@ import { type ReactElement, useState } from 'react';
 
 import { Button, Dialog, TimePicker, type TimeValue } from '@plog/ui';
 
-import { formatTime } from '@/shared/lib/datetime';
-
 type WorkTimeDialogProps = {
   value: TimeValue | null;
   onChange: (value: TimeValue) => void;
   children: ReactElement;
   label: string;
-  name: string;
 };
 
 function getCurrentTimeValue(): TimeValue {
@@ -28,7 +25,6 @@ export default function WorkTimeDialog({
   onChange,
   children,
   label,
-  name,
 }: WorkTimeDialogProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<TimeValue>(
@@ -50,11 +46,6 @@ export default function WorkTimeDialog({
 
   return (
     <>
-      <input
-        type="hidden"
-        name={name}
-        value={value ? formatTime(value, '24h') : ''}
-      />
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <Dialog.Trigger render={children} />
         <Dialog.Content className="max-w-90 gap-6 p-5">

@@ -34,11 +34,7 @@ export default function LogPlaceCategoryField({
   return (
     <div ref={fieldRef}>
       <Field>
-        <PlaceCategorySheet
-          name={field.name}
-          value={field.value}
-          onChange={field.onChange}
-        >
+        <PlaceCategorySheet value={field.value} onChange={field.onChange}>
           <SelectTriggerButton
             ref={setButtonRef}
             value={

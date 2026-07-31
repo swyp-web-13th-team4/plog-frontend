@@ -47,12 +47,7 @@ export default function LogWorkTimeField({
 
   return (
     <Field label={label} required>
-      <WorkTimeDialog
-        name={field.name}
-        label={label}
-        value={field.value}
-        onChange={handleChange}
-      >
+      <WorkTimeDialog label={label} value={field.value} onChange={handleChange}>
         <SelectTriggerButton
           ref={setButtonRef}
           value={field.value ? formatTime(field.value, '24h') : null}

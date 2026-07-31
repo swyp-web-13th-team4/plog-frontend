@@ -74,9 +74,6 @@ export default function ReviewTagsSheet({
 
   return (
     <>
-      {value.map((tag) => (
-        <input key={tag} type="hidden" name={name} value={tag} />
-      ))}
       <BottomSheet open={open} onOpenChange={handleOpenChange}>
         <BottomSheet.Trigger render={children} />
         <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-5 pb-6">

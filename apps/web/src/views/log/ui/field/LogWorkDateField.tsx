@@ -34,11 +34,7 @@ export default function LogWorkDateField({
   return (
     <div ref={fieldRef}>
       <Field label="작업 날짜" required>
-        <WorkDateDialog
-          name={field.name}
-          value={field.value}
-          onChange={field.onChange}
-        >
+        <WorkDateDialog value={field.value} onChange={field.onChange}>
           <SelectTriggerButton
             ref={setButtonRef}
             value={field.value ? formatDate(field.value, 'dot') : null}

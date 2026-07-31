@@ -59,11 +59,7 @@ export default function LogSelectReviewTagsField({
             </div>
           )}
 
-          <ReviewTagsSheet
-            name={field.name}
-            value={field.value}
-            onChange={field.onChange}
-          >
+          <ReviewTagsSheet value={field.value} onChange={field.onChange}>
             <Button
               ref={setButtonRef}
               variant="outline"
