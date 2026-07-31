@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { type FieldErrors } from 'react-hook-form';
 
 import { useScrollFocusTarget } from '@/shared/lib/scroll-focus-target';
@@ -63,7 +64,11 @@ export function useCreateLogInvalidFocus() {
   const focus = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const placeTags = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
 
-  const endTimeButtonRef = workTime.getFocusRef(1);
+  const { getFocusRef: getWorkTimeFocusRef } = workTime;
+  const endTimeButtonRef = useMemo(
+    () => getWorkTimeFocusRef(1),
+    [getWorkTimeFocusRef],
+  );
 
   const focusField = (field: LogFormFields) => {
     switch (field) {
