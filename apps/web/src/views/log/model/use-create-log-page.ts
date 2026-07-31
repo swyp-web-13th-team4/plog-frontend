@@ -6,6 +6,7 @@ import {
   type FieldPath,
   type FieldPathValue,
   useForm,
+  useWatch,
 } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
@@ -16,6 +17,7 @@ import {
   type CreateLogPlace,
   initialCreateLogValues,
 } from '@/features/create-log';
+import { usePhotoUpload } from '@/features/photo-upload';
 
 import { dialog } from '@/shared/lib/dialog';
 
@@ -95,7 +97,28 @@ export function useCreateLogPage(editPostId?: string) {
     shouldFocusError: false,
   });
 
-  const { handleSubmit, reset, setValue, getValues } = form;
+  const {
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    formState: { isSubmitted },
+  } = form;
+  const photos = useWatch({
+    control: form.control,
+    name: 'photos',
+  });
+
+  const handlePhotoChange = useCallback(
+    (nextPhotos: CreateLogFormValues['photos']) => {
+      setValue('photos', nextPhotos, { shouldValidate: isSubmitted });
+    },
+    [isSubmitted, setValue],
+  );
+  const { handleAddPhotos, handleRemovePhoto, clearPhotos } = usePhotoUpload({
+    photos,
+    onPhotosChange: handlePhotoChange,
+  });
 
   const createLogMutation = useCreateLogMutation({
     onSuccess: ({ postId, values }) => {
@@ -129,10 +152,6 @@ export function useCreateLogPage(editPostId?: string) {
       shouldValidate: true,
     });
   };
-
-  const clearPhotos = useCallback(() => {
-    setValue('photos', []);
-  }, [setValue]);
 
   useEffect(() => {
     if (!isEditMode || !editLogQuery.data || hasRestoredFormRef.current) return;
@@ -292,6 +311,9 @@ export function useCreateLogPage(editPostId?: string) {
     handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
+    handleAddPhotos,
+    handleRemovePhoto,
+    photos,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,

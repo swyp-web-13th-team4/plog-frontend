@@ -1,45 +1,28 @@
-import { type RefCallback, useCallback } from 'react';
-import { useController, useFormContext, useFormState } from 'react-hook-form';
+import { type RefCallback } from 'react';
 
 import { Field } from '@plog/ui';
 
 import {
+  type PhotoPreview,
   PhotoUploader,
-  usePhotoUpload,
   usePhotoUploadFeedback,
 } from '@/features/photo-upload';
-
-import { type CreateLogFormValues } from '../../model/types';
 
 type LogPhotoFieldProps = {
   fieldRef: RefCallback<HTMLDivElement>;
   photoUploadButtonRef: RefCallback<HTMLButtonElement>;
+  photos: PhotoPreview[];
+  onAddPhotos: (files: File[]) => void;
+  onRemovePhoto: (id: string) => void;
 };
 
 export default function LogPhotoField({
   fieldRef,
   photoUploadButtonRef,
+  photos,
+  onAddPhotos,
+  onRemovePhoto,
 }: LogPhotoFieldProps) {
-  const { control, setValue } = useFormContext<CreateLogFormValues>();
-  const { isSubmitted } = useFormState({ control });
-  const {
-    field: { value: photos },
-  } = useController({
-    control,
-    name: 'photos',
-  });
-  const handlePhotoChange = useCallback(
-    (nextPhotos: CreateLogFormValues['photos']) => {
-      setValue('photos', nextPhotos, {
-        shouldValidate: isSubmitted,
-      });
-    },
-    [isSubmitted, setValue],
-  );
-  const { handleAddPhotos, handleRemovePhoto } = usePhotoUpload({
-    photos,
-    onPhotosChange: handlePhotoChange,
-  });
   const {
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
@@ -52,8 +35,8 @@ export default function LogPhotoField({
         <PhotoUploader
           photos={photos}
           uploadButtonRef={photoUploadButtonRef}
-          onAdd={handleAddPhotos}
-          onRemove={handleRemovePhoto}
+          onAdd={onAddPhotos}
+          onRemove={onRemovePhoto}
           onFileSizeExceeded={handlePhotoFileSizeExceeded}
           onMaxCountExceeded={handlePhotoMaxCountExceeded}
           onConversionFailed={handlePhotoConversionFailed}

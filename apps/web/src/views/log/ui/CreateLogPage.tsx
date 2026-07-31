@@ -27,6 +27,15 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   const controller = useCreateLogPage(editPostId);
   const {
     editLogQuery,
+    photos,
+    hasInvalidEditPostId,
+    isEditMode,
+    isPlaceSearchOpen,
+    isReviewConfirmOpen,
+    isSubmitting,
+    reviewConfirmInfo,
+    handleAddPhotos,
+    handleRemovePhoto,
     handleBack,
     handleClosePlaceSearch,
     handleCreateReview,
@@ -34,12 +43,6 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
-    hasInvalidEditPostId,
-    isEditMode,
-    isPlaceSearchOpen,
-    isReviewConfirmOpen,
-    isSubmitting,
-    reviewConfirmInfo,
   } = controller;
 
   const logHeader = <NavigationHeader title="환경 기록" onBack={handleBack} />;
@@ -108,7 +111,12 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
           noValidate
           onSubmit={handleSubmitLog}
         >
-          <LogBasicSection focusTargets={controller.focusTargets} />
+          <LogBasicSection
+            focusTargets={controller.focusTargets}
+            photos={photos}
+            onAddPhotos={handleAddPhotos}
+            onRemovePhoto={handleRemovePhoto}
+          />
           <SectionDivider />
           <LogPlaceSection
             focusTargets={controller.focusTargets}
