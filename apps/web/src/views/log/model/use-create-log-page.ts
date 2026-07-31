@@ -320,7 +320,6 @@ export function useCreateLogPage(editPostId?: string) {
     isReviewConfirmOpen,
     isSubmitting,
     reviewConfirmInfo,
-    setFormValue,
     focusTargets: invalidFocus.focusTargets,
   };
 }
