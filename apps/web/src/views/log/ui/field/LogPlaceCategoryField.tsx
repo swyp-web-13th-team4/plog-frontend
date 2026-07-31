@@ -47,7 +47,6 @@ export default function LogPlaceCategoryField({
               )?.label ?? null
             }
             placeholder="장소 카테고리를 선택해 주세요."
-            onBlur={field.onBlur}
             icon={
               <Icon
                 name="chevron-right"

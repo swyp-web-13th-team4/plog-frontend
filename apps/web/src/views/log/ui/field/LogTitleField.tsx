@@ -39,7 +39,6 @@ export default function LogTitleField({
           }}
           onBlur={(event) => {
             field.onChange(event.currentTarget.value.trim());
-            field.onBlur();
           }}
           onClear={() => field.onChange('')}
           placeholder="제목을 입력해 주세요."

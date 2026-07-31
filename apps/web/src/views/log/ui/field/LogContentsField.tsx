@@ -39,7 +39,6 @@ export default function LogContentsField({
           }}
           onBlur={(event) => {
             field.onChange(event.currentTarget.value.trim());
-            field.onBlur();
           }}
           placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
           maxLength={300}

@@ -69,7 +69,6 @@ export default function LogSelectReviewTagsField({
               variant="outline"
               size="large"
               fullWidth
-              onBlur={field.onBlur}
               iconLeft={<Icon name="plus" />}
               className="text-semantic-object-normal [&>svg]:size-4!"
             >

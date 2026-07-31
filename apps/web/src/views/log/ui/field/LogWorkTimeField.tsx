@@ -57,7 +57,6 @@ export default function LogWorkTimeField({
           ref={setButtonRef}
           value={field.value ? formatTime(field.value, '24h') : null}
           placeholder="--:--"
-          onBlur={field.onBlur}
           aria-label={`${label} 선택`}
           icon={
             <Icon
