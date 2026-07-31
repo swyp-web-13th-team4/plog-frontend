@@ -5,6 +5,7 @@ import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { clientApi } from '@/shared/api/client-api';
+import { dialog } from '@/shared/lib/dialog';
 
 import { type WithdrawReason } from './constants';
 
@@ -25,13 +26,19 @@ export function useDeleteAccountMutation() {
       await clientApi.delete<string>('/members/me');
       return variables;
     },
-    onSuccess: ({ reason, etcDetail }) => {
+    onSuccess: async ({ reason, etcDetail }) => {
       amplitude.track('account_deleted', {
         reason,
         ...(etcDetail && { reason_detail: etcDetail }),
       });
+
+      await dialog.alert({
+        message: '탈퇴가 완료되었어요.',
+        description:
+          '지금까지 플로그를 이용해 주셔서 감사합니다.\n더 좋은 서비스를 준비하고 있을게요!',
+      });
+
       queryClient.clear();
-      toast({ type: 'success', description: '탈퇴가 완료되었어요.' });
       router.push('/login');
     },
     onError: () => {
