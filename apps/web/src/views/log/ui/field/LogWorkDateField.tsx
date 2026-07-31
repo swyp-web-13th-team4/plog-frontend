@@ -11,12 +11,12 @@ import { formatDate } from '@/shared/lib/datetime';
 import { type CreateLogFormValues } from '../../model/types';
 
 type LogWorkDateFieldProps = {
-  inputRef: RefCallback<HTMLDivElement>;
+  fieldRef: RefCallback<HTMLDivElement>;
   buttonRef: RefCallback<HTMLButtonElement>;
 };
 
 export default function LogWorkDateField({
-  inputRef,
+  fieldRef,
   buttonRef,
 }: LogWorkDateFieldProps) {
   const { field } = useController<CreateLogFormValues, 'studyDate'>({
@@ -32,7 +32,7 @@ export default function LogWorkDateField({
   );
 
   return (
-    <div ref={inputRef}>
+    <div ref={fieldRef}>
       <Field label="작업 날짜" required>
         <WorkDateDialog
           name={field.name}
