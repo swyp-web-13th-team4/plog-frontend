@@ -18,8 +18,48 @@ export type SelectedPlaceSheetProps = {
   onClose: () => void;
   onBack?: () => void;
   onViewPosts: () => void;
+  onViewReviews: () => void;
   onCreatePost?: () => void;
 };
+
+function ReviewStatBar({
+  reviewCount,
+  averageRating,
+  showAllReviews,
+}: {
+  reviewCount: number;
+  averageRating: number;
+  showAllReviews: () => void;
+}) {
+  const hasReview = reviewCount > 0;
+
+  return (
+    <div className="flex items-center gap-1">
+      <Icon
+        name="star-filled"
+        size={16}
+        className={
+          hasReview
+            ? 'text-semantic-theme-amber-neutral'
+            : 'text-semantic-object-subtler'
+        }
+      />
+      <div className="flex items-center gap-1.5">
+        <span className="label-sm text-semantic-object-bold">
+          {hasReview ? averageRating.toFixed(1) : '0.0'}
+        </span>
+        <Divider orientation="vertical" className="h-3" />
+        <button
+          type="button"
+          className="caption-md cursor-pointer text-semantic-object-normal underline"
+          onClick={showAllReviews}
+        >
+          리뷰 {hasReview ? reviewCount.toLocaleString() : 0}개
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function PlaceStatBar({
   place,
@@ -90,6 +130,7 @@ export default function SelectedPlaceSheet({
   onClose,
   onBack,
   onViewPosts,
+  onViewReviews,
   onCreatePost,
 }: SelectedPlaceSheetProps) {
   const isRecord = placeType === 'record';
@@ -146,7 +187,14 @@ export default function SelectedPlaceSheet({
                   {place.address}
                 </p>
               </div>
-              <PlaceStatBar place={place} isRecord={isRecord} />
+              <div className="flex flex-col gap-3">
+                <ReviewStatBar
+                  reviewCount={place.reviewCount}
+                  averageRating={place.averageRating}
+                  showAllReviews={onViewReviews}
+                />
+                <PlaceStatBar place={place} isRecord={isRecord} />
+              </div>
               {isRecord ? (
                 <div className="flex gap-2">
                   <div className="flex-1">

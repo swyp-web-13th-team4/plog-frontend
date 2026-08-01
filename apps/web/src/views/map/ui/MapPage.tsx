@@ -185,6 +185,11 @@ export default function MapPage() {
     router.push(`/map/places/${selectedPlaceId}?${params}`);
   };
 
+  const handleViewReviews = () => {
+    if (!selectedPlaceId) return;
+    router.push(`/review/places/${selectedPlaceId}`);
+  };
+
   const handleCreatePost = () => {
     if (selectedPlace && selectedCoords) {
       sessionStorage.setItem(
@@ -261,6 +266,7 @@ export default function MapPage() {
         onClose={handleSelectedClose}
         onBack={fromList ? handleSelectedBack : undefined}
         onViewPosts={handleViewPosts}
+        onViewReviews={handleViewReviews}
         onCreatePost={handleCreatePost}
       />
       {isSearchOpen && (

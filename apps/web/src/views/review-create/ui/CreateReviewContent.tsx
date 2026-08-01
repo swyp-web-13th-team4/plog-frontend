@@ -15,7 +15,7 @@ import CreateReviewPage from './CreateReviewPage';
 export default async function CreateReviewContent({
   postId,
 }: {
-  postId: string;
+  postId: number;
 }) {
   const queryClient = getQueryClient();
   let post: FeedDetailResponse;
@@ -23,7 +23,7 @@ export default async function CreateReviewContent({
   try {
     post = await queryClient.fetchQuery({
       queryKey: feedQueryKeys.detail(postId),
-      queryFn: () => getFeedPost(postId),
+      queryFn: () => getFeedPost(String(postId)),
     });
   } catch (error) {
     console.error('[CreateReviewContent] 서버 게시글 조회 실패', error);

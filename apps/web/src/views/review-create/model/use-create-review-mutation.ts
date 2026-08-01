@@ -5,20 +5,24 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@plog/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { feedQueryKeys } from '@/entities/feed';
-import { createReview } from '@/entities/review';
-import { mypageQueryKeys } from '@/entities/user';
+import { mapQueryKeys } from '@/entities/place';
+import { createReview, reviewQueryKeys } from '@/entities/review';
 
 import { createReviewForm, getReviewPhotoFiles } from './mapper';
-import { type ReviewFormValues } from './types';
+import { type ReviewSubmitValues } from './types';
 
-export function useCreateReviewMutation({ postId }: { postId: number }) {
+type CreateReviewVariables = {
+  postId: number;
+  values: ReviewSubmitValues;
+};
+
+export function useCreateReviewMutation() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (values: ReviewFormValues) =>
+    mutationFn: ({ postId, values }: CreateReviewVariables) =>
       createReview(
         postId,
         createReviewForm(values),
@@ -26,9 +30,14 @@ export function useCreateReviewMutation({ postId }: { postId: number }) {
       ),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: feedQueryKeys.all }),
-        queryClient.invalidateQueries({ queryKey: mypageQueryKeys.all }),
+        queryClient.invalidateQueries({
+          queryKey: reviewQueryKeys.lists(),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: mapQueryKeys.pinDetailAll(),
+        }),
       ]);
+
       toast({ type: 'success', description: '리뷰가 등록되었어요.' });
       router.replace(`/feed`);
     },

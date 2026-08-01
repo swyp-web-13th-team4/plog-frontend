@@ -8,7 +8,10 @@ import { Button } from '@plog/ui';
 
 import { FetchErrorEmptyState, NavigationHeader } from '@/shared/ui';
 
-import { useCreateReviewPage } from '../model/use-create-review-page';
+import {
+  useCreateReviewPage,
+  type UseCreateReviewPageOptions,
+} from '../model/use-create-review-page';
 import CreateReviewLoading from './CreateReviewLoading';
 import LeaveReviewDialog from './LeaveReviewDialog';
 import ReviewContentSection from './ReviewContentSection';
@@ -17,32 +20,46 @@ import ReviewHeroSection from './ReviewHeroSection';
 import ReviewVisitSection from './ReviewVisitSection';
 import SectionDivider from './SectionDivider';
 
-export default function CreateReviewPage({ postId }: { postId: string }) {
+export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
   const router = useRouter();
-  const controller = useCreateReviewPage({ postId });
+  const controller = useCreateReviewPage(options);
   const {
+    editReviewQuery,
     handleBack,
     handleCancelLeave,
     handleConfirmLeave,
     handleSubmitReview,
+    isEditMode,
     isSubmittingReview,
     leaveConfirmOpen,
     reviewPostQuery,
   } = controller;
 
   useEffect(() => {
-    if (!reviewPostQuery.isPrivateAccessError) return;
+    if (isEditMode || !reviewPostQuery.isPrivateAccessError) return;
 
     router.replace('/feed');
-  }, [reviewPostQuery.isPrivateAccessError, router]);
+  }, [isEditMode, reviewPostQuery.isPrivateAccessError, router]);
 
-  if (reviewPostQuery.isPending) {
+  if (isEditMode && editReviewQuery.isPending) {
     return <CreateReviewLoading />;
   }
 
-  if (reviewPostQuery.isPrivateAccessError) return null;
+  if (isEditMode && editReviewQuery.isError) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center px-6">
+        <FetchErrorEmptyState onRetry={() => editReviewQuery.refetch()} />
+      </div>
+    );
+  }
 
-  if (reviewPostQuery.isError) {
+  if (!isEditMode && reviewPostQuery.isPending) {
+    return <CreateReviewLoading />;
+  }
+
+  if (!isEditMode && reviewPostQuery.isPrivateAccessError) return null;
+
+  if (!isEditMode && reviewPostQuery.isError) {
     return (
       <div className="flex min-h-screen items-center justify-center px-6 pt-[var(--spacing-header)]">
         <FetchErrorEmptyState onRetry={() => reviewPostQuery.refetch()} />
@@ -74,11 +91,18 @@ export default function CreateReviewPage({ postId }: { postId: string }) {
             fullWidth
             disabled={isSubmittingReview}
           >
-            {isSubmittingReview ? '등록 중...' : '리뷰 등록하기'}
+            {isSubmittingReview
+              ? isEditMode
+                ? '저장 중...'
+                : '등록 중...'
+              : isEditMode
+                ? '저장'
+                : '리뷰 등록하기'}
           </Button>
         </section>
       </form>
       <LeaveReviewDialog
+        isEditMode={isEditMode}
         open={leaveConfirmOpen}
         onCancel={handleCancelLeave}
         onConfirm={handleConfirmLeave}

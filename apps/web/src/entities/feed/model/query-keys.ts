@@ -1,7 +1,7 @@
 import { type PostSortType } from './types';
 
-export function toPostId(postId: number | string) {
-  return Number(postId);
+export function toPostId(postId: number | string | null) {
+  return postId === null ? null : Number(postId);
 }
 
 export function toMemberKey(memberKey: string) {
@@ -10,8 +10,9 @@ export function toMemberKey(memberKey: string) {
 
 export const feedQueryKeys = {
   all: ['feed'] as const,
-  detail: (postId: number | string) =>
+  detail: (postId: number | string | null) =>
     ['feed', 'detail', toPostId(postId)] as const,
+
   edit: (postId: number | null) => ['feed', 'edit', postId] as const,
   profileViewAll: () => ['feed', 'profileView'] as const,
   profileView: (memberKey: string) =>

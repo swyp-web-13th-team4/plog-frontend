@@ -21,11 +21,17 @@ function isPrivateAccessError(error: unknown) {
   );
 }
 
-export function useFeedDetailQuery(postId: number) {
+export function useFeedDetailQuery(postId: number | null) {
   const query = useQuery({
     queryKey: feedQueryKeys.detail(postId),
-    queryFn: () => getFeedDetail(postId),
-    enabled: Number.isInteger(postId) && postId > 0,
+    queryFn: () => {
+      if (postId === null || !Number.isInteger(postId) || postId <= 0) {
+        throw new Error('조회할 게시글을 찾을 수 없습니다.');
+      }
+
+      return getFeedDetail(postId);
+    },
+    enabled: postId !== null && Number.isInteger(postId) && postId > 0,
     retry: false,
   });
 

@@ -7,16 +7,16 @@ export function proxy(request: NextRequest) {
 
   const pathSegments = pathname.split('/').filter((segment) => segment !== '');
 
-  const isReviewCreatePage =
+  const isReviewSubPage =
     pathSegments.length === 3 &&
     pathSegments[0] === 'review' &&
-    pathSegments[2] === 'create';
+    ['create', 'edit'].includes(pathSegments[2]);
 
   const isProtectedPage =
     pathname.startsWith('/map') ||
     pathname.startsWith('/log') ||
     pathname.startsWith('/my') ||
-    isReviewCreatePage;
+    isReviewSubPage;
 
   const isGuestOnlyPage = pathname.startsWith('/signup');
 
@@ -38,5 +38,6 @@ export const config = {
     '/my/:path*',
     '/signup/:path*',
     '/review/:postId/create',
+    '/review/:reviewId/edit',
   ],
 };

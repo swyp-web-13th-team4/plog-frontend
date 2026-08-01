@@ -1,17 +1,32 @@
 import { type IconName } from '@plog/ui';
 
-export type ReviewEnvironmentName =
-  | 'spaceSize'
-  | 'noiseLevel'
-  | 'congestionLevel'
-  | 'focusLevel';
+export const REVIEW_ENVIRONMENT_NAMES = [
+  'spaceSize',
+  'noiseLevel',
+  'congestionLevel',
+  'focusLevel',
+] as const;
 
-export type ReviewEnvironmentScore = 1 | 2 | 3 | 4 | 5;
+export type ReviewEnvironmentName = (typeof REVIEW_ENVIRONMENT_NAMES)[number];
+
+export const REVIEW_ENVIRONMENT_ICON_NAMES = [
+  'company-filled',
+  'megaphone-filled',
+  'smile-filled',
+  'fire-filled',
+] satisfies IconName[];
+
+export type ReviewEnvironmentIconName =
+  (typeof REVIEW_ENVIRONMENT_ICON_NAMES)[number];
+
+export const REVIEW_ENVIRONMENT_SCORES = [5, 4, 3, 2, 1] as const;
+
+export type ReviewEnvironmentScore = (typeof REVIEW_ENVIRONMENT_SCORES)[number];
 
 export type ReviewEnvironmentGroup = {
   name: ReviewEnvironmentName;
   title: string;
-  iconName: IconName;
+  iconName: ReviewEnvironmentIconName;
 };
 
 export const REVIEW_ENVIRONMENT_GROUPS: ReviewEnvironmentGroup[] = [
@@ -35,10 +50,6 @@ export const REVIEW_ENVIRONMENT_GROUPS: ReviewEnvironmentGroup[] = [
     title: '집중도',
     iconName: 'fire-filled',
   },
-];
-
-export const REVIEW_ENVIRONMENT_SCORES: ReviewEnvironmentScore[] = [
-  5, 4, 3, 2, 1,
 ];
 
 export const REVIEW_ENVIRONMENT_LABELS: Record<

@@ -40,7 +40,7 @@ export default function RatingSelector({
               size={40}
               className={
                 selected
-                  ? 'text-semantic-theme-amber-normal'
+                  ? 'text-semantic-theme-amber-neutral'
                   : 'text-semantic-object-subtler'
               }
             />

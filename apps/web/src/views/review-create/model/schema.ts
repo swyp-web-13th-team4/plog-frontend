@@ -2,15 +2,11 @@ import { z } from 'zod';
 
 import { type PhotoPreview } from '@/features/photo-upload';
 
+import { REVIEW_ENVIRONMENT_SCORES } from '@/entities/review';
+
 import { type ReviewRatingScore } from './types';
 
-const environmentScoreSchema = z.union([
-  z.literal(1),
-  z.literal(2),
-  z.literal(3),
-  z.literal(4),
-  z.literal(5),
-]);
+const environmentScoreSchema = z.literal(REVIEW_ENVIRONMENT_SCORES);
 
 const ratingScoreSchema = environmentScoreSchema
   .nullable()
@@ -32,6 +28,9 @@ const environmentValuesSchema = z
 export const reviewSchema = z.object({
   rating: ratingScoreSchema,
   environmentValues: environmentValuesSchema,
-  contents: z.string().trim(),
+  contents: z
+    .string()
+    .trim()
+    .max(300, { message: '리뷰는 300자 이하로 작성해 주세요.' }),
   photos: z.array(z.custom<PhotoPreview>()),
 });

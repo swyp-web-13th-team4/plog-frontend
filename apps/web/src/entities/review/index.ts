@@ -1,4 +1,11 @@
-export { createReview } from './api/client';
+export {
+  createReview,
+  deleteReview,
+  getPlaceReviews,
+  getReviewForEdit,
+  updateReview,
+} from './api/client';
+export { isReviewEditable } from './lib/is-review-editable';
 export {
   REVIEW_ENVIRONMENT_GROUPS,
   REVIEW_ENVIRONMENT_LABELS,
@@ -7,5 +14,14 @@ export {
   type ReviewEnvironmentName,
   type ReviewEnvironmentScore,
 } from './model/environment';
-export { type ReviewResponse, reviewResponseSchema } from './model/schemas';
-export { type CreateReviewRequest } from './model/types';
+export { reviewQueryKeys } from './model/query-keys';
+export {
+  type EditReviewResponse,
+  type PlaceReviewListItem,
+  type PlaceReviewSummary,
+} from './model/schemas';
+export type {
+  CreateReviewRequest,
+  ReviewSortType,
+  UpdateReviewRequest,
+} from './model/types';
