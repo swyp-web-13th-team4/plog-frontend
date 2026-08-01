@@ -1,15 +1,11 @@
 import { z } from 'zod';
 
 import {
-  REVIEW_ENVIRONMENT_ICON_NAMES,
   REVIEW_ENVIRONMENT_NAMES,
   REVIEW_ENVIRONMENT_SCORES,
 } from './environment';
 
 export const reviewEnvironmentNameSchema = z.enum(REVIEW_ENVIRONMENT_NAMES);
-export const reviewEnvironmentIconNameSchema = z.enum(
-  REVIEW_ENVIRONMENT_ICON_NAMES,
-);
 
 export const reviewResponseSchema = z.object({
   reviewId: z.number(),
@@ -62,10 +58,7 @@ export type EditReviewResponse = z.infer<typeof editReviewResponseSchema>;
 
 export const placeReviewEnvironmentItemSchema = z.object({
   environmentName: reviewEnvironmentNameSchema,
-  title: z.string(),
-  iconName: reviewEnvironmentIconNameSchema,
-  score: z.number(),
-  label: z.string(),
+  score: reviewScoreSchema,
 });
 
 export type PlaceReviewEnvironmentItem = z.infer<

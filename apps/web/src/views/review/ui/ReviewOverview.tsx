@@ -6,20 +6,10 @@ import { Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
 import {
-  type PlaceReviewEnvironmentSummary,
   type PlaceReviewSummary,
   REVIEW_ENVIRONMENT_GROUPS,
+  REVIEW_ENVIRONMENT_LABELS,
 } from '@/entities/review';
-
-const EMPTY_REVIEW_ENVIRONMENTS: PlaceReviewEnvironmentSummary[] =
-  REVIEW_ENVIRONMENT_GROUPS.map((environment) => ({
-    environmentName: environment.name,
-    title: environment.title,
-    iconName: environment.iconName,
-    score: 0,
-    label: '-',
-    count: 0,
-  }));
 
 const BAR_COLORS = [
   'bg-semantic-accent-neutral',
@@ -34,9 +24,23 @@ export default function ReviewOverview({
   summary: PlaceReviewSummary | null;
 }) {
   const isEmptyEnvironment = !summary || summary.environments.length === 0;
-  const environments = isEmptyEnvironment
-    ? EMPTY_REVIEW_ENVIRONMENTS
-    : summary.environments;
+  const environments = REVIEW_ENVIRONMENT_GROUPS.map(
+    ({ name, title, iconName }) => {
+      const environment = summary?.environments.find(
+        ({ environmentName }) => environmentName === name,
+      );
+
+      return {
+        name,
+        title,
+        iconName,
+        label: environment
+          ? REVIEW_ENVIRONMENT_LABELS[name][environment.score]
+          : '-',
+        count: environment?.count ?? 0,
+      };
+    },
+  );
   const maxCount = Math.max(
     ...environments.map((environment) => environment.count),
     1,
@@ -79,7 +83,7 @@ export default function ReviewOverview({
           const colorIndex = Math.min(rank, BAR_COLORS.length - 1);
 
           return (
-            <Fragment key={environment.environmentName}>
+            <Fragment key={environment.name}>
               <div className="flex items-center gap-2 rounded-xl border border-semantic-stroke-subtle p-3">
                 <Icon
                   name={environment.iconName}

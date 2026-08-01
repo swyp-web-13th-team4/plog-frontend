@@ -7,7 +7,12 @@ import { useRouter } from 'next/navigation';
 import { Avatar, Dropdown, Icon } from '@plog/ui';
 import { cn } from '@plog/utils';
 
-import { isReviewEditable, PlaceReviewListItem } from '@/entities/review';
+import {
+  isReviewEditable,
+  PlaceReviewListItem,
+  REVIEW_ENVIRONMENT_GROUPS,
+  REVIEW_ENVIRONMENT_LABELS,
+} from '@/entities/review';
 
 import { formatDate } from '@/shared/lib/datetime';
 import { dialog } from '@/shared/lib/dialog';
@@ -123,21 +128,26 @@ export default function ReviewItem({
         </div>
 
         <div className="grid grid-cols-2 gap-3 rounded-xl border border-semantic-stroke-subtle bg-primitive-gray-20 p-4">
-          {review.environments.map((environment) => (
-            <div
-              key={environment.environmentName}
-              className="flex items-center gap-2.5"
-            >
-              <Icon
-                name={environment.iconName}
-                boxed={false}
-                className="size-3.5 text-semantic-object-subtle"
-              />
-              <span className="label-sm text-semantic-object-bold">
-                {environment.label}
-              </span>
-            </div>
-          ))}
+          {REVIEW_ENVIRONMENT_GROUPS.map(({ name, iconName }) => {
+            const environment = review.environments.find(
+              ({ environmentName }) => environmentName === name,
+            );
+
+            if (!environment) return null;
+
+            return (
+              <div key={name} className="flex items-center gap-2.5">
+                <Icon
+                  name={iconName}
+                  boxed={false}
+                  className="size-3.5 text-semantic-object-subtle"
+                />
+                <span className="label-sm text-semantic-object-bold">
+                  {REVIEW_ENVIRONMENT_LABELS[name][environment.score]}
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         {review.content && (

@@ -36,7 +36,6 @@ export {
   placeReviewPageItemsSchema,
   placeReviewPageResponseSchema,
   placeReviewSummarySchema,
-  reviewEnvironmentIconNameSchema,
   reviewEnvironmentNameSchema,
   reviewResponseSchema,
 } from './model/schemas';
