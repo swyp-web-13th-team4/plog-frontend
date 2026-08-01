@@ -17,7 +17,7 @@ export default function GlobalDialog() {
           )}
           <Dialog.Title>{options?.message}</Dialog.Title>
           {options?.description && (
-            <Dialog.Description className="whitespace-pre-line text-center">
+            <Dialog.Description className="text-center whitespace-pre-line">
               {options.description}
             </Dialog.Description>
           )}
