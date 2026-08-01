@@ -6,6 +6,8 @@ import {
   ReviewSortType,
 } from '@/entities/review';
 
+import { getNextCursorPageParam } from '@/shared/api/response.utils';
+
 type PlaceReviewQueryProps = {
   placeId: number;
   imageOnly: boolean;
@@ -37,13 +39,7 @@ export function usePlaceReviewsQuery({
 
     initialPageParam: '',
 
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.reviews.hasNext) {
-        return undefined;
-      }
-
-      return lastPage.reviews.nextCursor ?? undefined;
-    },
+    getNextPageParam: (lastPage) => getNextCursorPageParam(lastPage.reviews),
 
     enabled: placeId > 0 && Number.isInteger(placeId),
   });
