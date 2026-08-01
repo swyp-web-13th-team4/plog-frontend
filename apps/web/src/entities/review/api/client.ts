@@ -42,7 +42,7 @@ export function getPlaceReviews({
   }
 
   return clientApi.get(
-    `/reviews/record/${placeId}?${params}`,
+    `/reviews/${placeId}?${params}`,
     placeReviewPageResponseSchema,
   );
 }
