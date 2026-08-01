@@ -25,7 +25,7 @@ export default function WithdrawPage() {
   const { data: mypageData } = useMypageQuery();
   const { mutate: deleteAccount, isPending } = useDeleteAccountMutation();
 
-  const goToSettings = () => router.push('/my/settings');
+  const handleCancel = () => router.back();
 
   const handleReasonChange = (nextReason: WithdrawReason) => {
     setReason(nextReason);
@@ -49,14 +49,14 @@ export default function WithdrawPage() {
           etcDetail={etcDetail}
           onReasonChange={handleReasonChange}
           onEtcDetailChange={setEtcDetail}
-          onCancel={goToSettings}
+          onCancel={handleCancel}
           onNext={() => setStep('notice')}
         />
       ) : (
         <NoticeStep
           nickname={mypageData?.nickname ?? ''}
           isSubmitting={isPending}
-          onCancel={goToSettings}
+          onCancel={handleCancel}
           onSubmit={handleSubmit}
         />
       )}
