@@ -1,8 +1,6 @@
-import { useRouter } from 'next/navigation';
-
 import * as amplitude from '@amplitude/unified';
 import { useToast } from '@plog/ui';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 
 import { clientApi } from '@/shared/api/client-api';
 import { dialog } from '@/shared/lib/dialog';
@@ -15,11 +13,7 @@ type DeleteAccountVariables = {
 };
 
 export function useDeleteAccountMutation() {
-  const router = useRouter();
-
   const { toast } = useToast();
-
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (variables: DeleteAccountVariables) => {
@@ -38,8 +32,7 @@ export function useDeleteAccountMutation() {
           '지금까지 플로그를 이용해 주셔서 감사합니다.\n더 좋은 서비스를 준비하고 있을게요!',
       });
 
-      queryClient.clear();
-      router.push('/login');
+      window.location.replace('/login');
     },
     onError: () => {
       toast({
