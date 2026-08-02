@@ -103,9 +103,9 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     formState: { isSubmitted },
   } = form;
 
-  const [environmentValues, reviewText, photos] = useWatch({
+  const [reviewText, photos] = useWatch({
     control,
-    name: ['environmentValues', 'contents', 'photos'],
+    name: ['contents', 'photos'],
   });
 
   const contentsField = register('contents');
@@ -163,16 +163,6 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     router.push('/feed');
   };
 
-  const handleEnvironmentChange = (
-    name: ReviewEnvironmentName,
-    value: ReviewEnvironmentScore | null,
-  ) => {
-    setFormValue('environmentValues', {
-      ...environmentValues,
-      [name]: value,
-    });
-  };
-
   const handleInvalidSubmit = (
     fieldErrors: FieldErrors<CreateReviewFormValues>,
   ) => {
@@ -213,13 +203,11 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     form,
     editReviewQuery,
     endTime: post?.endedAt ?? editReview?.endedAt ?? null,
-    environmentValues,
     focusTargets: invalidFocus.focusTargets,
     handleAddPhotos,
     handleBack,
     handleCancelLeave,
     handleConfirmLeave,
-    handleEnvironmentChange,
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
     handlePhotoMaxCountExceeded,

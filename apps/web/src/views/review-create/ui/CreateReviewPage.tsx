@@ -90,7 +90,7 @@ export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
             endTime={controller.endTime}
           />
           <SectionDivider />
-          <ReviewEnvironmentSection controller={controller} />
+          <ReviewEnvironmentSection focusTargets={controller.focusTargets} />
           <SectionDivider />
           <ReviewContentSection controller={controller} />
 
