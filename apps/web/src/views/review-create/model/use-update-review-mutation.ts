@@ -9,7 +9,7 @@ import { mapQueryKeys } from '@/entities/place';
 import { reviewQueryKeys, updateReview } from '@/entities/review';
 
 import { getReviewPhotoFiles, updateReviewForm } from './mapper';
-import { type ReviewSubmitValues } from './types';
+import { type CreateReviewFormValues } from './types';
 
 type UseUpdateReviewMutationOptions = {
   onSuccess?: () => void;
@@ -17,7 +17,7 @@ type UseUpdateReviewMutationOptions = {
 
 type UpdateReviewVariables = {
   reviewId: number;
-  values: ReviewSubmitValues;
+  values: CreateReviewFormValues;
 };
 
 export function useUpdateReviewMutation({

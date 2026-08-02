@@ -2,12 +2,12 @@ import { type FieldErrors } from 'react-hook-form';
 
 import { useScrollFocusTarget } from '@/shared/lib/scroll-focus-target';
 
-import { type ReviewFormValues } from './types';
+import { type CreateReviewFormValues } from './types';
 
 export type ReviewFormFields = 'rating' | 'environmentValues';
 
 export function getInvalidSubmitFeedback(
-  fieldErrors: FieldErrors<ReviewFormValues>,
+  fieldErrors: FieldErrors<CreateReviewFormValues>,
 ): { field: ReviewFormFields; toastMessage?: string } | null {
   if (fieldErrors.rating) {
     return {

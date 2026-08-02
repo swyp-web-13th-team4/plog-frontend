@@ -4,13 +4,11 @@ import { type PhotoPreview } from '@/features/photo-upload';
 
 import { REVIEW_ENVIRONMENT_SCORES } from '@/entities/review';
 
-import { type ReviewRatingScore } from './types';
-
 const environmentScoreSchema = z.literal(REVIEW_ENVIRONMENT_SCORES);
 
 const ratingScoreSchema = environmentScoreSchema
   .nullable()
-  .refine((v): v is ReviewRatingScore => v !== null, {
+  .refine((value): boolean => value !== null, {
     message: '별점을 선택해 주세요',
   });
 

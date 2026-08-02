@@ -29,11 +29,7 @@ import { parseDate } from '@/shared/lib/datetime';
 
 import { editReviewFormValues } from './mapper';
 import { reviewResolver } from './resolver';
-import {
-  type ReviewFormValues,
-  type ReviewRatingScore,
-  type ReviewSubmitValues,
-} from './types';
+import { type CreateReviewFormValues, type ReviewRatingScore } from './types';
 import { useCreateReviewMutation } from './use-create-review-mutation';
 import { useEditReviewQuery } from './use-edit-review-query';
 import {
@@ -42,7 +38,7 @@ import {
 } from './use-invalid-form-focus';
 import { useUpdateReviewMutation } from './use-update-review-mutation';
 
-const initialReviewValues: ReviewFormValues = {
+const initialReviewValues: CreateReviewFormValues = {
   rating: null,
   environmentValues: {
     spaceSize: null,
@@ -95,7 +91,7 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     setValue,
     control,
     formState: { errors, isSubmitted },
-  } = useForm<ReviewFormValues, unknown, ReviewSubmitValues>({
+  } = useForm<CreateReviewFormValues>({
     resolver: reviewResolver,
     defaultValues: initialReviewValues,
     mode: 'onChange',
@@ -109,9 +105,9 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
 
   const contentsField = register('contents');
 
-  const setFormValue = <TFieldName extends FieldPath<ReviewFormValues>>(
+  const setFormValue = <TFieldName extends FieldPath<CreateReviewFormValues>>(
     fieldName: TFieldName,
-    value: FieldPathValue<ReviewFormValues, TFieldName>,
+    value: FieldPathValue<CreateReviewFormValues, TFieldName>,
   ) => {
     setValue(fieldName, value, {
       shouldValidate: true,
@@ -176,7 +172,9 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     setFormValue('rating', value as ReviewRatingScore);
   };
 
-  const handleInvalidSubmit = (fieldErrors: FieldErrors<ReviewFormValues>) => {
+  const handleInvalidSubmit = (
+    fieldErrors: FieldErrors<CreateReviewFormValues>,
+  ) => {
     const feedback = getInvalidSubmitFeedback(fieldErrors);
     if (!feedback) return;
 
@@ -189,7 +187,7 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     }
   };
 
-  const handleValidSubmit = (values: ReviewSubmitValues) => {
+  const handleValidSubmit = (values: CreateReviewFormValues) => {
     if (options.editReviewId !== undefined) {
       updateReviewMutation.mutate({
         reviewId: options.editReviewId,
