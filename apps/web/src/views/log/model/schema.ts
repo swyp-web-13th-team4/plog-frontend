@@ -1,3 +1,4 @@
+import { type TimeValue } from '@plog/ui';
 import { z } from 'zod';
 
 import { isNewPhotoPreview } from '@/features/photo-upload';
@@ -130,7 +131,7 @@ const contentsSchema = z
     }
   });
 
-function getMinutes(value: { hour: number; minute: number }) {
+function getMinutes(value: TimeValue) {
   return value.hour * 60 + value.minute;
 }
 
@@ -215,11 +216,25 @@ export const createLogSchema = z
       return;
     }
 
-    if (getMinutes(endedAt) <= getMinutes(startedAt)) {
+    const startMinutes = getMinutes(startedAt);
+    const endMinutes = getMinutes(endedAt);
+
+    const crossesMidnight = startedAt.hour >= 12 && endedAt.hour < 12;
+
+    if (startMinutes === endMinutes) {
       ctx.addIssue({
         code: 'custom',
         path: ['endedAt'],
-        message: '시작 시간보다 빠른 시간은 선택할 수 없어요.',
+        message: '시작 시간과 종료 시간은 같을 수 없어요.',
+      });
+      return;
+    }
+
+    if (startMinutes > endMinutes && !crossesMidnight) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['endedAt'],
+        message: '종료 시간은 시작 시간보다 빨리 설정할 수 없어요.',
       });
     }
   });
