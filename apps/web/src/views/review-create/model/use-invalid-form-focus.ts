@@ -28,6 +28,10 @@ export function getInvalidSubmitFeedback(
   return null;
 }
 
+export type ReviewFocusTargets = ReturnType<
+  typeof useReviewInvalidFocus
+>['focusTargets'];
+
 export function useReviewInvalidFocus() {
   const rating = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const environment = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();

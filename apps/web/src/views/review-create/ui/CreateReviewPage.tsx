@@ -17,7 +17,7 @@ import CreateReviewLoading from './CreateReviewLoading';
 import LeaveReviewDialog from './LeaveReviewDialog';
 import ReviewContentSection from './ReviewContentSection';
 import ReviewEnvironmentSection from './ReviewEnvironmentSection';
-import ReviewHeroSection from './ReviewHeroSection';
+import ReviewRatingSection from './ReviewRatingSection';
 import ReviewVisitSection from './ReviewVisitSection';
 import SectionDivider from './SectionDivider';
 
@@ -78,7 +78,11 @@ export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
           noValidate
           onSubmit={handleSubmitReview}
         >
-          <ReviewHeroSection controller={controller} />
+          <ReviewRatingSection
+            placeImageSrc={controller.placeImageSrc}
+            placeName={controller.placeName}
+            focusTargets={controller.focusTargets}
+          />
           <SectionDivider />
           <ReviewVisitSection controller={controller} />
           <SectionDivider />

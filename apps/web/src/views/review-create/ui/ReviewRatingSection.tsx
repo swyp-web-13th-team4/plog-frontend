@@ -1,20 +1,30 @@
 import Image from 'next/image';
 
-import { type ReviewFormController } from '../model/use-create-review-page';
-import RatingSelector from './RatingSelector';
+import { type ReviewFocusTargets } from '../model/use-invalid-form-focus';
+import ReviewRatingField from './field/ReviewRatingField';
 
-export default function ReviewHeroSection({
-  controller,
-}: {
-  controller: ReviewFormController;
-}) {
-  const { focusTargets, placeImageSrc, placeName, rating, setRating } =
-    controller;
+type ReviewRatingSectionProps = {
+  placeName: string;
+  placeImageSrc: string | null;
+  focusTargets: Pick<
+    ReviewFocusTargets,
+    'ratingFieldRef' | 'ratingFirstButtonRef'
+  >;
+};
+
+export default function ReviewRatingSection({
+  placeName,
+  placeImageSrc,
+  focusTargets,
+}: ReviewRatingSectionProps) {
   const { ratingFieldRef, ratingFirstButtonRef } = focusTargets;
 
   return (
-    <section ref={ratingFieldRef} className="px-6 pt-8 pb-10">
-      <div className="flex flex-col items-center justify-center gap-8">
+    <section className="px-6 pt-8 pb-10">
+      <div
+        ref={ratingFieldRef}
+        className="flex flex-col items-center justify-center gap-8"
+      >
         <div className="relative size-30 overflow-hidden rounded-xl bg-semantic-object-subtler">
           {placeImageSrc && (
             <Image
@@ -35,11 +45,7 @@ export default function ReviewHeroSection({
             </span>
             <p className="title-lg text-semantic-object-boldest">{placeName}</p>
           </div>
-          <RatingSelector
-            value={rating ?? 0}
-            focusFirstButton={ratingFirstButtonRef}
-            onChange={setRating}
-          />
+          <ReviewRatingField buttonRef={ratingFirstButtonRef} />
         </div>
       </div>
     </section>

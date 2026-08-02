@@ -29,7 +29,7 @@ import { parseDate } from '@/shared/lib/datetime';
 
 import { editReviewFormValues } from './mapper';
 import { reviewResolver } from './resolver';
-import { type CreateReviewFormValues, type ReviewRatingScore } from './types';
+import { type CreateReviewFormValues } from './types';
 import { useCreateReviewMutation } from './use-create-review-mutation';
 import { useEditReviewQuery } from './use-edit-review-query';
 import {
@@ -103,9 +103,9 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     formState: { isSubmitted },
   } = form;
 
-  const [rating, environmentValues, reviewText, photos] = useWatch({
+  const [environmentValues, reviewText, photos] = useWatch({
     control,
-    name: ['rating', 'environmentValues', 'contents', 'photos'],
+    name: ['environmentValues', 'contents', 'photos'],
   });
 
   const contentsField = register('contents');
@@ -173,10 +173,6 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     });
   };
 
-  const handleRatingChange = (value: number) => {
-    setFormValue('rating', value as ReviewRatingScore);
-  };
-
   const handleInvalidSubmit = (
     fieldErrors: FieldErrors<CreateReviewFormValues>,
   ) => {
@@ -237,10 +233,8 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     photos,
     placeImageSrc: post?.postImages?.[0] ?? editReview?.placeProfileUrl ?? null,
     placeName: post?.placeName ?? editReview?.placeName ?? '방문한 장소',
-    rating,
     reviewPostQuery,
     reviewText,
-    setRating: handleRatingChange,
     startTime: post?.startedAt ?? editReview?.startedAt ?? null,
     visitDate: post?.studyDate
       ? parseDate(post.studyDate)
