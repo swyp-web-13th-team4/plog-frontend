@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 
@@ -71,36 +72,38 @@ export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
     <>
       <NavigationHeader title="장소 리뷰" onBack={handleBack} />
 
-      <form
-        className="flex flex-col pt-[var(--spacing-header)]"
-        noValidate
-        onSubmit={handleSubmitReview}
-      >
-        <ReviewHeroSection controller={controller} />
-        <SectionDivider />
-        <ReviewVisitSection controller={controller} />
-        <SectionDivider />
-        <ReviewEnvironmentSection controller={controller} />
-        <SectionDivider />
-        <ReviewContentSection controller={controller} />
+      <FormProvider {...controller.form}>
+        <form
+          className="flex flex-col pt-[var(--spacing-header)]"
+          noValidate
+          onSubmit={handleSubmitReview}
+        >
+          <ReviewHeroSection controller={controller} />
+          <SectionDivider />
+          <ReviewVisitSection controller={controller} />
+          <SectionDivider />
+          <ReviewEnvironmentSection controller={controller} />
+          <SectionDivider />
+          <ReviewContentSection controller={controller} />
 
-        <section className="px-6 pt-6 pb-10">
-          <Button
-            type="submit"
-            size="large"
-            fullWidth
-            disabled={isSubmittingReview}
-          >
-            {isSubmittingReview
-              ? isEditMode
-                ? '저장 중...'
-                : '등록 중...'
-              : isEditMode
-                ? '저장'
-                : '리뷰 등록하기'}
-          </Button>
-        </section>
-      </form>
+          <section className="px-6 pt-6 pb-10">
+            <Button
+              type="submit"
+              size="large"
+              fullWidth
+              disabled={isSubmittingReview}
+            >
+              {isSubmittingReview
+                ? isEditMode
+                  ? '저장 중...'
+                  : '등록 중...'
+                : isEditMode
+                  ? '저장'
+                  : '리뷰 등록하기'}
+            </Button>
+          </section>
+        </form>
+      </FormProvider>
       <LeaveReviewDialog
         isEditMode={isEditMode}
         open={leaveConfirmOpen}

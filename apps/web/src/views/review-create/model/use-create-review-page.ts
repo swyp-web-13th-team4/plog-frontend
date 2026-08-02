@@ -84,19 +84,24 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
 
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
+  const form = useForm<CreateReviewFormValues>({
+    resolver: reviewResolver,
+    defaultValues: {
+      ...initialReviewValues,
+    },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
+  });
+
   const {
     register,
     handleSubmit,
     reset,
     setValue,
     control,
-    formState: { errors, isSubmitted },
-  } = useForm<CreateReviewFormValues>({
-    resolver: reviewResolver,
-    defaultValues: initialReviewValues,
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-  });
+    formState: { isSubmitted },
+  } = form;
 
   const [rating, environmentValues, reviewText, photos] = useWatch({
     control,
@@ -209,10 +214,10 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
 
   return {
     contentsField,
+    form,
     editReviewQuery,
     endTime: post?.endedAt ?? editReview?.endedAt ?? null,
     environmentValues,
-    errors,
     focusTargets: invalidFocus.focusTargets,
     handleAddPhotos,
     handleBack,
