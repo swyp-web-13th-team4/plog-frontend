@@ -14,7 +14,7 @@ import {
 
 import { useMergedRef } from '@/shared/lib/merge-ref';
 
-import { CreateReviewFormValues } from '../../model/types';
+import { type CreateReviewFormValues } from '../../model/types';
 
 function EnvironmentChoiceGroup({
   group,
