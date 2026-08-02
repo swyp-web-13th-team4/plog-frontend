@@ -92,7 +92,11 @@ export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
           <SectionDivider />
           <ReviewEnvironmentSection focusTargets={controller.focusTargets} />
           <SectionDivider />
-          <ReviewContentSection controller={controller} />
+          <ReviewContentSection
+            photos={controller.photos}
+            onAddPhotos={controller.handleAddPhotos}
+            onRemovePhoto={controller.handleRemovePhoto}
+          />
 
           <section className="px-6 pt-6 pb-10">
             <Button

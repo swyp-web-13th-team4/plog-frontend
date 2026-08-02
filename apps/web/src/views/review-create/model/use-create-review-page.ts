@@ -1,29 +1,15 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  type FieldErrors,
-  type FieldPath,
-  type FieldPathValue,
-  useForm,
-  useWatch,
-} from 'react-hook-form';
+import { type FieldErrors, useForm, useWatch } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 
 import { useToast } from '@plog/ui';
 
-import {
-  type PhotoPreview,
-  usePhotoUpload,
-  usePhotoUploadFeedback,
-} from '@/features/photo-upload';
+import { type PhotoPreview, usePhotoUpload } from '@/features/photo-upload';
 
 import { useFeedDetailQuery } from '@/entities/feed';
-import {
-  type ReviewEnvironmentName,
-  type ReviewEnvironmentScore,
-} from '@/entities/review';
 
 import { parseDate } from '@/shared/lib/datetime';
 
@@ -63,11 +49,6 @@ export type UseCreateReviewPageOptions =
 export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
   const router = useRouter();
   const { toast } = useToast();
-  const {
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
-    handlePhotoMaxCountExceeded,
-  } = usePhotoUploadFeedback();
 
   const invalidFocus = useReviewInvalidFocus();
 
@@ -95,7 +76,6 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
   });
 
   const {
-    register,
     handleSubmit,
     reset,
     setValue,
@@ -103,21 +83,10 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     formState: { isSubmitted },
   } = form;
 
-  const [reviewText, photos] = useWatch({
+  const photos = useWatch({
     control,
-    name: ['contents', 'photos'],
+    name: 'photos',
   });
-
-  const contentsField = register('contents');
-
-  const setFormValue = <TFieldName extends FieldPath<CreateReviewFormValues>>(
-    fieldName: TFieldName,
-    value: FieldPathValue<CreateReviewFormValues, TFieldName>,
-  ) => {
-    setValue(fieldName, value, {
-      shouldValidate: true,
-    });
-  };
 
   const handlePhotosChange = useCallback(
     (nextPhotos: PhotoPreview[]) => {
@@ -199,7 +168,6 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
   );
 
   return {
-    contentsField,
     form,
     editReviewQuery,
     endTime: post?.endedAt ?? editReview?.endedAt ?? null,
@@ -208,9 +176,6 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     handleBack,
     handleCancelLeave,
     handleConfirmLeave,
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
-    handlePhotoMaxCountExceeded,
     handleRemovePhoto,
     handleSubmitReview,
     isEditMode,
@@ -222,7 +187,6 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     placeImageSrc: post?.postImages?.[0] ?? editReview?.placeProfileUrl ?? null,
     placeName: post?.placeName ?? editReview?.placeName ?? '방문한 장소',
     reviewPostQuery,
-    reviewText,
     startTime: post?.startedAt ?? editReview?.startedAt ?? null,
     visitDate: post?.studyDate
       ? parseDate(post.studyDate)
@@ -231,5 +195,3 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
         : null,
   };
 }
-
-export type ReviewFormController = ReturnType<typeof useCreateReviewPage>;
