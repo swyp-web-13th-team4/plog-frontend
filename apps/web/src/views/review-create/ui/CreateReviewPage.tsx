@@ -84,7 +84,11 @@ export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
             focusTargets={controller.focusTargets}
           />
           <SectionDivider />
-          <ReviewVisitSection controller={controller} />
+          <ReviewVisitSection
+            visitDate={controller.visitDate}
+            startTime={controller.startTime}
+            endTime={controller.endTime}
+          />
           <SectionDivider />
           <ReviewEnvironmentSection controller={controller} />
           <SectionDivider />
