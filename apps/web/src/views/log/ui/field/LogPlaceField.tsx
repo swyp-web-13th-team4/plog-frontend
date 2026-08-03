@@ -18,7 +18,10 @@ export default function LogPlaceField({
   inputRef,
   onOpenPlaceSearch,
 }: LogPlaceFieldProps) {
-  const { field } = useController<CreateLogFormValues, 'place'>({
+  const {
+    field,
+    fieldState: { invalid },
+  } = useController<CreateLogFormValues, 'place'>({
     name: 'place',
   });
   const inputMergedRef = useMergedRef<HTMLInputElement>(field.ref, inputRef);
@@ -29,6 +32,7 @@ export default function LogPlaceField({
         <Input
           name={field.name}
           ref={inputMergedRef}
+          invalid={invalid}
           value={field.value?.name ?? ''}
           placeholder="위치를 입력해 주세요."
           readOnly
