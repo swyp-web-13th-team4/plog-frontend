@@ -27,7 +27,10 @@ export default function LogWorkTimeField({
   revalidateField,
 }: LogWorkTimeFieldProps) {
   const { trigger } = useFormContext<CreateLogFormValues>();
-  const { field } = useController<CreateLogFormValues, LogWorkTimeName>({
+  const {
+    field,
+    fieldState: { invalid },
+  } = useController<CreateLogFormValues, LogWorkTimeName>({
     name,
   });
   const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
@@ -44,6 +47,7 @@ export default function LogWorkTimeField({
       <WorkTimeDialog label={label} value={field.value} onChange={handleChange}>
         <SelectTriggerButton
           ref={buttonMergedRef}
+          invalid={invalid}
           value={field.value ? formatTime(field.value, '24h') : null}
           placeholder="--:--"
           aria-label={`${label} 선택`}
