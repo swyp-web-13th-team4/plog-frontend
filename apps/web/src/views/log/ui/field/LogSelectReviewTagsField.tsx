@@ -2,6 +2,7 @@ import { type RefCallback } from 'react';
 import { useController } from 'react-hook-form';
 
 import { Button, Chip, Field, Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { ReviewTagsSheet } from '@/features/select-review-tags';
 
@@ -22,7 +23,10 @@ export default function LogSelectReviewTagsField({
   fieldRef,
   buttonRef,
 }: LogSelectReviewTagsFieldProps) {
-  const { field } = useController<CreateLogFormValues, 'placeTags'>({
+  const {
+    field,
+    fieldState: { invalid },
+  } = useController<CreateLogFormValues, 'placeTags'>({
     name: 'placeTags',
   });
   const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
@@ -61,7 +65,11 @@ export default function LogSelectReviewTagsField({
               size="large"
               fullWidth
               iconLeft={<Icon name="plus" />}
-              className="text-semantic-object-normal [&>svg]:size-4!"
+              className={cn(
+                'text-semantic-object-normal [&>svg]:size-4!',
+                invalid &&
+                  'border-semantic-theme-red-normal bg-semantic-theme-red-subtler focus-visible:outline-semantic-theme-red-normal',
+              )}
             >
               태그 추가하기
             </Button>
