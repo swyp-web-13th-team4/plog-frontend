@@ -313,7 +313,6 @@ export function useCreateLogPage(editPostId?: string) {
     handleSubmitLog,
     handleAddPhotos,
     handleRemovePhoto,
-    photos,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
