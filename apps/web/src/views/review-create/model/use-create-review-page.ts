@@ -72,6 +72,7 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
+    shouldFocusError: false,
   });
 
   const {
