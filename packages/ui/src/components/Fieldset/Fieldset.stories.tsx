@@ -39,12 +39,19 @@ const meta: Meta<typeof Fieldset> = {
       description: '하단에 표시되는 보조 설명입니다. 에러가 있으면 대체됩니다.',
       control: 'text',
     },
+    disabled: {
+      description:
+        '비활성화 여부입니다. `fieldset`의 네이티브 동작으로 내부 폼 컨트롤이 함께 비활성화됩니다.',
+      control: 'boolean',
+      table: { defaultValue: { summary: 'false' } },
+    },
     children: { table: { disable: true } },
     className: { table: { disable: true } },
   },
   args: {
     label: '레이블',
     required: true,
+    disabled: false,
   },
 };
 
@@ -108,6 +115,25 @@ export const WithError: Story = {
   },
   args: {
     error: '하나 이상 선택해 주세요.',
+  },
+  render: (args) => (
+    <Fieldset {...args}>
+      <Options />
+    </Fieldset>
+  ),
+};
+
+export const Disabled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`disabled`를 전달하면 `fieldset`의 네이티브 동작으로 내부 폼 컨트롤이 함께 비활성화됩니다.',
+      },
+    },
+  },
+  args: {
+    disabled: true,
   },
   render: (args) => (
     <Fieldset {...args}>

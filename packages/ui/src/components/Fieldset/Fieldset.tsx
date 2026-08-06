@@ -11,6 +11,7 @@ type FieldsetProps = {
   error?: string;
   success?: string;
   description?: string;
+  disabled?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -21,6 +22,7 @@ function Fieldset({
   error,
   success,
   description,
+  disabled,
   className,
   children,
 }: FieldsetProps) {
@@ -31,6 +33,8 @@ function Fieldset({
 
   return (
     <BaseFieldset.Root
+      disabled={disabled}
+      render={<fieldset disabled={disabled} />}
       aria-describedby={hasMessage ? messageId : undefined}
       className={cn('flex min-w-0 flex-col', className)}
     >
