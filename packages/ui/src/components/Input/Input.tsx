@@ -42,9 +42,10 @@ function Input({
   maxLength,
   className,
   containerClassName,
+  'aria-describedby': ariaDescribedby,
   ...props
 }: InputProps) {
-  const { insideField, onCharCountChange, messageId } = useFieldContext();
+  const { insideField, onCharCountChange } = useFieldContext();
 
   const {
     invalid,
@@ -99,7 +100,6 @@ function Input({
         <BaseInput
           ref={ref}
           aria-invalid={invalid}
-          aria-describedby={messageId}
           value={currentValue}
           onChange={handleChange}
           disabled={effectiveDisabled}
@@ -113,6 +113,9 @@ function Input({
             className,
           )}
           {...props}
+          {...(ariaDescribedby !== undefined && {
+            'aria-describedby': ariaDescribedby,
+          })}
         />
 
         {(showClear || trailing) && (

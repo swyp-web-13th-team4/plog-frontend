@@ -33,9 +33,10 @@ function Textarea({
   onBlur,
   className,
   containerClassName,
+  'aria-describedby': ariaDescribedby,
   ...props
 }: TextareaProps) {
-  const { insideField, onCharCountChange, messageId } = useFieldContext();
+  const { insideField, onCharCountChange } = useFieldContext();
 
   const {
     invalid,
@@ -74,7 +75,6 @@ function Textarea({
       <BaseField.Control
         disabled={effectiveDisabled}
         aria-invalid={invalid}
-        aria-describedby={messageId}
         render={
           <textarea
             ref={ref}
@@ -90,6 +90,9 @@ function Textarea({
               className,
             )}
             {...props}
+            {...(ariaDescribedby !== undefined && {
+              'aria-describedby': ariaDescribedby,
+            })}
           />
         }
       />
