@@ -4,6 +4,7 @@ import { Field as BaseField } from '@base-ui/react/field';
 import { cn } from '@plog/utils';
 
 import { type CharCountInfo, FieldContext } from '@/shared/FieldContext';
+import RequiredMark from '@/shared/RequiredMark';
 
 type FieldProps = {
   label?: string;
@@ -51,15 +52,7 @@ function Field({
         {label && (
           <BaseField.Label className="label-lg mb-3 flex gap-1 text-semantic-object-boldest">
             {label}
-            {required && (
-              <>
-                <span
-                  aria-hidden="true"
-                  className="mt-1 inline-block size-1 rounded-full bg-primitive-red-400"
-                />
-                <span className="sr-only">필수</span>
-              </>
-            )}
+            {required && <RequiredMark />}
           </BaseField.Label>
         )}
 
