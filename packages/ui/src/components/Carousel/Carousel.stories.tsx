@@ -32,6 +32,14 @@ const meta: Meta<typeof Carousel> = {
         defaultValue: { summary: '0' },
       },
     },
+    withPaginationDots: {
+      description: '페이지네이션 인디케이터 표시 여부입니다.',
+      control: 'boolean',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'true' },
+      },
+    },
     onChange: {
       description: '슬라이드 전환 시 현재 인덱스를 반환합니다.',
       table: { type: { summary: '(index: number) => void' } },
@@ -112,6 +120,19 @@ const INITIAL_SLIDE_CODE = `\
   </Carousel.Slide>
 </Carousel>`;
 
+const WITHOUT_PAGINATION_DOTS_CODE = `\
+<Carousel aria-label="게시물 이미지" withPaginationDots={false}>
+  <Carousel.Slide>
+    <img src="..." alt="" />
+  </Carousel.Slide>
+  <Carousel.Slide>
+    <img src="..." alt="" />
+  </Carousel.Slide>
+  <Carousel.Slide>
+    <img src="..." alt="" />
+  </Carousel.Slide>
+</Carousel>`;
+
 export const Default: Story = {
   parameters: {
     docs: {
@@ -181,6 +202,28 @@ export const InitialSlide: Story = {
     },
   },
   args: { initialSlide: 2 },
+  render: (args) => (
+    <Carousel {...args}>
+      {IMAGES.map((src, i) => (
+        <Carousel.Slide key={i}>
+          <img src={src} alt="" />
+        </Carousel.Slide>
+      ))}
+    </Carousel>
+  ),
+};
+
+export const WithoutPaginationDots: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`withPaginationDots`를 `false`로 전달하면 페이지네이션 인디케이터를 표시하지 않습니다.',
+      },
+      source: { code: WITHOUT_PAGINATION_DOTS_CODE },
+    },
+  },
+  args: { withPaginationDots: false },
   render: (args) => (
     <Carousel {...args}>
       {IMAGES.map((src, i) => (
