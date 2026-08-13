@@ -13,6 +13,7 @@ type CarouselProps = {
   initialSlide?: number;
   onChange?: (index: number) => void;
   onSwiper?: (swiper: SwiperType) => void;
+  withPaginationDots?: boolean;
   className?: string;
   children: ReactNode;
 } & (
@@ -30,6 +31,7 @@ function CarouselRoot({
   initialSlide = 0,
   onChange,
   onSwiper,
+  withPaginationDots = true,
   className,
   children,
   'aria-label': ariaLabel,
@@ -71,7 +73,9 @@ function CarouselRoot({
           slideLabelMessage: '슬라이드 {{index}} / {{slidesLength}}',
         }}
         keyboard={{ enabled: false }}
-        pagination={isSingle ? false : { clickable: false }}
+        pagination={
+          isSingle || !withPaginationDots ? false : { clickable: false }
+        }
         allowTouchMove={!isSingle}
         loop={!isSingle && loop}
         initialSlide={initialSlide}
