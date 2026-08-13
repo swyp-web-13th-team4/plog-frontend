@@ -1,10 +1,12 @@
 import { type ComponentPropsWithoutRef, type Ref, useEffect } from 'react';
 
 import { Field as BaseField } from '@base-ui/react/field';
+import { mergeProps } from '@base-ui/react/merge-props';
 import { cn } from '@plog/utils';
 
 import { useFieldContext } from '@/shared/FieldContext';
 import { getFieldStateClass } from '@/shared/getFieldStateClass';
+import { mergeAriaIds } from '@/shared/mergeAriaIds';
 import { useTextInput } from '@/shared/useTextInput';
 
 type TextareaProps = Omit<
@@ -73,28 +75,31 @@ function Textarea({
   return (
     <div className={cn('flex flex-col', containerClassName)}>
       <BaseField.Control
+        ref={ref}
         disabled={effectiveDisabled}
         aria-invalid={invalid}
-        render={
+        render={(controlProps) => (
           <textarea
-            ref={ref}
-            value={currentValue}
-            onChange={handleChange}
-            required={effectiveRequired}
-            maxLength={maxLength}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            className={cn(
-              'body-md h-34 w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
-              getFieldStateClass(effectiveDisabled, invalid, isFocused),
-              className,
-            )}
-            {...props}
-            {...(ariaDescribedby !== undefined && {
-              'aria-describedby': ariaDescribedby,
+            {...mergeProps<'textarea'>(controlProps, {
+              value: currentValue,
+              onChange: handleChange,
+              required: effectiveRequired,
+              maxLength,
+              onFocus: handleFocus,
+              onBlur: handleBlur,
+              className: cn(
+                'body-md h-34 w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
+                getFieldStateClass(effectiveDisabled, invalid, isFocused),
+                className,
+              ),
+              ...props,
             })}
+            aria-describedby={mergeAriaIds(
+              controlProps['aria-describedby'],
+              ariaDescribedby,
+            )}
           />
-        }
+        )}
       />
 
       {!insideField && maxLength !== undefined && (

@@ -12,6 +12,7 @@ import { cn } from '@plog/utils';
 import ClearIcon from '@/assets/clear.svg?react';
 import { useFieldContext } from '@/shared/FieldContext';
 import { getFieldStateClass } from '@/shared/getFieldStateClass';
+import { mergeAriaIds } from '@/shared/mergeAriaIds';
 import { useTextInput } from '@/shared/useTextInput';
 
 type InputProps = Omit<
@@ -113,9 +114,15 @@ function Input({
             className,
           )}
           {...props}
-          {...(ariaDescribedby !== undefined && {
-            'aria-describedby': ariaDescribedby,
-          })}
+          render={(controlProps) => (
+            <input
+              {...controlProps}
+              aria-describedby={mergeAriaIds(
+                controlProps['aria-describedby'],
+                ariaDescribedby,
+              )}
+            />
+          )}
         />
 
         {(showClear || trailing) && (
