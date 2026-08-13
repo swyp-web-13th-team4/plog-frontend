@@ -64,7 +64,7 @@ export default function LogWorkSessionFields({
           >
             <SelectTriggerButton
               ref={startTimeButtonRef}
-              value={startTime ? formatTime(startTime, '24h') : null}
+              value={startTime ? formatTime(startTime, 'ko') : null}
               placeholder="--:--"
               icon={
                 <Icon
@@ -88,7 +88,7 @@ export default function LogWorkSessionFields({
           >
             <SelectTriggerButton
               ref={endTimeButtonRef}
-              value={endTime ? formatTime(endTime, '24h') : null}
+              value={endTime ? formatTime(endTime, 'ko') : null}
               placeholder="--:--"
               icon={
                 <Icon
