@@ -46,7 +46,6 @@ export default function PlaceCategorySheet({
 
   return (
     <>
-      <input type="hidden" name={name} value={value ?? ''} />
       <BottomSheet open={open} onOpenChange={handleOpenChange}>
         <BottomSheet.Trigger render={children} />
         <BottomSheet.Content className="max-w-layout gap-4 rounded-t-[20px] px-6 pt-5 pb-6">

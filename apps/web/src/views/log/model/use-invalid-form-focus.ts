@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { type FieldErrors } from 'react-hook-form';
 
 import { useScrollFocusTarget } from '@/shared/lib/scroll-focus-target';
@@ -15,6 +16,10 @@ export type LogFormFields =
   | 'endedAt'
   | 'focus'
   | 'placeTags';
+
+export type LogFocusTargets = ReturnType<
+  typeof useCreateLogInvalidFocus
+>['focusTargets'];
 
 export function getInvalidSubmitFeedback(
   fieldErrors: FieldErrors<CreateLogFormValues>,
@@ -47,9 +52,9 @@ export function getInvalidSubmitFeedback(
 
 export function useCreateLogInvalidFocus() {
   const photos = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
-  const title = useScrollFocusTarget<HTMLDivElement, HTMLElement>();
+  const title = useScrollFocusTarget<HTMLDivElement, HTMLInputElement>();
   const contents = useScrollFocusTarget<HTMLDivElement, HTMLTextAreaElement>();
-  const place = useScrollFocusTarget<HTMLDivElement, HTMLElement>();
+  const place = useScrollFocusTarget<HTMLDivElement, HTMLInputElement>();
   const categoryCode = useScrollFocusTarget<
     HTMLDivElement,
     HTMLButtonElement
@@ -59,7 +64,11 @@ export function useCreateLogInvalidFocus() {
   const focus = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
   const placeTags = useScrollFocusTarget<HTMLDivElement, HTMLButtonElement>();
 
-  const endTimeButtonRef = workTime.getFocusRef(1);
+  const { getFocusRef: getWorkTimeFocusRef } = workTime;
+  const endTimeButtonRef = useMemo(
+    () => getWorkTimeFocusRef(1),
+    [getWorkTimeFocusRef],
+  );
 
   const focusField = (field: LogFormFields) => {
     switch (field) {
@@ -100,7 +109,7 @@ export function useCreateLogInvalidFocus() {
     focusField,
     focusTargets: {
       contentsFieldRef: contents.fieldRef,
-      contentsInputRef: contents.focusRef,
+      contentsTextareaRef: contents.focusRef,
       endTimeButtonRef,
       focusFieldRef: focus.fieldRef,
       focusFirstButtonRef: focus.focusRef,

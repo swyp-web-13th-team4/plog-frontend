@@ -1,6 +1,7 @@
-'use client';
+import { type KeyboardEvent, type Ref, type RefCallback, useRef } from 'react';
+import { useController } from 'react-hook-form';
 
-import { type KeyboardEvent, type Ref, useRef } from 'react';
+import { Field } from '@plog/ui';
 
 import { type FocusLevel } from '@/features/create-log';
 
@@ -14,6 +15,9 @@ import FocusLevelSelect2 from '@/shared/assets/focus-levels/focus-level-select-2
 import FocusLevelSelect3 from '@/shared/assets/focus-levels/focus-level-select-3.svg';
 import FocusLevelSelect4 from '@/shared/assets/focus-levels/focus-level-select-4.svg';
 import FocusLevelSelect5 from '@/shared/assets/focus-levels/focus-level-select-5.svg';
+import { assignRef, useMergedRef } from '@/shared/lib/merge-ref';
+
+import { type CreateLogFormValues } from '../../model/types';
 
 const FOCUS_LEVEL_OPTIONS = [
   {
@@ -54,23 +58,7 @@ type RatingPickerProps = {
   firstButtonRef?: Ref<HTMLButtonElement>;
 };
 
-function assignRef<TElement>(
-  ref: Ref<TElement> | undefined,
-  value: TElement | null,
-) {
-  if (!ref) return;
-  if (typeof ref === 'function') {
-    ref(value);
-  } else {
-    ref.current = value;
-  }
-}
-
-export default function RatingPicker({
-  value,
-  onChange,
-  firstButtonRef,
-}: RatingPickerProps) {
+function RatingPicker({ value, onChange, firstButtonRef }: RatingPickerProps) {
   const radioRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -130,6 +118,36 @@ export default function RatingPicker({
           );
         },
       )}
+    </div>
+  );
+}
+
+type LogSelectFocusFieldProps = {
+  fieldRef: RefCallback<HTMLDivElement>;
+  buttonRef: RefCallback<HTMLButtonElement>;
+};
+
+export default function LogSelectFocusField({
+  fieldRef,
+  buttonRef,
+}: LogSelectFocusFieldProps) {
+  const { field } = useController<CreateLogFormValues, 'focus'>({
+    name: 'focus',
+  });
+  const firstButtonMergedRef = useMergedRef<HTMLButtonElement>(
+    field.ref,
+    buttonRef,
+  );
+
+  return (
+    <div ref={fieldRef} className="flex flex-col gap-4">
+      <Field label="집중도를 평가해 주세요" required>
+        <RatingPicker
+          value={field.value}
+          firstButtonRef={firstButtonMergedRef}
+          onChange={field.onChange}
+        />
+      </Field>
     </div>
   );
 }

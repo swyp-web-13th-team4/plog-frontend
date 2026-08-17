@@ -1,0 +1,73 @@
+import { type RefCallback } from 'react';
+import { useController } from 'react-hook-form';
+
+import { Button, Chip, Field, Icon } from '@plog/ui';
+
+import { ReviewTagsSheet } from '@/features/select-review-tags';
+
+import { PLACE_TAG_LABELS } from '@/entities/feed';
+
+import { useMergedRef } from '@/shared/lib/merge-ref';
+
+import { type CreateLogFormValues } from '../../model/types';
+
+type ReviewTag = CreateLogFormValues['placeTags'][number];
+
+type LogSelectReviewTagsFieldProps = {
+  fieldRef: RefCallback<HTMLDivElement>;
+  buttonRef: RefCallback<HTMLButtonElement>;
+};
+
+export default function LogSelectReviewTagsField({
+  fieldRef,
+  buttonRef,
+}: LogSelectReviewTagsFieldProps) {
+  const { field } = useController<CreateLogFormValues, 'placeTags'>({
+    name: 'placeTags',
+  });
+  const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
+  const handleRemoveTag = (tag: ReviewTag) => {
+    field.onChange(field.value.filter((selectedTag) => selectedTag !== tag));
+  };
+
+  return (
+    <div
+      ref={fieldRef}
+      className="flex flex-col gap-4 border-b border-semantic-stroke-subtler pb-6"
+    >
+      <Field label="후기 요약 태그를 선택해 주세요" required>
+        <>
+          {field.value.length > 0 && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {field.value.map((tag) => (
+                <Chip
+                  key={tag}
+                  size="small"
+                  variant="soft"
+                  pressed
+                  onClick={() => handleRemoveTag(tag)}
+                >
+                  {PLACE_TAG_LABELS[tag]}
+                  <Icon name="close" size={16} />
+                </Chip>
+              ))}
+            </div>
+          )}
+
+          <ReviewTagsSheet value={field.value} onChange={field.onChange}>
+            <Button
+              ref={buttonMergedRef}
+              variant="outline"
+              size="large"
+              fullWidth
+              iconLeft={<Icon name="plus" />}
+              className="text-semantic-object-normal [&>svg]:size-4!"
+            >
+              태그 추가하기
+            </Button>
+          </ReviewTagsSheet>
+        </>
+      </Field>
+    </div>
+  );
+}

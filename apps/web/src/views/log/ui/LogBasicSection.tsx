@@ -1,108 +1,53 @@
-import { useCallback } from 'react';
-
-import { Field, Input, Textarea } from '@plog/ui';
-
-import { PhotoUploader, usePhotoUploadFeedback } from '@/features/photo-upload';
-
-import { type LogFormController } from '../model/use-create-log-page';
+import { type CreateLogFormValues } from '../model/types';
+import { type LogFocusTargets } from '../model/use-invalid-form-focus';
+import LogContentsField from './field/LogContentsField';
+import LogPhotoField from './field/LogPhotoField';
+import LogTitleField from './field/LogTitleField';
 
 type LogBasicSectionProps = {
-  controller: LogFormController;
+  focusTargets: Pick<
+    LogFocusTargets,
+    | 'photoFieldRef'
+    | 'photoUploadButtonRef'
+    | 'contentsFieldRef'
+    | 'contentsTextareaRef'
+    | 'titleFieldRef'
+    | 'titleInputRef'
+  >;
+  photos: CreateLogFormValues['photos'];
+  onAddPhotos: (files: File[]) => void;
+  onRemovePhoto: (id: string) => void;
 };
 
-export default function LogBasicSection({ controller }: LogBasicSectionProps) {
-  const {
-    contents,
-    contentsField,
-    errors,
-    handleAddPhotos,
-    handleRemovePhoto,
-    photos,
-    focusTargets,
-    setFormValue,
-    title,
-    titleField,
-  } = controller;
+export default function LogBasicSection({
+  focusTargets,
+  photos,
+  onAddPhotos,
+  onRemovePhoto,
+}: LogBasicSectionProps) {
   const {
     contentsFieldRef,
-    contentsInputRef,
+    contentsTextareaRef,
     photoFieldRef,
     photoUploadButtonRef,
     titleFieldRef,
     titleInputRef,
   } = focusTargets;
-  const { ref: contentsFormRef } = contentsField;
-  const { ref: titleFormRef } = titleField;
-  const {
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
-    handlePhotoMaxCountExceeded,
-  } = usePhotoUploadFeedback();
-  const setTitleRef = useCallback(
-    (element: HTMLElement | null) => {
-      titleFormRef(element);
-      titleInputRef(element);
-    },
-    [titleFormRef, titleInputRef],
-  );
-
-  const setContentsRef = useCallback(
-    (element: HTMLTextAreaElement | null) => {
-      contentsFormRef(element);
-      contentsInputRef(element);
-    },
-    [contentsFormRef, contentsInputRef],
-  );
 
   return (
     <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
-      <div ref={photoFieldRef}>
-        <Field label="사진 등록" required>
-          <PhotoUploader
-            photos={photos}
-            uploadButtonRef={photoUploadButtonRef}
-            onAdd={handleAddPhotos}
-            onRemove={handleRemovePhoto}
-            onFileSizeExceeded={handlePhotoFileSizeExceeded}
-            onMaxCountExceeded={handlePhotoMaxCountExceeded}
-            onConversionFailed={handlePhotoConversionFailed}
-          />
-        </Field>
-      </div>
-      <div ref={titleFieldRef}>
-        <Field label="제목" required error={errors.title?.message}>
-          <Input
-            {...titleField}
-            ref={setTitleRef}
-            onChange={titleField.onChange}
-            onClear={() => {
-              setFormValue('title', '');
-            }}
-            onBlur={() => setFormValue('title', (title ?? '').trim())}
-            value={(title ?? '').trimStart()}
-            placeholder="제목을 입력해 주세요."
-            maxLength={20}
-          />
-        </Field>
-      </div>
-      <div ref={contentsFieldRef}>
-        <Field
-          label="환경 기록을 작성해 주세요"
-          required
-          error={errors.contents?.message}
-        >
-          <Textarea
-            {...contentsField}
-            ref={setContentsRef}
-            onChange={contentsField.onChange}
-            onBlur={() => setFormValue('contents', (contents ?? '').trim())}
-            value={(contents ?? '').trimStart()}
-            placeholder={`자유롭게 내용을 입력해 주세요. (300자 이내)\n부적절하거나 불쾌감을 줄 수 있는 내용은 제재를 받을 수 있습니다.`}
-            maxLength={300}
-            className="[&_textarea]:body-sm"
-          />
-        </Field>
-      </div>
+      <LogPhotoField
+        photos={photos}
+        onAddPhotos={onAddPhotos}
+        onRemovePhoto={onRemovePhoto}
+        fieldRef={photoFieldRef}
+        photoUploadButtonRef={photoUploadButtonRef}
+      />
+      <LogTitleField fieldRef={titleFieldRef} inputRef={titleInputRef} />
+      <LogContentsField
+        fieldRef={contentsFieldRef}
+        textareaRef={contentsTextareaRef}
+      />
     </section>
   );
 }

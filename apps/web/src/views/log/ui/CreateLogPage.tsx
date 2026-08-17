@@ -1,5 +1,7 @@
 'use client';
 
+import { FormProvider } from 'react-hook-form';
+
 import { Button, Spinner } from '@plog/ui';
 
 import { NavigationHeader } from '@/shared/ui';
@@ -7,10 +9,10 @@ import { NavigationHeader } from '@/shared/ui';
 import { useCreateLogPage } from '../model/use-create-log-page';
 import DecisionReviewModal from './DecisionReviewModal';
 import LogBasicSection from './LogBasicSection';
-import LogPlaceFields from './LogPlaceFields';
+import LogPlaceSection from './LogPlaceSection';
 import LogPrivacySection from './LogPrivacySection';
 import LogReviewSection from './LogReviewSection';
-import LogWorkSessionFields from './LogWorkSessionFields';
+import LogWorkSection from './LogWorkSection';
 import PlaceSearchOverlay from './PlaceSearchOverlay';
 
 type CreateLogPageProps = {
@@ -25,6 +27,15 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   const controller = useCreateLogPage(editPostId);
   const {
     editLogQuery,
+    photos,
+    hasInvalidEditPostId,
+    isEditMode,
+    isPlaceSearchOpen,
+    isReviewConfirmOpen,
+    isSubmitting,
+    reviewConfirmInfo,
+    handleAddPhotos,
+    handleRemovePhoto,
     handleBack,
     handleClosePlaceSearch,
     handleCreateReview,
@@ -32,12 +43,6 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
     handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
-    hasInvalidEditPostId,
-    isEditMode,
-    isPlaceSearchOpen,
-    isReviewConfirmOpen,
-    isSubmitting,
-    reviewConfirmInfo,
   } = controller;
 
   const logHeader = <NavigationHeader title="환경 기록" onBack={handleBack} />;
@@ -100,26 +105,34 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   return (
     <>
       {logHeader}
-      <form
-        className="bg-semantic-bg-standard pt-[var(--spacing-header)]"
-        noValidate
-        onSubmit={handleSubmitLog}
-      >
-        <LogBasicSection controller={controller} />
-        <SectionDivider />
-        <section className="flex flex-col gap-6 px-6 py-6">
-          <LogPlaceFields controller={controller} />
-          <LogWorkSessionFields controller={controller} />
-        </section>
-        <SectionDivider />
-        <LogReviewSection controller={controller} />
-        <LogPrivacySection controller={controller} />
-        <section className="px-6 pt-6 pb-10">
-          <Button fullWidth size="large" type="submit" loading={isSubmitting}>
-            {isEditMode ? '저장' : '기록하기'}
-          </Button>
-        </section>
-      </form>
+      <FormProvider {...controller.form}>
+        <form
+          className="bg-semantic-bg-standard pt-[var(--spacing-header)]"
+          noValidate
+          onSubmit={handleSubmitLog}
+        >
+          <LogBasicSection
+            focusTargets={controller.focusTargets}
+            photos={photos}
+            onAddPhotos={handleAddPhotos}
+            onRemovePhoto={handleRemovePhoto}
+          />
+          <SectionDivider />
+          <LogPlaceSection
+            focusTargets={controller.focusTargets}
+            onOpenPlaceSearch={controller.handleOpenPlaceSearch}
+          />
+          <LogWorkSection focusTargets={controller.focusTargets} />
+          <SectionDivider />
+          <LogReviewSection focusTargets={controller.focusTargets} />
+          <LogPrivacySection />
+          <section className="px-6 pt-6 pb-10">
+            <Button fullWidth size="large" type="submit" loading={isSubmitting}>
+              {isEditMode ? '저장' : '기록하기'}
+            </Button>
+          </section>
+        </form>
+      </FormProvider>
       {isPlaceSearchOpen && (
         <div className="fixed inset-0 z-10 mx-auto max-w-layout">
           <PlaceSearchOverlay

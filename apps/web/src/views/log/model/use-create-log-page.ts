@@ -32,8 +32,6 @@ import {
 } from './use-invalid-form-focus';
 import { useUpdateLogMutation } from './use-update-log-mutation';
 
-export type LogFormController = ReturnType<typeof useCreateLogPage>;
-
 type ReviewConfirmInfo = {
   imageUrl?: string;
   placeName: string;
@@ -87,16 +85,7 @@ export function useCreateLogPage(editPostId?: string) {
   const { toast } = useToast();
   const hasRestoredFormRef = useRef(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    getValues,
-    trigger,
-    control,
-    formState: { errors, isSubmitted },
-  } = useForm<CreateLogFormValues>({
+  const form = useForm<CreateLogFormValues>({
     resolver: createLogResolver,
     defaultValues: {
       ...initialCreateLogValues,
@@ -105,6 +94,30 @@ export function useCreateLogPage(editPostId?: string) {
     },
     mode: 'onChange',
     reValidateMode: 'onChange',
+    shouldFocusError: false,
+  });
+
+  const {
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    formState: { isSubmitted },
+  } = form;
+  const photos = useWatch({
+    control: form.control,
+    name: 'photos',
+  });
+
+  const handlePhotoChange = useCallback(
+    (nextPhotos: CreateLogFormValues['photos']) => {
+      setValue('photos', nextPhotos, { shouldValidate: isSubmitted });
+    },
+    [isSubmitted, setValue],
+  );
+  const { handleAddPhotos, handleRemovePhoto, clearPhotos } = usePhotoUpload({
+    photos,
+    onPhotosChange: handlePhotoChange,
   });
 
   const createLogMutation = useCreateLogMutation({
@@ -131,39 +144,6 @@ export function useCreateLogPage(editPostId?: string) {
     return createLogFormSnapshot(editFormValues(editLogQuery.data));
   }, [editLogQuery.data]);
 
-  const titleField = register('title');
-  const contentsField = register('contents');
-
-  const [
-    title,
-    contents,
-    place,
-    placeCategory,
-    workDate,
-    startTime,
-    endTime,
-    focusScore,
-    reviewTags,
-    scope,
-    photos,
-  ] = useWatch({
-    control,
-    name: [
-      'title',
-      'contents',
-      'place',
-      'categoryCode',
-      'studyDate',
-      'startedAt',
-      'endedAt',
-      'focus',
-      'placeTags',
-      'scope',
-      'photos',
-    ],
-  });
-  const isPublic = scope === 'PUBLIC';
-
   const setFormValue = <TFieldName extends FieldPath<CreateLogFormValues>>(
     fieldName: TFieldName,
     value: FieldPathValue<CreateLogFormValues, TFieldName>,
@@ -173,30 +153,12 @@ export function useCreateLogPage(editPostId?: string) {
     });
   };
 
-  const setPhotos = useCallback(
-    (nextPhotos: CreateLogFormValues['photos']) => {
-      setValue('photos', nextPhotos, {
-        shouldValidate: isSubmitted,
-      });
-    },
-    [isSubmitted, setValue],
-  );
-
-  const { handleAddPhotos, handleRemovePhoto, clearPhotos } = usePhotoUpload({
-    photos,
-    onPhotosChange: setPhotos,
-  });
-
   useEffect(() => {
     if (!isEditMode || !editLogQuery.data || hasRestoredFormRef.current) return;
 
     hasRestoredFormRef.current = true;
     reset(editFormValues(editLogQuery.data));
   }, [editLogQuery.data, isEditMode, reset]);
-
-  const handleClearPlaceName = () => {
-    setFormValue('place', null);
-  };
 
   const handleOpenPlaceSearch = () => {
     setIsPlaceSearchOpen(true);
@@ -339,41 +301,25 @@ export function useCreateLogPage(editPostId?: string) {
     : createLogMutation.isPending;
 
   return {
-    contents,
-    contentsField,
+    form,
     editLogQuery,
-    endTime,
-    errors,
-    focusScore,
-    handleAddPhotos,
     handleBack,
-    handleClearPlaceName,
     handleClosePlaceSearch,
     handleInvalidEditBack: router.back,
     handleOpenPlaceSearch,
-    handleRemovePhoto,
     handleCreateReview,
     handleSkipReview,
     handleSelectPlaceFromSearch,
     handleSubmitLog,
+    handleAddPhotos,
+    handleRemovePhoto,
+    photos,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
     isReviewConfirmOpen,
-    isPublic,
     isSubmitting,
-    photos,
-    place,
-    placeCategory,
     reviewConfirmInfo,
-    reviewTags,
-    setFormValue,
-    scope,
-    startTime,
-    title,
-    titleField,
-    trigger,
-    workDate,
     focusTargets: invalidFocus.focusTargets,
   };
 }

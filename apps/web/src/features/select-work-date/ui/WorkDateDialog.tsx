@@ -10,7 +10,6 @@ type WorkDateDialogProps = {
   value: DateValue | null;
   onChange: (value: DateValue) => void;
   children: ReactElement;
-  name?: string;
 };
 
 function getTodayValue(): DateValue {
@@ -27,7 +26,6 @@ export default function WorkDateDialog({
   value,
   onChange,
   children,
-  name = 'workDate',
 }: WorkDateDialogProps) {
   const [open, setOpen] = useState(false);
   const [draftValue, setDraftValue] = useState<DateValue>(
@@ -49,11 +47,6 @@ export default function WorkDateDialog({
 
   return (
     <>
-      <input
-        type="hidden"
-        name={name}
-        value={value ? serializeDate(value) : ''}
-      />
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <Dialog.Trigger render={children} />
         <Dialog.Content className="max-w-90 gap-6 p-5">

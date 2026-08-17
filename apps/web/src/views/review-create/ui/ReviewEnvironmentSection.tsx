@@ -32,7 +32,6 @@ function EnvironmentChoiceGroup({
         />
         {group.title}
       </div>
-      <input type="hidden" name={group.name} value={value ?? ''} />
       <div className="grid grid-cols-3 gap-3">
         {REVIEW_ENVIRONMENT_SCORES.map((score) => (
           <Chip
