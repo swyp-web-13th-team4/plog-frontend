@@ -5,6 +5,7 @@ import { type ChangeEvent, type Ref, useRef } from 'react';
 import Image from 'next/image';
 
 import { Icon } from '@plog/ui';
+import { cn } from '@plog/utils';
 
 import { convertImageToJpeg } from '@/shared/lib/convert-image';
 import {
@@ -24,6 +25,7 @@ type PhotoUploaderProps = {
   onMaxCountExceeded?: () => void;
   onConversionFailed?: () => void;
   uploadButtonRef?: Ref<HTMLButtonElement>;
+  invalid?: boolean;
 };
 
 export default function PhotoUploader({
@@ -34,6 +36,7 @@ export default function PhotoUploader({
   onMaxCountExceeded,
   onConversionFailed,
   uploadButtonRef,
+  invalid,
 }: PhotoUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const canAddMoreImages = photos.length < MAX_PHOTO_COUNT;
@@ -87,7 +90,12 @@ export default function PhotoUploader({
         ref={uploadButtonRef}
         type="button"
         disabled={!canAddMoreImages}
-        className="flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-semantic-stroke-subtle bg-semantic-system-white text-semantic-object-normal transition-colors hover:bg-semantic-bg-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-semantic-stroke-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle"
+        className={cn(
+          'flex size-25 shrink-0 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border bg-semantic-system-white text-semantic-object-normal transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
+          invalid
+            ? 'border-semantic-theme-red-normal bg-semantic-theme-red-subtler focus-visible:outline-semantic-theme-red-normal'
+            : 'border-semantic-stroke-subtle hover:bg-semantic-bg-deep focus-visible:outline-semantic-stroke-subtle',
+        )}
         aria-label="사진 등록"
         onClick={() => fileInputRef.current?.click()}
       >
@@ -113,7 +121,9 @@ export default function PhotoUploader({
               />
               <button
                 type="button"
-                className="absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-system-white bg-semantic-theme-red-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]"
+                className={
+                  'absolute top-2 right-2 flex size-6 cursor-pointer items-center justify-center rounded-full border-2 border-semantic-system-white bg-semantic-theme-red-normal text-xl leading-none shadow-[0_2px_6px_rgba(0,0,0,0.16)]'
+                }
                 aria-label={`등록된 사진 ${index + 1} 삭제`}
                 onClick={() => onRemove(photo.id)}
               >

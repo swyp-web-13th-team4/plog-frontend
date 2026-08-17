@@ -20,7 +20,10 @@ export default function LogWorkDateField({
   fieldRef,
   buttonRef,
 }: LogWorkDateFieldProps) {
-  const { field } = useController<CreateLogFormValues, 'studyDate'>({
+  const {
+    field,
+    fieldState: { invalid },
+  } = useController<CreateLogFormValues, 'studyDate'>({
     name: 'studyDate',
   });
   const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
@@ -31,6 +34,7 @@ export default function LogWorkDateField({
         <WorkDateDialog value={field.value} onChange={field.onChange}>
           <SelectTriggerButton
             ref={buttonMergedRef}
+            invalid={invalid}
             value={field.value ? formatDate(field.value, 'dot') : null}
             placeholder="YYYY.MM.DD"
             icon={

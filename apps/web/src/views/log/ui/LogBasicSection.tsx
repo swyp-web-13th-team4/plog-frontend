@@ -1,4 +1,3 @@
-import { type CreateLogFormValues } from '../model/types';
 import { type LogFocusTargets } from '../model/use-invalid-form-focus';
 import LogContentsField from './field/LogContentsField';
 import LogPhotoField from './field/LogPhotoField';
@@ -14,14 +13,12 @@ type LogBasicSectionProps = {
     | 'titleFieldRef'
     | 'titleInputRef'
   >;
-  photos: CreateLogFormValues['photos'];
   onAddPhotos: (files: File[]) => void;
   onRemovePhoto: (id: string) => void;
 };
 
 export default function LogBasicSection({
   focusTargets,
-  photos,
   onAddPhotos,
   onRemovePhoto,
 }: LogBasicSectionProps) {
@@ -37,7 +34,6 @@ export default function LogBasicSection({
   return (
     <section className="flex flex-col gap-6 px-6 pt-6 pb-10">
       <LogPhotoField
-        photos={photos}
         onAddPhotos={onAddPhotos}
         onRemovePhoto={onRemovePhoto}
         fieldRef={photoFieldRef}

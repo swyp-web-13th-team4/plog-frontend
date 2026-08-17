@@ -21,7 +21,10 @@ export default function LogPlaceCategoryField({
   buttonRef,
   fieldRef,
 }: LogPlaceCategoryFieldProps) {
-  const { field } = useController<CreateLogFormValues, 'categoryCode'>({
+  const {
+    field,
+    fieldState: { invalid },
+  } = useController<CreateLogFormValues, 'categoryCode'>({
     name: 'categoryCode',
   });
   const buttonMergedRef = useMergedRef<HTMLButtonElement>(field.ref, buttonRef);
@@ -32,6 +35,7 @@ export default function LogPlaceCategoryField({
         <PlaceCategorySheet value={field.value} onChange={field.onChange}>
           <SelectTriggerButton
             ref={buttonMergedRef}
+            invalid={invalid}
             value={
               PLACE_CATEGORIES.find(
                 (category) => category.value === field.value,

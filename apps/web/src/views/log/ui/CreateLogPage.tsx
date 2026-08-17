@@ -27,7 +27,6 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
   const controller = useCreateLogPage(editPostId);
   const {
     editLogQuery,
-    photos,
     hasInvalidEditPostId,
     isEditMode,
     isPlaceSearchOpen,
@@ -113,7 +112,6 @@ export default function CreateLogPage({ editPostId }: CreateLogPageProps) {
         >
           <LogBasicSection
             focusTargets={controller.focusTargets}
-            photos={photos}
             onAddPhotos={handleAddPhotos}
             onRemovePhoto={handleRemovePhoto}
           />

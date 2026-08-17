@@ -1,15 +1,17 @@
 import { type RefCallback } from 'react';
+import { useController } from 'react-hook-form';
 
 import { Field } from '@plog/ui';
 
 import { PhotoUploader, usePhotoUploadFeedback } from '@/features/photo-upload';
 
-import { CreateLogFormValues } from '../../model/types';
+import { useMergedRef } from '@/shared/lib/merge-ref';
+
+import { type CreateLogFormValues } from '../../model/types';
 
 type LogPhotoFieldProps = {
   fieldRef: RefCallback<HTMLDivElement>;
   photoUploadButtonRef: RefCallback<HTMLButtonElement>;
-  photos: CreateLogFormValues['photos'];
   onAddPhotos: (files: File[]) => void;
   onRemovePhoto: (id: string) => void;
 };
@@ -17,10 +19,21 @@ type LogPhotoFieldProps = {
 export default function LogPhotoField({
   fieldRef,
   photoUploadButtonRef,
-  photos,
   onAddPhotos,
   onRemovePhoto,
 }: LogPhotoFieldProps) {
+  const {
+    field,
+    fieldState: { invalid },
+  } = useController<CreateLogFormValues, 'photos'>({
+    name: 'photos',
+  });
+
+  const uploadButtonMergedRef = useMergedRef<HTMLButtonElement>(
+    field.ref,
+    photoUploadButtonRef,
+  );
+
   const {
     handlePhotoConversionFailed,
     handlePhotoFileSizeExceeded,
@@ -31,8 +44,9 @@ export default function LogPhotoField({
     <div ref={fieldRef}>
       <Field label="사진 등록" required>
         <PhotoUploader
-          photos={photos}
-          uploadButtonRef={photoUploadButtonRef}
+          photos={field.value}
+          invalid={invalid}
+          uploadButtonRef={uploadButtonMergedRef}
           onAdd={onAddPhotos}
           onRemove={onRemovePhoto}
           onFileSizeExceeded={handlePhotoFileSizeExceeded}
