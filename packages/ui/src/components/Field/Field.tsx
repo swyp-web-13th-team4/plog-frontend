@@ -1,9 +1,10 @@
-import { type ReactNode, useId, useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 
 import { Field as BaseField } from '@base-ui/react/field';
 import { cn } from '@plog/utils';
 
 import { type CharCountInfo, FieldContext } from '@/shared/FieldContext';
+import RequiredMark from '@/shared/RequiredMark';
 
 type FieldProps = {
   label?: string;
@@ -27,8 +28,6 @@ function Field({
   children,
 }: FieldProps) {
   const [charCount, setCharCount] = useState<CharCountInfo | null>(null);
-  const id = useId();
-  const messageId = `${id}-message`;
 
   const hasFooter = !!error || !!success || !!description || charCount !== null;
 
@@ -39,9 +38,8 @@ function Field({
       disabled: !!disabled,
       required: !!required,
       onCharCountChange: setCharCount,
-      messageId: hasFooter ? messageId : undefined,
     }),
-    [error, disabled, required, messageId, hasFooter],
+    [error, disabled, required],
   );
 
   return (
@@ -54,15 +52,7 @@ function Field({
         {label && (
           <BaseField.Label className="label-lg mb-3 flex gap-1 text-semantic-object-boldest">
             {label}
-            {required && (
-              <>
-                <span
-                  aria-hidden="true"
-                  className="mt-1 inline-block size-1 rounded-full bg-primitive-red-400"
-                />
-                <span className="sr-only">필수</span>
-              </>
-            )}
+            {required && <RequiredMark />}
           </BaseField.Label>
         )}
 
@@ -71,26 +61,21 @@ function Field({
         {hasFooter && (
           <div className="caption-md mt-1.5 flex items-center justify-between">
             {error ? (
-              <span
-                id={messageId}
-                role="alert"
+              <BaseField.Description
+                render={<span role="alert" />}
                 className="text-semantic-theme-red-normal"
               >
                 {error}
-              </span>
+              </BaseField.Description>
             ) : success ? (
-              <span
-                id={messageId}
-                role="status"
+              <BaseField.Description
+                render={<span role="status" />}
                 className="text-semantic-theme-green-normal"
               >
                 {success}
-              </span>
+              </BaseField.Description>
             ) : description ? (
-              <BaseField.Description
-                id={messageId}
-                className="text-semantic-object-subtle"
-              >
+              <BaseField.Description className="text-semantic-object-subtle">
                 {description}
               </BaseField.Description>
             ) : null}

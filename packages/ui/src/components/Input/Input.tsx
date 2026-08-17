@@ -12,6 +12,7 @@ import { cn } from '@plog/utils';
 import ClearIcon from '@/assets/clear.svg?react';
 import { useFieldContext } from '@/shared/FieldContext';
 import { getFieldStateClass } from '@/shared/getFieldStateClass';
+import { mergeAriaIds } from '@/shared/mergeAriaIds';
 import { useTextInput } from '@/shared/useTextInput';
 
 type InputProps = Omit<
@@ -42,9 +43,10 @@ function Input({
   maxLength,
   className,
   containerClassName,
+  'aria-describedby': ariaDescribedby,
   ...props
 }: InputProps) {
-  const { insideField, onCharCountChange, messageId } = useFieldContext();
+  const { insideField, onCharCountChange } = useFieldContext();
 
   const {
     invalid,
@@ -99,7 +101,6 @@ function Input({
         <BaseInput
           ref={ref}
           aria-invalid={invalid}
-          aria-describedby={messageId}
           value={currentValue}
           onChange={handleChange}
           disabled={effectiveDisabled}
@@ -113,6 +114,15 @@ function Input({
             className,
           )}
           {...props}
+          render={(controlProps) => (
+            <input
+              {...controlProps}
+              aria-describedby={mergeAriaIds(
+                controlProps['aria-describedby'],
+                ariaDescribedby,
+              )}
+            />
+          )}
         />
 
         {(showClear || trailing) && (

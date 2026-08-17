@@ -8,7 +8,6 @@ export type FieldContextValue = {
   disabled: boolean;
   required: boolean;
   onCharCountChange?: (info: CharCountInfo | null) => void;
-  messageId?: string;
 };
 
 export const FieldContext = createContext<FieldContextValue>({

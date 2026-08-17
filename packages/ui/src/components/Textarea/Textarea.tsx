@@ -1,9 +1,12 @@
 import { type ComponentPropsWithoutRef, type Ref, useEffect } from 'react';
 
+import { Field as BaseField } from '@base-ui/react/field';
+import { mergeProps } from '@base-ui/react/merge-props';
 import { cn } from '@plog/utils';
 
 import { useFieldContext } from '@/shared/FieldContext';
 import { getFieldStateClass } from '@/shared/getFieldStateClass';
+import { mergeAriaIds } from '@/shared/mergeAriaIds';
 import { useTextInput } from '@/shared/useTextInput';
 
 type TextareaProps = Omit<
@@ -32,9 +35,10 @@ function Textarea({
   onBlur,
   className,
   containerClassName,
+  'aria-describedby': ariaDescribedby,
   ...props
 }: TextareaProps) {
-  const { insideField, onCharCountChange, messageId } = useFieldContext();
+  const { insideField, onCharCountChange } = useFieldContext();
 
   const {
     invalid,
@@ -70,23 +74,32 @@ function Textarea({
 
   return (
     <div className={cn('flex flex-col', containerClassName)}>
-      <textarea
+      <BaseField.Control
         ref={ref}
-        aria-invalid={invalid}
-        aria-describedby={messageId}
-        value={currentValue}
-        onChange={handleChange}
         disabled={effectiveDisabled}
-        required={effectiveRequired}
-        maxLength={maxLength}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        className={cn(
-          'body-md h-34 w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
-          getFieldStateClass(effectiveDisabled, invalid, isFocused),
-          className,
+        aria-invalid={invalid}
+        render={(controlProps) => (
+          <textarea
+            {...mergeProps<'textarea'>(controlProps, {
+              value: currentValue,
+              onChange: handleChange,
+              required: effectiveRequired,
+              maxLength,
+              onFocus: handleFocus,
+              onBlur: handleBlur,
+              className: cn(
+                'body-md h-34 w-full resize-none rounded-xl border bg-transparent px-4 py-3 text-semantic-object-boldest transition-colors outline-none placeholder:text-semantic-object-subtle disabled:cursor-not-allowed disabled:text-semantic-object-subtle',
+                getFieldStateClass(effectiveDisabled, invalid, isFocused),
+                className,
+              ),
+              ...props,
+            })}
+            aria-describedby={mergeAriaIds(
+              controlProps['aria-describedby'],
+              ariaDescribedby,
+            )}
+          />
         )}
-        {...props}
       />
 
       {!insideField && maxLength !== undefined && (

@@ -1,5 +1,3 @@
-'use client';
-
 import { type KeyboardEvent, type Ref, type RefCallback, useRef } from 'react';
 import { useController } from 'react-hook-form';
 

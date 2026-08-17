@@ -13,6 +13,7 @@ export * from './components/Divider';
 export * from './components/Dropdown';
 export * from './components/EmptyState';
 export * from './components/Field';
+export * from './components/Fieldset';
 export * from './components/Icon';
 export * from './components/IconButton';
 export * from './components/Input';
