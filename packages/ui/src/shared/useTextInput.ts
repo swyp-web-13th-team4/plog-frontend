@@ -29,9 +29,9 @@ export const useTextInput = <T extends HTMLInputElement | HTMLTextAreaElement>({
     required: ctxRequired,
   } = useFieldContext();
 
-  const invalid = invalidProp ?? ctxInvalid;
-  const effectiveDisabled = disabled ?? ctxDisabled;
-  const effectiveRequired = required ?? ctxRequired;
+  const invalid = invalidProp || ctxInvalid;
+  const effectiveDisabled = disabled || ctxDisabled;
+  const effectiveRequired = required || ctxRequired;
 
   const [internalValue, setInternalValue] = useState(defaultValue ?? '');
   const [focused, setFocused] = useState(false);
