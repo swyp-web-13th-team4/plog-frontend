@@ -1,1 +1,1 @@
-export { assignRef, useMergedRef } from './use-merge-ref';
+export { assignRef, useMergedRef } from './use-merged-ref';
