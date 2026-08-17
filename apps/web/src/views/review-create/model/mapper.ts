@@ -11,11 +11,11 @@ import {
   type UpdateReviewRequest,
 } from '@/entities/review';
 
-import { type ReviewFormValues } from './types';
+import { type CreateReviewFormValues } from './types';
 
 function requireEnvironmentScore(
   name: ReviewEnvironmentName,
-  values: ReviewFormValues['environmentValues'],
+  values: CreateReviewFormValues['environmentValues'],
 ): ReviewEnvironmentScore {
   const score = values[name];
   if (score === null) throw new Error('리뷰 환경 점수가 비어 있습니다.');
@@ -24,7 +24,7 @@ function requireEnvironmentScore(
 }
 
 function reviewEnvironments(
-  values: ReviewFormValues['environmentValues'],
+  values: CreateReviewFormValues['environmentValues'],
 ): CreateReviewRequest['environments'] {
   return {
     spaceSize: requireEnvironmentScore('spaceSize', values),
@@ -35,7 +35,7 @@ function reviewEnvironments(
 }
 
 export function createReviewForm(
-  values: ReviewFormValues,
+  values: CreateReviewFormValues,
 ): CreateReviewRequest {
   if (values.rating === null) throw new Error('리뷰 별점이 비어 있습니다.');
 
@@ -48,12 +48,12 @@ export function createReviewForm(
   };
 }
 
-export function getReviewPhotoFiles(values: ReviewFormValues) {
+export function getReviewPhotoFiles(values: CreateReviewFormValues) {
   return values.photos.filter(isNewPhotoPreview).map(({ file }) => file);
 }
 
 export function updateReviewForm(
-  values: ReviewFormValues,
+  values: CreateReviewFormValues,
 ): UpdateReviewRequest {
   return {
     ...createReviewForm(values),
@@ -83,7 +83,7 @@ function existingReviewPhoto({
 export function editReviewFormValues({
   review,
   images,
-}: EditReviewResponse): ReviewFormValues {
+}: EditReviewResponse): CreateReviewFormValues {
   const existingImages = images?.images ?? [];
 
   return {

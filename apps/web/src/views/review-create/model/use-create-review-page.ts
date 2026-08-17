@@ -1,39 +1,21 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  type FieldErrors,
-  type FieldPath,
-  type FieldPathValue,
-  useForm,
-  useWatch,
-} from 'react-hook-form';
+import { type FieldErrors, useForm, useWatch } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 
 import { useToast } from '@plog/ui';
 
-import {
-  type PhotoPreview,
-  usePhotoUpload,
-  usePhotoUploadFeedback,
-} from '@/features/photo-upload';
+import { type PhotoPreview, usePhotoUpload } from '@/features/photo-upload';
 
 import { useFeedDetailQuery } from '@/entities/feed';
-import {
-  type ReviewEnvironmentName,
-  type ReviewEnvironmentScore,
-} from '@/entities/review';
 
 import { parseDate } from '@/shared/lib/datetime';
 
 import { editReviewFormValues } from './mapper';
 import { reviewResolver } from './resolver';
-import {
-  type ReviewFormValues,
-  type ReviewRatingScore,
-  type ReviewSubmitValues,
-} from './types';
+import { type CreateReviewFormValues } from './types';
 import { useCreateReviewMutation } from './use-create-review-mutation';
 import { useEditReviewQuery } from './use-edit-review-query';
 import {
@@ -42,7 +24,7 @@ import {
 } from './use-invalid-form-focus';
 import { useUpdateReviewMutation } from './use-update-review-mutation';
 
-const initialReviewValues: ReviewFormValues = {
+const initialReviewValues: CreateReviewFormValues = {
   rating: null,
   environmentValues: {
     spaceSize: null,
@@ -67,11 +49,6 @@ export type UseCreateReviewPageOptions =
 export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
   const router = useRouter();
   const { toast } = useToast();
-  const {
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
-    handlePhotoMaxCountExceeded,
-  } = usePhotoUploadFeedback();
 
   const invalidFocus = useReviewInvalidFocus();
 
@@ -88,35 +65,28 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
 
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
+  const form = useForm<CreateReviewFormValues>({
+    resolver: reviewResolver,
+    defaultValues: {
+      ...initialReviewValues,
+    },
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: false,
+  });
+
   const {
-    register,
     handleSubmit,
     reset,
     setValue,
     control,
-    formState: { errors, isSubmitted },
-  } = useForm<ReviewFormValues, unknown, ReviewSubmitValues>({
-    resolver: reviewResolver,
-    defaultValues: initialReviewValues,
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-  });
+    formState: { isSubmitted },
+  } = form;
 
-  const [rating, environmentValues, reviewText, photos] = useWatch({
+  const photos = useWatch({
     control,
-    name: ['rating', 'environmentValues', 'contents', 'photos'],
+    name: 'photos',
   });
-
-  const contentsField = register('contents');
-
-  const setFormValue = <TFieldName extends FieldPath<ReviewFormValues>>(
-    fieldName: TFieldName,
-    value: FieldPathValue<ReviewFormValues, TFieldName>,
-  ) => {
-    setValue(fieldName, value, {
-      shouldValidate: true,
-    });
-  };
 
   const handlePhotosChange = useCallback(
     (nextPhotos: PhotoPreview[]) => {
@@ -162,21 +132,9 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     router.push('/feed');
   };
 
-  const handleEnvironmentChange = (
-    name: ReviewEnvironmentName,
-    value: ReviewEnvironmentScore | null,
+  const handleInvalidSubmit = (
+    fieldErrors: FieldErrors<CreateReviewFormValues>,
   ) => {
-    setFormValue('environmentValues', {
-      ...environmentValues,
-      [name]: value,
-    });
-  };
-
-  const handleRatingChange = (value: number) => {
-    setFormValue('rating', value as ReviewRatingScore);
-  };
-
-  const handleInvalidSubmit = (fieldErrors: FieldErrors<ReviewFormValues>) => {
     const feedback = getInvalidSubmitFeedback(fieldErrors);
     if (!feedback) return;
 
@@ -189,7 +147,7 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     }
   };
 
-  const handleValidSubmit = (values: ReviewSubmitValues) => {
+  const handleValidSubmit = (values: CreateReviewFormValues) => {
     if (options.editReviewId !== undefined) {
       updateReviewMutation.mutate({
         reviewId: options.editReviewId,
@@ -210,20 +168,14 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
   );
 
   return {
-    contentsField,
+    form,
     editReviewQuery,
     endTime: post?.endedAt ?? editReview?.endedAt ?? null,
-    environmentValues,
-    errors,
     focusTargets: invalidFocus.focusTargets,
     handleAddPhotos,
     handleBack,
     handleCancelLeave,
     handleConfirmLeave,
-    handleEnvironmentChange,
-    handlePhotoConversionFailed,
-    handlePhotoFileSizeExceeded,
-    handlePhotoMaxCountExceeded,
     handleRemovePhoto,
     handleSubmitReview,
     isEditMode,
@@ -234,10 +186,7 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
     photos,
     placeImageSrc: post?.postImages?.[0] ?? editReview?.placeProfileUrl ?? null,
     placeName: post?.placeName ?? editReview?.placeName ?? '방문한 장소',
-    rating,
     reviewPostQuery,
-    reviewText,
-    setRating: handleRatingChange,
     startTime: post?.startedAt ?? editReview?.startedAt ?? null,
     visitDate: post?.studyDate
       ? parseDate(post.studyDate)
@@ -246,5 +195,3 @@ export function useCreateReviewPage(options: UseCreateReviewPageOptions) {
         : null,
   };
 }
-
-export type ReviewFormController = ReturnType<typeof useCreateReviewPage>;

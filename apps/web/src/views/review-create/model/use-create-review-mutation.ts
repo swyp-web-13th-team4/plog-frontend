@@ -9,11 +9,11 @@ import { mapQueryKeys } from '@/entities/place';
 import { createReview, reviewQueryKeys } from '@/entities/review';
 
 import { createReviewForm, getReviewPhotoFiles } from './mapper';
-import { type ReviewSubmitValues } from './types';
+import { type CreateReviewFormValues } from './types';
 
 type CreateReviewVariables = {
   postId: number;
-  values: ReviewSubmitValues;
+  values: CreateReviewFormValues;
 };
 
 export function useCreateReviewMutation() {

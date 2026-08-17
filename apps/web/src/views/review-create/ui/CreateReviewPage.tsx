@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { FormProvider } from 'react-hook-form';
 
 import { useRouter } from 'next/navigation';
 
@@ -16,7 +17,7 @@ import CreateReviewLoading from './CreateReviewLoading';
 import LeaveReviewDialog from './LeaveReviewDialog';
 import ReviewContentSection from './ReviewContentSection';
 import ReviewEnvironmentSection from './ReviewEnvironmentSection';
-import ReviewHeroSection from './ReviewHeroSection';
+import ReviewRatingSection from './ReviewRatingSection';
 import ReviewVisitSection from './ReviewVisitSection';
 import SectionDivider from './SectionDivider';
 
@@ -71,36 +72,50 @@ export default function CreateReviewPage(options: UseCreateReviewPageOptions) {
     <>
       <NavigationHeader title="장소 리뷰" onBack={handleBack} />
 
-      <form
-        className="flex flex-col pt-[var(--spacing-header)]"
-        noValidate
-        onSubmit={handleSubmitReview}
-      >
-        <ReviewHeroSection controller={controller} />
-        <SectionDivider />
-        <ReviewVisitSection controller={controller} />
-        <SectionDivider />
-        <ReviewEnvironmentSection controller={controller} />
-        <SectionDivider />
-        <ReviewContentSection controller={controller} />
+      <FormProvider {...controller.form}>
+        <form
+          className="flex flex-col pt-[var(--spacing-header)]"
+          noValidate
+          onSubmit={handleSubmitReview}
+        >
+          <ReviewRatingSection
+            placeImageSrc={controller.placeImageSrc}
+            placeName={controller.placeName}
+            focusTargets={controller.focusTargets}
+          />
+          <SectionDivider />
+          <ReviewVisitSection
+            visitDate={controller.visitDate}
+            startTime={controller.startTime}
+            endTime={controller.endTime}
+          />
+          <SectionDivider />
+          <ReviewEnvironmentSection focusTargets={controller.focusTargets} />
+          <SectionDivider />
+          <ReviewContentSection
+            photos={controller.photos}
+            onAddPhotos={controller.handleAddPhotos}
+            onRemovePhoto={controller.handleRemovePhoto}
+          />
 
-        <section className="px-6 pt-6 pb-10">
-          <Button
-            type="submit"
-            size="large"
-            fullWidth
-            disabled={isSubmittingReview}
-          >
-            {isSubmittingReview
-              ? isEditMode
-                ? '저장 중...'
-                : '등록 중...'
-              : isEditMode
-                ? '저장'
-                : '리뷰 등록하기'}
-          </Button>
-        </section>
-      </form>
+          <section className="px-6 pt-6 pb-10">
+            <Button
+              type="submit"
+              size="large"
+              fullWidth
+              disabled={isSubmittingReview}
+            >
+              {isSubmittingReview
+                ? isEditMode
+                  ? '저장 중...'
+                  : '등록 중...'
+                : isEditMode
+                  ? '저장'
+                  : '리뷰 등록하기'}
+            </Button>
+          </section>
+        </form>
+      </FormProvider>
       <LeaveReviewDialog
         isEditMode={isEditMode}
         open={leaveConfirmOpen}

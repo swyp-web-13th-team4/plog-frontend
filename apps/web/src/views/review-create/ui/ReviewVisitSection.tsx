@@ -1,8 +1,12 @@
-import { Field, Icon } from '@plog/ui';
+import { type DateValue, Field, Icon, type TimeValue } from '@plog/ui';
 
 import { formatDate, formatTime } from '@/shared/lib/datetime';
 
-import { type ReviewFormController } from '../model/use-create-review-page';
+type ReviewVisitSectionProps = {
+  visitDate: DateValue | null;
+  startTime: TimeValue | null;
+  endTime: TimeValue | null;
+};
 
 function ReadOnlyValueForm({
   iconName,
@@ -20,12 +24,10 @@ function ReadOnlyValueForm({
 }
 
 export default function ReviewVisitSection({
-  controller,
-}: {
-  controller: ReviewFormController;
-}) {
-  const { endTime, startTime, visitDate } = controller;
-
+  visitDate,
+  startTime,
+  endTime,
+}: ReviewVisitSectionProps) {
   return (
     <section className="flex flex-col gap-4 p-6">
       <Field label="방문 날짜">
