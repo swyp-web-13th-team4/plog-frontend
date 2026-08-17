@@ -2,16 +2,14 @@ import { type RefCallback } from 'react';
 
 import { Field } from '@plog/ui';
 
-import {
-  type PhotoPreview,
-  PhotoUploader,
-  usePhotoUploadFeedback,
-} from '@/features/photo-upload';
+import { PhotoUploader, usePhotoUploadFeedback } from '@/features/photo-upload';
+
+import { CreateLogFormValues } from '../../model/types';
 
 type LogPhotoFieldProps = {
   fieldRef: RefCallback<HTMLDivElement>;
   photoUploadButtonRef: RefCallback<HTMLButtonElement>;
-  photos: PhotoPreview[];
+  photos: CreateLogFormValues['photos'];
   onAddPhotos: (files: File[]) => void;
   onRemovePhoto: (id: string) => void;
 };
